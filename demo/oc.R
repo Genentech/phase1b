@@ -74,11 +74,12 @@ boundsPostprob(
 
 ## graphically: plot decision regions (just the xL's and xU's)
 ## for all look locations starting at 15
-plotBounds(boundsPostprob(
-  nvec = c(15:40), p0 = 0.50, p1 = 0.50,
-  thetaL = 0.20, thetaU = 0.80, a = 1, b = 1
-),
-yt = "p"
+plotBounds(
+  boundsPostprob(
+    nvec = c(15:40), p0 = 0.50, p1 = 0.50,
+    thetaL = 0.20, thetaU = 0.80, a = 1, b = 1
+  ),
+  yt = "p"
 )
 
 

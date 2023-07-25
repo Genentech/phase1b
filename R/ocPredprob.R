@@ -105,7 +105,6 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
     j <- 1
     i <- nnr[j]
     while (is.na(s[k]) & (j <= length(nnr))) {
-
       # q = predprob(x=sum(x[1:i]), n=i, Nmax=Nmax, p=p0, thetaT=tT, parE=parE)
 
       if (i %in% nnrF) {

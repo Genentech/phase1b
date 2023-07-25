@@ -249,7 +249,6 @@ oc2 <- function(method =
         "RCT.BayesRobust",
         "RCTvanilla.Bayes"
       )) {
-
         ## current data in both arms:
         xActive <- x[which(isActive[1:i])]
         xControl <- x[which(!isActive[1:i])]
@@ -274,7 +273,6 @@ oc2 <- function(method =
         nActive[k] <- length(xActive)
         nControl[k] <- length(xControl)
       } else if (method == "PointMass.PP") {
-
         ## PointMass.PP
         q <- predprob(
           x = sum(x[1:i]),
@@ -287,7 +285,6 @@ oc2 <- function(method =
         "RCT.PProbust",
         "RCTvanilla.PP"
       )) {
-
         ## current data in both arms:
         xActive <- x[which(isActive[1:i])]
         xControl <- x[which(!isActive[1:i])]

@@ -1,4 +1,3 @@
-
 ##'
 ##' Checking for scalar
 ##'

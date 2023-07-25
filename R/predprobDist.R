@@ -154,7 +154,6 @@ predprobDist <- function(x, n,
         )
     )
   } else {
-
     ## in this case also data on the SOC is available!
 
     ## determine remaining sample size and probabilities of response
