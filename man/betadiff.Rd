@@ -38,40 +38,49 @@ the distribution of the difference of two beta distributions with parameters par
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
-z <- seq(from=-1, to=1, length=100)
-plot(z, dbetadiff(z, parY=parY, parX=parX),
-     type="l")
+z <- seq(from = -1, to = 1, length = 100)
+plot(z, dbetadiff(z, parY = parY, parX = parX),
+  type = "l"
+)
 
 ## calculate probability
 
 ## for Go:
-test <- integrate(f=dbetadiff,
-                  parY=parY,
-                  parX=parX,
-                  lower=0.15,
-                  upper=1)
+test <- integrate(
+  f = dbetadiff,
+  parY = parY,
+  parX = parX,
+  lower = 0.15,
+  upper = 1
+)
 str(test)
 test$value
 
 ## vary close to the Monte Carlo result:
-mean(rbeta(n=1e6, parY[1], parY[2]) -
-     rbeta(n=1e6, parX[1], parX[2]) > 0.15)
+mean(rbeta(n = 1e6, parY[1], parY[2]) -
+  rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
 
 
 ## similar case for Stop:
-integrate(f=dbetadiff,
-          parY=parY,
-          parX=parX,
-          lower=-1,
-          upper=0.5)
+integrate(
+  f = dbetadiff,
+  parY = parY,
+  parX = parX,
+  lower = -1,
+  upper = 0.5
+)
 
-mean(rbeta(n=1e6, parY[1], parY[2]) -
-     rbeta(n=1e6, parX[1], parX[2]) < 0.5)
+mean(rbeta(n = 1e6, parY[1], parY[2]) -
+  rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
 
-test <- qbetadiff(p=0.2,
-                  parY=parY,
-                  parX=parX)
-pbetadiff(q=test,
-          parY=parY,
-          parX=parX)
+test <- qbetadiff(
+  p = 0.2,
+  parY = parY,
+  parX = parX
+)
+pbetadiff(
+  q = test,
+  parY = parY,
+  parX = parX
+)
 }

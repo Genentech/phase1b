@@ -20,7 +20,7 @@ nothing, only produces the plot as side effect
 This function will plot the PDF of a beta distribution
 }
 \examples{
-myPlot(1,2)
-myPlot(1,1)
+myPlot(1, 2)
+myPlot(1, 1)
 }
 \keyword{graphics}

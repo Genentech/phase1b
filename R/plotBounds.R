@@ -15,8 +15,8 @@
 ##' @param yt  indicate the y axis: response rate is "p", number of responses
 ##' is "x"
 ##' @param add  add the boundary lines or not
-##' @param cols specific the color of [1] efficacy area [2] futility area
-##' [3] efficacy boundary [4] futility boundary
+##' @param cols specific the color of `[1]` efficacy area `[2]` futility area
+##' `[3]` efficacy boundary `[4]` futility boundary
 ##' @param lwds line width (a two dimensional vector)
 ##' @param ltype line type
 ##' @param lpch  a value of plotting characters or symbols

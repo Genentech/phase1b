@@ -24,7 +24,7 @@ logit(x)
 
 ## Can also be a vector of probabilities
 ##
-x <- seq(0.1,0.9,0.1)
+x <- seq(0.1, 0.9, 0.1)
 logit(x)
 }
 \keyword{programming}

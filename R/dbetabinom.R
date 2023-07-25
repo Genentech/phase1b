@@ -127,8 +127,8 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 ##' @param par the beta parameters matrix, with K rows and 2 columns,
 ##' corresponding to the beta parameters of the K components
 ##' @param weights the mixture weights of the beta mixture prior
-##' @param lower.tail logical; if TRUE (default), probabilities are P[X <= x],
-##' and otherwise P[X > x]
+##' @param lower.tail logical; if TRUE (default), probabilities are `P[X <= x]`,
+##' and otherwise `P[X > x]`
 ##' @return the (one minus) cdf value
 ##'
 ##' @export

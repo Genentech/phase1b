@@ -14,8 +14,8 @@ corresponding to the beta parameters of the K components}
 
 \item{weights}{the mixture weights of the beta mixture prior}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are P\link{X <= x},
-and otherwise P\link{X > x}}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X <= x]},
+and otherwise \code{P[X > x]}}
 }
 \value{
 the (one minus) cdf value

@@ -31,8 +31,8 @@ is "x"}
 
 \item{add}{add the boundary lines or not}
 
-\item{cols}{specific the color of \link{1} efficacy area \link{2} futility area
-\link{3} efficacy boundary \link{4} futility boundary}
+\item{cols}{specific the color of \verb{[1]} efficacy area \verb{[2]} futility area
+\verb{[3]} efficacy boundary \verb{[4]} futility boundary}
 
 \item{lwds}{line width (a two dimensional vector)}
 
@@ -56,12 +56,19 @@ and \code{\link{boundsPostprob}}
 }
 \examples{
 # examples
-plotBounds(boundsPredprob(nvec=c(10,20,30,40), p=0.20, tT=0.80,
-                          phiL=0.10, phiU=0.90, a=1, b=1), yt="x")
-plotBounds(boundsPredprob(nvec=c(10,20,30,40), p=0.20, tT=0.80,
-                          phiL=0.10, phiU=0.90, a=1, b=1), yt="p")
-plotBounds(boundsPostprob(nvec=c(10,20,30,40), p0=0.20,
-                          tL=0.10, tU=0.90, a=1, b=1), 
-           yt="p", add=TRUE)
+plotBounds(boundsPredprob(
+  nvec = c(10, 20, 30, 40), p = 0.20, tT = 0.80,
+  phiL = 0.10, phiU = 0.90, a = 1, b = 1
+), yt = "x")
+plotBounds(boundsPredprob(
+  nvec = c(10, 20, 30, 40), p = 0.20, tT = 0.80,
+  phiL = 0.10, phiU = 0.90, a = 1, b = 1
+), yt = "p")
+plotBounds(boundsPostprob(
+  nvec = c(10, 20, 30, 40), p0 = 0.20,
+  tL = 0.10, tU = 0.90, a = 1, b = 1
+),
+yt = "p", add = TRUE
+)
 }
 \keyword{graphics}

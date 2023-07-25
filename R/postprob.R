@@ -29,9 +29,9 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 ##' Compute the posterior probability to be above threshold,
 ##' with a beta mixture prior on the response rate.
 ##'
-##' Computes the posterior probability Pr(P_E > p | data). Prior is P_E ~
-##' sum(weights * beta(parE[, 1], parE[, 2])), i.e., a mixture of beta priors.
-##' Default is one component only with uniform or beta(1,1).
+##' Computes the posterior probability `Pr(P_E > p | data)`. Prior is
+##' `P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))`, i.e., a mixture of beta priors.
+##' Default is one component only with uniform or `beta(1,1)`.
 ##'
 ##' We observed x successes in n trials. Note that \code{x} can be a vector.
 ##'

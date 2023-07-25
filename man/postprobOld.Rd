@@ -39,5 +39,5 @@ P_E | data  ~ beta(a + x, b + n - x).
 ## Pr(P_E > p | data) = 0.8358808
 ##
 
-postprobOld(x=16, n=23, p=0.60, a=0.6, b=0.4)
+postprobOld(x = 16, n = 23, p = 0.60, a = 0.6, b = 0.4)
 }

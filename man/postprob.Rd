@@ -31,9 +31,9 @@ the other arguments (except \code{p} and \code{log.p} of course)}
 The posterior probability that the response rate P_E is above p.
 }
 \description{
-Computes the posterior probability Pr(P_E > p | data). Prior is P_E ~
-sum(weights * beta(parE\link{, 1}, parE\link{, 2})), i.e., a mixture of beta priors.
-Default is one component only with uniform or beta(1,1).
+Computes the posterior probability \code{Pr(P_E > p | data)}. Prior is
+\code{P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))}, i.e., a mixture of beta priors.
+Default is one component only with uniform or \code{beta(1,1)}.
 }
 \details{
 We observed x successes in n trials. Note that \code{x} can be a vector.
@@ -51,7 +51,7 @@ and beta parameters.
 ## Pr(P_E > p | data) = 0.836
 ##
 
-postprob(x=16, n=23, p=0.60, par=c(0.6, 0.4))
+postprob(x = 16, n = 23, p = 0.60, par = c(0.6, 0.4))
 
 ## We could instead specify a mixture prior
 ## 2 component beta mixture prior, i.e.,
@@ -59,10 +59,13 @@ postprob(x=16, n=23, p=0.60, par=c(0.6, 0.4))
 ## Pr(P_E > p | data) = 0.823
 ##
 
-postprob(x=16, n=23, p=0.60,
-         par=
-         rbind(c(0.6, 0.4),
-               c(1, 1)),
-         weights=c(0.6, 0.4))
-
+postprob(
+  x = 16, n = 23, p = 0.60,
+  par =
+    rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    ),
+  weights = c(0.6, 0.4)
+)
 }

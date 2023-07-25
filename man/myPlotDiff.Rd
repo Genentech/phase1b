@@ -28,8 +28,8 @@ nothing, only produces the plot as side effect
 This function will plot the PDF of a diffience between two Beta distributions
 }
 \examples{
-myPlotDiff(c(5,10),c(2,5),0.2,0.05,1,0)
-myPlotDiff(c(5,10),c(2,5),0.2,0.05,1)
-myPlotDiff(c(5,10),c(2,5),0.2,0.05,0)
+myPlotDiff(c(5, 10), c(2, 5), 0.2, 0.05, 1, 0)
+myPlotDiff(c(5, 10), c(2, 5), 0.2, 0.05, 1)
+myPlotDiff(c(5, 10), c(2, 5), 0.2, 0.05, 0)
 }
 \keyword{graphics}

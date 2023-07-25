@@ -73,16 +73,18 @@ treatment is e.g. important for the futility decision making (see the
 }
 \examples{
 ## example similar to Lee and Liu:
-postprobDist(x=16, n=23, parE=c(0.6, 0.4), parS=c(0.6, 0.4))
+postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
 
 ## these two should give the same result:
-postprobDist(x = 27, n = 34,
-             xS = 0, nS = 0,
-             delta = 0.15,
-             parE = c(1, 1),
-             parS = c(50007530, 49924090))
+postprobDist(
+  x = 27, n = 34,
+  xS = 0, nS = 0,
+  delta = 0.15,
+  parE = c(1, 1),
+  parS = c(50007530, 49924090)
+)
 
-postprob(x=27, n=34, p=0.65, parE=c(1, 1))
+postprob(x = 27, n = 34, p = 0.65, parE = c(1, 1))
 ## ok, almost
 
 ## try out mixtures:
@@ -91,12 +93,18 @@ postprob(x=27, n=34, p=0.65, parE=c(1, 1))
 ## Note that very extreme beta parameters do no longer increase
 ## the return value, because then that mixture component is too
 ## unlikely a posteriori
-postprobDist(x=16, n=23,
-             parE=
-             rbind(c(0.6, 0.4),
-                   c(10, 20)),
-             parS=
-             rbind(c(0.6, 0.4),
-                   c(10, 10)),
-             weightsS=c(1, 3))
+postprobDist(
+  x = 16, n = 23,
+  parE =
+    rbind(
+      c(0.6, 0.4),
+      c(10, 20)
+    ),
+  parS =
+    rbind(
+      c(0.6, 0.4),
+      c(10, 10)
+    ),
+  weightsS = c(1, 3)
+)
 }
