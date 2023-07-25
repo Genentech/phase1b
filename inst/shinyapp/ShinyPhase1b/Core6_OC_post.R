@@ -57,7 +57,7 @@ postprobOC_tooltip <- function(x) {
   if (is.null(x$prob)) {
     return(NULL)
   }
-  if (x$prob == 0 & x$trueP == 0) {
+  if (x$prob == 0 && x$trueP == 0) {
     return(NULL)
   }
 
