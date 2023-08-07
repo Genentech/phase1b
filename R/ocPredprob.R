@@ -1,4 +1,5 @@
 ##' @include predprob.R
+NULL
 
 ##' Calculate operating characteristics for predictive probability method
 ##' (gray zone allowed in the final analysis)

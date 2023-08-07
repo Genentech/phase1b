@@ -1,6 +1,7 @@
 ##' @include dbetabinom.R
 ##' @include postprob.R
 NULL
+
 ##' Compute the predictive probability that the trial will be
 ##' successful, with a fixed response rate threshold
 ##'

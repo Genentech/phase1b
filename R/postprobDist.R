@@ -1,6 +1,6 @@
 ##' @include dbetabinom.R
 ##' @include postprob.R
-
+NULL
 
 ##' Compute the posterior probability with beta prior on SOC
 ##'

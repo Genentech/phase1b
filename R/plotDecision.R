@@ -1,4 +1,5 @@
 ##' @include sumTable.R
+NULL
 
 ##' Plot a summary plot corresponding to the sumTable output
 ##'

@@ -1,4 +1,5 @@
 ##' @include betadiff.R
+NULL
 
 ##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
 ##'

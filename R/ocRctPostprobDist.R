@@ -1,6 +1,6 @@
 ##' @include postprobDist.R
 ##' @include helpers.R
-{}
+NULL
 
 ##' Calculate operating characteristics for RCT against SOC,
 ##' using the posterior probability method with beta priors

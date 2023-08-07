@@ -1,5 +1,6 @@
 ##' @include postprob.R
 NULL
+
 ##' Calculate operating characteristics for posterior probability method
 ##'
 ##' The trial is stopped for efficacy if the posterior probability to be

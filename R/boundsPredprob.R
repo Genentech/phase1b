@@ -1,5 +1,6 @@
 ##' @include predprob.R
 ##' @include postprob.R
+NULL
 
 ##' Decision cutpoints for boundary (based on predictive probability)
 ##'

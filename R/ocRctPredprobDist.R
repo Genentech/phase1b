@@ -1,6 +1,6 @@
 ##' @include predprobDist.R
 ##' @include helpers.R
-{}
+NULL
 
 ##' Calculate operating characteristics for RCT against SOC,
 ##' using the predictive probability method with beta priors

@@ -1,4 +1,5 @@
 ##' @include predprobDist.R
+NULL
 
 ##' Calculate operating characteristics for predictive probability method
 ##' with beta prior on SOC response rate (gray zone allowed in the final analysis)

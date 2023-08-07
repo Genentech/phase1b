@@ -2,6 +2,7 @@
 ##' @include postprobDist.R
 ##' @include predprob.R
 ##' @include predprobDist.R
+NULL
 
 ##' Run simulations to obtain operating characteristics for methods that include
 ##' historical data on control

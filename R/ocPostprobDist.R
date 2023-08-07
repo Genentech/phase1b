@@ -1,4 +1,5 @@
 ##' @include postprobDist.R
+NULL
 
 ##' Calculate operating characteristics for posterior probability method
 ##' with beta prior on SOC

@@ -1,5 +1,6 @@
 ##' @include dbetabinom.R
 ##' @include postprobDist.R
+NULL
 
 ##' Compute the predictive probability that the trial will be
 ##' successful, with a prior distribution on the SOC
