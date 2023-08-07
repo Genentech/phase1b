@@ -19,7 +19,7 @@ ocPredprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   ns = 10000,
-  nr = F,
+  nr = FALSE,
   d = NULL,
   nnF = nn
 )

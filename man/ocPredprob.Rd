@@ -17,7 +17,7 @@ ocPredprob(
   phiFu = 1 - phiL,
   parE = c(1, 1),
   ns = 10000,
-  nr = F,
+  nr = FALSE,
   d = NULL,
   nnF = nn
 )
