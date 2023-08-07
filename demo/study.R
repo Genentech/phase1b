@@ -124,12 +124,14 @@ z2$oc
 hist(z2$SampleSize)
 
 ## now check what happens if we use point mass for comparison
+p0 <- 0.15 - 0.10
+p1 <- 0.15 + 0.10
 set.seed(141)
 z3 <- ocPostprob(
   nn = 1:40,
   p = 0.3,
-  p0 = 0.05, ## 0.15 - 0.10
-  p1 = 0.25, ## 0.15 + 0.10
+  p0 = p0,
+  p1 = p1,
   tL = 0.9,
   tU = 0.9,
   parE = c(1, 1),
