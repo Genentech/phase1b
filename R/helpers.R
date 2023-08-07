@@ -20,7 +20,7 @@ is.scalar <- function(x) {
 ##' @keywords internal
 is.bool <- function(x) {
   return(is.scalar(x) &&
-    is.logical(x))
+           is.logical(x))
 }
 
 ##' Predicate checking for a probability

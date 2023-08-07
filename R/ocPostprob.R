@@ -1,6 +1,5 @@
 ##' @include postprob.R
-{}
-
+NULL
 ##' Calculate operating characteristics for posterior probability method
 ##'
 ##' The trial is stopped for efficacy if the posterior probability to be
@@ -71,7 +70,7 @@ ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
     if (nr && (d > 0)) {
       # randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -82,7 +81,7 @@ ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
     x <- stats::rbinom(Nmax, 1, p)
     j <- 1
     i <- nnr[j]
-    while (is.na(s[k]) & (j <= length(nnr))) {
+    while (is.na(s[k]) && (j <= length(nnr))) {
       if (i %in% nnrF) {
         qL <- 1 - postprob(x = sum(x[1:i]), n = i, p = p0, parE = parE)
         s[k] <- ifelse(qL >= tL, FALSE, NA)
@@ -93,7 +92,6 @@ ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
         s[k] <- ifelse(qU < tU, s[k], TRUE)
       }
 
-      # s[k] = ifelse(qU >= tU, TRUE, ifelse(qL >= tL, FALSE, NA))
       n[k] <- i
       j <- j + 1
       i <- nnr[j]
@@ -101,10 +99,10 @@ ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
   }
   oc <- cbind(
     ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / ns,
-    PrEfficacy = sum(s, na.rm = T) / ns,
-    PrFutility = sum(1 - s, na.rm = T) / ns,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
   return(list(

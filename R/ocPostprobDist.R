@@ -1,5 +1,4 @@
 ##' @include postprobDist.R
-{}
 
 ##' Calculate operating characteristics for posterior probability method
 ##' with beta prior on SOC
@@ -74,12 +73,11 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
   nnrF <- nnF
 
   ## simulate a clinical trial ns times
-  for (k in 1:ns)
-  {
+  for (k in 1:ns) {
     if (nr && (d > 0)) {
       ## randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -89,7 +87,7 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
     x <- stats::rbinom(Nmax, 1, p)
     j <- 1
     i <- nnr[j]
-    while (is.na(s[k]) & (j <= length(nnr))) {
+    while (is.na(s[k]) && (j <= length(nnr))) {
       if (i %in% nnrF) {
         qL <- postprobDist(
           x = 0, n = 0,
@@ -111,7 +109,6 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
       }
 
 
-      # s[k] <- ifelse(qU >= tU, TRUE, ifelse(qL >= tL, FALSE, NA))
       n[k] <- i
       j <- j + 1
       i <- nnr[j]
@@ -119,10 +116,10 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
   }
   oc <- cbind(
     ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / ns,
-    PrEfficacy = sum(s, na.rm = T) / ns,
-    PrFutility = sum(1 - s, na.rm = T) / ns,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
   return(list(

@@ -1,7 +1,6 @@
 ##' @include dbetabinom.R
 ##' @include postprob.R
-{}
-
+NULL
 ##' Compute the predictive probability that the trial will be
 ##' successful, with a fixed response rate threshold
 ##'
@@ -42,7 +41,7 @@
 ##'
 ##' @example examples/predprob.R
 ##' @export
-predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
+predprob <- function(x, n, Nmax,p, thetaT, parE = c(1, 1),
                      weights) {
   ## m = Nmax - n future observations
   m <- Nmax - n
@@ -65,10 +64,6 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   ## now compute updated parameters
   betamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
 
-  ## previously:
-  ## py <- dbetabinom(0:m, m, a + x, b + n - x)
-
-  ## now with the beta binomial mixture:
   py <- with(
     betamixPost,
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)

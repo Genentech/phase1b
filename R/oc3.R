@@ -2,7 +2,6 @@
 ##' @include postprobDist.R
 ##' @include predprob.R
 ##' @include predprobDist.R
-{}
 
 ##' Run simulations to obtain operating characteristics for methods that include
 ##' historical data on control
@@ -158,14 +157,11 @@ oc3 <- function(method =
   }
   nnr <- nn
 
-  for (k in 1:nSim)
-  {
-    ## simulate a clinical trial nSim times
-
+  for (k in 1:nSim) {  ## simulate a clinical trial nSim times
     if (nr && (d > 0)) {
       ## randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -218,7 +214,7 @@ oc3 <- function(method =
     j <- 1
     i <- nnr[j]
 
-    while (is.na(s[k]) & (j <= length(nnr))) {
+    while (is.na(s[k]) && (j <= length(nnr))) {
       if (method == "PointMass.Bayes") {
         ## PointMass.Bayes
         qL <- 1 - postprob(x = sum(x[1:i]), n = i, p = p0, parE = parE, weights = weights)
@@ -306,10 +302,10 @@ oc3 <- function(method =
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
     PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / nSim,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / nSim,
-    PrEfficacy = sum(s, na.rm = T) / nSim,
-    PrFutility = sum(1 - s, na.rm = T) / nSim,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / nSim,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / nSim,
+    PrEfficacy = sum(s, na.rm = TRUE) / nSim,
+    PrFutility = sum(1 - s, na.rm = TRUE) / nSim,
     PrGrayZone = sum(is.na(s) / nSim)
   )
 

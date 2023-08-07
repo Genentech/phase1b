@@ -13,7 +13,7 @@
 ##' @keywords graphics
 plotOc <- function(z) {
   ## plot function for oc.predprob or oc.postprob, or the dist versions of them
-  graphics::barplot(table(z$Decision, z$SampleSize) / z$params$ns, beside = T)
+  graphics::barplot(table(z$Decision, z$SampleSize) / z$params$ns, beside = TRUE)
 
   ## get the parameter
   parDat <- lapply(z$params, deparse)

@@ -16,8 +16,8 @@ output:
           toc: true
           toc_float: true
 vignette: |
-  %\VignetteIndexEntry{`phase1b`: Tools for Decision Making in Phase 1b Studies}
   %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{`phase1b`: Tools for Decision Making in Phase 1b Studies}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console

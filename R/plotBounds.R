@@ -1,6 +1,5 @@
 ##' @include boundsPredprob.R
 ##' @include boundsPostprob.R
-{}
 
 ##' Plot the boundary decision cutpoints
 ##'

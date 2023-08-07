@@ -1,5 +1,5 @@
 ##' @include dbetabinom.R
-{}
+
 
 ##' Compute the posterior probability to be above threshold assuming a beta prior
 ##' on the response rate

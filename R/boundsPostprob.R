@@ -1,5 +1,4 @@
 ##' @include postprob.R
-{}
 
 ##' Decision cutpoints for boundary (based on posterior probability)
 ##'

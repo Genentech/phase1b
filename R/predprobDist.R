@@ -1,6 +1,5 @@
 ##' @include dbetabinom.R
 ##' @include postprobDist.R
-{}
 
 ##' Compute the predictive probability that the trial will be
 ##' successful, with a prior distribution on the SOC
@@ -184,10 +183,8 @@ predprobDist <- function(x, n,
         )
     )
 
-    for (i in seq_along(outcomesY))
-    {
-      for (j in seq_along(outcomesZ))
-      {
+    for (i in seq_along(outcomesY)) {
+      for (j in seq_along(outcomesZ)) {
         ## calculate the posterior probability for this combination
         ## of counts
         b[i, j] <-

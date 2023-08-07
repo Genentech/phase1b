@@ -1,5 +1,4 @@
 ##' @include predprob.R
-{}
 
 ##' Calculate operating characteristics for predictive probability method
 ##' (gray zone allowed in the final analysis)
@@ -59,7 +58,7 @@
 ##' @export
 ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                        parE = c(1, 1),
-                       ns = 10000, nr = F, d = NULL, nnF = nn) {
+                       ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   # Calculate operating characteristics via simulation
   # nn: vector of look locations
   # s: decision reject H0 (T) or fail to reject (F)
@@ -92,7 +91,7 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
     if (nr && (d > 0)) {
       # randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -104,19 +103,18 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
     x <- stats::rbinom(Nmax, 1, p)
     j <- 1
     i <- nnr[j]
-    while (is.na(s[k]) & (j <= length(nnr))) {
-      # q = predprob(x=sum(x[1:i]), n=i, Nmax=Nmax, p=p0, thetaT=tT, parE=parE)
+    while (is.na(s[k]) && (j <= length(nnr))) {
 
       if (i %in% nnrF) {
         qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)
 
-        s[k] <- ifelse(qL > phiFu, F, NA)
+        s[k] <- ifelse(qL > phiFu, FALSE, NA)
       }
 
       if (i %in% nnrE) {
         q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)
 
-        s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), T, s[k])
+        s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
       }
 
       n[k] <- i
@@ -126,10 +124,10 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
   }
   oc <- cbind(
     ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / ns,
-    PrEfficacy = sum(s, na.rm = T) / ns,
-    PrFutility = sum(1 - s, na.rm = T) / ns,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
 

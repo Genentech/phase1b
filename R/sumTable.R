@@ -33,11 +33,13 @@ sumTable <- function(thisResp, # number of responses;
     cutW = cut_W
   )
 
-  summaries <- round(c(thisResp, thisResp / TotalSample * 100, tmp$mode * 100, tmp$ci * 100, tmp$go * 100, tmp$nogo * 100), Round)
+  summaries <- round(c(thisResp, thisResp / TotalSample * 100,
+                       tmp$mode * 100, tmp$ci * 100, tmp$go * 100, tmp$nogo * 100), Round)
 
   summaries <- as.data.frame(summaries)
 
-  rownames(summaries) <- c("# resp", "obs ORR [%]", "mode [%]", "CI lower [%]", "CI upper [%]", "prob.go [%]", "prob.nogo [%]")
+  rownames(summaries) <- c("# resp", "obs ORR [%]", "mode [%]",
+                           "CI lower [%]", "CI upper [%]", "prob.go [%]", "prob.nogo [%]")
 
   return(summaries)
 }

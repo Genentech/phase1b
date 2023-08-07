@@ -38,7 +38,7 @@ dbetabinom <- function(x, m, a, b) {
 ##' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
   ret <- sum(weights *
-    dbetabinom(x, m, par[, 1], par[, 2]))
+               dbetabinom(x, m, par[, 1], par[, 2]))
   if (log) {
     return(log(ret))
   } else {
@@ -83,8 +83,8 @@ getBetamixPost <- function(x, n, par, weights) {
 
   ## compute updated mixture probabilities
   tmp <- exp(stats::dbinom(x, size = n, prob = postParProb, log = TRUE) +
-    stats::dbeta(postParProb, par[, 1], par[, 2], log = TRUE) -
-    stats::dbeta(postParProb, postPar[, 1], postPar[, 2], log = TRUE))
+               stats::dbeta(postParProb, par[, 1], par[, 2], log = TRUE) -
+               stats::dbeta(postParProb, postPar[, 1], postPar[, 2], log = TRUE))
 
   postWeights <- weights * tmp / sum(weights * tmp)
 
@@ -109,7 +109,7 @@ getBetamixPost <- function(x, n, par, weights) {
 ##' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {
   ret <- sum(weights *
-    dbeta(x, par[, 1], par[, 2]))
+               dbeta(x, par[, 1], par[, 2]))
   if (log) {
     return(log(ret))
   } else {
@@ -134,7 +134,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 ##' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   ret <- sum(weights *
-    pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
+               pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
   return(ret)
 }
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")

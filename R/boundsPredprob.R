@@ -1,6 +1,5 @@
 ##' @include predprob.R
 ##' @include postprob.R
-{}
 
 ##' Decision cutpoints for boundary (based on predictive probability)
 ##'
@@ -61,7 +60,7 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b) {
       }
     }
     # reset xU to NA if phiU=1 and n<Nmax
-    if (n < Nmax & phiU == 1) {
+    if (n < Nmax && phiU == 1) {
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries

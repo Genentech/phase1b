@@ -9,4 +9,3 @@
 ##' @import checkmate
 ##' @importFrom graphics plot hist
 ##' @keywords package
-{}

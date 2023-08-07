@@ -14,8 +14,6 @@
 ##'
 ##' @example examples/betadiff.R
 ##' @name betadiff
-{}
-
 ##' @importFrom stats dbeta integrate
 ##' @rdname betadiff
 ##' @export
@@ -31,16 +29,15 @@ dbetadiff <- function(z, parY, parX) {
 
   integrandPos <- function(x, zval) {
     exp(stats::dbeta(x = x, parX[1], parX[2], log = TRUE)
-    + stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE))
+        + stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE))
   }
 
   integrandNeg <- function(y, zval) {
     exp(stats::dbeta(x = y, parY[1], parY[2], log = TRUE)
-    + stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE))
+        + stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE))
   }
 
-  for (i in seq_along(z)[zPos])
-  {
+  for (i in seq_along(z)[zPos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
       lower = eps, upper = 1 - z[i],
@@ -50,8 +47,7 @@ dbetadiff <- function(z, parY, parX) {
     )$value
   }
 
-  for (i in seq_along(z)[zNeg])
-  {
+  for (i in seq_along(z)[zNeg]) {
     ret[i] <- stats::integrate(
       f = integrandNeg,
       lower = eps, upper = 1 + z[i],

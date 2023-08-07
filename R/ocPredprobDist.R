@@ -1,5 +1,4 @@
 ##' @include predprobDist.R
-{}
 
 ##' Calculate operating characteristics for predictive probability method
 ##' with beta prior on SOC response rate (gray zone allowed in the final analysis)
@@ -64,7 +63,7 @@
 ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FALSE, tT, tFu = 1 - tT,
                            phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                            parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
-                           ns = 10000, nr = F, d = NULL, nnF = nn) {
+                           ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   ## s: decision reject H0 (T) or fail to reject (F)
   ##    during trial if continuing (NA)
   if (phiL + phiFu != 1) {
@@ -87,13 +86,12 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
   nnrE <- nnE
   nnrF <- nnF
 
-  for (k in 1:ns)
-  {
+  for (k in 1:ns) {
     ## simulate a clinical trial ns times
     if (nr && (d > 0)) {
       ## randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -105,12 +103,8 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
     x <- stats::rbinom(Nmax, 1, p)
     j <- 1
     i <- nnr[j]
-    while (is.na(s[k]) & (j <= length(nnr))) {
+    while (is.na(s[k]) && (j <= length(nnr))) {
       if (i %in% nnrF) {
-        ## this should also work for the relative delta
-        ## PP(P(P_E < P_S + (1 - P_S) * deltaFu | data)>tFu)
-        ##    =PP(P(P_E > P_S + (1 - P_S) * deltaFu | data)<1-tFu)
-        ##    =1-PP(P(P_E > P_S + (1 - P_S) * deltaFu | data)>1-tFu)
         qL <- 1 - predprobDist(
           x = sum(x[1:i]), n = i, Nmax = Nmax, delta = deltaFu,
           relativeDelta = relativeDelta,
@@ -140,10 +134,10 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
 
   oc <- cbind(
     ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / ns,
-    PrEfficacy = sum(s, na.rm = T) / ns,
-    PrFutility = sum(1 - s, na.rm = T) / ns,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
 
