@@ -1,4 +1,3 @@
-
 ppTable_tooltip <- function(x) {
   if (is.null(x)) {
     return(NULL)
@@ -6,12 +5,12 @@ ppTable_tooltip <- function(x) {
   if (is.null(x$prob)) {
     return(NULL)
   }
-  if (x$prob == 0 & x$resp == 0) {
+  if (x$prob == 0 && x$resp == 0) {
     return(NULL)
   }
 
   # Pick out the movie with this ID
-  altable <- predprobT() # isolate(predprobT())
+  altable <- predprobT()
 
   predprobTable <- altable[altable$resp == x$resp & abs(altable$prob - x$prob) < 0.0001, ]
 
@@ -27,7 +26,6 @@ ppTable_tooltip <- function(x) {
 
 # A reactive expression with the ggvis plot
 gvis <- eventReactive(input$pred_selectlook, {
-
   # Lables for axes
   xvar_name <- "# of response"
   yvar_name <- "Predictive probability"

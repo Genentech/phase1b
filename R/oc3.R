@@ -135,7 +135,7 @@ oc3 <- function(method =
   deltaE <- delta
   deltaF <- 0
 
-  ## s: decision reject H0 (T) or fail to reject (F)
+  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   s <- rep(NA, nSim)
   n <- nActive <- nControl <- integer(length(s))
@@ -158,7 +158,7 @@ oc3 <- function(method =
   }
   nnr <- nn
 
-  for (k in 1:nSim) {  ## simulate a clinical trial nSim times
+  for (k in 1:nSim) { ## simulate a clinical trial nSim times
     if (nr && (d > 0)) {
       ## randomly generate look locations
       dd <- sample(-d:d,

@@ -1,4 +1,3 @@
-
 output$PredOCUI1 <- renderUI({
   if (input$RunButton4 != 0) {
     tableOutput("predOCtable")
@@ -30,7 +29,8 @@ pred_oc <- reactive({
       return(res$oc)
     })
 
-    rownames(ppMysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff", "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
+    rownames(ppMysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff",
+                           "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
     ppMysim
   })
 })
@@ -60,12 +60,12 @@ predprobOC_tooltip <- function(x) {
   if (is.null(x$prob)) {
     return(NULL)
   }
-  if (x$prob == 0 & x$trueP == 0) {
+  if (x$prob == 0 && x$trueP == 0) {
     return(NULL)
   }
 
   # Pick out the movie with this ID
-  ppall_table <- pred_oc_plot() # isolate(predprobT())
+  ppall_table <- pred_oc_plot()
 
   predprobTable <- ppall_table[ppall_table$trueP == x$trueP & abs(ppall_table$prob - x$prob) < 0.0001, ]
 
@@ -99,7 +99,8 @@ ppOCplot %>% bind_shiny("predOCplot")
 output$predOCtable <- renderTable({
   input$RunButton4
   isolate({
-    pred_table2 <- cbind(TrueP = seq(from = input$predtrue_p1, to = input$predtrue_p2, by = input$predtrue_p3), t(pred_oc()))
+    pred_table2 <- cbind(TrueP = seq(from = input$predtrue_p1,
+                                     to = input$predtrue_p2, by = input$predtrue_p3), t(pred_oc()))
     as.data.frame(pred_table2)
   })
 })
@@ -115,7 +116,6 @@ output$ocpredplot2 <- renderPlot({
   dec.STOP2 <- as.numeric(Mysim[7, ])
 
   polygon1.y <- dec.STOP2 + dec.EVAL2 + dec.GO
-  # polygon2.y<-polygon1.y-dec.FAST.GO
   polygon3.y <- dec.STOP2 + dec.EVAL2
   polygon4.y <- dec.STOP2
 
@@ -133,10 +133,7 @@ output$ocpredplot2 <- renderPlot({
     y = c(polygon1.y, rep(0, length(p))),
     col = "darkgreen"
   )
-  #         polygon(x=c(p,
-  #                     rev(p)),
-  #                 y=c(polygon2.y, rep(0,length(p))),
-  #                 col="darkgreen")
+
   polygon(
     x = c(
       p,

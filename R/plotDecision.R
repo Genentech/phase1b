@@ -75,19 +75,32 @@ plotDecision <- function(data, Pos_cut, Neg_cut) {
 
 
   graphics::polygon(c(R_area[, "mode [%]"], x.pointsR, x.pointsR, rev(R_area[, "mode [%]"])),
-                    c(rep(0, dim(R_area)[1] + 1), y.pointsR, rev(R_area[, "prob.nogo [%]"])), col = "red")
+    c(rep(0, dim(R_area)[1] + 1), y.pointsR, rev(R_area[, "prob.nogo [%]"])),
+    col = "red"
+  )
 
   graphics::mtext(paste("Est. Diff=", round(x.pointsR), "%, Prob. nogo=",
-                        round(y.pointsR), "%", sep = ""), side = 3, line = 2)
+                    round(y.pointsR), "%",
+                    sep = ""
+                  ), side = 3, line = 2)
 
 
-  graphics::polygon(c(x.pointsG, G_area[, "mode [%]"],
-                      rev(G_area[, "mode [%]"]), x.pointsG),
-                    c(rep(0, dim(G_area)[1] + 1),
-                      rev(G_area[, "prob.go [%]"]), y.pointsG), col = "green") # meaningful part;
+  graphics::polygon(
+    c(
+      x.pointsG, G_area[, "mode [%]"],
+      rev(G_area[, "mode [%]"]), x.pointsG
+    ),
+    c(
+      rep(0, dim(G_area)[1] + 1),
+      rev(G_area[, "prob.go [%]"]), y.pointsG
+    ),
+    col = "green"
+  ) # meaningful part;
 
   graphics::mtext(paste("Est. Diff=",
-                        round(x.pointsG), "%, Prob. go=", round(y.pointsG), "%", sep = ""), side = 3, line = 1)
+                    round(x.pointsG), "%, Prob. go=", round(y.pointsG), "%",
+                    sep = ""
+                  ), side = 3, line = 1)
 
   graphics::lines(x.mode, y, col = "green", lwd = 3, type = "l") # Plot PDF of beta(R,NR);
 
@@ -97,13 +110,14 @@ plotDecision <- function(data, Pos_cut, Neg_cut) {
 
   if (Pos_cut == Neg_cut) {
     graphics::abline(h = Pos_cut, col = "black", lwd = 2)
-
   }
 
   graphics::box()
 
-  LablePoint2 <- unique(sort(c(ceiling(min(x.mode) * 10) / 10,
-                               xticks, floor(max(x.mode) * 10) / 10))) ## Can be modified
+  LablePoint2 <- unique(sort(c(
+    ceiling(min(x.mode) * 10) / 10,
+    xticks, floor(max(x.mode) * 10) / 10
+  ))) ## Can be modified
 
   graphics::axis(1, at = LablePoint2, labels = paste(LablePoint2, "%", sep = ""), las = 1, lwd = 2, cex.axis = 1)
 

@@ -1,4 +1,3 @@
-
 predlooks <- reactive({
   ilookE <- eval(parse(text = paste("c(", input$predlook1, ")", sep = "")))
   look_l <- unique(sort(c(ilookE, input$pred_n)))
@@ -46,8 +45,7 @@ output$ilook <- renderUI({
       helpText("Calculation may take a while, please wait till the table and
                                  figure show up")
     ) # FluidRow end;
-    #                 x <- as.numeric(input$pred_selectlook)
-    #                 updateNumericInput(session, "pred_resp_list2", value=x,min=0, max =x)
+
   }
 })
 
@@ -109,8 +107,9 @@ predprobT <- eventReactive(input$pred_selectlook, {
   ))
 
   m <- data.frame(prob = predprobE, resp = predlook_list, diff = as.numeric(data_diff[3, ]), type = "Efficacy")
-  m <- rbind(m, data.frame(prob = predprobF, resp = predlook_list, diff = as.numeric(data_diff[3, ]), type = "Futility"))
-  # exam<<-m
+  m <- rbind(m, data.frame(prob = predprobF, resp = predlook_list,
+                           diff = as.numeric(data_diff[3, ]), type = "Futility"))
+
   m
 })
 

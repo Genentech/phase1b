@@ -1,4 +1,3 @@
-
 postlooks <- reactive({
   interimlookE <- eval(parse(text = paste("c(", input$postlook1, ")", sep = "")))
   look_list <- unique(sort(c(interimlookE, input$post_n)))
@@ -44,35 +43,19 @@ design_table_list <- eventReactive(input$post_selectlook1, {
 
 
 post_table_data <- eventReactive(input$post_selectlook1, {
-  #         input$RunButton1
-  # #
-  # #         #file.remove(paste(a,"data.rds",sep="/"))
-  # #
-  #         isolate({
-  # if(is.null(input$post_selectlook1)){return(NULL)}else{
-  # shiny::validate(shiny::need(input$post_selectlook1, message=FALSE))
   post_look_n <- as.numeric(input$post_selectlook1)
 
   resp_list_all <- design_table_list()
 
   data <- do.call(cbind, lapply(resp_list_all, sumTable,
     TotalSample = post_look_n, cut_B = input$cut_B / 100, cut_W = input$cut_W / 100,
-
-    # parX=c(as.numeric(input$update)*input$resp_con+input$alpha_con1,as.numeric(input$update)*(input$n2-input$resp_con)+input$beta_con1),
     parX = c(input$alpha_con1, input$beta_con1),
     YPri = c(input$alpha_trial1, input$beta_trial1),
     Round = 4
   ))
-
-  # saveRDS(data,paste(a,"data.rds",sep="/"))
   data
-  # }
-  #                 exam_1<<- input$post_selectlook1
-  #                 exam_2<<-resp_list_all
-  # })
 })
 
-# output$table = renderDataTable({
 output$table <- renderTable({
   input$RunButton1
 
@@ -87,9 +70,6 @@ output$table <- renderTable({
 
     STable <- STable[c("# resp", "mode [%]", "prob.go [%]", "prob.nogo [%]"), ]
 
-    #   rownames(STable) <- c("Responses (Obs. rate [%])","Estimated diff. [%]",
-    #                         paste("Chance of a > ",input$cut_B,"% improvement [%]",sep=""),
-    #                         paste("Chance of a < ",input$cut_W,"% improvement [%]",sep=""))
     STable <- cbind(c(
       "Responses (Obs. rate [%])", "Estimated diff. [%]",
       paste("Chance of a > ", input$cut_B, "% improvement [%]", sep = ""),
@@ -101,5 +81,4 @@ output$table <- renderTable({
 
     as.data.frame(STable)
   })
-  # data.table(STable,keep.rownames=TRUE,keep.colnames=FALSE)
 })

@@ -65,7 +65,7 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
                            phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                            parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
                            ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  ## s: decision reject H0 (T) or fail to reject (F)
+  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   if (phiL + phiFu != 1) {
     warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")

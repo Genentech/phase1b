@@ -42,7 +42,7 @@ NULL
 ##'
 ##' @example examples/predprob.R
 ##' @export
-predprob <- function(x, n, Nmax,p, thetaT, parE = c(1, 1),
+predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
                      weights) {
   ## m = Nmax - n future observations
   m <- Nmax - n
@@ -70,6 +70,7 @@ predprob <- function(x, n, Nmax,p, thetaT, parE = c(1, 1),
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
   )
 
+  ## now with the beta binomial mixture:
   ## posterior probabilities to be above threshold p
   b <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)
 

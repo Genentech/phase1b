@@ -1,15 +1,15 @@
-
-
 post_plot <- eventReactive(input$post_selectlook1, {
-  # if(is.null(input$post_selectlook1)){return(NULL)}else{
-  # shiny::validate(shiny::need(input$post_selectlook1, message=FALSE))
   post_table <- post_table_data()
 
-  go <- data.frame(resp = as.numeric(post_table[1, ]), prob = as.numeric(post_table[6, ]), type = "Efficacy") # number of response,posterior prob of go;
+  go <- data.frame(resp = as.numeric(post_table[1, ]),
+                   prob = as.numeric(post_table[6, ]),
+                   type = "Efficacy")
+  # number of response,posterior prob of go;
 
-  nogo <- data.frame(resp = as.numeric(post_table[1, ]), prob = as.numeric(post_table[7, ]), type = "Futility") # number of response,posterior prob of no go;
-
-  # x.mode<-as.numeric(post_table[3,])    #the response diff mode
+  nogo <- data.frame(resp = as.numeric(post_table[1, ]),
+                     prob = as.numeric(post_table[7, ]),
+                     type = "Futility")
+  # number of response,posterior prob of no go;
 
   post_plot <- rbind(go, nogo)
 
@@ -23,12 +23,12 @@ postprobTable_tooltip <- function(x) {
   if (is.null(x$prob)) {
     return(NULL)
   }
-  if (x$prob == 0 & x$resp == 0) {
+  if (x$prob == 0 && x$resp == 0) {
     return(NULL)
   }
 
   # Pick out the movie with this ID
-  all_table <- post_plot() # isolate(predprobT())
+  all_table <- post_plot()
 
   postprobTable <- all_table[all_table$resp == x$resp & abs(all_table$prob - x$prob) < 0.0001, ]
 
@@ -47,8 +47,6 @@ vis2 <- reactive({
   input$RunButton1
 
   isolate({
-    # if(is.null(input$post_selectlook1)){return(NULL)}else{
-    # shiny::validate(shiny::need(input$post_selectlook1, message=FALSE))
     # Lables for axes
     xvar_name <- "# of response"
     yvar_name <- "Posterior probability"

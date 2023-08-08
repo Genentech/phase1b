@@ -1,4 +1,3 @@
-
 ## Plot pdf of the betadiff distribution
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)

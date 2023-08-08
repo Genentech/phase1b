@@ -95,11 +95,11 @@ z4 <- boundsPostprob(10:40, p0 = 0.50, p1 = 0.50, thetaL = 0.01, thetaU = 0.99, 
 z5 <- boundsPostprob(10:40, p0 = 0.50, p1 = 0.50, thetaL = 0.001, thetaU = 0.999, a = 1, b = 1)
 
 par(mar = c(5, 4, 1, 1) + .1)
-plotBounds(z1, yt = "p", area = F, cols = rep("red", 4), lwds = c(5, 5), gy = 10)
-plotBounds(z2, yt = "p", add = T, cols = rep("purple", 4), lwds = c(5, 5))
-plotBounds(z3, yt = "p", add = T, cols = rep("black", 4), lwds = c(5, 5))
-plotBounds(z4, yt = "p", add = T, cols = rep("darkgray", 4), lwds = c(5, 5))
-plotBounds(z5, yt = "p", add = T, cols = rep("lightgray", 4), lwds = c(5, 5))
+plotBounds(z1, yt = "p", area = FALSE, cols = rep("red", 4), lwds = c(5, 5), gy = 10)
+plotBounds(z2, yt = "p", add = TRUE, cols = rep("purple", 4), lwds = c(5, 5))
+plotBounds(z3, yt = "p", add = TRUE, cols = rep("black", 4), lwds = c(5, 5))
+plotBounds(z4, yt = "p", add = TRUE, cols = rep("darkgray", 4), lwds = c(5, 5))
+plotBounds(z5, yt = "p", add = TRUE, cols = rep("lightgray", 4), lwds = c(5, 5))
 legend("topleft",
   lwd = 5, col = c("lightgray", "darkgray", "black", "purple", "red"),
   c(

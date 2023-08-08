@@ -67,7 +67,6 @@ if (FALSE) {
   if (file.exists(savefile <- "allSims4.RData")) {
     load(savefile)
   } else {
-
     ## setup the result list
     allOcs <- vector(
       mode = "list",

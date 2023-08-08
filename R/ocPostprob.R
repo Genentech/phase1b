@@ -47,7 +47,7 @@ ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
                        ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   # Calculate operating characteristics via simulation
   # nn: vector of look locations
-  # s: decision reject H0 (T) or fail to reject (F)
+  # s: decision reject H0 (TRUE) or fail to reject (FALSE)
   #    during trial if continuing (NA)
 
   ## copy nn to nnE:

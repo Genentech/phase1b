@@ -83,7 +83,7 @@ jobs:
           dry <- if(isTRUE(as.logical("${{ inputs.auto-update }}"))) "off" else "on"
           detect <- styler::style_file(changed_r_files, dry = dry)
           if (TRUE %in% detect$changed) {
-            problems <- subset(detect$file, detect$changed == T)
+            problems <- subset(detect$file, detect$changed == TRUE)
             dput(problems, file = "/tmp/style-problems.R")
             writeLines(
               problems,

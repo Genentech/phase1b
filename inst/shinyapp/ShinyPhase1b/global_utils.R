@@ -58,7 +58,7 @@ code <- shiny::code
       #       toggle row/column major sorting so e.g. "beta[1,1], beta[1,2],
       #       beta[2,1], beta[2,2]" instead of "beta[1,1], beta[2,1], beta[1,2],
       #       beta[2,2]"
-      if (sort_j == TRUE & LL[i] > 1) {
+      if (sort_j == TRUE && LL[i] > 1) {
         ch <- gtools::mixedsort(ch)
       }
 

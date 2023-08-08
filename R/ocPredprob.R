@@ -62,7 +62,7 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
                        ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   # Calculate operating characteristics via simulation
   # nn: vector of look locations
-  # s: decision reject H0 (T) or fail to reject (F)
+  # s: decision reject H0 (TRUE) or fail to reject (FALSE)
   #    during trial if continuing (NA)
 
   if (phiL + phiFu != 1) {
@@ -105,7 +105,6 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
     j <- 1
     i <- nnr[j]
     while (is.na(s[k]) && (j <= length(nnr))) {
-
       if (i %in% nnrF) {
         qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)
 

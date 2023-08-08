@@ -148,8 +148,8 @@ b2 <- boundsPostprob(
   nvec = c(10, 20, 30, 40), p0 = 0.20, p1 = 0.35,
   tL = 0.01, tU = 0.90, a = 1, b = 1
 )
-plotBounds(b1, yt = "p", area = F)
-plotBounds(b2, yt = "p", add = T)
+plotBounds(b1, yt = "p", area = FALSE)
+plotBounds(b2, yt = "p", add = TRUE)
 b1
 b2
 
@@ -212,8 +212,8 @@ b2 <- boundsPostprob(
   nvec = c(16, 40), p0 = 0.20, p1 = 0.35,
   tL = 0.01, tU = 0.90, a = 1, b = 1
 )
-plotBounds(b1, yt = "p", area = F)
-plotBounds(b2, yt = "p", add = T)
+plotBounds(b1, yt = "p", area = FALSE)
+plotBounds(b2, yt = "p", add = TRUE)
 points(40, 11 / 40, pch = 16)
 lines(c(16, 40), c(3 / 16, 10 / 40), lwd = 3)
 b1
@@ -228,8 +228,8 @@ b2 <- boundsPostprob(
   nvec = c(16, 40), p0 = 0.20, p1 = 0.35, tT = 0.85,
   phiL = 0.15, phiU = 0.85, a = 1, b = 1
 )
-plotBounds(b1, yt = "p", area = F)
-plotBounds(b2, yt = "p", add = T)
+plotBounds(b1, yt = "p", area = FALSE)
+plotBounds(b2, yt = "p", add = TRUE)
 points(40, 11 / 40, pch = 16)
 lines(c(16, 40), c(3 / 16, 10 / 40), lwd = 3, lty = 2)
 b1

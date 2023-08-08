@@ -3,11 +3,8 @@ library(ggvis)
 library(magrittr)
 library(ggplot2)
 library(ggvis)
-# library(ReporteRs)
 library(rtable)
 library(phase1b)
-# source("Source_Beta_Plot2.R")
-# source("betaDiffv3.R")
 library(data.table)
 library(tcltk)
 
@@ -15,7 +12,6 @@ library(tcltk)
 mainDir <- getwd()
 a <- file.path(mainDir)
 
-# file.remove(paste(a,"data.rds",sep="/"))
 
 helpPopup <- function(title, content,
                       placement = c("right", "top", "left", "bottom"),
@@ -40,7 +36,8 @@ ImproveLikelihood <- function(n, TargetPET_CR_delta = 0.2) {
   cbind(
     OR = c(0:n), PET_CR = c(round((0:n) / n * 100, 1)),
     P = as.data.frame(do.call(rbind, lapply(0:n, function(x) {
-      round(postprobDist(x, n, xS = 0, nS = 0, parS = c(beta_par$alpha, beta_par$beta), delta = TargetPET_CR_delta) * 100, 1)
+      round(postprobDist(x, n, xS = 0, nS = 0,
+                         parS = c(beta_par$alpha, beta_par$beta), delta = TargetPET_CR_delta) * 100, 1)
     })))
   )
 }

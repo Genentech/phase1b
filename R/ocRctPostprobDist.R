@@ -94,23 +94,8 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
     stopifnot(is.probability(abs(deltaF)))
   }
 
-  ## for test purposes:
-  #   nn <- 1:10
-  #   p <- 0.5
-  #   deltaE <- 0.1
-  #   deltaF <- 0.1
-  #   pE <- 0.6
-  #   pS <- 0.3
-  #   tL <- 0.8
-  #   tU <- 0.8
-  #   parE <- c(1, 1)
-  #   parS <- c(1, 1)
-  #   randRatio <- 1
-  #   ns <- 20
-  #   nr <- FALSE
-  #   d <- NULL
 
-  ## s: decision reject H0 (T) or fail to reject (F)
+  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   nnE <- sort(nn)
   nnF <- sort(nnF)
@@ -137,13 +122,12 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
   nnrE <- nnE
   nnrF <- nnF
   ## simulate a clinical trial ns times
-  ## k <- 1
-  for (k in 1:ns)
-  {
+
+  for (k in 1:ns) {
     if (nr && (d > 0)) {
       ## randomly generate look locations
       dd <- sample(-d:d,
-        size = nL - 1, replace = T,
+        size = nL - 1, replace = TRUE,
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
@@ -167,13 +151,13 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
     j <- 1
     i <- nnr[j]
 
-    while (is.na(s[k]) & (j <= length(nnr))) {
+    while (is.na(s[k]) && (j <= length(nnr))) {
       ## current data in both arms:
       xActive <- x[which(isActive[1:i])]
       xControl <- x[which(!isActive[1:i])]
 
       ## compute the two probabilities
-      if (!is.null(deltaF) & i %in% nnrF) {
+      if (!is.null(deltaF) && i %in% nnrF) {
         qL <- postprobDist(
           x = sum(xControl), n = length(xControl),
           xS = sum(xActive), nS = length(xActive),
@@ -224,10 +208,10 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
     PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = T) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = T) / ns,
-    PrEfficacy = sum(s, na.rm = T) / ns,
-    PrFutility = sum(1 - s, na.rm = T) / ns,
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
 

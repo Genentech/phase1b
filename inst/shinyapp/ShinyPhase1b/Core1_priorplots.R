@@ -1,5 +1,3 @@
-
-
 output$prior_con <- renderPlot({
   myPlot(
     alpha = input$alpha_con1,

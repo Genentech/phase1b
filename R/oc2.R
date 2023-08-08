@@ -145,7 +145,7 @@ oc2 <- function(method =
   ## drift is accounted for:
   histRate <- controlRate - drift
 
-  ## s: decision reject H0 (T) or fail to reject (F)
+  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   s <- rep(NA, nSim)
   n <- nActive <- nControl <- integer(length(s))

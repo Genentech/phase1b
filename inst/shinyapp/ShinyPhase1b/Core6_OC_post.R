@@ -1,4 +1,3 @@
-
 output$PostOCUI1 <- renderUI({
   if (input$RunButton2 != 0) {
     tableOutput("table2")
@@ -29,7 +28,8 @@ post_oc <- reactive({
       return(res$oc)
     })
 
-    rownames(Mysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff", "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
+    rownames(Mysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff",
+                         "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
     Mysim
   })
 })
@@ -62,7 +62,7 @@ postprobOC_tooltip <- function(x) {
   }
 
   # Pick out the movie with this ID
-  all_table <- post_oc_plot() # isolate(predprobT())
+  all_table <- post_oc_plot()
 
   postprobTable <- all_table[all_table$trueP == x$trueP & abs(all_table$prob - x$prob) < 0.0001, ]
 
@@ -96,7 +96,8 @@ vis3 %>% bind_shiny("main_plot3")
 output$table2 <- renderTable({
   input$RunButton2
   isolate({
-    post_table2 <- cbind(TrueP = seq(from = input$posttrue_p1, to = input$posttrue_p2, by = input$posttrue_p3), t(post_oc()))
+    post_table2 <- cbind(TrueP = seq(from = input$posttrue_p1,
+                                     to = input$posttrue_p2, by = input$posttrue_p3), t(post_oc()))
     as.data.frame(post_table2)
   })
 })
@@ -110,7 +111,7 @@ output$ocpostplot2 <- renderPlot({
   dec.STOP2 <- as.numeric(Mysim[7, ])
 
   polygon1.y <- dec.STOP2 + dec.EVAL2 + dec.GO
-  # polygon2.y<-polygon1.y-dec.FAST.GO
+
   polygon3.y <- dec.STOP2 + dec.EVAL2
   polygon4.y <- dec.STOP2
 
@@ -128,10 +129,7 @@ output$ocpostplot2 <- renderPlot({
     y = c(polygon1.y, rep(0, length(p))),
     col = "darkgreen"
   )
-  #         polygon(x=c(p,
-  #                     rev(p)),
-  #                 y=c(polygon2.y, rep(0,length(p))),
-  #                 col="darkgreen")
+
   polygon(
     x = c(
       p,

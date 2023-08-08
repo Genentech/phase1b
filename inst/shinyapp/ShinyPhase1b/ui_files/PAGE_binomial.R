@@ -1,4 +1,3 @@
-
 tabsetPanel(
   id = "binomial_tabset",
   tabPanel(
