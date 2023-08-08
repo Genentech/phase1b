@@ -22,7 +22,7 @@ shinyServer(function(input, output, session) {
 
     uploaded_inputs <- read.csv(INFILE$datapath)
     # Update each input
-    for (i in 1:nrow(uploaded_inputs)) {
+    for (i in seq_len(nrow(uploaded_inputs))) {
       updateNumericInput(session,
         inputId = uploaded_inputs$inputId[i],
         value = uploaded_inputs$value[i]
@@ -30,30 +30,6 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  #         observeEvent(input$save_inputs, {
-  #           # Define inputs to save
-  #           inputs_to_save <<- c('alpha_con1','beta_con1','alpha_trial1','beta_trial1',  #Prior tab inputs
-  #                                'post_n','postlook1','cut_B','cut_W',  #Design tab inputs -- posterior
-  #                                'pred_n','predlook1','cut_B_pred','cut_W_pred','pred_tU','pred_tL',  #Design tab inputs -- predictive
-  #                                'posttrue_p1','posttrue_p2','posttrue_p3','post_tU','post_tL','nsim','postOCseed', #OC evaluate tab inputs
-  #                                'resp' #Analysis tab inputs
-  #                                )
-  #           # Declare inputs
-  #           inputs <<- NULL
-  #           # Append all inputs before saving to folder
-  #           for(input.i in inputs_to_save){
-  #             inputs <<- append(inputs, input[[input.i]])
-  #           }
-  #           # Inputs data.frame
-  #           inputs_data_frame <<- data.frame(inputId = inputs_to_save, value = inputs)
-  #           # Save Inputs
-  #           save.dir = tk_choose.dir(getwd(), "Choose a location to save to:")
-  #
-  #           write.csv(inputs_data_frame, file = paste(save.dir,"/"
-  #                                                     # ,Sys.time()
-  #                                                     ,"_user_inputs.csv",sep=""), row.names = FALSE)
-  #         })
-  #
 
   output$save_inputs <- downloadHandler(
     filename = function() {
@@ -66,7 +42,8 @@ shinyServer(function(input, output, session) {
         "alpha_con1", "beta_con1", "alpha_trial1", "beta_trial1", # Prior tab inputs
         "post_n", "postlook1", "cut_B", "cut_W", # Design tab inputs -- posterior
         "pred_n", "predlook1", "cut_B_pred", "cut_W_pred", "pred_tU", "pred_tL", # Design tab inputs -- predictive
-        "posttrue_p1", "posttrue_p2", "posttrue_p3", "post_tU", "post_tL", "nsim", "postOCseed", # OC evaluate tab inputs
+        "posttrue_p1", "posttrue_p2", "posttrue_p3", "post_tU", "post_tL",
+        "nsim", "postOCseed", # OC evaluate tab inputs
         "predtrue_p1", "predtrue_p2", "predtrue_p3", "pred_phiFu", "pred_phiU", "prednsim", "predOCseed", # OC pred;
         "resp" # Analysis tab inputs;
       )
@@ -78,11 +55,6 @@ shinyServer(function(input, output, session) {
       }
       # Inputs data.frame
       inputs_data_frame <- data.frame(inputId = inputs_to_save, value = inputs)
-      # Save Inputs
-      #                                   save.dir = tk_choose.dir(getwd(), "Choose a location to save to:")
-      #
-      #                                   write.csv(inputs_data_frame, file = paste(save.dir,"/"
-      # ,Sys.time()
 
       write.csv(inputs_data_frame, file)
     }

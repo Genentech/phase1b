@@ -1,5 +1,4 @@
 # Uncomment if you need the packages for R Shiny
-# install.packages("shiny")
 library(shiny)
 
 # Let R know where the directory for the Shiny app is, then:

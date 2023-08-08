@@ -21,7 +21,7 @@ ocRctPredprobDist(
   parS = c(a = 1, b = 1),
   randRatio = 1,
   ns = 10000,
-  nr = F,
+  nr = FALSE,
   d = NULL,
   nnF = nn
 )

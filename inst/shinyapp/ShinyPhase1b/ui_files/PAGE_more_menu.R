@@ -10,16 +10,6 @@ navbarMenu(
     )
   ),
 
-  #   #### glossary ####
-  #   tabPanel(
-  #     title = "Glossary",
-  #     div(
-  #       style = "background-color: white;",
-  #       h1(style = "text-align: center;", "Glossary"),
-  #       source_ui("glossary.R")
-  #     )
-  #   ),
-
   #### help ####
   tabPanel(
     title = "Help",

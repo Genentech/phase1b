@@ -24,8 +24,10 @@ div(
           p("OC evaluation--Evaluate the type 1 error and the power of the design"),
           p("Analysis--Detial illustrations on a single scenario of the trial outcome"),
           h5("Load/Save user input"),
-          p("The user input of a trial design can be saved by clicking the 'Save inputs' bottom on top right of each tab;
-                        the design parameters can be reloaded by clicking the 'Load inputs' bottom on the side of the 'Save inputs' bottom")
+          p("The user input of a trial design can be saved by clicking the 'Save inputs'
+                        bottom on top right of each tab;
+                        the design parameters can be reloaded by clicking the 'Load inputs'
+                        bottom on the side of the 'Save inputs' bottom")
         )
       ),
       tabPanel(

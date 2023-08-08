@@ -25,6 +25,8 @@ Suggests:
     knitr,
     officer,
     shiny,
+    shinyjs,
+    shinythemes,
     reshape,
     testthat
 Imports:

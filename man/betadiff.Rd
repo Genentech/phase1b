@@ -33,7 +33,6 @@ Density, distribution function and quantile function for
 the distribution of the difference of two beta distributions with parameters parX and parY
 }
 \examples{
-
 ## Plot pdf of the betadiff distribution
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)

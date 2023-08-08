@@ -23,7 +23,6 @@ shinyUI(fluidPage(
     #### Binomial ####
     tabPanel(
       title = "Binomial",
-      # icon = icon("stats",lib ="glyphicon"),
 
       # define class fileinput_2 to hide inputTag in fileInput2
       tags$head(tags$style(HTML(
@@ -44,10 +43,7 @@ shinyUI(fluidPage(
             ".csv"
           ), progress = FALSE
         ),
-        # actionButton('load_inputs', ' Load Inputs', icon('open', lib = "glyphicon")),
-        # actionButton('save_inputs', ' Save Inputs', icon('floppy-disk', lib = "glyphicon"))
         downloadButton("save_inputs", " Save Inputs",
-          # icon('floppy-disk', lib = "glyphicon"),
           class = "butt"
         ),
         tags$head(tags$style(".butt{background-color:#add8e6;} .butt{color: white;}"))
@@ -61,29 +57,16 @@ shinyUI(fluidPage(
     #### TBD ####
     tabPanel(
       title = "EndpointTBD1",
-      # icon = icon("list-alt", lib = "glyphicon"),
       source_ui("PAGE_TBD.R")
     ),
 
     #### TDB ####
     tabPanel(
       title = "EndpointTBD2",
-      # icon = icon("exchange"),
       source_ui("PAGE_TBD.R")
     ),
 
     #### More ####
     source_ui("PAGE_more_menu.R")
   ) # End navbarPage
-  #   ,
-  #   tagList(
-  #           tags$head(
-  #                   tags$link(rel="stylesheet", type="text/css",href="style.css"),
-  #                   tags$script(type="text/javascript", src = "busy.js")
-  #           )
-  #   ),
-  #   div(class = "busy",
-  #       p("Please wait"),
-  #       img(src="Preloader_7.gif")
-  #   )
 ))
