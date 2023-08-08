@@ -160,11 +160,18 @@ myPlotDiff <- function(parY, # parameters of phase Ib trial;
     )
 
     if (note == 1) {
-      graphics::mtext(paste(sprintf("%1.2f%%", 100 * as.numeric(B_value$value)), "=Prob(diff> ",
-                        round(cut_B * 100), "%)",
-                        sep = ""
-                      ), side = 4, line = 1, las = 1, cex = 1)
+      graphics::mtext(
+        paste(
+          sprintf("%1.2f%%", 100 * as.numeric(B_value$value)),
+          "=Prob(diff> ",
+          round(cut_B * 100), "%)",
+          sep = ""
+        ),
+        side = 4,
+        line = 1,
+        las = 1,
+        cex = 1
+      )
     }
   }
-  # return(data.frame(go=100*round(as.numeric(B_value$value),2),nogo=100*round(as.numeric(A_value$value),2))
 }

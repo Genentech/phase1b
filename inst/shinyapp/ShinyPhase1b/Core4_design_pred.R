@@ -45,7 +45,6 @@ output$ilook <- renderUI({
       helpText("Calculation may take a while, please wait till the table and
                                  figure show up")
     ) # FluidRow end;
-
   }
 })
 
@@ -107,8 +106,10 @@ predprobT <- eventReactive(input$pred_selectlook, {
   ))
 
   m <- data.frame(prob = predprobE, resp = predlook_list, diff = as.numeric(data_diff[3, ]), type = "Efficacy")
-  m <- rbind(m, data.frame(prob = predprobF, resp = predlook_list,
-                           diff = as.numeric(data_diff[3, ]), type = "Futility"))
+  m <- rbind(m, data.frame(
+    prob = predprobF, resp = predlook_list,
+    diff = as.numeric(data_diff[3, ]), type = "Futility"
+  ))
 
   m
 })

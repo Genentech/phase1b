@@ -38,8 +38,8 @@ if (FALSE) {
 
   ## 200 simulations
 
-  ## the different prior sample sizes (historical data size)
-  ## histSizes <- c(10, 20, 50, 150)
+  ## the different prior sample sizes (historical data size, histSizes <- c(10, 20, 50, 150))
+  ##
   ## later: add very large size, but with heterogeneity =>
   ## mixture of beta priors
   histSizes <- c(20, 150)
@@ -50,8 +50,8 @@ if (FALSE) {
   ## the drift
   drift <- c(0, 0.1, 0.2)
 
-  ## the different true rates for the NME:
-  ## nmeRates <- seq(from=0.05, to=0.95, by=0.05)
+  ## the different true rates for the NME: nmeRates <- seq(from=0.05, to=0.95, by=0.05)
+  ##
   nmeRates <- c(0.4, 0.5, 0.6, 0.7, 0.8)
 
   ## so the whole grid is
@@ -75,8 +75,7 @@ if (FALSE) {
       length = nrow(wholeGrid)
     )
 
-    for (i in seq_len(nrow(wholeGrid)))
-    {
+    for (i in seq_len(nrow(wholeGrid))) {
       set.seed(i)
       allOcs[[i]] <- with(
         wholeGrid[i, ],
@@ -127,8 +126,8 @@ if (FALSE) {
   ## write a table to a Word file in the current directory
   outputTab <- function(tab,
                         out = "output.docx", # name of the output file
-                        digits = 2) # how many digits for numbers?
-  {
+                        # how many digits for numbers?
+                        digits = 2) {
     library(officer)
     doc <- read_docx()
     dat <- as.data.frame(tab)
@@ -136,8 +135,7 @@ if (FALSE) {
     whichInt <- which(sapply(dat, function(x) {
       is.numeric(x) && all(x == round(x))
     }))
-    for (i in whichNum)
-    {
+    for (i in whichNum) {
       if (i %in% whichInt) {
         dat[[i]] <- format(dat[[i]], nsmall = 0)
       } else {

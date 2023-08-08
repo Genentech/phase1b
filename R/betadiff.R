@@ -28,13 +28,17 @@ dbetadiff <- function(z, parY, parX) {
   eps <- .Machine$double.eps
 
   integrandPos <- function(x, zval) {
-    exp(stats::dbeta(x = x, parX[1], parX[2], log = TRUE)
-        + stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE))
+    exp(
+      stats::dbeta(x = x, parX[1], parX[2], log = TRUE) +
+        stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE)
+    )
   }
 
   integrandNeg <- function(y, zval) {
-    exp(stats::dbeta(x = y, parY[1], parY[2], log = TRUE)
-        + stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE))
+    exp(
+      stats::dbeta(x = y, parY[1], parY[2], log = TRUE) +
+        stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE)
+    )
   }
 
   for (i in seq_along(z)[zPos]) {

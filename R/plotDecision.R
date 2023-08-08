@@ -79,11 +79,18 @@ plotDecision <- function(data, Pos_cut, Neg_cut) {
     col = "red"
   )
 
-  graphics::mtext(paste("Est. Diff=", round(x.pointsR), "%, Prob. nogo=",
-                    round(y.pointsR), "%",
-                    sep = ""
-                  ), side = 3, line = 2)
-
+  graphics::mtext(
+    paste(
+      "Est. Diff=",
+      round(x.pointsR),
+      "%, Prob.nogo=",
+      round(y.pointsR),
+      "%",
+      sep = ""
+    ),
+    side = 3,
+    line = 2
+  )
 
   graphics::polygon(
     c(
@@ -97,10 +104,18 @@ plotDecision <- function(data, Pos_cut, Neg_cut) {
     col = "green"
   ) # meaningful part;
 
-  graphics::mtext(paste("Est. Diff=",
-                    round(x.pointsG), "%, Prob. go=", round(y.pointsG), "%",
-                    sep = ""
-                  ), side = 3, line = 1)
+  graphics::mtext(
+    paste(
+      "Est. Diff=",
+      round(x.pointsG),
+      "%,Prob. go=",
+      round(y.pointsG),
+      "%",
+      sep = ""
+    ),
+    side = 3,
+    line = 1
+  )
 
   graphics::lines(x.mode, y, col = "green", lwd = 3, type = "l") # Plot PDF of beta(R,NR);
 

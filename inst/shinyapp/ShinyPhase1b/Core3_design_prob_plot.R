@@ -1,14 +1,18 @@
 post_plot <- eventReactive(input$post_selectlook1, {
   post_table <- post_table_data()
 
-  go <- data.frame(resp = as.numeric(post_table[1, ]),
-                   prob = as.numeric(post_table[6, ]),
-                   type = "Efficacy")
+  go <- data.frame(
+    resp = as.numeric(post_table[1, ]),
+    prob = as.numeric(post_table[6, ]),
+    type = "Efficacy"
+  )
   # number of response,posterior prob of go;
 
-  nogo <- data.frame(resp = as.numeric(post_table[1, ]),
-                     prob = as.numeric(post_table[7, ]),
-                     type = "Futility")
+  nogo <- data.frame(
+    resp = as.numeric(post_table[1, ]),
+    prob = as.numeric(post_table[7, ]),
+    type = "Futility"
+  )
   # number of response,posterior prob of no go;
 
   post_plot <- rbind(go, nogo)

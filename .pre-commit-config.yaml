@@ -49,6 +49,10 @@ repos:
     rev: v3.0.1
     hooks:
       - id: prettier
+        exclude: >
+          (?x)^(
+          .*\.yaml
+          )$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -58,7 +62,6 @@ repos:
         exclude: '\.Rd'
       - id: trailing-whitespace
         exclude: '\.Rd'
-      - id: check-yaml
       - id: no-commit-to-branch
       - id: mixed-line-ending
         args: ["--fix=lf"]

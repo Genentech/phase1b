@@ -23,7 +23,6 @@ output$ilook3 <- renderUI({
 
 
 pp_1case <- reactive({
-
   pplooks <- predlooks()
   ppU <- predprobDist(
     x = input$ppresp, n = as.numeric(input$ppselectlook2), Nmax = max(pplooks),
@@ -72,14 +71,19 @@ output$ppAnalysis <- renderPlot({
   ## now color the go / stop prob areas
 
   A_value <- sum(use$py[use$bFT == 1])
-  graphics::mtext(paste("PP(no go)=",
-                        sprintf("%1.2f%%", 100 * as.numeric(A_value)), sep = ""),
-                  side = 1, line = 2, adj = 0, cex = 1, col = "red")
+  graphics::mtext(
+    paste("PP(no go)=",
+      sprintf("%1.2f%%", 100 * as.numeric(A_value)),
+      sep = ""
+    ),
+    side = 1, line = 2, adj = 0, cex = 1, col = "red"
+  )
 
 
   B_value <- sum(use$py[use$bET == 1])
 
 
   graphics::mtext(paste(sprintf("%1.2f%%", 100 * as.numeric(B_value)), "=PP(go)", sep = ""),
-                  side = 1, line = 2, adj = 1, cex = 1, col = "green")
+    side = 1, line = 2, adj = 1, cex = 1, col = "green"
+  )
 })

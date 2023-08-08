@@ -29,8 +29,10 @@ pred_oc <- reactive({
       return(res$oc)
     })
 
-    rownames(ppMysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff",
-                           "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
+    rownames(ppMysim) <- c(
+      "ExpectedN", "PrStopEarly", "PrEarlyEff",
+      "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone"
+    )
     ppMysim
   })
 })
@@ -99,8 +101,10 @@ ppOCplot %>% bind_shiny("predOCplot")
 output$predOCtable <- renderTable({
   input$RunButton4
   isolate({
-    pred_table2 <- cbind(TrueP = seq(from = input$predtrue_p1,
-                                     to = input$predtrue_p2, by = input$predtrue_p3), t(pred_oc()))
+    pred_table2 <- cbind(TrueP = seq(
+      from = input$predtrue_p1,
+      to = input$predtrue_p2, by = input$predtrue_p3
+    ), t(pred_oc()))
     as.data.frame(pred_table2)
   })
 })

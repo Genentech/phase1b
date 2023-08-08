@@ -550,8 +550,8 @@ ex1_prior_caption <- paste(
 
 ```{r ex1-prior, echo=TRUE, fig.cap = ex1_prior_caption}
 xx <- seq(0, 1, .001)
-dens.control <- dbeta(xx, 75, 75)  #Posterior of the control
-dens.prior <- dbeta(xx, 5.75, 4.25)  #Prior of the Phase 1b trial
+dens.control <- dbeta(xx, 75, 75) # Posterior of the control
+dens.prior <- dbeta(xx, 5.75, 4.25) # Prior of the Phase 1b trial
 plot(xx, dens.control,
   type = "l", lwd = 2, col = "darkgrey", axes = FALSE,
   xlab = "PET-CR Rate", ylab = "Density", ylim = c(0, 10),
@@ -620,7 +620,6 @@ ex1_posterior_cap <- paste(
 ```
 
 ```{r ex1-posterior, echo=TRUE, out.width="4in"}
-
 xx <- seq(0, 1, .001)
 dens.control <- dbeta(xx, 75, 75)
 dens.post <- dbeta(xx, 5.75 + 55, 4.25 + 80 - 55) # 80 is sample size of 1b trial and 55 is the number of responders

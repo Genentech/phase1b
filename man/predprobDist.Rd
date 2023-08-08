@@ -115,8 +115,8 @@ predprobDist(
 )
 ## Now only 11 responses are needed in the remaining 17 patients
 ## in order to have a successful trial.
-## Also, the predictive probability for a Go decision is now
-## 70.8\% instead of merely 56.6\%.
+## Also, the predictive probability for a Go decision
+## is now 70.8\% instead of merely 56.6\%.
 
 ## If the response threshold of 60\% stems from an SOC estimate (e.g. 50\% = 5/10)
 ## and a margin of e.g. 10\%, then the margin can be specified with

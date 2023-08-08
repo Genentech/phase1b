@@ -36,8 +36,14 @@ ImproveLikelihood <- function(n, TargetPET_CR_delta = 0.2) {
   cbind(
     OR = c(0:n), PET_CR = c(round((0:n) / n * 100, 1)),
     P = as.data.frame(do.call(rbind, lapply(0:n, function(x) {
-      round(postprobDist(x, n, xS = 0, nS = 0,
-                         parS = c(beta_par$alpha, beta_par$beta), delta = TargetPET_CR_delta) * 100, 1)
+      round(postprobDist(
+        x,
+        n,
+        xS = 0,
+        nS = 0,
+        parS = c(beta_par$alpha, beta_par$beta),
+        delta = TargetPET_CR_delta
+      ) * 100, 1)
     })))
   )
 }

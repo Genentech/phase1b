@@ -28,8 +28,10 @@ post_oc <- reactive({
       return(res$oc)
     })
 
-    rownames(Mysim) <- c("ExpectedN", "PrStopEarly", "PrEarlyEff",
-                         "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone")
+    rownames(Mysim) <- c(
+      "ExpectedN", "PrStopEarly", "PrEarlyEff",
+      "PrEarlyFut", "PrEfficacy", "PrFutility", "PrGrayZone"
+    )
     Mysim
   })
 })
@@ -96,8 +98,10 @@ vis3 %>% bind_shiny("main_plot3")
 output$table2 <- renderTable({
   input$RunButton2
   isolate({
-    post_table2 <- cbind(TrueP = seq(from = input$posttrue_p1,
-                                     to = input$posttrue_p2, by = input$posttrue_p3), t(post_oc()))
+    post_table2 <- cbind(TrueP = seq(
+      from = input$posttrue_p1,
+      to = input$posttrue_p2, by = input$posttrue_p3
+    ), t(post_oc()))
     as.data.frame(post_table2)
   })
 })
