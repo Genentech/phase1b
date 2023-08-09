@@ -1,0 +1,1160 @@
+---
+title: "`phase1b`: Tools for Decision Making in Phase 1b Studies"
+package: phase1b
+bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
+author:
+  - name: Tony Pourmohamad
+    email: pourmoht@gene.com
+  - name: Jiawen Zhu
+    email: zhu.jiawen@gene.com
+  - name: Daniel Sabanés Bové
+    email: daniel.sabanes_bove@roche.com
+output:
+  bookdown::html_document2:
+          theme: "spacelab"
+          highlight: "kate"
+          toc: true
+          toc_float: true
+vignette: |
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{`phase1b`: Tools for Decision Making in Phase 1b Studies}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\bH}{\mathbf{H}}
+\newcommand{\Bf}{\mathbf{f}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bR}{\mathbf{R}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bE}{\mathbf{E}}
+\newcommand{\bG}{\mathbf{G}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bV}{\mathbf{V}}
+\newcommand{\bL}{\mathbf{L}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bPhi}{\boldsymbol{\Phi}}
+\newcommand{\bsig}{\boldsymbol{\Sigma}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bTheta}{\boldsymbol{\Theta}}
+\newcommand{\bomega}{\boldsymbol{\omega}}
+\newcommand{\bOmega}{\boldsymbol{\Omega}}
+\newcommand{\btau}{\boldsymbol{\tau}}
+\newcommand{\blambda}{\boldsymbol{\lambda}}
+\newcommand{\bLambda}{\boldsymbol{\Lambda}}
+\newcommand{\bpi}{\boldsymbol{\pi}}
+\newcommand{\bpsi}{\boldsymbol{\psi}}
+\newcommand{\bPsi}{\boldsymbol{\Xi}}
+\newcommand{\cov}{\text{Cov}}
+\newcommand{\bmu}{\boldsymbol\mu}
+\newcommand{\bell}{\boldsymbol\ell}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\GP}{\text{GP}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\beps}{\boldsymbol{\epsilon}}
+\newcommand{\code}{\texttt}
+\newcommand{\given}{\,\vert\,}
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\renewcommand{\Pr}{\mathbb{P}}
+
+# Introduction {#intro}
+
+This short vignette serves as an introduction into the usage of the R-package
+`phase1b`. In particular, the vignette covers installation of the R-package `
+phase1b`, some of the core methodology used in the R-package `phase1b`,
+and lastly some illustrating examples of its use in clinical trials.
+The `phase1b` R-package is intended to be used when conducting drug
+combination studies in Phase 1b trials and is especially useful for
+decision making in Phase 1b trials. However, the methodology is
+generalizable to many scenarios outside of Phase 1b studies and should be
+viewed as a general Bayesian framework for analysis of clinical trials and more.
+The focus of the current vignette though is solely on the application in Phase
+1b oncology clinical trials.
+
+## Intended Audience {#audience}
+
+This document is intended to familiarize a (potential) user of `phase1b` with the
+models and analyses available in the R-package. After a brief overview, the bulk of
+this document consists of examples in oncology clinical trials which
+illustrate the various functions and methodologies implemented by the R-package.
+
+Note that this tutorial was not meant to serve as an instruction manual.
+For more detailed documentation of the functions contained in the R-package, see
+the R-package help-manuals. At an R prompt, type
+
+```{r helpguides, eval=FALSE}
+help(package = "phase1b")
+```
+
+```{r setup, echo=FALSE, results='hide'}
+options(continue = "  ") # use two blanks instead of "+" for
+# continued lines (for easy copying)
+```
+Additional examples can be found in the demo files for this R-package, which can
+be listed by:
+```{r demos, eval=FALSE}
+demo(package = "phase1b")
+```
+
+and afterwards called by supplying the name of the demo file to the `demo()`
+function.
+
+# Installation {#installation}
+
+The first time you use `phase1b` on your own computer you will need to download
+and install it, however, subsequent use will only require calling of the R-package.
+```{r install-phase1b, eval=FALSE}
+install.packages("phase1b")
+```
+
+# Getting started {#getting-started}
+
+Before being able to run any of the commands in the `phase1b` R-package, you
+will have to load the R-package (assuming the R-package has been installed
+following the instructions in the [Installation section](#installation) with the
+following command:
+```{r load}
+library(phase1b)
+```
+Once loaded, you will have access to all of the functions in the `phase1b`
+R-package. To see a list of all of the functions in the `phase1b` R-package,
+and for browsing their associated help pages, you should execute the following
+command:
+```{r helpguides2, eval=FALSE}
+help(package = "phase1b")
+```
+
+A list of functions will be displayed and you can learn more about each function,
+and see examples of its use, by clicking on its corresponding link.
+Note that this will easiest work in R-Studio
+((https://www.rstudio.com/products/rstudio/download/)), which
+is the recommended software for editing and using R.
+
+# Methods and Models {#methods}
+
+This section provides a brief overview of the statistical models and methods implemented
+by the `phase1b` R-package. The underlying methodology is rooted in the Bayesian paradigm
+and an understanding of Bayesian statistics at the level of e.g.\ @gelman:2013 or
+@held-sabanes-2015 is recommended. The [methods section](#methods) provides the reader
+with the basics needed to understand the `phase1b` R-package, but those interested in
+learning more about Bayesian statistics, and their applications to clinical trials,
+are encouraged to read @gelman:2013,@held-sabanes-2015 or @berry:2011, respectively,
+for more details.
+
+As a first pass on this document, it might make sense to the reader to skip this section
+and go straight on to the [examples](#examples).
+
+## Posterior Distribution {#postdist}
+
+As a starting point, we review the basic fundamental approach in Bayesian statistics.
+The Bayesian approach models both the observed data and any unknown parameters as
+random variables, and provides a cohesive framework for combining complex data models
+with external knowledge, expert opinion, or both. Here we introduce the main workhorse
+of the Bayesian approach, the *posterior distribution*, and its technical details as follows.
+
+We start by specifying the distributional model $f(\bx\given \btheta)$ for the
+observed data $\bx=(x_1,\ldots,x_n)$ given a vector of unknown parameters
+$\btheta=(\theta_1,\ldots,\theta_n)$, where $\btheta$ is a random quantity sampled from a *prior*
+distribution $\pi(\btheta\given \blambda)$. Here, $\blambda$ is a vector of hyperparameters that
+are associated with the parameters of the prior distribution. For instance, $x_i$ might be
+the empirical drug response rate in a sample of women aged 40 and over from clinical center $i$,
+$\theta_i$ the underlying true response rate for all such women in this center, and $\blambda$
+a parameter controlling how these true rates vary across centers. Modeling the $\theta_i$ as
+random (instead of fixed) effects allows us to induce specific correlation structures among them,
+and hence among the observations $x_i$ as well.
+
+If $\blambda$ is known then all inference concerning $\btheta$ is based on its posterior distribution,
+
+\begin{equation}
+p(\btheta\given \bx,\blambda)
+= \frac{p(\bx,\btheta\given \blambda)}{p(\bx\given \blambda)}
+= \frac{p(\bx,\btheta\given \blambda)}{\int p(\bx,\btheta\given \blambda)}
+= \frac{f(\bx\given \theta)\pi(\btheta\given \blambda)}{\int f(\bx\given \theta)\pi(\btheta\given \blambda) d\btheta}.
+(\#eq:posterior)
+\end{equation}
+
+Notice the contribution of both the data (in the form of the likelihood $f$) and
+the previous knowledge or expert opinion (in the form of the prior $\pi$) to the posterior.
+Since, in practice, $\blambda$ will not be known, a second stage
+(or hyperprior) distribution $h(\blambda)$ will often be required,
+and \@ref(eq:posterior) will be replaced with
+
+\begin{equation}
+p(\btheta\given \bx)
+=\frac{p(\bx,\btheta\given \blambda)}{p(\bx\given \blambda)}
+=\frac{p(\bx,\btheta\given \blambda)}{\int p(\bx,\btheta\given \blambda)}
+=\frac{\int f(\bx\given \theta)\pi(\btheta\given \blambda)h(\blambda)d\blambda}{\int\int f(\bx\given \theta)\pi(\btheta\given \blambda)h(\blambda) d\btheta d\blambda}.
+(\#eq:hier-post)
+\end{equation}
+
+This multi-stage approach is often called hierarchical modeling. A computational
+challenge in applying Bayesian methods is that for most realistic problems,
+the integrations required to do inference under \@ref(eq:posterior) are often not
+tractable in closed form, and thus must be approximated numerically. Forms for $\pi$ and $h$
+(called *conjugate priors*) that enable at least partial analytic evaluation of these integrals
+may often be found, but in the presence of nuisance parameters, some intractable integrations remain.
+
+We further illustrate the concept of the posterior distribution, its calculations,
+and its use, via exploring the underlying methodology implemented in the `phase1b`
+R-package function`postprob()`. The `postprob()` function assumes that the observed data
+$x$ arise from a Binomial distribution of size $n$ with unknown parameter $P_E$, i.e.,
+\begin{equation}
+x\given n,P_E\sim\text{Binom}(n,P_E)
+\end{equation}
+
+Under the Bayesian approach, the parameter $P_E$ is treated as a random unknown
+quantity in the model. The prior distribution for $P_E$ can be elicited from
+external knowledge or expert opinion, however, the use of a conjugate prior is
+employed here. The prior used in `postprob()` is of the following form:
+$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, so a mixture of Beta
+distributions, but for simplicity, the default prior in `postprob()` is
+set to be the single conjugate Beta distribution, $\text{Beta}(\alpha,\beta)$.
+Here we make the assumption that a (mixture) Beta prior is a reasonable choice
+for the prior distribution of $P_E$. To derive the posterior distribution, based
+on this prior assumption, we have the following:
+
+\begin{align*}
+p(P_E\given x)
+&=\frac{p(x\given P_E)\pi(P_E)}{\int p(x\given P_E)\pi(P_E) dP_E}\\
+&\propto p(x\given P_E)\pi(P_E)\\
+&\propto P_E^x(1-P_E)^{n-x}P_E^{a-1}(1-P_E)^{b-1}\\
+&\propto P_E^{a+x-1}(1-P_E)^{b+n-x-1}
+\end{align*}
+
+Realizing that densities must integrate to 1, we just need to figure out what the
+normalizing constants are for this proportional density.  Using conjugacy, we realize
+that the posterior distribution of $P_E$ must also follow the same form as the prior
+distribution for $P_E$, and thus we recognize that the posterior distribution is the
+following Beta distribution
+\begin{equation}
+P_E\given x\sim\text{Beta}(a+x,b+n-x)
+\end{equation}
+
+Of course we could have carried out this calculation using the more general prior,
+$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, however, for sake of illustration
+(and to avoid tedious bookkeeping) we chose to use the simpler non-mixture of
+Beta distributions for ease of calculation.
+
+All further probabilistic calculations follow naturally under the Bayesian approach
+once the posterior distribution has been identified.  For example, as seen in
+the function `postprob()`, one could calculate the posterior probability that the
+rate $P_E$ is greater than (or less than) some threshold $p$, i.e., $\Pr(P_E>p\given x)$,
+by simply calculating the area under the corresponding Beta distribution.
+
+## Difference in beta random variables {#betadiff}
+
+One may wish to know the distribution of the difference in response rates between groups.
+Recall that, under previous assumptions, we can characterize the posterior distribution of
+the group response rate as a Beta distribution.  Thus, under the Bayesian approach, we can
+describe the distribution of the difference in response rates between groups simply as the
+distribution of the difference of two Beta random variables. Once again, this idea generalizes
+to the case of a Beta mixture prior, however, for sake of argument, we focus on the simpler case.
+To better understand the underlying methodology implemented in the `phase1b` R-package, consider
+the following probabilistic calculations.
+
+Let $X$ and $Y$ be two independent random variables where $X\sim \text{Beta}(a_x,b_x)$
+and $Y\sim \text{Beta}(a_y,b_y)$. Of interest is calculating the distribution of the
+difference of $X$ and $Y$ and so, in order to do so, we can utilize a transformation
+of variables by defining the following random variables $Z$ and $W$ such that $Z=X-Y$
+and $W=X$. Recalling basic probability theory, we have that determinant of the Jacobian
+matrix of this transformation is as follows:
+
+\begin{align*}
+\abs{J} = \left |\text{det}\begin{bmatrix}
+\frac{dX}{dW} & \frac{dX}{dZ}\\
+ & \\
+\frac{dY}{dW} & \frac{dY}{dZ}
+\end{bmatrix}\right | =
+\left |\text{det}\begin{bmatrix}
+1 & 0\\
+1 & -1
+\end{bmatrix}\right | =  |1\times(-1)-0\times1|=1,
+\end{align*}
+
+and thus the joint distribution of $Z$ and $W$ is the following:
+
+\begin{align}
+p(z,w)
+&=p(J_1(z,w),J_2(z,w))\times|J|\\
+&=p(w,w-z)\times 1\\
+&=p(w) p(w-z)\\
+&=\text{Beta}(w;a_1,b_1)\times\text{Beta}(w-z;a_2,b_2)\\
+&=\frac{(w)^{1-a_1}(1-w)^{1-b_1}}{\beta(a_1,b_1)}\times\frac{(w-z)^{1-a_2}(1-(w-z))^{1-b_2}}{\beta(a_2,b_2)}.
+\end{align}
+
+Recalling that we are interested in the distribution of the difference of $X$
+and $Y$, i.e., p(z), we must marginalize over $w$ in order to recover this distribution.
+However, this integration is not trivial, and caution must be used to ensure proper
+integration over the correct domain of $p(z,w)$. For ease of understanding,
+Figure \@ref(fig:betadiff) depicts the domain of the joint distribution of $p(z,w)$
+where the area has been split into two triangles to assist visually with the appropriate
+integral needed to marginalize over the domain of $w$.
+
+```{r, echo = FALSE}
+beta_diff_caption <- paste(
+  "The shaded region show the domain of the joint distribution of $Z$ and $W$.",
+  "We shade the two triangular regions grey and blue for sake of understanding the bounds",
+  "of integration necessary for marginalization over $w$ out of the joint distribution."
+)
+```
+
+```{r betadiff, echo=FALSE, fig.cap = beta_diff_caption}
+w <- seq(0, 1, .001)
+z <- seq(0, 1, .001)
+plot(w, w - 1, xlim = c(0, 1), ylim = c(-1, 1), type = "n", xlab = "W", ylab = "Z")
+polygon(c(rev(w), w), c(rep(0, length(w)), w - 1), col = "lightgrey")
+polygon(c(rev(w), w), c(rep(0, length(w)), w), col = "lightblue")
+text(.7, .3, "Z < W", cex = 1.25)
+text(.2, -.4, "W < Z+1", cex = 1.25)
+text(.5, -.64, "W = Z+1", cex = 1.25)
+text(.5, .6, "Z = W", cex = 1.25)
+text(.5, .05, "Z = 0", cex = 1.25)
+```
+
+Marginalizing the joint distribution $p(w,z)$ over $w$ results in the following
+marginal distribution for $z$:
+\[
+\begin{align}
+p(z)=\int p(z,w) dw =
+\begin{cases}
+\int_{0}^{z+1} p(z,w)dw \,  &\mbox{if } -1 \leq z \leq 0 \\ \\
+\int_{z}^{1} p(z,w)dw \,  &\mbox{if } \phantom{-}0 < z \leq 1 \\ \\
+0 \,  &\mbox{otherwise}
+\end{cases}
+\end{align}
+(\#eq:betadiff)
+\]
+Thus the distribution of the difference of two beta random variables can be characterized
+by \@ref(eq:betadiff). However, these integrals are not analytically tractable
+and so we approximate them using `R`'s built-in `integrate()` function inside of the
+`phase1b` R-package function `betadiff()`.
+
+## Predictive Probabilities {#predprob}
+
+Rather than reconstruct the argument of predictive probability calculations completely,
+the reader is advised to see the book @berry:2011 for further discussion on the topic.
+Here we quote parts of pages 142 -- 144 of  @berry:2011 to better understand the
+methodology of *predictive probability* that is implemented in the functions
+`predprob`, `odPredprob` etc.
+
+### Introduction
+
+A distinct advantage of the predictive probability (PP) approach is that it mimics
+the clinical decision making process. Based on the interim data, PP is obtained by
+calculating the probability of a positive conclusion (rejecting the null hypothesis)
+should the trial be conducted to the maximum planned sample size.  In this framework,
+the chance that the trial will show a conclusive result at the end of the study,
+given the current information, is evaluated. The decision to continue or to stop the
+trial can be made according to the strength of this predictive probability. In what follows,
+we quote directly @berry:2011 and explain the
+definition and basic calculations for binary data.
+
+Suppose our goal is to evaluate the response rate $P_E$ for a new drug by testing
+the hypothesis $H_0: P_E \leq p$ versus $H_A: P_E > p$. Suppose we assume that the
+prior distribution of the response rate, $\pi(P_E)$, follows a
+$\text{Beta}(a,b)$ distribution. The quantity $a/(a+b)$ gives the prior mean, while
+the magnitude of $a+b$ indicates how informative the prior is. Since the quantities
+$a$ and $b$ can be considered as the numbers of effective prior responses and
+non-responses, respectively, $a+b$ can be thought of as a measure of prior precision:
+the larger this sum, the more informative the prior and the stronger the belief it contains.
+
+Suppose we set a maximum number of accrued patients $N_{\max}$, and assume that the
+number of responses $x$ among the current $n$ patients ($n\leq N_{\max}$) follows a
+$\text{Binom}(n, P_E)$ distribution. By the conjugacy of the beta prior and binomial likelihood,
+the posterior distribution of the response rate follows another a beta distribution,
+$P\given x \sim \text{Beta}(a + x, b+ n - x)$.The predictive probability approach looks
+into the future based on the current observed data to project whether a positive conclusion
+at the end of study is likely or not, and then makes a sensible decision at the present
+time accordingly.
+
+Let $Y$ be the number of responses in the potential $m = N_{\max}-n$ future patients.
+Suppose our design is to declare efficacy if the posterior probability of $P_E$ exceeding
+some prespecified level $p$ is greater than some threshold $\theta_T$ . Marginalizing $P_E$
+out of the binomial likelihood, it is well known that $Y$ follows a beta-binomial distribution,
+$Y \sim \text{Beta-Binomial}(m, a+ x,b +n - x)$. When $Y = i$, the posterior distribution of
+$P_E\given (X = x, Y = i)$ is $\text{Beta}(a+x+i, b+N_{\max}-x-i)$. The predictive probability
+(PP) of trial success can then be calculated as follows. Letting $B_i = \Pr(P_E > p \given  x, Y = i)$
+and the indicator function $I_i = I(B_i > \theta_T )$, we have
+\begin{align*}
+PP &= \mathbb{E}(I[\Pr(P_E>p\given x,Y)>\theta_T]\given x)\\
+&=\int I[\Pr(P_E>p\given x,Y)>\theta_T]dP(Y\given x)\\
+&=\sum_{i=0}^m\Pr(Y=i\given x)\times I[\Pr(P_E>p\given x,Y=i)>\theta_T]\\
+&=\sum_{i=0}^m\Pr(Y=i\given x)\times I(B_i>\theta_t)\\
+&=\sum_{i=0}^m \Pr(Y=i\given x)\times I_i
+\end{align*}
+
+The quantity $B_i$ is the probability that the response rate is larger than $p$
+given $x$ responses in $n$ patients in the current data and $i$ responses in $m$
+future patients. Comparing $B_i$ to a threshold value $\theta_T$ yields an indicator
+$I_i$ for considering the treatment efficacious at the end of the trial given the
+current data and the potential outcome of $Y = i$.
+
+### Basic predictive probability design {#basic-pred-prob-design}
+
+The weighted sum of indicators $I_i$ yields the predictive probability of concluding
+a positive result by the end of the trial based on the cumulative information in the
+current stage. A high PP means that the treatment is likely to be efficacious by the
+end of the study, given the current data, whereas a low PP suggests that the treatment
+may not have sufficient activity. Therefore, PP can be used to determine whether the trial
+should be stopped early due to efficacy/futility or continued because the current data
+are not yet conclusive. We define a rule by introducing two thresholds on PP. The decision
+rule can be constructed as follows:
+
+**Algorithm** (Basic PP design)
+
+- **Step 1**: If $PP < \phi_L$, stop the trial and reject the alternative hypothesis;
+- **Step 2**: If $PP > \phi_U$, stop the trial and reject the null hypothesis;
+- **Step 3**: Otherwise continue to the next stage until reaching $N_{\max}$ patients.
+
+Typically, we choose $\phi_L$ as a small positive number and $\phi_U$ as a large
+positive number, both between 0 and 1 (inclusive). Note that $\phi_L < \phi_U$ and
+hence the order of steps 1, 2 and 3 is not relevant. $PP < \phi_L$ indicates that
+it is unlikely the response rate will be larger than $p$ at the end of the trial
+given the current information. When this happens, we may as well stop the trial and
+reject the alternative hypothesis at that point. On the other hand, when $PP > \phi_U$,
+the current data suggest that, if the same trend continues, we will have a high probability
+of concluding that the treatment is efficacious at the end of the study. This result, then,
+provides evidence to stop the trial early due to efficacy. By choosing $\phi_L > 0$ and
+$\phi_U < 1$, the trial can terminate early due to either futility or efficacy. When
+the trial reaches to the maximal number of subjects, the predictive probability
+$PP=I[\Pr(P_E>p\given x)>\theta_T ]$. Because $\Pr(P_E>p\given x)$ is a constant,
+$PP$ will equal to either 0 or 1 and hence there will always be a Go or no Go decision
+made at the final analysis, i.e no "gray zone" exists.
+
+### Advanced predictive probability design
+
+Since usually in phase 1b trials, the response rate endpoint is a surrogate for
+early determination of meaningful clinical benefits, a "gray zone" at final analyses
+for further evaluations may be desired in practice. To plan such a design, an advanced
+predictive probability approach has been included in the latest version of the
+R-package.
+
+A major difference between this and the previous approach is that, in addition
+to the hypothesis for Go decision, $H_0: P_E \leq p$ versus $H_A: P_E > p$, a
+separate hypothesis testing rule for no Go/futility decisions,
+$H_0: P_E \geq p_F$ versus $H_A: P_E < p_F$ is utilized (Note that $p_F < p$ is
+required).
+
+Hence, at the final analysis:
+   -  The design is to declare efficacy if the posterior probability of $P_E > p$ is greater than a threshold $\theta_T$ (event A)
+   -  The design is to declare futility if the posterior probability of $P_E < P_F$ is greater than a threshold $\theta_{F}$ (event B)
+
+Here $\theta_T$ and $\theta_{F}$ range from 0 to 1.
+
+Thus the decision rule for interim and final analyses can be conducted as a mixture of two basic PP designs:
+
+**Algorithm** (Advanced PP design).
+- **Step 1**: If $PP(\text{event A})> \phi_U$, stop the trial and declare efficacy;
+- **Step 2**: If $PP(\text{event B})> \phi_F$, stop the trial and declare futility;
+- **Step 3**: Otherwise continue to the next stage until reaching $N_{\max}$ patients.
+
+Note that here $\phi_U$ and $\phi_F$ are typically both probabilities above 0.5.
+Hence $PP(\text{event A})>\phi_U$ indicates it is very likely that the treatment
+is efficacious at the end of the study if the same trend of current data continues.
+And $PP(\text{event B})>\phi_F$ indicates that there is a high likelihood that the
+treatment will be declared as inefficacious given the current information.
+
+In fact, the predictive probability for futility can be written in the format of
+the predictive probability for efficacy:
+\begin{align*}
+PP &= \mathbb{E}(I[\Pr(P_E<p_F\given x,Y)>\theta_{F}]\given x)\\
+&= \mathbb{E}(I[\Pr(P_E \geq p_F\given x,Y)< 1 - \theta_{F}]\given x)\\
+&=1-\mathbb{E}(I[\Pr(P_E \geq p_F\given x,Y)>1-\theta_{F}]\given x)
+\end{align*}
+
+Thus by using this trick, the `predprob()` or `predprobDist()` functions can be
+used to calculate the predictive probabilities for futility. The separate section
+describes this [advanced predictive probability design](#PredProb-advanced).
+
+# Examples using `phase1b` {#examples}
+
+The following subsections take the reader through a series of synthetic examples based
+on a specific Oncology indication. The accompanying (highly modifiable) `R` code is
+intended to help familiarize the user with the `phase1b` R-package, which can of
+course be applied to any indication.
+
+## Scenario for the example {#example-scenario}
+
+Assume the following hypothetical scenario.
+The current standard of care (SOC) for the cancer XYZ is the chemotherapy
+regimen known as ABC. In this example, we explore the potential advantage of
+a phase 1b combination trial in the XYZ indication by
+combining ABC with a new molecule, say D, as compared to the current SOC.
+For the combination example considered, the unmet need is a progression free
+survival (PFS) hazard ratio (HR) of 0.64.
+The control comes from a 150 patient subset of a previous study using ABC in XYZ,
+and our Phase 1b endpoint is PET-CR as it has been hypothesized that a
+meaningful improvement in PET-CR may predict a meaningful improvement in PFS.
+
+## Posterior Probability Design
+
+### Posterior Probability Calculations
+
+Under the Bayesian approach, we quantify all of our a priori uncertainty about
+the PET-CR rates via their prior distributions. For sake of example, we use a
+$\text{Beta}(5.75,4.25)$ prior to describe our uncertainty about the unknown PET-CR rate
+for the novel combo (ABC + D), however in practice, this prior would
+be chosen based on historical data and/or eliciting expert knowledge and opinion.
+Likewise, for the historical control (ABC), we set the prior distribution
+equal to the posterior distribution which is a $\text{Beta(75,75)}$ distribution that
+is centered exactly at the observed PET-CR rate in the historical control.
+
+The following lines of code \@ref(fig:ex1-prior) allow the user
+to be able to visualize our prior uncertainty about the PET-CR rates between
+the historical control and the novel combination.
+
+```{r, echo = FALSE}
+ex1_prior_caption <- paste(
+  "The prior distributions for the historical control and novel combination",
+  "treatment group. A $\text{Beta}(75,75)$ prior is used for the historical",
+  "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel combination",
+  "treatment group"
+)
+```
+
+```{r ex1-prior, echo=TRUE, fig.cap = ex1_prior_caption}
+xx <- seq(0, 1, .001)
+dens.control <- dbeta(xx, 75, 75) # Posterior of the control
+dens.prior <- dbeta(xx, 5.75, 4.25) # Prior of the Phase 1b trial
+plot(xx, dens.control,
+  type = "l", lwd = 2, col = "darkgrey", axes = FALSE,
+  xlab = "PET-CR Rate", ylab = "Density", ylim = c(0, 10),
+  main = "Prior Distributions"
+)
+lines(xx, dens.prior, lwd = 2, col = "deepskyblue")
+axis(1, seq(0, 1, .25), c("0%", "25%", "50%", "75%", "100%"))
+axis(2)
+box()
+legend("topright", c("Hist. Control", "Novel Combo"),
+  lwd = 2, lty = 1,
+  col = c("lightgrey", "deepskyblue"), bty = "n"
+)
+```
+
+In the resulting Figure~\@ref(fig:ex1-prior) we see that the density of the prior
+for the historical control is greatly concentrated in the area of the observed
+PET-CR rate while the prior for PET-CR rate of the novel combination is more dispersed
+across many potential PET-CR rates indicating a higher level of apriori uncertainty.
+Now, using the [posterior distribution](#methods), we
+can update our uncertainty about the PET-CR rate for the novel combination via
+calculating the posterior distribution. Recall that our prior distribution for the
+novel combination PET-CR rate is a $\text{Beta}(5.75,4.25)$, and the data likelihood,
+conditional on the PET-CR rate, follows a binomial likelihood and thus, due to conjugacy,
+the posterior distribution will also follow a Beta distribution with updated parameters
+based on the observed data. For example, if after running the trial for the novel
+combination we were to observe 55 responders out of a total of 80 patients, i.e.,
+a PET-CR rate of 68.75%, then our posterior updating based on the prior distribution and
+observed data would lead to a $\text{Beta}(60.75,29.25)$ posterior distribution for the
+novel combination PET-CR rate.
+
+
+Alternatively, we could use the R-package function `myPlot()` to achieve the
+same result, see Figure~\@ref(fig:ex1-prior_myPlot).
+
+```{r, echo = FALSE}
+ex1_prior_myplot_cap <- paste(
+  "The prior distributions for the historical control and novel combination",
+  "treatment group. A $\text{Beta}(75,75)$ prior is used for the historical",
+  "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel",
+  "combination treatment group."
+)
+```
+
+```{r ex1-prior_myPlot, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
+myPlot(75, 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
+par(new = TRUE)
+myPlot(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
+legend("topright", c("Hist. Control", "Novel Combo"),
+  lwd = 2, lty = 1,
+  col = c("darkgrey", "deepskyblue"), bty = "n"
+)
+```
+
+The following code allows the reader to visualize
+the posterior distribution for the PET-CR rate against the posterior distribution of
+the historical control.
+
+```{r, echo = FALSE}
+ex1_posterior_cap <- paste(
+  "The posterior distributions for the historical control and novel combination",
+  "treatment group. The posterior distributions are a $\text{Beta}(75,75)$ and",
+  "a $\text{Beta}(60.75,29.25)$ for the historical control and the novel combination",
+  "treatment group, respectively."
+)
+```
+
+```{r ex1-posterior, echo=TRUE, out.width="4in"}
+xx <- seq(0, 1, .001)
+dens.control <- dbeta(xx, 75, 75)
+dens.post <- dbeta(xx, 5.75 + 55, 4.25 + 80 - 55) # 80 is sample size of 1b trial and 55 is the number of responders
+
+plot(xx, dens.control,
+  type = "l", lwd = 2, col = "darkgrey", axes = FALSE,
+  xlab = "PET-CR Rate", ylab = "Density", ylim = c(0, 10),
+  main = "Posterior Distributions"
+)
+lines(xx, dens.post, lwd = 2, col = "deepskyblue")
+axis(1, seq(0, 1, .25), c("0%", "25%", "50%", "75%", "100%"))
+axis(2)
+box()
+legend("topright", c("Hist. Control", "Novel Combo"),
+  lwd = 2, lty = 1,
+  col = c("darkgrey", "deepskyblue"), bty = "n"
+)
+```
+
+In the resulting Figure~\@ref(fig:ex1-posterior) we see that the posterior distribution
+is much more peaked than the prior distribution in Figure~\@ref(fig:ex1-prior) reflecting
+the fact that once we have observed data, our uncertainty about the true PET-CR rate in
+the novel combination should diminish.  Once the posterior distribution is obtained,
+the user can use the `postprob()` command to make posterior probability calculations about
+the PET-CR rate for either the novel combination or historical control. For example, the
+user could calculate the probability that the PET-CR rate is greater than 60%, i.e.,
+$\Pr(P_E > 0.6 \given x)$, by issuing the following command:
+
+```{r Example_1_Postprob, echo=TRUE}
+postprob(x = 55, n = 80, p = 0.6, parE = c(5.75, 4.25))
+```
+
+Here the result indicates that there is a roughly 93% chance that the PET-CR
+rate for the novel combination is above 60%.
+
+### Operating Characteristics
+
+Similarly, the user may be interested in calculating the frequentist probability
+that a clinical trial is stopped for efficacy or futility, conditional on true
+values of the response rate. These calculations need to take into account in
+particular interim looks at the data before reaching the final sample size of the
+trial. Hence, the calculations are difficult to perform in a closed manner.
+However, we can resort to Monte Carlo calculation, which means that we simulate a
+very large number of trials and estimate with high precision the frequentist
+probabilities of interest. These are the key operating characteristics of the trial design.
+
+For example, we may be interested in a conducting a single arm Phase 1b trial
+where interim analyses will be planned once we have accrued 10, 20 and 30 patients
+(30 being the maximum number of patients we will accrue). We declare efficacy early,
+at the interim looks, if the posterior probability that the observed response rate,
+$p_E$, is greater than a predefined efficacy threshold, $p_1 = 30\%$, exceeds some
+upper probability threshold $t_U=80\%$, i.e.,
+\[
+\Pr(p_E>p_1)>t_U.
+\]
+
+Likewise, we declare futility early if the the posterior probability that the
+observed response rate, $p_E$, is less than some predefined efficacy threshold,
+$p_0=20\%$, is smaller than some lower probability threshold $t_L=60\%$, i.e.,
+\[
+\Pr(p_E<p_0)<t_L.
+\]
+Following the usual Bayesian framework, we need to specify a prior distribution
+for the unknown response rate $p_E$ and so we place a $\text{Beta}(1,1)$ prior
+for our unknown response rate $p_E$.
+
+Furthermore, we may wish to examine the operating characteristics of this design
+in the scenario that the true response rate, $p$, is equal to 40% -- so in a
+scenario where we would like to declare efficacy. In order to calculate the
+operating characteristics using 10,000 (parameter `ns`) simulated trials,
+we issue the following command:
+
+```{r ocpostprob_example, echo=TRUE}
+set.seed(4)
+results <- ocPostprob(
+  nn = c(10, 20, 30), p = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6,
+  tU = 0.8, parE = c(1, 1), ns = 10000
+)
+results$oc
+```
+
+Here the object `results` is a list, which stores the operating characteristics
+of running the simulations inside the element `oc`. From our simulations we have
+that the expected number of patients in the trial, after stopping for either
+efficacy or futility, is 19. Furthermore, 67% of the simulated trials stopped
+early during the interim analyses. Of these 10,000 trials, 61.95% declared
+early efficacy while 5.27% of them were stopped early for futility. However,
+combining the trials that did and did not stop early, 75.64% of have declared
+efficacy while 5.4% of have declared futility.  These percentages do not sum up
+to 100% because of the 10,000 simulated trials 18.62% would not have been declared
+as efficacious or futile by the time the maximum sample size of 30 patients had
+been reached -- i.e., they fell into the grayzone.
+
+
+### Difference in Posterior Distributions
+
+The user may be interested in showing that the novel combination is superior to
+the historical control when comparing PET-CR rates. In order to make such a comparison,
+we can make use of the `dbetadiff()` function to compute the distribution of the
+difference in PET-CR rates between the novel combination and the historical control.
+This is a relatively simple task and, from the Bayesian point of view, this is simply
+the distribution of the difference in posterior distributions, which is equivalent to
+the distribution of the difference in two independent Beta random variables.
+The interested user is reminded to read the [methods section](#methods) for the detailed
+analytical calculations of this distribution.
+
+Returning to the previous example, recall that we placed a $\text{Beta}(5.75,4.25)$ prior
+on the PET-CR rate for the novel combination, and observed 55 responders out of 80
+patients in the novel combination, as well as 75 responders out of 150 patients in
+the historical control. These observed PET-CR rates led to a $\text{Beta}(60.75,29.25)$
+and a $\text{Beta}(75,75)$ posterior distribution for the novel combination and historical
+control PET-CR rates, respectively. Based on our learning endpoint, we may believe that
+seeing a difference in PET-CR rates greater than some threshold, say for example 15%,
+may indicate a meaningful improvement in PFS for the novel combination over the historical
+control. Defining the difference in PET-CR rates to be
+$\Delta=\text{(Combo Response)-(Control Response)}$,
+we may ultimately be interested in making probabilistic calculations such as
+$\Pr(\Delta>15\%)$ or $\Pr(\Delta\leq 5\%)$ because these calculations may be informative
+for ``Go" and ``No Go" decisions. For example, if $\Pr(\Delta>15\%)$ or the
+$\Pr(\Delta\leq 5\%)$ is "large" then we may decide to declare a go or no go, respectively.
+Consider a probability exceeding 60% to be large, then following the same example as above,
+we could evaluate the following go/no go criteria based on the distribution of the difference
+in PET-CR with the code for \@ref(fig:ex1:betadiff1).
+
+```{r, echo = FALSE}
+ex1_betadiff_1_cap <- paste(
+  "The distribution of the difference in PET-CR rates amongst the novel combination",
+  "group and the historical control. Here, we see that the probability of a go",
+  "decision (green) is much more likely than the probability of a no go decision (red)."
+)
+```
+
+```{r ex1:betadiff1, echo=TRUE, out.width="4in"}
+parX <- c(75, 75)
+parY <- c(5.75 + 55, 4.25 + 80 - 55)
+xx <- seq(-0.5, 0.75, 0.001)
+dens <- dbetadiff(xx, parY, parX)
+
+x.poly <- c(rev(xx), xx)
+y.poly <- c(rep(0, length(xx)), dens)
+
+idx1 <- which(x.poly < 0.05)
+idx2 <- which(x.poly > 0.15)
+
+plot(xx, dens,
+  type = "l", main = "PET-CR Comparison",
+  xlab = "(Combo Response) - (Control Response)",
+  ylab = "", yaxs = "i", axes = FALSE
+)
+axis(1, seq(-0.5, 0.75, .25), c("-50%", "-25%", "+0%", "+25%", "+50%", "+75%"))
+polygon(x.poly[idx1], y.poly[idx1], col = "red")
+polygon(x.poly[idx2], y.poly[idx2], col = "green")
+box()
+legend("topright", c("Prob. of No Go", "Prob. of Go"),
+  pch = 15,
+  col = c("red", "green"), bty = "n"
+)
+
+arrows(.5, 2, .22, 1, lwd = 2)
+text(.5, 2.2, expression("Prob" * (Delta > +15 * "%")))
+
+arrows(-.25, 2, 0, .2, lwd = 2)
+text(-.25, 2.2, expression("Prob" * (Delta < +5 * "%")))
+```
+
+Alternatively, we could use the R-package function `myPlotDiff()` to achieve the
+the same result in far fewer lines of code, see
+Figure~\@ref(fig:ex1:betadiff1:myPlotDiff)).
+
+```{r, echo = FALSE}
+ex1_betadiff_1_myplotdiff_cap <- paste(
+  "The distribution of the difference in PET-CR rates amongst the novel",
+  "combination group and the historical control. Here, we see that the probability",
+  "of a go decision (green) is much more likely than the probability of a no go",
+  "decision (red)."
+)
+```
+
+```{r ex1:betadiff1:myPlotDiff, echo=TRUE, fig.cap = ex1_betadiff_1_myplotdiff_cap}
+myPlotDiff(c(5.75 + 55, 4.25 + 80 - 55), c(75, 75), 0.15, 0.05, 1, 0,
+  xlab = "(Combo Response) - (Control Response)"
+)
+legend("topright", c("Prob. of No Go", "Prob. of Go"),
+  pch = 15,
+  col = c("red", "green"), bty = "n"
+)
+
+arrows(.5, 2, .22, 1, lwd = 2)
+text(.5, 2.2, expression("Prob" * (Delta > +15 * "%")))
+
+arrows(-.25, 2, 0, .2, lwd = 2)
+text(-.25, 2.2, expression("Prob" * (Delta < +5 * "%")))
+```
+
+In Figure \@ref(fig:ex1:betadiff1) we see that the probability of a go decision
+(shaded green) is much larger than the probability of a no go decision (shaded red).
+In fact, we can calculate those exact probability values of a go/no go decision
+with the following commands:
+
+```{r Example_1_betadiff1_prob_calc, echo=TRUE}
+pbetadiff(0.05, parY = c(5.75 + 55, 4.25 + 80 - 55), parX = c(75, 75))
+1 - pbetadiff(0.15, parY = c(5.75 + 55, 4.25 + 80 - 55), parX = c(75, 75))
+```
+
+From our "large" threshold of exceeding 60%, we see that we would declare a
+go decision in this situation since the probability that $\Delta$ exceeds 15%
+is equal to 66% which is larger than our 60% threshold.
+
+Alternatively, this posterior probability can be calculated using the
+`postprobDist()` function, as follows:
+
+```{r Example_1_postprobDist_prob_calc, echo=TRUE}
+1 - postprobDist(x = 55, n = 80, delta = 0.05, parE = c(5.75, 4.25), parS = c(75, 75))
+postprobDist(x = 55, n = 80, delta = 0.15, parE = c(5.75, 4.25), parS = c(75, 75))
+```
+
+This function works in a very similar way as `postprob` explained [here](#postdist).
+The only difference is that there is now the
+beta prior distribution on the comparator response rate.
+
+On the other hand, had we observed a hypothetical situation where the number of
+responders was much lower, say 42 responders out of 80 patients, than we could
+re-run the same analysis to see how this would impact our go/no go decisions.
+The following code re-runs the previous example but with a much lower response
+rate of $42/80=52.5\%$.
+
+```{r, echo = FALSE}
+ex1_betadiff2_cap <- paste(
+  "The distribution of the difference in PET-CR rates amongst the novel combination",
+  "group and the historical control. Here, we see that the probability of a go",
+  "decision (green) is much less likely than the probability of a no go decision (red)."
+)
+```
+
+```{r ex1:betadiff2, echo=TRUE, fig.cap = ex1_betadiff2_cap}
+parX <- c(75, 75)
+parY <- c(5.75 + 42, 4.25 + 80 - 42)
+xx <- seq(-0.5, 0.75, 0.001)
+dens <- dbetadiff(xx, parY, parX)
+
+x.poly <- c(rev(xx), xx)
+y.poly <- c(rep(0, length(xx)), dens)
+
+idx1 <- which(x.poly < 0.05)
+idx2 <- which(x.poly > 0.15)
+
+plot(xx, dens,
+  type = "l", main = "PET-CR Comparison",
+  xlab = "(Combo Response) - (Control Response)",
+  ylab = "", yaxs = "i", axes = FALSE
+)
+axis(1, seq(-0.5, 0.75, .25), c("-50%", "-25%", "+0%", "+25%", "+50%", "+75%"))
+polygon(x.poly[idx1], y.poly[idx1], col = "red")
+polygon(x.poly[idx2], y.poly[idx2], col = "green")
+box()
+legend("topright", c("Prob. of No Go", "Prob. of Go"),
+  pch = 15,
+  col = c("red", "green"), bty = "n"
+)
+arrows(.45, 2, .2, .5, lwd = 2)
+text(.45, 2.2, expression("Prob" * (Delta > +15 * "%")))
+
+arrows(-.3, 2, -.03, .9, lwd = 2)
+text(-.3, 2.2, expression("Prob" * (Delta < +5 * "%")))
+```
+
+Note now that the change in response rate also affects the posterior distribution
+of the PET-CR rate for the novel combination group. Before the posterior distribution
+was a $\text{Beta}(60.75,29.25)$ distribution and now, due to the low observed
+response rate, the posterior distribution is a $\text{Beta}(47.75,42.25)$.
+Using this new posterior distribution, we obtain the following distribution
+of the difference, Figure~\@ref(fig:ex1:betadiff2), in PET-CR rates between the
+two groups. We see that the probability of a no go decision is much higher than
+the probability of a go decision due to the lower response rate in the novel
+combination group. As before, we can execute the following commands to calculate
+those exact probabilities:
+
+```{r Example_1_betadiff2_prob_calc, echo=TRUE}
+1 - postprobDist(x = 42, n = 80, delta = 0.05, parE = c(5.75, 4.25), parS = c(75, 75))
+postprobDist(x = 42, n = 80, delta = 0.15, parE = c(5.75, 4.25), parS = c(75, 75))
+```
+
+Thus, there is a 61% chance that the novel combination results in a less than
+5% improvement in PET-CR rates relative to the historical control, and hence a
+no go decision would be declared.
+
+## Predictive Probability Design {#PredProb-design}
+
+This example aims to illustrate the usage of predictive probabilities (*PP*) to
+conduct interim analyses as described in [the basic PP design](#basic-pred-prob-design).
+The single arm XYZ combo trial which was discussed in the previous section
+is used in this section as well. Besides, this section also includes a simulation
+study to evaluate the operating characteristics of the study design.
+
+Similar to the previous example, it has been hypothesized that a 15% absolute
+increasement of PET-CR may predict a meaningful clinical benefit for XYZ
+patients. Thus the goal of the trial is set to evaluate the PET-CR rate $P_{combo}$
+by testing the hyoithesis $H_0: P_{combo} \leq P_{control}+15\%$ versus
+$H_A: P_{combo} > P_{control}+15\%$. Thus let's further determine that,
+when the sample size reaches the maximum, the study is to declare efficacy
+if the posterior probability of $P_{combo} > P_{control}+15\%$ is greater
+than a threshold $\theta_T=0.6$. Otherwise, the study is to declare futility.
+
+Here, it is assumed that 2 interim analyses are planed at 25 and 40 patients
+along with a final analysis at 80 patients to evaluate both efficacy and futility.
+The study stops at interim when
+
+ -  Efficacy stop if $PP>\phi_U$
+ -  Futility stop if $PP<\phi_L$
+
+where we set $\phi_U=0.8$ and $\phi_L=0.2$ for illustration.
+
+Please be aware, there will be no "gray zone" in terms of decision making
+at the final analysis when using the the basic *PP* design (see details in
+the predictive probability section).
+
+### Predictive Probability Calculation
+
+To calculate the predictive probability when comparing two distributions
+(treatment vs. SOC), the `predprobDist()` function can be used. In order to
+perform the calulation, the maximal number of patient (80), a Beta prior of
+the treatment arm ($\text{Beta}(5.75, 4.25)$), a Beta posterior distribution
+of the SOC arm ($\text{Beta}(75,75)$) are required. Since the beta distribution
+is a conjugate prior to the binomial distribution (see formula 1-8), the
+posterior distribution of SOC can be directly entered to the `parS` argument.
+
+For instance, if there are 18 PET-CR at the first interim analysis (n=25),
+the predictive probabilities can be calculated by
+
+```{r Example_2_Predictive, echo=TRUE}
+predprobDist(
+  x = 18, n = 25, Nmax = 80,
+  delta = 0.15,
+  thetaT = 0.6,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75)
+)[1]
+```
+
+In this case, study will continue since PP, 57.5%, does neither exceed 80% nor
+fall below 20%.
+
+### Operating Characteristics Evaluation
+
+Before the Phase 1b trial starts, users may want to evaluate the design operating
+characteristics at an assumed true PET-CR rate of the combo trial.
+The `ocPredprobDist()` function will allow such an evaluation under a
+single scenario of true response rate. The following code assumes a true PET-CR
+rate of 75%. The planed interim and final looks are at 25, 40 and 80 patients
+which is entered as a vector in the `nn` argument. `p` is the true PET-CR rate
+we assumed, and we are targeting for a `delta` improvement over control
+(`delta` ranges from 0 to 1). `tT` is the threshold for the probability to be
+above control + delta at the end of the trial, and `phiL` and `phiU` are the lower
+and upper thresholds on the predictive probability, respectively. Same as the
+notations in the `predprobDist()` function, `parE` and `parS` are the place to
+enter beta parameters for the prior on the treatment and control proportion,
+respectively.
+
+```{r Example_2_OCPredictive_1, echo=TRUE, fig=FALSE}
+# with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%
+set.seed(4)
+res1 <- ocPredprobDist(
+  nn = c(25, 40, 80), p = 0.75, delta = 0.15, tT = 0.6, phiL = 0.2, phiU = 0.8,
+  parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+)
+
+res1$oc
+```
+
+The number of simulation is 10 in this case, just to speed up the example.
+However, the user needs to increase the number to 10,000 or higher to
+generate a correct result.
+
+According to the simulation result, the expected sample size of the trial is
+44.4. 87% of the simulated trials declare efficacy and the rest 13% of trials
+declare futility. In terms of early stopping, 71% of the simulated trials
+stop at interim. Among those, $60\%/71\%=84.5\%$ trials stop for efficacy,
+and $11\%/71\%=15.5$ trials stop for futility.
+
+Usually, more than one true scenario will be evaluated. Figure \@ref(fig:ex2:summary)
+summerizes the operating characteristics among different true PET-CR rate from 10% to
+80%. Y axis is the percentage of trials that return a efficacy/futility decision.
+When true rate is low comparing to the response rate of control+delta, a efficacy
+decision is considered as a type I error, and when true rate is relatively high
+comparing to the control+delta, a futility decision is considered as a type II error.
+
+```{r, echo = FALSE}
+ex2_summary_cap <- "A summary plot of Go/No Go decisions over different true rates"
+```
+
+```{r ex2:summary, echo=TRUE, fig.cap = ex2_summary_cap}
+set.seed(4) # Used for reproducibility
+p_par <- seq(0.1, 0.9, by = 0.1)
+
+Mysim <- sapply(p_par, function(x) {
+  res <- ocPredprobDist(c(25, 40, 80), x,
+    delta = 0.15, tT = 0.6, phiL = 0.8, phiU = 0.2,
+    parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+  )
+  return(res$oc)
+})
+
+peffbp <- Mysim[5, ]
+pfutbp <- Mysim[6, ]
+
+par(mar = c(5, 4, 1, 1) + .1)
+plot(c(0, 1), c(0, 1), type = "n", xlab = "True Rate", ylab = "Pr(Decision)")
+grid()
+lines(p_par, peffbp, lwd = 5, col = "green")
+lines(p_par, pfutbp, lwd = 5, col = "red")
+
+legend(.1, .6,
+  lwd = 5, col = c("green", "red"), cex = .75,
+  c("Efficacy Decision", "Futility Decision")
+)
+```
+
+## Advanced predictive probability design {#PredProb-advanced}
+
+As an extension of the [basic example](#PredProb), this example shows a way to
+use predictive proabilities (*PP*) to conduct interim analyses allowing gray
+zones at the final analyses, i.e. trial results where neither efficacy nor futility
+decisions are made are possible (refering to the advance *PP* design in the
+predictive probability section). Such a final analysis design was used in the
+XYZ example, of which the basic *PP* design used in the example [earlier](#PredProb)
+is not suitable for the related interim analyses,
+while the advanced predictive probability design should be used.
+
+An advantage of such a design is that it allows an option of further evaluation
+on additional clinical endpoints or PD markers when the decision falls into the
+"gray zone". Moreover, a seperate delta can be specified for the futility decision
+to represent a "pool clinical improvement", which makes it a more flexible
+decision rule.
+
+The single arm XYZ combo trial which was discussed in the previous examples
+is used here as well. A simulation study to evaluate the operating characteristics
+of study design is carried out.
+
+Similar to the first example, the goal is to evaluate the PET-CR rate $P_{combo}$
+by testing the hypothesis $H_0: P_{combo} \leq P_{control}+15\%$ versus
+$H_A: P_{combo} > P_{control}+15\%$ for efficacy. And the futility checks
+are conducted by testing the hypothesis $H_0: P_{combo} \geq P_{control}+5\%$
+versus $H_A: P_{combo} < P_{control}+5\%$. Here, we assume that 2 interim analyses
+are planed at 25 and 40 patients along with a final analysis to evaluate both
+efficacy and futility.
+
+Thus at the final analysis:
+
+ -  The design is to declare efficacy if the posterior probability of
+ $P_{combo} > P_{control}+15\%$ is greater than a threshold $\theta_{U}=0.6$ (event A)
+ -  The design is to declare futility if the posterior probability of
+ $P_{combo} < P_{control}+5\%$ is greater than a threshold $\theta_{F}=0.6$ (event B)
+
+$\theta_{U}$ and $\theta_{F}$ are the thresholds set for the posterior probabilities
+at the final analysis. 60% is assumed for both of the parameters.
+
+In addition,  we assume the study stops at interim when
+
+-  Efficacy stop if $PP(\text{event A})>\phi_U$
+-  Futility stop if $PP(\text{event B})>\phi_F$
+
+where $\phi_U=\phi_F=0.8$ for illustration. $\phi_F$ and $\phi_U$ are
+independent thresholds and can be set to unequal values depending on the need of users.
+
+### Predictive Probability Calculation
+
+The following code shows how to utilize the `predprobDist()` function to
+calculate the *PPs*, if there are 18 PET-CR at the first interim analysis:
+
+```{r ex3:predictive, echo=TRUE}
+# PP(event A)
+predprobDist(
+  x = 18, n = 25, Nmax = 80,
+  delta = 0.15,
+  thetaT = 0.6,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75)
+)[1]
+
+
+## PP(event B)
+1 - predprobDist(
+  x = 18, n = 25, Nmax = 80,
+  delta = 0.05,
+  thetaT = 1 - 0.6,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75)
+)[1]
+```
+
+According to the result, study will continue since neither PP(event A),
+57.6%, nor PP(event B), 1.4% exceed $\phi_U=\phi_F=80\%$.
+
+
+### Operating Characteristics Evaluation
+
+To evaluate the design operating characteristics at an assumed true PET-CR rate
+of the combo trial, the `ocPredprobDist()` function can be used for the advanced
+PP design as well. To do so, additional arguments, such as `deltaFu`, `tFu` and
+`phiFu` need to be specified. Also, the `phiL` argument has to be skipped.
+To evaluate a scenario with a true response rate of $75\%$, the following code can be used:
+
+```{r ex3:oc:predictive, echo=TRUE}
+# with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%
+set.seed(4) # Used for reproducibility
+res1 <- ocPredprobDist(
+  nn = c(25, 40, 80), p = 0.75,
+  delta = 0.15, deltaFu = 0.05,
+  tT = 0.6, tFu = 0.6,
+  phiU = 0.8, phiFu = 0.8,
+  parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+)
+
+res1$oc
+```
+The number of simulation is 10 here to reduce the computational time of the code.
+However, user must increase the number to 10,000 or higher to generate a
+correct result.
+
+Comparing to the example [earlier](#PredProb), there could be a
+gray zone at the final analysis. According to the simulation result, 6% of the
+simulated trials declared neither efficacy or futility at the final analysis
+(i.e. "gray zone"). The expected sample size, which is 50, tends to be higher
+than the one in the example [earlier](#PredProb). 94% of the
+simulated trials declare efficacy, and $60\%/94\%=63.8\%$ of them stop at interim.
+Besides, none of the simulated trial stop for futility.
+
+Similar simulation analyses can be conducted for different assumed true
+PET-CR rates other than 75%, to have a more complete picture of the operating
+characteristics.
+
+# Acknowledgments {#acknowledge}
+
+The authors would like to thank everyone that has contributed to the `phase1b`
+R-package, particularly James Lymp who had implemented the first functions
+in an earlier version of this R-package.
+
+# References

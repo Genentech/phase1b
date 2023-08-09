@@ -1,0 +1,35 @@
+---
+title: "test"
+package: phase1b
+bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
+author:
+  - name: Daniel Sabanés Bové
+    email: daniel.sabanes_bove@roche.com
+output:
+  bookdown::html_document2:
+          theme: "spacelab"
+          highlight: "kate"
+          toc: true
+          toc_float: true
+vignette: |
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{test}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, echo = FALSE}
+cap <- "blo"
+```
+
+```{r bla, echo=FALSE, fig.cap = cap}
+plot(cars)
+```
