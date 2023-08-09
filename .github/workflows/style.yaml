@@ -1,17 +1,17 @@
 ---
-  name: Style
+name: Style
 
 on:
   push:
-  branches:
-  -main
-  - pre - release
+    branches:
+      - main
+      - pre-release
   pull_request:
     types:
-    - opened
-    - synchronize
-    - reopened
-    - ready_for_review
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
     branches:
       - main
       - pre-release
