@@ -28,7 +28,7 @@ Suggests:
     shinyjs,
     shinythemes,
     reshape,
-    testthat
+    testthat (>= 3.0.0)
 Imports:
     checkmate,
     lifecycle
@@ -70,3 +70,4 @@ Collate:
     'plotOc.R'
     'runShinyPhase1b.R'
     'sumbetadiff.R'
+Config/testthat/edition: 3
