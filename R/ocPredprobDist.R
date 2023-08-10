@@ -1,66 +1,66 @@
-##' @include predprobDist.R
+#' @include predprobDist.R
 NULL
 
-##' Calculate operating characteristics for predictive probability method
-##' with beta prior on SOC response rate (gray zone allowed in the final analysis)
-##'
-##' Decision rule 1: The trial is stopped for efficacy if the predictive probability of a
-##' successful trial is larger than phiU, and stopped for futility if it is below
-##' phiL. A trial is successful if after the maximum number of patients the
-##' posterior probability of the treatment being at least delta better than the
-##' control is above tT. Otherwise the decision is "failure". In this case, there is no
-##' gray zone.
-##'
-##' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-##' DeltaFu, tFu & PhiFu. The trial can be stopped for futility if the predictive
-##' probability of an unsuccessful trial is larger than phiFu. In this case, the
-##' decision is "failure" when the posterior probability of the treatment being
-##' at most deltaFu better than the control is above tFu at the maximum number of
-##' patients.
-##'
-##' Returned operating characteristics in a matrix include:
-##' ExpectedN: expected number of patients in the trials
-##' PrStopEarly: probability to stop the trial early (before reaching the
-##' maximum sample size)
-##' PrEarlyEff: probability to decide for efficacy early
-##' PrEarlyFut: probability to decide for futility early
-##' PrEfficacy: probability to decide for efficacy
-##' PrFutility: probability to decide for futility
-##' PrGrayZone: probability of no decision at the end ("gray zone")
-##'
-##' @param nn vector of look locations
-##' @param p true rate (scenario)
-##' @param delta We want to be better than the control + delta (default: 0)
-##' @param deltaFu declare futility when worse than the control + deltaW.
-##' Specify only when decisian rule 2 is used.
-##' @param relativeDelta see \code{\link{postprobDist}}
-##' @param tT threshold for the probability to be above control + delta
-##' at the end of the trial
-##' @param tFu threshold for the probability to be under control + deltaFu
-##' at the end of the trial. Specify only when decisian rule 2 is used.
-##' @param phiL lower threshold on the predictive probability
-##' @param phiU upper threshold on the predictive probability
-##' @param phiFu threshold on the predictive probability for futility. Specify only
-##' when decisian rule 2 is used. phiL argument should be skipped in this case.
-##' @param parE beta parameters for the prior on the treatment proportion
-##' @param parS beta parameters for the prior on the control proportion
-##' @param ns number of simulations
-##' @param nr generate random look locations? (not default)
-##' @param d distance for random looks around the look locations in \code{nn}
-##' @param nnF vector of look locations for futility
-##' (default: same as efficacy)
-##' @return A list with the following elements:
-##' oc: matrix with operating characteristics (see Details section)
-##' Decision: vector of the decisions made in the simulated trials
-##' (\code{TRUE} for success, \code{FALSE} for failure)
-##' SampleSize: vector of the sample sizes in the simulated trials
-##' nn: vector of look locations
-##' nnE: vector of efficacy look locations
-##' nnF: vector of futility look locations
-##' params: input parameters of this function
-##'
-##' @example examples/ocPredprobDist.R
-##' @export
+#' Calculate operating characteristics for predictive probability method
+#' with beta prior on SOC response rate (gray zone allowed in the final analysis)
+#'
+#' Decision rule 1: The trial is stopped for efficacy if the predictive probability of a
+#' successful trial is larger than phiU, and stopped for futility if it is below
+#' phiL. A trial is successful if after the maximum number of patients the
+#' posterior probability of the treatment being at least delta better than the
+#' control is above tT. Otherwise the decision is "failure". In this case, there is no
+#' gray zone.
+#'
+#' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
+#' DeltaFu, tFu & PhiFu. The trial can be stopped for futility if the predictive
+#' probability of an unsuccessful trial is larger than phiFu. In this case, the
+#' decision is "failure" when the posterior probability of the treatment being
+#' at most deltaFu better than the control is above tFu at the maximum number of
+#' patients.
+#'
+#' Returned operating characteristics in a matrix include:
+#' ExpectedN: expected number of patients in the trials
+#' PrStopEarly: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' PrEarlyEff: probability to decide for efficacy early
+#' PrEarlyFut: probability to decide for futility early
+#' PrEfficacy: probability to decide for efficacy
+#' PrFutility: probability to decide for futility
+#' PrGrayZone: probability of no decision at the end ("gray zone")
+#'
+#' @param nn vector of look locations
+#' @param p true rate (scenario)
+#' @param delta We want to be better than the control + delta (default: 0)
+#' @param deltaFu declare futility when worse than the control + deltaW.
+#' Specify only when decisian rule 2 is used.
+#' @param relativeDelta see \code{\link{postprobDist}}
+#' @param tT threshold for the probability to be above control + delta
+#' at the end of the trial
+#' @param tFu threshold for the probability to be under control + deltaFu
+#' at the end of the trial. Specify only when decisian rule 2 is used.
+#' @param phiL lower threshold on the predictive probability
+#' @param phiU upper threshold on the predictive probability
+#' @param phiFu threshold on the predictive probability for futility. Specify only
+#' when decisian rule 2 is used. phiL argument should be skipped in this case.
+#' @param parE beta parameters for the prior on the treatment proportion
+#' @param parS beta parameters for the prior on the control proportion
+#' @param ns number of simulations
+#' @param nr generate random look locations? (not default)
+#' @param d distance for random looks around the look locations in \code{nn}
+#' @param nnF vector of look locations for futility
+#' (default: same as efficacy)
+#' @return A list with the following elements:
+#' oc: matrix with operating characteristics (see Details section)
+#' Decision: vector of the decisions made in the simulated trials
+#' (\code{TRUE} for success, \code{FALSE} for failure)
+#' SampleSize: vector of the sample sizes in the simulated trials
+#' nn: vector of look locations
+#' nnE: vector of efficacy look locations
+#' nnF: vector of futility look locations
+#' params: input parameters of this function
+#'
+#' @example examples/ocPredprobDist.R
+#' @export
 ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FALSE, tT, tFu = 1 - tT,
                            phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                            parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),

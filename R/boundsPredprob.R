@@ -1,41 +1,41 @@
-##' @include predprob.R
-##' @include postprob.R
+#' @include predprob.R
+#' @include postprob.R
 NULL
 
-##' Decision cutpoints for boundary (based on predictive probability)
-##'
-##' This function is used to identify the efficacy boundary and futility
-##' boundary based on predictive probabilities, i.e.:
-##' Efficacy boundary: find minimum x (xU) where
-##' Pr(Pr(P > p | x, Y) >= tT | x) > phiU,
-##' Futility boundary: find maximum x (xL) where
-##' Pr(Pr(P > p | x, Y) >= tT | x) < phiL
-##'
-##' @param nvec  a vector of number of patients
-##' @param Nmax  maximum number of patients at the end of the trial
-##' (default: maximum of \code{nvec})
-##' @param p  threshold on the response rate
-##' @param tT  threshold on the posterior probability to be above p
-##' @param phiL  futility boundary predictive probability threshold
-##' @param phiU  efficacy boundary predictive probability threshold
-##' @param a  the alpha parameter of a beta prior of treatment group
-##' @param b  the beta parameter of a beta prior of treatment group
-##' @return A matrix where for each sample size in \code{nvec}, this function
-##' returns the maximum number of responses that meet the futility
-##' threshold (xL), its corresponding response rate (pL), predictive probability
-##' (ppL) and posterior probability (postL), the upper bound of one
-##' sided 95% CI for the response rate based on an
-##' exact binomial test (UciL), and the same boundary parameters for efficacy:
-##' the minimal number of responses that meet the efficacy threshold (xU),
-##' the corresponding response rate (pU), predictive probability
-##' (ppL) and posterior probability (postU), the lower bound of one sided
-##' 95% CI for the response rate based on exact binomial test (LciU).
-##'
-##' @importFrom stats binom.test
-##'
-##' @example examples/boundsPredprob.R
-##' @export
-##' @keywords graphics
+#' Decision cutpoints for boundary (based on predictive probability)
+#'
+#' This function is used to identify the efficacy boundary and futility
+#' boundary based on predictive probabilities, i.e.:
+#' Efficacy boundary: find minimum x (xU) where
+#' Pr(Pr(P > p | x, Y) >= tT | x) > phiU,
+#' Futility boundary: find maximum x (xL) where
+#' Pr(Pr(P > p | x, Y) >= tT | x) < phiL
+#'
+#' @param nvec  a vector of number of patients
+#' @param Nmax  maximum number of patients at the end of the trial
+#' (default: maximum of \code{nvec})
+#' @param p  threshold on the response rate
+#' @param tT  threshold on the posterior probability to be above p
+#' @param phiL  futility boundary predictive probability threshold
+#' @param phiU  efficacy boundary predictive probability threshold
+#' @param a  the alpha parameter of a beta prior of treatment group
+#' @param b  the beta parameter of a beta prior of treatment group
+#' @return A matrix where for each sample size in \code{nvec}, this function
+#' returns the maximum number of responses that meet the futility
+#' threshold (xL), its corresponding response rate (pL), predictive probability
+#' (ppL) and posterior probability (postL), the upper bound of one
+#' sided 95% CI for the response rate based on an
+#' exact binomial test (UciL), and the same boundary parameters for efficacy:
+#' the minimal number of responses that meet the efficacy threshold (xU),
+#' the corresponding response rate (pU), predictive probability
+#' (ppL) and posterior probability (postU), the lower bound of one sided
+#' 95% CI for the response rate based on exact binomial test (LciU).
+#'
+#' @importFrom stats binom.test
+#'
+#' @example examples/boundsPredprob.R
+#' @export
+#' @keywords graphics
 boundsPredprob <- function(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b) {
   znames <- c(
     "xL", "pL", "ppL", "postL", "UciL",

@@ -1,76 +1,76 @@
-##' @include postprobDist.R
-##' @include helpers.R
+#' @include postprobDist.R
+#' @include helpers.R
 NULL
 
-##' Calculate operating characteristics for RCT against SOC,
-##' using the posterior probability method with beta priors
-##'
-##' The randomization works as follows. According to the randomization ratio and
-##' the maximum sample size, patients are allocated to the treatment and SOC
-##' arms. The number of patients in the active treatment arm is rounded to the
-##' next higher integer. That is, the sequence of patients is determined from
-##' the start, such that the number of patients in both arms is constant across
-##' trial simulations.
-##'
-##' The randomized controlled trial (RCT) is stopped for efficacy if the
-##' posterior probability to be at least deltaE better than the control is
-##' larger than tU, and stopped for futility if the posterior probability to be
-##' at least deltaF worse than the control is larger than tL. Otherwise the
-##' trial is continued, and at the maximum sample size it may happen that no
-##' decision is made ("gray zone").
-##'
-##' A variation can be requested when \code{deltaF} is set to \code{NULL}. Then
-##' the futility decision is made when the probability to be deltaE better than
-##' the control is lower than 1 - tL.
-##'
-##' Returned operating characteristics in a matrix include:
-##' ExpectedN: expected total number of patients in the trials
-##' ExpectedNactive: expected number of patients with treatment
-##' ExpectedNcontrol: expected number of patients with SOC
-##' PrStopEarly: probability to stop the trial early (before reaching the
-##' maximum sample size)
-##' PrEfficacy: probability to decide for efficacy
-##' PrFutility: probability to decide for futility
-##' PrGrayZone: probability of no decision at the end ("gray zone")
-##'
-##' @param nn vector of look locations for efficacy. Note that the maximum sample size is
-##' derived as the maximum value (latest look) in this vector.
-##' (if futility looks should be different, please specify also \code{nnF})
-##' @param pE true rate in the treatment population
-##' @param pS true rate in the standard of care population
-##' @param deltaE delta for efficacy: P(pE > pS + deltaE) should be large
-##' to stop for efficacy. Must be non-negative value between 0 and 1.
-##' @param deltaF delta for futility: P(pE < pS - deltaF) should be large to
-##' stop for futility. Must be numeric value between -1 and 1.
-##' Can also be \code{NULL}. (see details)
-##' @param relativeDelta see \code{\link{postprobDist}}
-##' @param tL probability threshold for being below control - deltaF (default: 0.8)
-##' @param tU probability threshold for being above control + deltaE (default: 0.8)
-##' @param parE beta parameters for the prior on the control proportion
-##' @param parS beta parameters for the prior on the treatment proportion
-##' @param randRatio the randomization ratio (active vs. control) to be used.
-##' default: 1.
-##' @param ns number of simulations
-##' @param nr generate random look locations? (not default)
-##' @param d distance for random looks around the look locations in \code{nn}
-##' @param nnF vector of look locations for futility
-##' (default: same as efficacy)
-##' @return A list with the following elements:
-##' oc: matrix with operating characteristics (see Details section)
-##' Decision: vector of the decisions made in the simulated trials
-##' (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-##' decision)
-##' SampleSize: vector of the sample sizes in the simulated trials
-##' SampleSizeActive: vector of the patients with treatment in the simulated trials
-##' SampleSizeControl: vector of the patients with control in the simulated trials
-##' nn: vector of look locations
-##' nnE: vector of efficacy look locations
-##' nnF: vector of futility look locations
-##' todo: would we like to return nnr instead, the actual look locations?
-##' params: input parameters for this function
-##'
-##' @example examples/ocRctPostprobDist.R
-##' @export
+#' Calculate operating characteristics for RCT against SOC,
+#' using the posterior probability method with beta priors
+#'
+#' The randomization works as follows. According to the randomization ratio and
+#' the maximum sample size, patients are allocated to the treatment and SOC
+#' arms. The number of patients in the active treatment arm is rounded to the
+#' next higher integer. That is, the sequence of patients is determined from
+#' the start, such that the number of patients in both arms is constant across
+#' trial simulations.
+#'
+#' The randomized controlled trial (RCT) is stopped for efficacy if the
+#' posterior probability to be at least deltaE better than the control is
+#' larger than tU, and stopped for futility if the posterior probability to be
+#' at least deltaF worse than the control is larger than tL. Otherwise the
+#' trial is continued, and at the maximum sample size it may happen that no
+#' decision is made ("gray zone").
+#'
+#' A variation can be requested when \code{deltaF} is set to \code{NULL}. Then
+#' the futility decision is made when the probability to be deltaE better than
+#' the control is lower than 1 - tL.
+#'
+#' Returned operating characteristics in a matrix include:
+#' ExpectedN: expected total number of patients in the trials
+#' ExpectedNactive: expected number of patients with treatment
+#' ExpectedNcontrol: expected number of patients with SOC
+#' PrStopEarly: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' PrEfficacy: probability to decide for efficacy
+#' PrFutility: probability to decide for futility
+#' PrGrayZone: probability of no decision at the end ("gray zone")
+#'
+#' @param nn vector of look locations for efficacy. Note that the maximum sample size is
+#' derived as the maximum value (latest look) in this vector.
+#' (if futility looks should be different, please specify also \code{nnF})
+#' @param pE true rate in the treatment population
+#' @param pS true rate in the standard of care population
+#' @param deltaE delta for efficacy: P(pE > pS + deltaE) should be large
+#' to stop for efficacy. Must be non-negative value between 0 and 1.
+#' @param deltaF delta for futility: P(pE < pS - deltaF) should be large to
+#' stop for futility. Must be numeric value between -1 and 1.
+#' Can also be \code{NULL}. (see details)
+#' @param relativeDelta see \code{\link{postprobDist}}
+#' @param tL probability threshold for being below control - deltaF (default: 0.8)
+#' @param tU probability threshold for being above control + deltaE (default: 0.8)
+#' @param parE beta parameters for the prior on the control proportion
+#' @param parS beta parameters for the prior on the treatment proportion
+#' @param randRatio the randomization ratio (active vs. control) to be used.
+#' default: 1.
+#' @param ns number of simulations
+#' @param nr generate random look locations? (not default)
+#' @param d distance for random looks around the look locations in \code{nn}
+#' @param nnF vector of look locations for futility
+#' (default: same as efficacy)
+#' @return A list with the following elements:
+#' oc: matrix with operating characteristics (see Details section)
+#' Decision: vector of the decisions made in the simulated trials
+#' (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
+#' decision)
+#' SampleSize: vector of the sample sizes in the simulated trials
+#' SampleSizeActive: vector of the patients with treatment in the simulated trials
+#' SampleSizeControl: vector of the patients with control in the simulated trials
+#' nn: vector of look locations
+#' nnE: vector of efficacy look locations
+#' nnF: vector of futility look locations
+#' todo: would we like to return nnr instead, the actual look locations?
+#' params: input parameters for this function
+#'
+#' @example examples/ocRctPostprobDist.R
+#' @export
 ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
                               tL = 0.8, tU = 0.8,
                               parE = c(a = 1, b = 1),

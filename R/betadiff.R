@@ -1,22 +1,22 @@
-##' The Difference between Two Beta Distributions
-##'
-##' Density, distribution function and quantile function for
-##' the distribution of the difference of two beta distributions with parameters parX and parY
-##'
-##' @param z vector of differences
-##' @param q vector of quantiles
-##' @param p vector of probabilities
-##' @param parX two parameters of X's beta distribution (Control)
-##' @param parY two parameters of Y's beta distribution (Treatment)
-##'
-##' @return \code{dbetadiff} gives the density, \code{pbetadiff} the distribution function,
-##' \code{qbetadiff} the quantile function.
-##'
-##' @example examples/betadiff.R
-##' @name betadiff
-##' @importFrom stats dbeta integrate
-##' @rdname betadiff
-##' @export
+#' The Difference between Two Beta Distributions
+#'
+#' Density, distribution function and quantile function for
+#' the distribution of the difference of two beta distributions with parameters parX and parY
+#'
+#' @param z vector of differences
+#' @param q vector of quantiles
+#' @param p vector of probabilities
+#' @param parX two parameters of X's beta distribution (Control)
+#' @param parY two parameters of Y's beta distribution (Treatment)
+#'
+#' @return \code{dbetadiff} gives the density, \code{pbetadiff} the distribution function,
+#' \code{qbetadiff} the quantile function.
+#'
+#' @example examples/betadiff.R
+#' @name betadiff
+#' @importFrom stats dbeta integrate
+#' @rdname betadiff
+#' @export
 dbetadiff <- function(z, parY, parX) {
   ret <- z
 
@@ -64,9 +64,9 @@ dbetadiff <- function(z, parY, parX) {
   return(ret)
 }
 
-##' @importFrom stats integrate
-##' @rdname betadiff
-##' @export
+#' @importFrom stats integrate
+#' @rdname betadiff
+#' @export
 pbetadiff <- function(q, parY, parX) {
   stats::integrate(
     f = dbetadiff,
@@ -80,9 +80,9 @@ pbetadiff <- function(q, parY, parX) {
 }
 
 
-##' @importFrom stats uniroot
-##' @rdname betadiff
-##' @export
+#' @importFrom stats uniroot
+#' @rdname betadiff
+#' @export
 qbetadiff <- function(p, parY, parX) {
   target <- function(q) {
     pbetadiff(

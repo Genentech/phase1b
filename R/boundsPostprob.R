@@ -1,36 +1,36 @@
-##' @include postprob.R
+#' @include postprob.R
 NULL
 
-##' Decision cutpoints for boundary (based on posterior probability)
-##'
-##' This function is used to identify the efficacy and futility
-##' boundaries based on posterior probabilities, i.e.:
-##' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
-##' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
-##'
-##' @param nvec a vector of number of patients
-##' @param p0 the efficacy threshold parameter in the postprob function
-##' @param p1 the futility threshold parameter in the postprob function
-##' (default = p0)
-##' @param tL futility boundary probability threshold
-##' @param tU efficacy boundary probability threshold
-##' @param a  the alpha parameter of the beta prior of treatment group
-##' @param b  the beta parameter of the beta prior of treatment group
-##' @return A matrix where for each sample size in \code{nvec}, this function
-##' returns the maximum number of responses that meet the futility
-##' threshold (xL), its corresponding response rate (pL), posterior probability
-##' (postL), upper bound of one sided 95% CI for the response rate based on an
-##' exact binomial test (UciL), and the same boundary parameters for efficacy:
-##' the minimal number of responses that meet the efficacy threshold (xU),
-##' the corresponding response rate (pU), posterior probability (postU) and
-##' the lower bound of one sided 95% CI for the response rate based on exact
-##' binomial test (LciU).
-##'
-##' @importFrom stats binom.test
-##'
-##' @example examples/boundsPostprob.R
-##' @export
-##' @keywords graphics
+#' Decision cutpoints for boundary (based on posterior probability)
+#'
+#' This function is used to identify the efficacy and futility
+#' boundaries based on posterior probabilities, i.e.:
+#' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+#' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+#'
+#' @param nvec a vector of number of patients
+#' @param p0 the efficacy threshold parameter in the postprob function
+#' @param p1 the futility threshold parameter in the postprob function
+#' (default = p0)
+#' @param tL futility boundary probability threshold
+#' @param tU efficacy boundary probability threshold
+#' @param a  the alpha parameter of the beta prior of treatment group
+#' @param b  the beta parameter of the beta prior of treatment group
+#' @return A matrix where for each sample size in \code{nvec}, this function
+#' returns the maximum number of responses that meet the futility
+#' threshold (xL), its corresponding response rate (pL), posterior probability
+#' (postL), upper bound of one sided 95% CI for the response rate based on an
+#' exact binomial test (UciL), and the same boundary parameters for efficacy:
+#' the minimal number of responses that meet the efficacy threshold (xU),
+#' the corresponding response rate (pU), posterior probability (postU) and
+#' the lower bound of one sided 95% CI for the response rate based on exact
+#' binomial test (LciU).
+#'
+#' @importFrom stats binom.test
+#'
+#' @example examples/boundsPostprob.R
+#' @export
+#' @keywords graphics
 boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
   z <- matrix(NA, length(nvec), 6)
   dimnames(z) <- list(nvec, c(

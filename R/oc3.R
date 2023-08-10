@@ -1,76 +1,76 @@
-##' @include postprob.R
-##' @include postprobDist.R
-##' @include predprob.R
-##' @include predprobDist.R
+#' @include postprob.R
+#' @include postprobDist.R
+#' @include predprob.R
+#' @include predprobDist.R
 NULL
 
-##' Run simulations to obtain operating characteristics for methods that include
-##' historical data on control
-##'
-##' This function differs from \code{\link{oc2}} with respect to how the
-##' historical and actual control rates are determined, see the parameter
-##' \code{controlRateDist}.
-##'
-##' Interim looks are done three times total including the last one, with
-##' approximately equal distance between the looks.
-##'
-##' @param method 8 different methods can be selected:
-##' PointMass.Bayes: single arm trial with pointmass derived from the historical
-##' data on the control response rate, see \code{\link{postprob}}
-##' Prior.Bayes: single arm trial with prior derived from the historical data on
-##' the control response rate, see \code{\link{postprobDist}}
-##' RCT.Bayes: RCT (1:1 randomization) with prior derived from the historical data on
-##' the control response rate, see \code{\link{postprobDist}}
-##' RCT.vanillaBayes: RCT, not using the historical control data
-##' PointMass.PP: single arm trial with pointmass derived from the historical
-##' data on the control response rate, and using the predictive probability
-##' method, see \code{\link{predprob}}
-##' Prior.PP: single arm trial with prior derived from the historical data on
-##' the control response rate, and using the predictive probability
-##' method, see \code{\link{predprobDist}}
-##' RCT.PP: RCT (1:1 randomization) with prior derived from the historical data on
-##' the control response rate, and using the predictive probability
-##' method, see \code{\link{predprobDist}}
-##' RCT.vanillaPP: RCT and using the predictive probability
-##' method, not using the historical control data
-##' @param nSim number of trials to simulate
-##' @param histSize historical data size
-##' @param trialSize total trial sample size
-##' @param controlRateDist the control response rate distribution. This shall be
-##' a function without any arguments, that gives back a random draw from the
-##' control response rate distribution. It is invoked to obtain control rates
-##' for the historical and the actual control data sets.
-##' @param nmeRate the treatment response rate
-##' @param delta delta for stopping for efficacy to be used. Implicitly a zero
-##' delta for stopping for futility is used.
-##' @param tL for Bayes methods: probability threshold for being below control
-##' response rate (default: 0.8)
-##' @param tU for Bayes methods: probability threshold for being above control
-##' response rate + delta (default: 0.8)
-##' @param tT threshold for the probability to be above the response rate p0 at
-##' the end of the trial (default: 0.85)
-##' @param phiL lower threshold on the predictive probability (default: 0.05)
-##' @param phiU upper threshold on the predictive probability (default: 0.95)
-##' @param parE the beta parameters matrix, with K rows and 2 columns,
-##' corresponding to the beta parameters of the K components. Default is a
-##' uniform prior.
-##' @param weights the mixture weights of the beta mixture prior. Default are
-##' uniform weights across mixture components.
-##' @return Returned operating characteristics in a matrix include:
-##' ExpectedN: expected number of patients in the trials
-##' ExpectedNactive: expected number of patients with treatment
-##' PrStopEarly: probability to stop the trial early (before reaching the
-##' maximum sample size)
-##' PrEarlyEff: probability to decide for efficacy early
-##' PrEarlyFut: probability to decide for futility early
-##' PrEfficacy: probability to decide for efficacy
-##' PrFutility: probability to decide for futility
-##' PrGrayZone: probability of no decision at the end ("gray zone")
-##'
-##' @importFrom stats rbinom
-##'
-##' @example examples/oc3.R
-##' @export
+#' Run simulations to obtain operating characteristics for methods that include
+#' historical data on control
+#'
+#' This function differs from \code{\link{oc2}} with respect to how the
+#' historical and actual control rates are determined, see the parameter
+#' \code{controlRateDist}.
+#'
+#' Interim looks are done three times total including the last one, with
+#' approximately equal distance between the looks.
+#'
+#' @param method 8 different methods can be selected:
+#' PointMass.Bayes: single arm trial with pointmass derived from the historical
+#' data on the control response rate, see \code{\link{postprob}}
+#' Prior.Bayes: single arm trial with prior derived from the historical data on
+#' the control response rate, see \code{\link{postprobDist}}
+#' RCT.Bayes: RCT (1:1 randomization) with prior derived from the historical data on
+#' the control response rate, see \code{\link{postprobDist}}
+#' RCT.vanillaBayes: RCT, not using the historical control data
+#' PointMass.PP: single arm trial with pointmass derived from the historical
+#' data on the control response rate, and using the predictive probability
+#' method, see \code{\link{predprob}}
+#' Prior.PP: single arm trial with prior derived from the historical data on
+#' the control response rate, and using the predictive probability
+#' method, see \code{\link{predprobDist}}
+#' RCT.PP: RCT (1:1 randomization) with prior derived from the historical data on
+#' the control response rate, and using the predictive probability
+#' method, see \code{\link{predprobDist}}
+#' RCT.vanillaPP: RCT and using the predictive probability
+#' method, not using the historical control data
+#' @param nSim number of trials to simulate
+#' @param histSize historical data size
+#' @param trialSize total trial sample size
+#' @param controlRateDist the control response rate distribution. This shall be
+#' a function without any arguments, that gives back a random draw from the
+#' control response rate distribution. It is invoked to obtain control rates
+#' for the historical and the actual control data sets.
+#' @param nmeRate the treatment response rate
+#' @param delta delta for stopping for efficacy to be used. Implicitly a zero
+#' delta for stopping for futility is used.
+#' @param tL for Bayes methods: probability threshold for being below control
+#' response rate (default: 0.8)
+#' @param tU for Bayes methods: probability threshold for being above control
+#' response rate + delta (default: 0.8)
+#' @param tT threshold for the probability to be above the response rate p0 at
+#' the end of the trial (default: 0.85)
+#' @param phiL lower threshold on the predictive probability (default: 0.05)
+#' @param phiU upper threshold on the predictive probability (default: 0.95)
+#' @param parE the beta parameters matrix, with K rows and 2 columns,
+#' corresponding to the beta parameters of the K components. Default is a
+#' uniform prior.
+#' @param weights the mixture weights of the beta mixture prior. Default are
+#' uniform weights across mixture components.
+#' @return Returned operating characteristics in a matrix include:
+#' ExpectedN: expected number of patients in the trials
+#' ExpectedNactive: expected number of patients with treatment
+#' PrStopEarly: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' PrEarlyEff: probability to decide for efficacy early
+#' PrEarlyFut: probability to decide for futility early
+#' PrEfficacy: probability to decide for efficacy
+#' PrFutility: probability to decide for futility
+#' PrGrayZone: probability of no decision at the end ("gray zone")
+#'
+#' @importFrom stats rbinom
+#'
+#' @example examples/oc3.R
+#' @export
 oc3 <- function(method =
                   c(
                     "PointMass.Bayes", "Prior.Bayes",

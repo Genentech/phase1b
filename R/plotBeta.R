@@ -1,17 +1,17 @@
-##' Plot the Beta distribution
-##'
-##' This function will plot the PDF of a beta distribution
-##'
-##' @param alpha first parameter of the Beta distribution
-##' @param beta second parameter of the Beta distribution
-##' @param \dots additional arguments to \code{plot}
-##' @return nothing, only produces the plot as side effect
-##'
-##' @importFrom graphics axis
-##'
-##' @example examples/myPlot.R
-##' @export
-##' @keywords graphics
+#' Plot the Beta distribution
+#'
+#' This function will plot the PDF of a beta distribution
+#'
+#' @param alpha first parameter of the Beta distribution
+#' @param beta second parameter of the Beta distribution
+#' @param \dots additional arguments to \code{plot}
+#' @return nothing, only produces the plot as side effect
+#'
+#' @importFrom graphics axis
+#'
+#' @example examples/myPlot.R
+#' @export
+#' @keywords graphics
 myPlot <- function(alpha, beta, ...) {
   grid <- seq(from = 0, to = 1, length = 1000)
   xticks <- seq(from = 0, to = 1, by = 0.25)
@@ -37,26 +37,26 @@ myPlot <- function(alpha, beta, ...) {
 
 
 
-##' Plot Diff Between two Beta distributions
-##'
-##' This function will plot the PDF of a diffience between two Beta distributions
-##'
-##' @param parY non-negative parameters of the treatment Beta distribution.
-##' @param parX non-negative parameters of the historical control Beta distribution
-##' @param cut_B a meaningful improvement threshold
-##' @param cut_W a poor improvement throshold
-##' @param shade paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
-##' @param note show values of the colored area, default value=1 as "yes". other numbers stands for "no"
-##' @param \dots additional arguments to \code{plot}
-##' @return nothing, only produces the plot as side effect
-##'
-##' @example examples/myPlotDiff.R
-##'
-##' @importFrom graphics par axis polygon mtext
-##' @importFrom stats integrate
-##'
-##' @export
-##' @keywords graphics
+#' Plot Diff Between two Beta distributions
+#'
+#' This function will plot the PDF of a diffience between two Beta distributions
+#'
+#' @param parY non-negative parameters of the treatment Beta distribution.
+#' @param parX non-negative parameters of the historical control Beta distribution
+#' @param cut_B a meaningful improvement threshold
+#' @param cut_W a poor improvement throshold
+#' @param shade paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
+#' @param note show values of the colored area, default value=1 as "yes". other numbers stands for "no"
+#' @param \dots additional arguments to \code{plot}
+#' @return nothing, only produces the plot as side effect
+#'
+#' @example examples/myPlotDiff.R
+#'
+#' @importFrom graphics par axis polygon mtext
+#' @importFrom stats integrate
+#'
+#' @export
+#' @keywords graphics
 myPlotDiff <- function(parY, # parameters of phase Ib trial;
                        parX, # parameters of HC;
                        cut_B = 0.20, # a meaningful improvement threshold;

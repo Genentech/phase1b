@@ -1,20 +1,20 @@
-##' @include sumTable.R
+#' @include sumTable.R
 NULL
 
-##' Plot a summary plot corresponding to the sumTable output
-##'
-##' This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
-##' and a curve of the prob of a poor improvement over estunated diff
-##' @param data the output object of \code{\link{sumTable}}
-##' @param Pos_cut a cut off for the prob of a meaningful improvement
-##' @param Neg_cut a cut off for the prob of a poor improvement
-##' @return the \code{data} item which was imputed to the function
-##'
-##' @importFrom graphics lines abline polygon plot par grid mtext box axis
-##'
-##' @example examples/plotDecision.R
-##' @export
-##' @keywords graphics
+#' Plot a summary plot corresponding to the sumTable output
+#'
+#' This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
+#' and a curve of the prob of a poor improvement over estunated diff
+#' @param data the output object of \code{\link{sumTable}}
+#' @param Pos_cut a cut off for the prob of a meaningful improvement
+#' @param Neg_cut a cut off for the prob of a poor improvement
+#' @return the \code{data} item which was imputed to the function
+#'
+#' @importFrom graphics lines abline polygon plot par grid mtext box axis
+#'
+#' @example examples/plotDecision.R
+#' @export
+#' @keywords graphics
 plotDecision <- function(data, Pos_cut, Neg_cut) {
   xticks <- seq(from = -50, to = 100, by = 10)
 
