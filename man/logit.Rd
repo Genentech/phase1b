@@ -2,18 +2,20 @@
 % Please edit documentation in R/helpers.R
 \name{logit}
 \alias{logit}
-\title{The logit function}
+\title{The Logit Function}
 \usage{
 logit(x)
 }
 \arguments{
-\item{x}{vector of probabilities}
+\item{x}{(\code{numeric}):\cr probabilities to transform.}
 }
 \value{
-logit(x) calculates logit(x)=log(x/(1-x))
+The logit of \code{x}.
 }
 \description{
-The logit function
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+This just calculates the logit.
 }
 \examples{
 ## If x = 0.2
@@ -27,4 +29,3 @@ logit(x)
 x <- seq(0.1, 0.9, 0.1)
 logit(x)
 }
-\keyword{programming}

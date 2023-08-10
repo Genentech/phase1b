@@ -58,16 +58,20 @@ is.probRange <- function(x,
 }
 
 
-##' The logit function
+##' The Logit Function
 ##'
-##' @param x vector of probabilities
-##' @return logit(x) calculates logit(x)=log(x/(1-x))
+##' @description `r lifecycle::badge("experimental")`
 ##'
-##' @importFrom stats qlogis
+##' This just calculates the logit.
+##'
+##' @typed x: numeric
+##'   probabilities to transform.
+##' @return The logit of `x`.
 ##'
 ##' @example examples/logit.R
 ##' @export
-##' @keywords programming
 logit <- function(x) {
+  assert_numeric(x)
+
   stats::qlogis(x)
 }

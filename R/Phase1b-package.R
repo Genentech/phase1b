@@ -8,5 +8,8 @@
 ##'
 ##' @import checkmate
 ##' @importFrom graphics plot hist
+##' @importFrom lifecycle deprecated
+##' @importFrom stats acf
+##'
 ##' @keywords package
 NULL
