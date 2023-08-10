@@ -71,7 +71,7 @@ is.probRange <- function(x,
 #' @example examples/logit.R
 #' @export
 logit <- function(x) {
-  assert_numeric(x)
+  assert_numeric(x, lower = 0, upper = 1, finite = TRUE)
 
   stats::qlogis(x)
 }
