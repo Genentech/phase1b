@@ -1,16 +1,16 @@
-##' Display the operating characteristics using an oc object
-##'
-##' Reads results from \code{\link{ocPredprob}}, \code{\link{ocPostprob}}
-##' etc. and displays a bar plot of the operating characteristics
-##'
-##' @param z returned oc value
-##' @return nothing, only plots as side effect
-##'
-##' @importFrom graphics barplot title
-##'
-##' @example examples/plotOc.R
-##' @export
-##' @keywords graphics
+#' Display the operating characteristics using an oc object
+#'
+#' Reads results from \code{\link{ocPredprob}}, \code{\link{ocPostprob}}
+#' etc. and displays a bar plot of the operating characteristics
+#'
+#' @param z returned oc value
+#' @return nothing, only plots as side effect
+#'
+#' @importFrom graphics barplot title
+#'
+#' @example examples/plotOc.R
+#' @export
+#' @keywords graphics
 plotOc <- function(z) {
   ## plot function for oc.predprob or oc.postprob, or the dist versions of them
   graphics::barplot(table(z$Decision, z$SampleSize) / z$params$ns, beside = TRUE)

@@ -1,56 +1,56 @@
-##' @include postprobDist.R
+#' @include postprobDist.R
 NULL
 
-##' Calculate operating characteristics for posterior probability method
-##' with beta prior on SOC
-##'
-##' The trial is stopped for efficacy if the posterior probability to be at
-##' least deltaE better than the control is larger than tU, and stopped for
-##' futility if the posterior probability to be at least deltaF worse than the
-##' control is larger than tL. Otherwise the trial is continued, and at the
-##' maximum sample size it may happen that no decision is made ("gray zone").
-##'
-##' Returned operating characteristics in a matrix include:
-##' ExpectedN: expected number of patients in the trials
-##' PrStopEarly: probability to stop the trial early (before reaching the
-##' maximum sample size)
-##' PrEarlyEff: probability to decide for efficacy early
-##' PrEarlyFut: probability to decide for futility early
-##' PrEfficacy: probability to decide for efficacy
-##' PrFutility: probability to decide for futility
-##' PrGrayZone: probability of no decision at the end ("gray zone")
-##'
-##' @param nn vector of look locations for efficacy
-##' (if futility looks should be different, please specify also \code{nnF})
-##' @param p true rate (scenario)
-##' @param deltaE delta for efficacy: P(pE > pS + deltaE) should be large
-##' to stop for efficacy
-##' @param deltaF delta for futility: P(pE < pS - deltaF) should be large to
-##' stop for futility
-##' @param relativeDelta see \code{\link{postprobDist}}
-##' @param tL probability threshold for being below control - deltaF
-##' @param tU probability threshold for being above control + deltaE
-##' @param parE beta parameters for the prior on the treatment proportion
-##' @param parS beta parameters for the prior on the control proportion
-##' @param ns number of simulations
-##' @param nr generate random look locations? (not default)
-##' @param d distance for random looks around the look locations in \code{nn}
-##' @param nnF vector of look locations for futility
-##' (default: same as efficacy)
-##' @return A list with the following elements:
-##' oc: matrix with operating characteristics (see Details section)
-##' Decision: vector of the decisions made in the simulated trials
-##' (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-##' decision)
-##' SampleSize: vector of the sample sizes in the simulated trials
-##' nn: vector of look locations
-##' nnE: vector of efficacy look locations
-##' nnF: vector of futility look locations
-##' todo: would we like to return nnr instead, the actual look locations?
-##' params: input parameters for this function
-##'
-##' @example examples/ocPostprobDist.R
-##' @export
+#' Calculate operating characteristics for posterior probability method
+#' with beta prior on SOC
+#'
+#' The trial is stopped for efficacy if the posterior probability to be at
+#' least deltaE better than the control is larger than tU, and stopped for
+#' futility if the posterior probability to be at least deltaF worse than the
+#' control is larger than tL. Otherwise the trial is continued, and at the
+#' maximum sample size it may happen that no decision is made ("gray zone").
+#'
+#' Returned operating characteristics in a matrix include:
+#' ExpectedN: expected number of patients in the trials
+#' PrStopEarly: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' PrEarlyEff: probability to decide for efficacy early
+#' PrEarlyFut: probability to decide for futility early
+#' PrEfficacy: probability to decide for efficacy
+#' PrFutility: probability to decide for futility
+#' PrGrayZone: probability of no decision at the end ("gray zone")
+#'
+#' @param nn vector of look locations for efficacy
+#' (if futility looks should be different, please specify also \code{nnF})
+#' @param p true rate (scenario)
+#' @param deltaE delta for efficacy: P(pE > pS + deltaE) should be large
+#' to stop for efficacy
+#' @param deltaF delta for futility: P(pE < pS - deltaF) should be large to
+#' stop for futility
+#' @param relativeDelta see \code{\link{postprobDist}}
+#' @param tL probability threshold for being below control - deltaF
+#' @param tU probability threshold for being above control + deltaE
+#' @param parE beta parameters for the prior on the treatment proportion
+#' @param parS beta parameters for the prior on the control proportion
+#' @param ns number of simulations
+#' @param nr generate random look locations? (not default)
+#' @param d distance for random looks around the look locations in \code{nn}
+#' @param nnF vector of look locations for futility
+#' (default: same as efficacy)
+#' @return A list with the following elements:
+#' oc: matrix with operating characteristics (see Details section)
+#' Decision: vector of the decisions made in the simulated trials
+#' (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
+#' decision)
+#' SampleSize: vector of the sample sizes in the simulated trials
+#' nn: vector of look locations
+#' nnE: vector of efficacy look locations
+#' nnF: vector of futility look locations
+#' todo: would we like to return nnr instead, the actual look locations?
+#' params: input parameters for this function
+#'
+#' @example examples/ocPostprobDist.R
+#' @export
 ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
                            tL, tU,
                            parE = c(a = 1, b = 1),

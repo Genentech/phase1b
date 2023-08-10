@@ -1,48 +1,48 @@
-##' @include dbetabinom.R
-##' @include postprobDist.R
+#' @include dbetabinom.R
+#' @include postprobDist.R
 NULL
 
-##' Compute the predictive probability that the trial will be
-##' successful, with a prior distribution on the SOC
-##'
-##' Compute the predictive probability of trial success given current data.
-##' Success means that at the end of the trial the posterior probability
-##' Pr(P_E > P_S + delta_0 | data) >= thetaT. Then the
-##' predictive probability for success is:
-##' pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > P_S + delta|x,Y=i)>=thetaT},
-##' where Y is the number of future responses in the treatment group and x is
-##' the current number of responses in the treatment group (out of n).
-##' Prior is P_E ~ beta(a, b), default uniform which is a beta(1,1).
-##' However, also a beta mixture prior can be specified. Analogously
-##' for P_S either a classic beta prior or a beta mixture prior can be
-##' specified.
-##'
-##' Also data on the SOC might be available. Then the predictive probability is
-##' more generally defined as
-##' pp = sum over i, j: Pr(Y=i|x,n)*Pr(Z=j|xS, nS)*I{Pr(P_E > P_S +
-##' delta|x,xS,Y=i,Z=j)>=thetaT}
-##' where Z is the future number of responses in the SOC group, and xS is the
-##' current number of responses in the SOC group.
-##'
-##' A table with the following contents will be
-##' included in the \code{tables} attribute of the return value
-##' (in the case that NmaxControl is zero):
-##' i: Y=i (number of future successes in Nmax-n subjects)
-##' py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
-##' b: Pr(P_E > P_S + delta | x, Y=i)
-##' bgttheta: indicator I(b>thetaT)
-##'
-##' If NmaxControl is not zero, i.e., when data on the control treatment
-##' is available in this trial, then a list with will be included with the
-##' following elements:
-##' pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
-##' b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
-##' bgttheta: matrix of indicators I(b>thetaT)
-##'
-##' @param x number of successes (in the treatment group)
-##' @param n number of patients (in the treatment group)
-##' @param xS number of successes in the SOC group (default: 0)
-##' @param nS number of patients in the SOC group (default: 0)
+#' Compute the predictive probability that the trial will be
+#' successful, with a prior distribution on the SOC
+#'
+#' Compute the predictive probability of trial success given current data.
+#' Success means that at the end of the trial the posterior probability
+#' Pr(P_E > P_S + delta_0 | data) >= thetaT. Then the
+#' predictive probability for success is:
+#' pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > P_S + delta|x,Y=i)>=thetaT},
+#' where Y is the number of future responses in the treatment group and x is
+#' the current number of responses in the treatment group (out of n).
+#' Prior is P_E ~ beta(a, b), default uniform which is a beta(1,1).
+#' However, also a beta mixture prior can be specified. Analogously
+#' for P_S either a classic beta prior or a beta mixture prior can be
+#' specified.
+#'
+#' Also data on the SOC might be available. Then the predictive probability is
+#' more generally defined as
+#' pp = sum over i, j: Pr(Y=i|x,n)*Pr(Z=j|xS, nS)*I{Pr(P_E > P_S +
+#' delta|x,xS,Y=i,Z=j)>=thetaT}
+#' where Z is the future number of responses in the SOC group, and xS is the
+#' current number of responses in the SOC group.
+#'
+#' A table with the following contents will be
+#' included in the \code{tables} attribute of the return value
+#' (in the case that NmaxControl is zero):
+#' i: Y=i (number of future successes in Nmax-n subjects)
+#' py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
+#' b: Pr(P_E > P_S + delta | x, Y=i)
+#' bgttheta: indicator I(b>thetaT)
+#'
+#' If NmaxControl is not zero, i.e., when data on the control treatment
+#' is available in this trial, then a list with will be included with the
+#' following elements:
+#' pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
+#' b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
+#' bgttheta: matrix of indicators I(b>thetaT)
+#'
+#' @param x number of successes (in the treatment group)
+#' @param n number of patients (in the treatment group)
+#' @param xS number of successes in the SOC group (default: 0)
+#' @param nS number of patients in the SOC group (default: 0)
 ##' @param Nmax maximum number of patients at the end of the trial (in the
 ##' treatment group)
 ##' @param NmaxControl maximum number of patients at the end of the trial in the
