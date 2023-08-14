@@ -7,16 +7,18 @@
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{numeric}):\cr number of successes}
 
-\item{m}{number of trials}
+\item{m}{: numeric
+number of trials}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+\item{par}{: numeric
+the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components
+weights the mixture weights of the beta mixture prior}
 
-\item{weights}{the mixture weights of the beta mixture prior}
-
-\item{log}{return the log value? (not default)}
+\item{log}{: numeric
+return the log value? (not default)}
 }
 \value{
 The (log) density values of the mixture of beta-binomial distributions at \code{x}.

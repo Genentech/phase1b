@@ -7,21 +7,22 @@
 dbetabinom(x, m, a, b)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{numeric}):\cr number of successes}
 
-\item{m}{number of trials}
+\item{m}{(\code{numeric}):\cr number of trials}
 
-\item{a}{first parameter of the beta distribution}
+\item{a}{(\code{numeric}):\cr first parameter of the beta distribution}
 
-\item{b}{second parameter of the beta distribution}
+\item{b}{(\code{numeric}):\cr second parameter of the beta distribution}
 }
 \value{
 the density values of the beta-binomial distribution at \code{x}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Calculates the density function of the beta-binomial distribution
-}
-\details{
+
 Note that \code{x} can be a vector.
 
 The beta-binomial density function has the following form:

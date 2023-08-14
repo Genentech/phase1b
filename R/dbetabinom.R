@@ -1,5 +1,7 @@
 #' Beta-binomial density function
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Calculates the density function of the beta-binomial distribution
 #'
 #' Note that \code{x} can be a vector.
@@ -7,15 +9,23 @@
 #' The beta-binomial density function has the following form:
 #' \deqn{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
 #'
-#' @param x number of successes
-#' @param m number of trials
-#' @param a first parameter of the beta distribution
-#' @param b second parameter of the beta distribution
+#' @typed x : numeric
+#'  number of successes
+#' @typed m : numeric
+#'  number of trials
+#' @typed a : numeric
+#'  first parameter of the beta distribution
+#' @typed b : numeric
+#'  second parameter of the beta distribution
 #' @return the density values of the beta-binomial distribution at \code{x}
 #'
 #' @example examples/dbetabinom.R
 #' @export
 dbetabinom <- function(x, m, a, b) {
+  assert_numeric(x, lower = 0, upper = m, finite = TRUE)
+  assert_numeric(m, lower = 0, finite = TRUE)
+  assert_numeric(a, lower = 0, finite = TRUE)
+  assert_numeric(b, lower = 0, finite = TRUE)
   logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
   exp(logRet)
 }
@@ -27,12 +37,16 @@ dbetabinom <- function(x, m, a, b) {
 #'
 #' Note that \code{x} can be a vector.
 #'
-#' @param x number of successes
-#' @param m number of trials
-#' @param par the beta parameters matrix, with K rows and 2 columns,
+#' @typed x : numeric
+#'  number of successes
+#' @param m : numeric
+#'  number of trials
+#' @param par : numeric
+#'  the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @param log return the log value? (not default)
+#'  weights the mixture weights of the beta mixture prior
+#' @param log : numeric
+#'  return the log value? (not default)
 #' @return The (log) density values of the mixture of beta-binomial distributions at \code{x}.
 #'
 #' @export
