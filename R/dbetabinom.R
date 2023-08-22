@@ -51,8 +51,7 @@ dbetabinom <- function(x, m, a, b) {
 #'
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
-  # TODO par has to columns, assert this, weights have same dim as par1 and 2
-  # TODO weight assert numeric
+  assert_matrix(par, min.rows = 1, min.cols = 2)
   ret <- sum(weights * dbetabinom(x, m, par[, 1], par[, 2]))
   if (log) {
     log(ret)
