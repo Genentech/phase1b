@@ -149,10 +149,6 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
-  assert_numeric(x, lower = 0, finite = TRUE)
-  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
-  assert_numeric(pbeta, lower = 0, upper = 1, finite = TRUE)
-  assert_vector(par)
   ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
   return(ret)
 }
