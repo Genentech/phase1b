@@ -7,9 +7,9 @@
 dbetabinom(x, m, a, b)
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of successes}
+\item{x}{(\code{number}):\cr number of successes}
 
-\item{m}{(\code{numeric}):\cr number of trials}
+\item{m}{(\code{number}):\cr number of trials}
 
 \item{a}{(\code{numeric}):\cr first parameter of the beta distribution}
 

@@ -9,9 +9,9 @@
 #' The beta-binomial density function has the following form:
 #' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
-#' @typed x : numeric
+#' @typed x : number
 #'  number of successes
-#' @typed m : numeric
+#' @typed m : number
 #'  number of trials
 #' @typed a : numeric
 #'  first parameter of the beta distribution
