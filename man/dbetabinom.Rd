@@ -26,7 +26,7 @@ Calculates the density function of the beta-binomial distribution
 Note that \code{x} can be a vector.
 
 The beta-binomial density function has the following form:
-\deqn{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
+\verb{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
 }
 \examples{
 ## Calculating the beta binomial density, x = 2; m = 29; a = 0.2; b = 0.4

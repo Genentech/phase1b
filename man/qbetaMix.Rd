@@ -18,5 +18,5 @@ corresponding to the beta parameters of the K components}
 the abscissa
 }
 \description{
-Note that \code{q} can be a vector.
+Note that \code{x} can be a vector.
 }
