@@ -154,7 +154,7 @@ pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   assert_numeric(pbeta, lower = 0, upper = 1, finite = TRUE)
   assert_vector(par)
   ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
-  return(ret)
+  return(ret) # hdhddhh
 }
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 
