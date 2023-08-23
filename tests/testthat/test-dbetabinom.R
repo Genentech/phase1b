@@ -7,3 +7,9 @@ test_that("the sum of the dbetabinom density for all x is 1", {
   result <- sum(dbetabinom(0:10, 10, 1, 1))
   expect_equal(result, 1)
 })
+
+test_that("the pbetaMix has incrementally higher cdf with increase x support", {
+  is_lower <- pbetaMix(x = 2, ...) # TODO fill in the blanks
+  is_higher <- pbetaMix(x = 3, ...) # TODO fill in the blanks
+  expect_true(is_lower > is_higher)
+})

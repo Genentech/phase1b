@@ -7,18 +7,20 @@
 pbetaMix(x, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{the abscissa}
+\item{x}{(\code{number}):\cr the abscissa ## TODO what is this}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
+\item{par}{(\verb{matrix or array}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{(\verb{matrix or array}):\cr the mixture weights of the beta mixture prior}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X <= x]},
+\item{lower.tail}{(\code{logical # TODO Why not flag}):\cr if TRUE (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}}
 }
 \value{
-the (one minus) cdf value
+the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-"
+\subsection{TODO could it be ret : numeric, \code{P[X <= x]}}{
+}
 }
 \description{
 Note that \code{x} can be a vector.

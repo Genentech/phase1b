@@ -139,22 +139,25 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' Note that `x` can be a vector.
 #'
-#' @param x the abscissa
-#' @param par the beta parameters matrix, with K rows and 2 columns,
+#' @typed x : number
+#'  the abscissa ## TODO what is this
+#' @typed par : matrix or array
+#' the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @param lower.tail logical; if TRUE (default), probabilities are `P[X <= x]`,
+#' @typed weights : matrix or array
+#' the mixture weights of the beta mixture prior
+#' @typed lower.tail : logical # TODO Why not flag
+#' if TRUE (default), probabilities are `P[X <= x]`,
 #' and otherwise `P[X > x]`
-#' @return the (one minus) cdf value
-#'
+#' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-"
+#' ## TODO could it be ret : numeric, `P[X <= x]`
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   assert_numeric(x, lower = 0, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
-  assert_numeric(pbeta, lower = 0, upper = 1, finite = TRUE)
   assert_vector(par)
   ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
-  return(ret) # hdhddhh
+  ret
 }
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 
@@ -163,8 +166,9 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 #'
 #' Note that `x` can be a vector.
 #'
-#' @param q the required quantile
-#' @param par the beta parameters matrix, with K rows and 2 columns,
+#' @typed q : numeric
+#'  the required quantile
+#' @typed par :  the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
 #' @param weights the mixture weights of the beta mixture prior
 #' @return the abscissa
