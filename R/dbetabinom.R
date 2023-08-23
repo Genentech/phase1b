@@ -41,7 +41,7 @@ dbetabinom <- function(x, m, a, b) {
 #'  number of successes
 #' @typed m : number
 #'  number of trials
-#' @typed par : numeric matrix
+#' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
 #'  weights the mixture weights of the beta mixture prior

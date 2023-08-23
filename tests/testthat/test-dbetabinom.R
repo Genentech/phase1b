@@ -43,7 +43,7 @@ test_that("the sum of the beta mixturedensity for all x is 1.", {
   expect_equal(result, 1)
 })
 
-test_that("Beta mixture density has the correct result", {
+test_that("Beta mixture density has the correct result.", {
   result <- dbetabinomMix(x = 2, m = 29, par = rbind(c(0.2, 0.4), c(1, 1)), weights = c(0.6, 0.4))
   expect_equal(result, 0.03905469, tolerance = 1e-6)
 })

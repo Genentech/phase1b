@@ -11,7 +11,7 @@ dbetabinomMix(x, m, par, weights, log = FALSE)
 
 \item{m}{(\code{number}):\cr number of trials}
 
-\item{par}{(\verb{numeric matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components
 weights the mixture weights of the beta mixture prior}
 
