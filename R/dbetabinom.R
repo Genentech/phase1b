@@ -23,9 +23,9 @@
 #' @export
 dbetabinom <- function(x, m, a, b) {
   assert_numeric(x, lower = 0, upper = m, finite = TRUE)
-  assert_numeric(m, lower = 0, finite = TRUE)
-  assert_numeric(a, lower = 0, finite = TRUE)
-  assert_numeric(b, lower = 0, finite = TRUE)
+  assert_number(m, lower = 0, finite = TRUE)
+  assert_number(a, lower = 0, finite = TRUE)
+  assert_number(b, lower = 0, finite = TRUE)
   logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
   exp(logRet)
 }
