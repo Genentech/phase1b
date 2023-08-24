@@ -27,7 +27,8 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
   assert_numeric(x, lower = 0, upper = m, finite = TRUE)
   assert_number(m, lower = 0, finite = TRUE)
   assert_number(a, lower = 0, finite = TRUE)
-  assert_number(b, lower = 0, finite = TRUE, log)
+  assert_number(b, lower = 0, finite = TRUE)
+  assert_flag(log, na.ok = FALSE, null.ok = FALSE)
   logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
   if (log) {
     logRet
@@ -61,6 +62,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
   assert_matrix(par, min.rows = 1, min.cols = 2)
+  assert_flag(log, na.ok = FALSE, null.ok = FALSE)
   ret <- sum(weights * dbetabinom(x, m, par[, 1], par[, 2]))
   if (log) {
     log(ret)
