@@ -14,8 +14,11 @@ dbetabinom(x, m, a, b, log = FALSE)
 \item{a}{(\code{number}):\cr first parameter of the beta distribution.}
 
 \item{b}{(\code{number}):\cr second parameter of the beta distribution.}
+<<<<<<< HEAD
 
 \item{log}{(\code{flag}):\cr return the log value (not default).}
+=======
+>>>>>>> 6_dbetabinom
 }
 \value{
 The density values of the beta-binomial distribution at \code{x}.
