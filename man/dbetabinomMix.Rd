@@ -7,7 +7,7 @@
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{(\verb{number or vector}):\cr number of successes.}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
 \item{m}{(\code{number}):\cr number of trials.}
 
