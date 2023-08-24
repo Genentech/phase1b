@@ -35,6 +35,8 @@ dbetabinom <- function(x, m, a, b) {
 #'
 #' Calculates the density function for a mixture of beta-binomial distributions.
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Note that  can be a vector. ## TODO markdown syntax
 #'
 #' @typed x : number
