@@ -45,7 +45,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #'
 #' Note that `x` can be a vector.
 #'
-#' @typed x : number or vector
+#' @typed x : numeric
 #'  number of successes.
 #' @typed m : number
 #'  number of trials.
