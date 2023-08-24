@@ -29,7 +29,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
   assert_number(a, lower = 0, finite = TRUE)
   assert_number(b, lower = 0, finite = TRUE)
   logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
-  if (log == FALSE) {
+  if (!log) {
     exp(logRet)
   } else {
     logRet
