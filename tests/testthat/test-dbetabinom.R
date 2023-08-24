@@ -35,7 +35,7 @@ test_that("the beta mixture density has a result of 0.04286893.", {
   expect_equal(result, 0.04286893, tolerance = 1e-6)
 })
 
-test_that("the sum of the beta mixturedensity for all x is 1.", {
+test_that("the sum of the beta mixture density for all x is 1", {
   result <- sum(dbetabinomMix(0:20, 20,
     matrix(c(1, 2), ncol = 2, nrow = 1),
     weights = c(0.2, 0.8)
