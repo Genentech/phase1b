@@ -17,7 +17,7 @@
 #'  first parameter of the beta distribution.
 #' @typed b : numeric
 #'  second parameter of the beta distribution.
-#' @return the density values of the beta-binomial distribution at `x`.
+#' @return The density values of the beta-binomial distribution at `x`.
 #'
 #' @example examples/dbetabinom.R
 #' @export
