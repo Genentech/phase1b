@@ -10,7 +10,7 @@ test_that("the sum of the dbetabinom density for all x is 1.", {
   expect_equal(result, 1)
 })
 
-test_that("Beta binomial density has a result of 0.04286893, given x = 2; m = 29; a = 0.2; b = 0.4.", {
+test_that("Beta binomial density has correct numeric result for specific inputs", {
   result <- dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4)
   expect_equal(result, 0.04286893)
 })
