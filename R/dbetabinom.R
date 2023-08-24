@@ -10,14 +10,14 @@
 #' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
 #' @typed x : number
-#'  number of successes
+#'  number of successes.
 #' @typed m : number
-#'  number of trials
+#'  number of trials.
 #' @typed a : numeric
-#'  first parameter of the beta distribution
+#'  first parameter of the beta distribution.
 #' @typed b : numeric
-#'  second parameter of the beta distribution
-#' @return the density values of the beta-binomial distribution at `x`
+#'  second parameter of the beta distribution.
+#' @return the density values of the beta-binomial distribution at `x`.
 #'
 #' @example examples/dbetabinom.R
 #' @export
@@ -38,15 +38,15 @@ dbetabinom <- function(x, m, a, b) {
 #' Note that  can be a vector. ## TODO markdown syntax
 #'
 #' @typed x : number
-#'  number of successes
+#'  number of successes.
 #' @typed m : number
-#'  number of trials
+#'  number of trials.
 #' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
-#'  weights the mixture weights of the beta mixture prior
+#'  weights the mixture weights of the beta mixture prior.
 #' @typed log : flag
-#'  return the log value? (not default)
+#'  return the log value? (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
 #'
 #' @export
@@ -138,13 +138,13 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' Note that `x` can be a vector.
 #'
-#' @param x the abscissa
+#' @param x the abscissa.
 #' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
+#' corresponding to the beta parameters of the K components.
+#' @param weights the mixture weights of the beta mixture prior.
 #' @param lower.tail logical; if TRUE (default), probabilities are `P[X <= x]`,
-#' and otherwise `P[X > x]`
-#' @return the (one minus) cdf value
+#' and otherwise `P[X > x]`.
+#' @return the (one minus) cdf value.
 #'
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
@@ -158,11 +158,11 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 #'
 #' Note that `x` can be a vector.
 #'
-#' @param q the required quantile
-#' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @return the abscissa
+#' @param q  the required quantile.
+#' @param par  the beta parameters matrix, with K rows and 2 columns,
+#' corresponding to the beta parameters of the K components.
+#' @param weights  the mixture weights of the beta mixture prior.
+#' @return the abscissa.
 #'
 #' @export
 qbetaMix <- function(q, par, weights) {

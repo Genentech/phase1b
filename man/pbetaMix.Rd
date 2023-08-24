@@ -7,18 +7,18 @@
 pbetaMix(x, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{the abscissa}
+\item{x}{the abscissa.}
 
 \item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X <= x]},
-and otherwise \code{P[X > x]}}
+and otherwise \code{P[X > x]}.}
 }
 \value{
-the (one minus) cdf value
+the (one minus) cdf value.
 }
 \description{
 Note that \code{x} can be a vector.

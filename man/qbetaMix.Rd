@@ -7,15 +7,15 @@
 qbetaMix(q, par, weights)
 }
 \arguments{
-\item{q}{the required quantile}
+\item{q}{the required quantile.}
 
 \item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{the mixture weights of the beta mixture prior.}
 }
 \value{
-the abscissa
+the abscissa.
 }
 \description{
 Note that \code{x} can be a vector.

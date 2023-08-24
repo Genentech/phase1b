@@ -7,16 +7,16 @@
 dbetabinom(x, m, a, b)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes}
+\item{x}{(\code{number}):\cr number of successes.}
 
-\item{m}{(\code{number}):\cr number of trials}
+\item{m}{(\code{number}):\cr number of trials.}
 
-\item{a}{(\code{numeric}):\cr first parameter of the beta distribution}
+\item{a}{(\code{numeric}):\cr first parameter of the beta distribution.}
 
-\item{b}{(\code{numeric}):\cr second parameter of the beta distribution}
+\item{b}{(\code{numeric}):\cr second parameter of the beta distribution.}
 }
 \value{
-the density values of the beta-binomial distribution at \code{x}
+the density values of the beta-binomial distribution at \code{x}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
