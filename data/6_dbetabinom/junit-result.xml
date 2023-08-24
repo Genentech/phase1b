@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="dbetabinom" timestamp="2023-08-24T08:27:57Z" hostname="a24aba9d1849" tests="7" skipped="0" failures="1" errors="0" time="0.623">
+    <testcase time="0.019" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1."/>
+    <testcase time="0.123" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1."/>
+    <testcase time="0.385" classname="dbetabinom" name="Beta_binomial_density_has_a_result_of_0.04286893_given_x_2_m_29_a_0.2_b_0.4.">
+      <failure type="failure" message="`result` (`actual`) not equal to 0.04286893 (`expected`). ('test-dbetabinom.R:15:3')">`result` (`actual`) not equal to 0.04286893 (`expected`).
+
+actual != expected but don't know how to show the difference</failure>
+    </testcase>
+    <testcase time="0.044" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1."/>
+    <testcase time="0.02" classname="dbetabinom" name="the_beta_mixture_density_has_a_result_of_0.04286893."/>
+    <testcase time="0.0170000000000001" classname="dbetabinom" name="the_sum_of_the_beta_mixturedensity_for_all_x_is_1."/>
+    <testcase time="0.0149999999999999" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_result."/>
+  </testsuite>
+  <testsuite name="helpers" timestamp="2023-08-24T08:27:57Z" hostname="a24aba9d1849" tests="4" skipped="0" failures="0" errors="0" time="0.06">
+    <testcase time="0.0289999999999999" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.00500000000000012" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.01" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.016" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
+  </testsuite>
+</testsuites>
