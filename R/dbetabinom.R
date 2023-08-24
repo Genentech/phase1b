@@ -13,9 +13,9 @@
 #'  number of successes.
 #' @typed m : number
 #'  number of trials.
-#' @typed a : numeric
+#' @typed a : number
 #'  first parameter of the beta distribution.
-#' @typed b : numeric
+#' @typed b : number
 #'  second parameter of the beta distribution.
 #' @return The density values of the beta-binomial distribution at `x`.
 #'
