@@ -4,18 +4,21 @@
 \alias{qbetaMix}
 \title{Beta-mixture quantile function}
 \usage{
-qbetaMix(q, par, weights)
+qbetaMix(q, par, weights, lower.tail)
 }
 \arguments{
-\item{q}{(\code{numeric}):\cr the required quantile}
+\item{q}{(\code{numeric}):\cr the required quantile.}
 
-\item{par}{(\verb{the beta parameters matrix, with K rows and 2 columns,}):\cr corresponding to the beta parameters of the K components}
+\item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 }
 \value{
-the abscissa
+the abscissa.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Note that \code{x} can be a vector.
 }

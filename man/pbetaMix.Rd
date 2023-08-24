@@ -7,21 +7,21 @@
 pbetaMix(x, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{(\code{number}):\cr the abscissa ## TODO what is this}
+\item{x}{(\code{number}):\cr the abscissa.}
 
 \item{par}{(\verb{matrix or array}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{(\verb{matrix or array}):\cr the mixture weights of the beta mixture prior}
+\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{(\code{logical # TODO Why not flag}):\cr if TRUE (default), probabilities are \code{P[X <= x]},
-and otherwise \code{P[X > x]}}
+and otherwise \code{P[X > x]}.}
 }
 \value{
-the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-"
-\subsection{TODO could it be ret : numeric, \code{P[X <= x]}}{
-}
+the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Note that \code{x} can be a vector.
 }

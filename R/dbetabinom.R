@@ -137,20 +137,22 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 #' Beta-mixture cdf
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Note that `x` can be a vector.
 #'
 #' @typed x : number
-#'  the abscissa ## TODO what is this
+#'  the abscissa.
 #' @typed par : matrix or array
-#' the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @typed weights : matrix or array
-#' the mixture weights of the beta mixture prior
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : matrix
+#'  the mixture weights of the beta mixture prior.
 #' @typed lower.tail : logical # TODO Why not flag
-#' if TRUE (default), probabilities are `P[X <= x]`,
-#' and otherwise `P[X > x]`
-#' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-"
-#' ## TODO could it be ret : numeric, `P[X <= x]`
+#'  if TRUE (default), probabilities are `P[X <= x]`,
+#'  and otherwise `P[X > x]`.
+#' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
+#'
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   assert_numeric(x, lower = 0, finite = TRUE)
@@ -164,25 +166,31 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 
 #' Beta-mixture quantile function
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Note that `x` can be a vector.
 #'
 #' @typed q : numeric
-#'  the required quantile
-#' @typed par :  the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @return the abscissa
+#'  the required quantile.
+#' @typed par : number
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : matrix
+#'  the mixture weights of the beta mixture prior.
+#' @return the abscissa.
 #'
 #' @export
-qbetaMix <- function(q, par, weights) {
+qbetaMix <- function(q, par, weights, lower.tail) {
   f <- function(pi) {
     pbetaMix(x = pi, par = par, weights = weights) - q
   }
+  assert_number(f, lower = 0, upper = 1, finite = TRUE)
   unirootResult <- uniroot(f, lower = 0, upper = 1)
+  assert_number(unirootResult, lower = 0, upper = 1, finite = TRUE)
   if (unirootResult$iter < 0) {
-    return(NA)
+    NA
   } else {
-    return(unirootResult$root)
+    unirootResult$root
   }
 }
 qbetaMix <- Vectorize(qbetaMix, vectorize.args = "q")
