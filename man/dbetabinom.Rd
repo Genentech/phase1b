@@ -14,11 +14,8 @@ dbetabinom(x, m, a, b, log = FALSE)
 \item{a}{(\code{number}):\cr first parameter of the beta distribution.}
 
 \item{b}{(\code{number}):\cr second parameter of the beta distribution.}
-<<<<<<< HEAD
 
 \item{log}{(\code{flag}):\cr return the log value (not default).}
-=======
->>>>>>> 6_dbetabinom
 }
 \value{
 The density values of the beta-binomial distribution at \code{x}.
@@ -37,5 +34,6 @@ The beta-binomial density function has the following form:
 dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4, log = FALSE)
 
 # Can also specify x as a vector.
+
 dbetabinom(x = 1:28, m = 29, a = 0.2, b = 0.4, log = FALSE)
 }

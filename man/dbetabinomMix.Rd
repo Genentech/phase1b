@@ -12,13 +12,7 @@ dbetabinomMix(x, m, par, weights, log = FALSE)
 \item{m}{(\code{number}):\cr number of trials.}
 
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
-<<<<<<< HEAD
 corresponding to the beta parameters of the K components.}
-=======
-corresponding to the beta parameters of the K components
-@typed weights : numeric
-the mixture weights of the beta mixture prior.}
->>>>>>> 6_dbetabinom
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 
@@ -30,11 +24,7 @@ The (log) density values of the mixture of beta-binomial distributions at \code{
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-<<<<<<< HEAD
 Note that \code{x} can be a vector.
-=======
-Note that  can be a vector. ## TODO markdown syntax
->>>>>>> 6_dbetabinom
 }
 \details{
 Calculates the density function for a mixture of beta-binomial distributions.
