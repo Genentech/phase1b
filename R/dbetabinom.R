@@ -17,17 +17,23 @@
 #'  first parameter of the beta distribution.
 #' @typed b : number
 #'  second parameter of the beta distribution.
+#' @typed log : flag
+#'  return the log value (not default).
 #' @return The density values of the beta-binomial distribution at `x`.
 #'
 #' @example examples/dbetabinom.R
 #' @export
-dbetabinom <- function(x, m, a, b) {
+dbetabinom <- function(x, m, a, b, log = FALSE) {
   assert_numeric(x, lower = 0, upper = m, finite = TRUE)
   assert_number(m, lower = 0, finite = TRUE)
   assert_number(a, lower = 0, finite = TRUE)
   assert_number(b, lower = 0, finite = TRUE)
   logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
-  exp(logRet)
+  if (log == FALSE) {
+    exp(logRet)
+  } else {
+    logRet
+  }
 }
 
 
@@ -37,19 +43,19 @@ dbetabinom <- function(x, m, a, b) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Note that  can be a vector. ## TODO markdown syntax
+#' Note that `x` can be a vector.
 #'
-#' @typed x : number
+#' @typed x : number or vector
 #'  number of successes.
 #' @typed m : number
 #'  number of trials.
 #' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#'  @typed weights : numeric
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : numeric
 #'   the mixture weights of the beta mixture prior.
 #' @typed log : flag
-#'  return the log value? (not default).
+#'  return the log value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
 #'
 #' @export
