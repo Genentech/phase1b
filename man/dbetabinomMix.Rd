@@ -7,23 +7,38 @@
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{m}{number of trials}
+\item{m}{(\code{number}):\cr number of trials.}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 
-\item{log}{return the log value? (not default)}
+\item{log}{(\code{flag}):\cr whether to return the log density value (not default).}
 }
 \value{
 The (log) density values of the mixture of beta-binomial distributions at \code{x}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Calculates the density function for a mixture of beta-binomial distributions.
 }
-\details{
-Note that \code{x} can be a vector.
+\note{
+\code{x} can be a vector.
+}
+\examples{
+dbetabinomMix(x = 2, m = 29, par = rbind(c(0.2, 0.4)), weights = 1)
+
+dbetabinomMix(
+  x = 2, m = 29, par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
+# x could be a vector
+dbetabinomMix(
+  x = 1:28, m = 29, par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
 }

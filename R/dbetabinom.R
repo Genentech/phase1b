@@ -1,47 +1,73 @@
 #' Beta-binomial density function
 #'
-#' Calculates the density function of the beta-binomial distribution
+#' @description `r lifecycle::badge("experimental")`
 #'
-#' Note that \code{x} can be a vector.
+#' Calculates the density function of the beta-binomial distribution.
 #'
 #' The beta-binomial density function has the following form:
-#' \deqn{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
+#' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
-#' @param x number of successes
-#' @param m number of trials
-#' @param a first parameter of the beta distribution
-#' @param b second parameter of the beta distribution
-#' @return the density values of the beta-binomial distribution at \code{x}
+#' @typed x : numeric
+#'  number of successes.
+#' @typed m : number
+#'  number of trials.
+#' @typed a : numeric
+#'  first parameter of the beta distribution.
+#' @typed b : numeric
+#'  second parameter of the beta distribution.
+#' @typed log : flag
+#'  whether to return the log density value (not default).
+#' @return The density values of the beta-binomial distribution at `x`.
+#'
+#' @note `x`, `a` and `b` can be vectors.
 #'
 #' @example examples/dbetabinom.R
 #' @export
-dbetabinom <- function(x, m, a, b) {
-  logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
-  exp(logRet)
+dbetabinom <- function(x, m, a, b, log = FALSE) {
+  assert_numeric(x, lower = 0, upper = m, finite = TRUE)
+  assert_number(m, lower = 0, finite = TRUE)
+  assert_numeric(a, lower = 0, finite = TRUE)
+  assert_numeric(b, lower = 0, finite = TRUE)
+  assert_flag(log)
+  log_ret <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
+  if (log) {
+    log_ret
+  } else {
+    exp(log_ret)
+  }
 }
 
 
 #' Beta-mixture-binomial density function
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Calculates the density function for a mixture of beta-binomial distributions.
 #'
-#' Note that \code{x} can be a vector.
+#' @typed x : numeric
+#'  number of successes.
+#' @typed m : number
+#'  number of trials.
+#' @typed par : matrix
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : numeric
+#'  the mixture weights of the beta mixture prior.
+#' @typed log : flag
+#'  whether to return the log density value (not default).
+#' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
+#' @note `x` can be a vector.
 #'
-#' @param x number of successes
-#' @param m number of trials
-#' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @param log return the log value? (not default)
-#' @return The (log) density values of the mixture of beta-binomial distributions at \code{x}.
-#'
+#' @example examples/dbetabinomMix.R
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
+  assert_matrix(par, min.rows = 1, min.cols = 2)
+  assert_flag(log)
   ret <- sum(weights * dbetabinom(x, m, par[, 1], par[, 2]))
   if (log) {
-    return(log(ret))
+    log(ret)
   } else {
-    return(ret)
+    ret
   }
 }
 dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
@@ -98,7 +124,7 @@ getBetamixPost <- function(x, n, par, weights) {
 
 #' Beta-mixture density function
 #'
-#' Note that \code{x} can be a vector.
+#' Note that `x` can be a vector.
 #'
 #' @param x the abscissa
 #' @param par the beta parameters matrix, with K rows and 2 columns,
@@ -121,15 +147,15 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 #' Beta-mixture cdf
 #'
-#' Note that \code{x} can be a vector.
+#' Note that `x` can be a vector.
 #'
-#' @param x the abscissa
+#' @param x the abscissa.
 #' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
+#' corresponding to the beta parameters of the K components.
+#' @param weights the mixture weights of the beta mixture prior.
 #' @param lower.tail logical; if TRUE (default), probabilities are `P[X <= x]`,
-#' and otherwise `P[X > x]`
-#' @return the (one minus) cdf value
+#' and otherwise `P[X > x]`.
+#' @return the (one minus) cdf value.
 #'
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
@@ -141,13 +167,13 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 
 #' Beta-mixture quantile function
 #'
-#' Note that \code{q} can be a vector.
+#' Note that `x` can be a vector.
 #'
-#' @param q the required quantile
-#' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @return the abscissa
+#' @param q  the required quantile.
+#' @param par  the beta parameters matrix, with K rows and 2 columns,
+#' corresponding to the beta parameters of the K components.
+#' @param weights  the mixture weights of the beta mixture prior.
+#' @return the abscissa.
 #'
 #' @export
 qbetaMix <- function(q, par, weights) {
