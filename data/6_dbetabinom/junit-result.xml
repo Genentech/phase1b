@@ -1,34 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="dbetabinom" timestamp="2023-08-25T07:40:05Z" hostname="5a04a74df21d" tests="7" skipped="0" failures="1" errors="1" time="0.526">
-    <testcase time="0.016" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
-    <testcase time="0.104" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
-    <testcase time="0.317" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs">
-      <failure type="failure" message="`result` (`actual`) not equal to 0.04286893 (`expected`). ('test-dbetabinom.R:15:3')">`result` (`actual`) not equal to 0.04286893 (`expected`).
-
-actual != expected but don't know how to show the difference</failure>
-    </testcase>
-    <testcase time="0.0369999999999999" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
-    <testcase time="0.0170000000000001" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
-    <testcase time="0.0129999999999999" classname="dbetabinom" name="the_sum_of_the_beta_mixture_density_for_all_x_is_1"/>
-    <testcase time="0.022" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_numeric_result">
-      <error type="error" message="Error in `dbetabinom(x, m, par[, 1], par[, 2])`: Assertion on 'a' failed: Must have length 1. ('test-dbetabinom.R:47:3')">Error in `dbetabinom(x, m, par[, 1], par[, 2])`: Assertion on 'a' failed: Must have length 1.
-Backtrace:
-    x
- 1. \-base (local) dbetabinomMix(...) at test-dbetabinom.R:47:2
- 2.   +-base::do.call(...)
- 3.   \-base::mapply(...)
- 4.     \-phase1b (local) `&lt;fn&gt;`(x = dots[[1L]][[1L]], m = 29, par = `&lt;dbl[,2]&gt;`, weights = `&lt;dbl&gt;`)
- 5.       \-phase1b::dbetabinom(x, m, par[, 1], par[, 2])
- 6.         \-checkmate::assert_number(a, lower = 0, finite = TRUE)
- 7.           \-checkmate::makeAssertion(x, res, .var.name, add)
- 8.             \-checkmate:::mstop(...)</error>
-    </testcase>
+  <testsuite name="dbetabinom" timestamp="2023-08-25T08:05:14Z" hostname="852b5b8a9a31" tests="7" skipped="0" failures="0" errors="0" time="0.15">
+    <testcase time="0.012" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
+    <testcase time="0.081" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
+    <testcase time="0.023" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs"/>
+    <testcase time="0.00700000000000001" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
+    <testcase time="0.00800000000000001" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
+    <testcase time="0.01" classname="dbetabinom" name="the_sum_of_the_beta_mixture_density_for_all_x_is_1"/>
+    <testcase time="0.00900000000000001" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_numeric_result"/>
   </testsuite>
-  <testsuite name="helpers" timestamp="2023-08-25T07:40:05Z" hostname="5a04a74df21d" tests="4" skipped="0" failures="0" errors="0" time="0.083">
-    <testcase time="0.0609999999999999" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.00500000000000012" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.00499999999999989" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.012" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
+  <testsuite name="helpers" timestamp="2023-08-25T08:05:14Z" hostname="852b5b8a9a31" tests="4" skipped="0" failures="0" errors="0" time="0.033">
+    <testcase time="0.017" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.003" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.00900000000000001" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
   </testsuite>
 </testsuites>
