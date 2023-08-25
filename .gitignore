@@ -28,3 +28,7 @@ vignettes/*.md
 vignettes/*.R
 coverage.*
 .vscode/
+
+tests/testthat/junit-result.xml
+
+tests/unit_testing_results.rds

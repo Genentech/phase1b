@@ -11,11 +11,11 @@ dbetabinom(x, m, a, b, log = FALSE)
 
 \item{m}{(\code{number}):\cr number of trials.}
 
-\item{a}{(\code{number}):\cr first parameter of the beta distribution.}
+\item{a}{(\code{numeric}):\cr first parameter of the beta distribution.}
 
-\item{b}{(\code{number}):\cr second parameter of the beta distribution.}
+\item{b}{(\code{numeric}):\cr second parameter of the beta distribution.}
 
-\item{log}{(\code{flag}):\cr return the log value (not default).}
+\item{log}{(\code{flag}):\cr whether to return the log density value (not default).}
 }
 \value{
 The density values of the beta-binomial distribution at \code{x}.
@@ -23,12 +23,13 @@ The density values of the beta-binomial distribution at \code{x}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Calculates the density function of the beta-binomial distribution
-
-Note that \code{x} can be a vector.
+Calculates the density function of the beta-binomial distribution.
 
 The beta-binomial density function has the following form:
 \verb{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
+}
+\note{
+\code{x}, \code{a} and \code{b} can be vectors.
 }
 \examples{
 dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4, log = FALSE)
