@@ -2,57 +2,67 @@
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Calculates the density function of the beta-binomial distribution
-#'
-#' Note that `x` can be a vector.
+#' Calculates the density function of the beta-binomial distribution.
 #'
 #' The beta-binomial density function has the following form:
 #' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
-#' @typed x : number
-#'  number of successes
+#' @typed x : numeric
+#'  number of successes.
 #' @typed m : number
-#'  number of trials
+#'  number of trials.
 #' @typed a : numeric
-#'  first parameter of the beta distribution
+#'  first parameter of the beta distribution.
 #' @typed b : numeric
-#'  second parameter of the beta distribution
-#' @return the density values of the beta-binomial distribution at `x`
+#'  second parameter of the beta distribution.
+#' @typed log : flag
+#'  whether to return the log density value (not default).
+#' @return The density values of the beta-binomial distribution at `x`.
+#'
+#' @note `x`, `a` and `b` can be vectors.
 #'
 #' @example examples/dbetabinom.R
 #' @export
-dbetabinom <- function(x, m, a, b) {
+dbetabinom <- function(x, m, a, b, log = FALSE) {
   assert_numeric(x, lower = 0, upper = m, finite = TRUE)
-  assert_numeric(m, lower = 0, finite = TRUE)
+  assert_number(m, lower = 0, finite = TRUE)
   assert_numeric(a, lower = 0, finite = TRUE)
   assert_numeric(b, lower = 0, finite = TRUE)
-  logRet <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
-  exp(logRet)
+  assert_flag(log)
+  log_ret <- lchoose(m, x) + lbeta(x + a, m - x + b) - lbeta(a, b)
+  if (log) {
+    log_ret
+  } else {
+    exp(log_ret)
+  }
 }
 
 
 #' Beta-mixture-binomial density function
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Calculates the density function for a mixture of beta-binomial distributions.
 #'
-#' Note that  can be a vector. ## TODO markdown syntax
-#'
-#' @typed x : number
-#'  number of successes
+#' @typed x : numeric
+#'  number of successes.
 #' @typed m : number
-#'  number of trials
-#' @typed par : numeric matrix
+#'  number of trials.
+#' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#'  weights the mixture weights of the beta mixture prior
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : numeric
+#'  the mixture weights of the beta mixture prior.
 #' @typed log : flag
-#'  return the log value? (not default)
+#'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
+#' @note `x` can be a vector.
 #'
+#' @example examples/dbetabinomMix.R
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
-  # TODO par has to columns, assert this, weights have same dim as par1 and 2
-  # TODO weight assert numeric
+  assert_matrix(par, min.rows = 1, min.cols = 2)
+  assert_flag(log)
   ret <- sum(weights * dbetabinom(x, m, par[, 1], par[, 2]))
   if (log) {
     log(ret)

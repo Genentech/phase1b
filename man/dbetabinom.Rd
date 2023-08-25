@@ -4,39 +4,37 @@
 \alias{dbetabinom}
 \title{Beta-binomial density function}
 \usage{
-dbetabinom(x, m, a, b)
+dbetabinom(x, m, a, b, log = FALSE)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{m}{(\code{number}):\cr number of trials}
+\item{m}{(\code{number}):\cr number of trials.}
 
-\item{a}{(\code{numeric}):\cr first parameter of the beta distribution}
+\item{a}{(\code{numeric}):\cr first parameter of the beta distribution.}
 
-\item{b}{(\code{numeric}):\cr second parameter of the beta distribution}
+\item{b}{(\code{numeric}):\cr second parameter of the beta distribution.}
+
+\item{log}{(\code{flag}):\cr whether to return the log density value (not default).}
 }
 \value{
-the density values of the beta-binomial distribution at \code{x}
+The density values of the beta-binomial distribution at \code{x}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Calculates the density function of the beta-binomial distribution
-
-Note that \code{x} can be a vector.
+Calculates the density function of the beta-binomial distribution.
 
 The beta-binomial density function has the following form:
 \verb{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
 }
+\note{
+\code{x}, \code{a} and \code{b} can be vectors.
+}
 \examples{
-## Calculating the beta binomial density, x = 2; m = 29; a = 0.2; b = 0.4
-##
-## when p(x) = choose(29,2)*beta(2.2,27.4)/beta(0.2,0.4) = 0.04286893
-##
-dbetabinom(2, 29, 0.2, 0.4)
+dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4, log = FALSE)
 
-## Can also specify x as a vector, x = 1:28
-##
-##
-dbetabinom(1:28, 29, 0.2, 0.4)
+# Can also specify x as a vector.
+
+dbetabinom(x = 1:28, m = 29, a = 0.2, b = 0.4, log = FALSE)
 }
