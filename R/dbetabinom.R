@@ -149,11 +149,11 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Note that `x` can be a vector.
+#' Calculates the cdf of the beta-mixture
 #'
 #' @typed x : number
 #'  the abscissa.
-#' @typed par : matrix or array
+#' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : matrix
@@ -163,11 +163,15 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'  and otherwise `P[X > x]`.
 #' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 #'
+#' @note `x` can be a vector.
+#'
+#' @example examples/pbetaMix.R
 #' @export
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   assert_numeric(x, lower = 0, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
   assert_vector(par)
+  assert_flag(lower.tail)
   ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
   ret
 }
@@ -176,9 +180,9 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 
 #' Beta-mixture quantile function
 #'
-#' @description `r lifecycle::badge("experimental")`
+#'  @description `r lifecycle::badge("experimental")`
 #'
-#' Note that `x` can be a vector.
+#' Calculates the quantile where x support is at the intersection of cdf and quantile function at chosen quantile/s
 #'
 #' @typed q : numeric
 #'  the required quantile.
@@ -187,16 +191,19 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : matrix
 #'  the mixture weights of the beta mixture prior.
+#' @typed lower.tail : flag
+#'  whether cdf at x taken at lower or upper tail
 #' @return the abscissa.
 #'
+#' @example examples/qbetaMix.R
 #' @export
 qbetaMix <- function(q, par, weights, lower.tail) {
   f <- function(pi) {
+    assert_numeric(pi, lower = 0, finite = TRUE)
     pbetaMix(x = pi, par = par, weights = weights) - q
   }
-  assert_number(f, lower = 0, upper = 1, finite = TRUE)
   unirootResult <- uniroot(f, lower = 0, upper = 1)
-  assert_number(unirootResult, lower = 0, upper = 1, finite = TRUE)
+  assert_number(unirootResult$f.root)
   if (unirootResult$iter < 0) {
     NA
   } else {
