@@ -158,7 +158,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior which add up to 1.
-#' @typed lower.tail : logical # TODO Why not flag
+#' @typed lower.tail : flag
 #'  if TRUE (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
 #' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
