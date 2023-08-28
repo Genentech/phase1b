@@ -210,4 +210,4 @@ qbetaMix <- function(q, par, weights, lower.tail) {
     unirootResult$root
   }
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "q")
+qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")
