@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="dbetabinom" timestamp="2023-08-28T07:13:20Z" hostname="a264759ce741" tests="13" skipped="0" failures="0" errors="0" time="0.269">
-    <testcase time="0.012" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
-    <testcase time="0.079" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
-    <testcase time="0.022" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs"/>
-    <testcase time="0.00600000000000001" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
-    <testcase time="0.00900000000000001" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
-    <testcase time="0.0099999999999999" classname="dbetabinom" name="the_sum_of_the_beta_mixture_density_for_all_x_is_1"/>
-    <testcase time="0.00900000000000001" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_numeric_result"/>
-    <testcase time="0.00800000000000001" classname="dbetabinom" name="The_pbetaMix_has_incrementally_higher_cdf_with_increase_x_support"/>
-    <testcase time="0.00900000000000001" classname="dbetabinom" name="The_pbetaMix_has_the_correct_number_result"/>
-    <testcase time="0.00800000000000001" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
-    <testcase time="0.011" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
-    <testcase time="0.011" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
-    <testcase time="0.075" classname="dbetabinom" name="The_qbetaMix_has_a_number_result"/>
+  <testsuite name="dbetabinom" timestamp="2023-08-28T11:36:03Z" hostname="905199cf88e3" tests="13" skipped="0" failures="0" errors="0" time="0.361">
+    <testcase time="0.013" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
+    <testcase time="0.097" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
+    <testcase time="0.027" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs"/>
+    <testcase time="0.012" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
+    <testcase time="0.012" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
+    <testcase time="0.0119999999999999" classname="dbetabinom" name="the_sum_of_the_beta_mixture_density_for_all_x_is_1"/>
+    <testcase time="0.012" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_numeric_result"/>
+    <testcase time="0.011" classname="dbetabinom" name="The_pbetaMix_has_incrementally_higher_cdf_with_increase_x_support"/>
+    <testcase time="0.011" classname="dbetabinom" name="The_pbetaMix_has_the_correct_number_result"/>
+    <testcase time="0.011" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
+    <testcase time="0.014" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
+    <testcase time="0.015" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
+    <testcase time="0.114" classname="dbetabinom" name="The_qbetaMix_has_a_number_result"/>
   </testsuite>
-  <testsuite name="helpers" timestamp="2023-08-28T07:13:20Z" hostname="a264759ce741" tests="4" skipped="0" failures="0" errors="0" time="0.032">
-    <testcase time="0.016" classname="helpers" name="logit_works_as_expected"/>
+  <testsuite name="helpers" timestamp="2023-08-28T11:36:03Z" hostname="905199cf88e3" tests="4" skipped="0" failures="0" errors="0" time="0.044">
+    <testcase time="0.023" classname="helpers" name="logit_works_as_expected"/>
     <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.003" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.00900000000000001" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
+    <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.013" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
   </testsuite>
 </testsuites>
