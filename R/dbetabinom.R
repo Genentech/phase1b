@@ -170,7 +170,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
   assert_numeric(x, lower = 0, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
-  assert_vector(par)
+  assert_matrix(par)
   assert_flag(lower.tail)
   ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
   ret
@@ -182,7 +182,7 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 #'
 #'  @description `r lifecycle::badge("experimental")`
 #'
-#' Calculates the quantile where x support is at the intersection of cdf and quantile function at chosen quantile/s
+#' Calculates the quantile where x support is at the intersection of cdf and quantile function
 #'
 #' @typed q : numeric
 #'  the required quantile.

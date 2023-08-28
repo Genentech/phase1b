@@ -23,7 +23,7 @@ the abscissa.
 @description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-Calculates the quantile where x support is at the intersection of cdf and quantile function at chosen quantile/s
+Calculates the quantile where x support is at the intersection of cdf and quantile function
 }
 \examples{
 ## Only 1 mixture component, i.e., weights = 1
