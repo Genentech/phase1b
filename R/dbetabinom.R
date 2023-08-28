@@ -149,7 +149,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Calculates the cdf of the beta-mixture
+#' Calculates the cdf of the beta-mixture distribution.
 #'
 #' @typed x : number
 #'  the abscissa.
