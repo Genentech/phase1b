@@ -206,6 +206,7 @@ qbetaMix <- function(q, par, weights, lower.tail) {
   if (unirootResult$iter < 0) {
     NA
   } else {
+    assert_number(unirootResult$root)
     unirootResult$root
   }
 }
