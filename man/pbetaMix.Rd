@@ -2,7 +2,7 @@
 % Please edit documentation in R/dbetabinom.R
 \name{pbetaMix}
 \alias{pbetaMix}
-\title{Beta-mixture cdf}
+\title{Beta-Mixture CDF}
 \usage{
 pbetaMix(x, par, weights, lower.tail = TRUE)
 }
