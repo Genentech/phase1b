@@ -145,7 +145,7 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
 dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 
-#' Beta-mixture cdf
+#' Beta-Mixture CDF
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
