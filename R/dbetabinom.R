@@ -157,7 +157,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : matrix
-#'  the mixture weights of the beta mixture prior.
+#'  the mixture weights of the beta mixture prior which add up to 1.
 #' @typed lower.tail : logical # TODO Why not flag
 #'  if TRUE (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
