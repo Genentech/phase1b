@@ -1,6 +1,6 @@
 pbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
 
-## Can get the one minus CDF values
+# Can get the one minus CDF values.
 pbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1, lower.tail = FALSE)
 
 ## With 2 mixture components
