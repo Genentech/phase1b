@@ -203,7 +203,6 @@ qbetaMix <- function(q, par, weights, lower.tail) {
     pbetaMix(x = pi, par = par, weights = weights) - q
   }
   unirootResult <- uniroot(f, lower = 0, upper = 1)
-  assert_number(unirootResult$f.root)
   if (unirootResult$iter < 0) {
     NA
   } else {
