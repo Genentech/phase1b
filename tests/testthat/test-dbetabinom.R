@@ -63,12 +63,12 @@ test_that("Beta mixture density has the correct numeric result", {
 
 test_that("The pbetaMix has incrementally higher cdf with increase x support", {
   is_lower <- pbetaMix(
-    x = 0.3,
+    q = 0.3,
     par = rbind(c(0.2, 0.4)),
     weights = 1
   )
   is_higher <- pbetaMix(
-    x = 0.5,
+    q = 0.5,
     par = rbind(c(0.2, 0.4)),
     weights = 1
   )
@@ -77,7 +77,7 @@ test_that("The pbetaMix has incrementally higher cdf with increase x support", {
 
 test_that("The pbetaMix has the correct number result", {
   result <- pbetaMix(
-    x = 0.3,
+    q = 0.3,
     par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
@@ -86,13 +86,13 @@ test_that("The pbetaMix has the correct number result", {
 
 test_that("The complement of pbetaMix can be derived with a different lower.tail flag", {
   result <- pbetaMix(
-    x = 0.3,
+    q = 0.3,
     par = rbind(c(0.2, 0.4)),
     weights = 1,
     lower.tail = FALSE
   )
   result_inversed <- pbetaMix(
-    x = 0.3,
+    q = 0.3,
     par = rbind(c(0.2, 0.4)),
     weights = 1,
     lower.tail = TRUE
@@ -104,7 +104,7 @@ test_that("The complement of pbetaMix can be derived with a different lower.tail
 
 test_that("The qbetaMix has the correct number result", {
   result <- qbetaMix(
-    q = 0.6,
+    qt = 0.6,
     par = rbind(c(0.2, 0.4)),
     weights = 1
   )
@@ -113,7 +113,7 @@ test_that("The qbetaMix has the correct number result", {
 
 test_that("The qbetaMix has the correct number result", {
   result <- qbetaMix(
-    q = 0.6,
+    qt = 0.6,
     par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
@@ -122,7 +122,7 @@ test_that("The qbetaMix has the correct number result", {
 
 test_that("The qbetaMix has a number result", {
   result <- qbetaMix(
-    q = seq(0, 1, .01),
+    qt = seq(0, 1, .01),
     par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )

@@ -1,19 +1,19 @@
 ## Only 1 mixture component, i.e., weights = 1
 qbetaMix(
-  q = 0.60,
+  qt = 0.60,
   par = rbind(c(0.2, 0.4)),
   weights = 1
 )
 
 ## With 2 mixture components
 qbetaMix(
-  q = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
+  qt = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
 
 ## Can also specify q as a vector
 qbetaMix(
-  q = seq(0, 1, .01),
+  qt = seq(0, 1, .01),
   par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )

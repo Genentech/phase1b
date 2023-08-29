@@ -4,17 +4,17 @@
 \alias{qbetaMix}
 \title{Beta-mixture quantile function}
 \usage{
-qbetaMix(q, par, weights, lower.tail)
+qbetaMix(qt, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{q}{(\code{numeric}):\cr the required quantile.}
-
 \item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{(\code{flag}):\cr whether cdf at x taken at lower or upper tail}
+
+\item{q}{(\code{numeric}):\cr the required quantile.}
 }
 \value{
 the abscissa.
@@ -28,20 +28,20 @@ Calculates the quantile where x support is at the intersection of cdf and quanti
 \examples{
 ## Only 1 mixture component, i.e., weights = 1
 qbetaMix(
-  q = 0.60,
+  qt = 0.60,
   par = rbind(c(0.2, 0.4)),
   weights = 1
 )
 
 ## With 2 mixture components
 qbetaMix(
-  q = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
+  qt = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
 
 ## Can also specify q as a vector
 qbetaMix(
-  q = seq(0, 1, .01),
+  qt = seq(0, 1, .01),
   par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )

@@ -4,18 +4,18 @@
 \alias{pbetaMix}
 \title{Beta-Mixture CDF}
 \usage{
-pbetaMix(x, par, weights, lower.tail = TRUE)
+pbetaMix(q, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{(\code{number}):\cr the abscissa.}
-
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
-\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior which add up to 1.}
 
-\item{lower.tail}{(\code{logical # TODO Why not flag}):\cr if TRUE (default), probabilities are \code{P[X <= x]},
+\item{lower.tail}{(\code{flag}):\cr if TRUE (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}.}
+
+\item{x}{(\code{number}):\cr the abscissa.}
 }
 \value{
 the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
@@ -23,26 +23,26 @@ the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Calculates the cdf of the beta-mixture
+Calculates the cdf of the beta-mixture distribution.
 }
 \note{
 \code{x} can be a vector.
 }
 \examples{
-pbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
+pbetaMix(q = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
 
-## Can get the one minus CDF values
-pbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1, lower.tail = FALSE)
+# Can get the one minus CDF values.
+pbetaMix(q = 0.3, par = rbind(c(0.2, 0.4)), weights = 1, lower.tail = FALSE)
 
 ## With 2 mixture components
 pbetaMix(
-  x = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
+  q = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
 
 ## Can also specify x as a vector.
 pbetaMix(
-  x = seq(0, 1, .01), par = rbind(c(0.2, 0.4), c(1, 1)),
+  q = seq(0, 1, .01), par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
 }

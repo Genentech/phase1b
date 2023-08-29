@@ -167,15 +167,15 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' @example examples/pbetaMix.R
 #' @export
-pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
-  assert_numeric(x, lower = 0, finite = TRUE)
+pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
+  assert_numeric(q, lower = 0, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
   assert_matrix(par)
   assert_flag(lower.tail)
-  ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
+  ret <- sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
   ret
 }
-pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
+pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
 #' Beta-mixture quantile function
@@ -197,10 +197,9 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
 #'
 #' @example examples/qbetaMix.R
 #' @export
-qbetaMix <- function(q, par, weights, lower.tail) {
+qbetaMix <- function(qt, par, weights, lower.tail = TRUE) {
   f <- function(pi) {
-    assert_numeric(pi, lower = 0, finite = TRUE)
-    pbetaMix(x = pi, par = par, weights = weights) - q
+    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - qt
   }
   unirootResult <- uniroot(f, lower = 0, upper = 1)
   if (unirootResult$iter < 0) {
@@ -210,4 +209,4 @@ qbetaMix <- function(q, par, weights, lower.tail) {
     unirootResult$root
   }
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")
+qbetaMix <- Vectorize(qbetaMix, vectorize.args = "qt")
