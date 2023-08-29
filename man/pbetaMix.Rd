@@ -7,6 +7,8 @@
 pbetaMix(q, par, weights, lower.tail = TRUE)
 }
 \arguments{
+\item{q}{(\code{number}):\cr the abscissa.}
+
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
@@ -14,8 +16,6 @@ corresponding to the beta parameters of the K components.}
 
 \item{lower.tail}{(\code{flag}):\cr if \code{TRUE} (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}.}
-
-\item{x}{(\code{number}):\cr the abscissa.}
 }
 \value{
 The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
@@ -23,10 +23,10 @@ The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Calculates the cdf of the beta-mixture distribution.
+Calculates the CDF of the Beta-Mixture distribution.
 }
 \note{
-\code{x} can be a vector.
+\code{q} can be a vector.
 }
 \examples{
 pbetaMix(q = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)

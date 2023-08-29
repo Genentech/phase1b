@@ -149,9 +149,9 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Calculates the cdf of the beta-mixture distribution.
+#' Calculates the CDF of the Beta-Mixture distribution.
 #'
-#' @typed x : number
+#' @typed q : number
 #'  the abscissa.
 #' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
@@ -163,7 +163,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #'  and otherwise `P[X > x]`.
 #' @return The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 #'
-#' @note `x` can be a vector.
+#' @note `q` can be a vector.
 #'
 #' @example examples/pbetaMix.R
 #' @export
@@ -181,7 +181,7 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#'  Calculates the quantile of the Beta-Mixture distribution for a given probability.
+#' Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
 #' @typed qt : numeric
 #'  the required probability
@@ -191,8 +191,8 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #' @typed weights : matrix
 #'  the mixture weights of the beta mixture prior.
 #' @typed lower.tail : flag
-#'  whether cdf at x taken at lower or upper tail
-#' @return the abscissa.
+#'  whether CDF at x taken at lower or upper tail
+#' @return The abscissa.
 #'
 #' @example examples/qbetaMix.R
 #' @export

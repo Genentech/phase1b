@@ -14,15 +14,14 @@ corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
-\item{lower.tail}{(\code{flag}):\cr whether cdf at x taken at lower or upper tail}
+\item{lower.tail}{(\code{flag}):\cr whether CDF at x taken at lower or upper tail}
 }
 \value{
-the abscissa.
+The abscissa.
 }
 \description{
-@description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Calculates the quantile of the Beta-Mixture distribution for a given probability.
 }
 \examples{
