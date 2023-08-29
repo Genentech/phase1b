@@ -649,7 +649,7 @@ user could calculate the probability that the PET-CR rate is greater than 60%, i
 $\Pr(P_E > 0.6 \given x)$, by issuing the following command:
 
 ```{r Example_1_Postprob, echo=TRUE}
-postprob(q = 55, n = 80, p = 0.6, parE = c(5.75, 4.25))
+postprob(x = 55, n = 80, p = 0.6, parE = c(5.75, 4.25))
 ```
 
 Here the result indicates that there is a roughly 93% chance that the PET-CR
