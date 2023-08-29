@@ -179,7 +179,7 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 #' Beta-Mixture Quantile function
 #'
-#'  @description `r lifecycle::badge("experimental")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #'  Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
