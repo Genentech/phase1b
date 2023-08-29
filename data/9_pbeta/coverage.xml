@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.0197547683923706" branch-rate="0" lines-covered="29" lines-valid="1468" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-28 12:29:06.936747">
+<coverage line-rate="0.0190865712338105" branch-rate="0" lines-covered="28" lines-valid="1467" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-29 09:32:44.310751">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.0197547683923706" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.0190865712338105" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="0" branch-rate="0" complexity="0">
           <methods>
@@ -271,7 +271,7 @@
             <line number="77" hits="0" branch="false"/>
           </lines>
         </class>
-        <class name="dbetabinom.R" filename="R/dbetabinom.R" line-rate="0.482142857142857" branch-rate="0" complexity="0">
+        <class name="dbetabinom.R" filename="R/dbetabinom.R" line-rate="0.472727272727273" branch-rate="0" complexity="0">
           <methods>
             <method name="dbetabinom" signature="" line-rate="0.888888888888889" branch-rate="0" complexity="0">
               <lines>
@@ -348,9 +348,8 @@
                 <line number="203" hits="103" branch="false"/>
                 <line number="204" hits="103" branch="false"/>
                 <line number="205" hits="103" branch="false"/>
-                <line number="206" hits="103" branch="false"/>
-                <line number="207" hits="103" branch="false"/>
-                <line number="210" hits="103" branch="false"/>
+                <line number="208" hits="103" branch="false"/>
+                <line number="209" hits="103" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -408,9 +407,8 @@
             <line number="203" hits="103" branch="false"/>
             <line number="204" hits="103" branch="false"/>
             <line number="205" hits="103" branch="false"/>
-            <line number="206" hits="103" branch="false"/>
-            <line number="207" hits="103" branch="false"/>
-            <line number="210" hits="103" branch="false"/>
+            <line number="208" hits="103" branch="false"/>
+            <line number="209" hits="103" branch="false"/>
           </lines>
         </class>
         <class name="helpers.R" filename="R/helpers.R" line-rate="0.117647058823529" branch-rate="0" complexity="0">
