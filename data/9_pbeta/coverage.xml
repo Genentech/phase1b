@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.0184174624829468" branch-rate="0" lines-covered="27" lines-valid="1466" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-29 13:58:38.952926">
+<coverage line-rate="0.0184049079754601" branch-rate="0" lines-covered="27" lines-valid="1467" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-29 14:12:17.842623">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.0184174624829468" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.0184049079754601" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="0" branch-rate="0" complexity="0">
           <methods>
@@ -2613,13 +2613,14 @@
                 <line number="77" hits="0" branch="false"/>
                 <line number="78" hits="0" branch="false"/>
                 <line number="79" hits="0" branch="false"/>
-                <line number="83" hits="0" branch="false"/>
+                <line number="80" hits="0" branch="false"/>
                 <line number="84" hits="0" branch="false"/>
                 <line number="85" hits="0" branch="false"/>
                 <line number="86" hits="0" branch="false"/>
-                <line number="88" hits="0" branch="false"/>
+                <line number="87" hits="0" branch="false"/>
                 <line number="89" hits="0" branch="false"/>
-                <line number="91" hits="0" branch="false"/>
+                <line number="90" hits="0" branch="false"/>
+                <line number="92" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2636,13 +2637,14 @@
             <line number="77" hits="0" branch="false"/>
             <line number="78" hits="0" branch="false"/>
             <line number="79" hits="0" branch="false"/>
-            <line number="83" hits="0" branch="false"/>
+            <line number="80" hits="0" branch="false"/>
             <line number="84" hits="0" branch="false"/>
             <line number="85" hits="0" branch="false"/>
             <line number="86" hits="0" branch="false"/>
-            <line number="88" hits="0" branch="false"/>
+            <line number="87" hits="0" branch="false"/>
             <line number="89" hits="0" branch="false"/>
-            <line number="91" hits="0" branch="false"/>
+            <line number="90" hits="0" branch="false"/>
+            <line number="92" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="postprobDist.R" filename="R/postprobDist.R" line-rate="0" branch-rate="0" complexity="0">
