@@ -12,13 +12,13 @@ corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior which add up to 1.}
 
-\item{lower.tail}{(\code{flag}):\cr if TRUE (default), probabilities are \code{P[X <= x]},
+\item{lower.tail}{(\code{flag}):\cr if \code{TRUE} (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}.}
 
 \item{x}{(\code{number}):\cr the abscissa.}
 }
 \value{
-the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
+The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

@@ -159,33 +159,32 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior which add up to 1.
 #' @typed lower.tail : flag
-#'  if TRUE (default), probabilities are `P[X <= x]`,
+#'  if `TRUE` (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
-#' @return the (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
+#' @return The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
 #'
 #' @note `x` can be a vector.
 #'
 #' @example examples/pbetaMix.R
 #' @export
 pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
-  assert_numeric(q, lower = 0, finite = TRUE)
+  assert_number(q, lower = 0, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
   assert_matrix(par)
   assert_flag(lower.tail)
-  ret <- sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
-  ret
+  sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
 }
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
-#' Beta-mixture quantile function
+#' Beta-Mixture Quantile function
 #'
 #'  @description `r lifecycle::badge("experimental")`
 #'
-#' Calculates the quantile where x support is at the intersection of cdf and quantile function
+#'  Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
-#' @typed q : numeric
-#'  the required quantile.
+#' @typed qt : numeric
+#'  the required probability
 #' @typed par : number
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.

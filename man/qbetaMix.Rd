@@ -2,19 +2,19 @@
 % Please edit documentation in R/dbetabinom.R
 \name{qbetaMix}
 \alias{qbetaMix}
-\title{Beta-mixture quantile function}
+\title{Beta-Mixture Quantile function}
 \usage{
 qbetaMix(qt, par, weights, lower.tail = TRUE)
 }
 \arguments{
+\item{qt}{(\code{numeric}):\cr the required probability}
+
 \item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{(\code{flag}):\cr whether cdf at x taken at lower or upper tail}
-
-\item{q}{(\code{numeric}):\cr the required quantile.}
 }
 \value{
 the abscissa.
@@ -23,7 +23,7 @@ the abscissa.
 @description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-Calculates the quantile where x support is at the intersection of cdf and quantile function
+Calculates the quantile of the Beta-Mixture distribution for a given probability.
 }
 \examples{
 ## Only 1 mixture component, i.e., weights = 1
