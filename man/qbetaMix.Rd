@@ -4,17 +4,17 @@
 \alias{qbetaMix}
 \title{Beta-Mixture Quantile function}
 \usage{
-qbetaMix(qt, par, weights, lower.tail = TRUE)
+qbetaMix(p, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{qt}{(\code{numeric}):\cr the required probability}
-
 \item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{(\code{flag}):\cr whether CDF at x taken at lower or upper tail}
+
+\item{qt}{(\code{numeric}):\cr the required probability}
 }
 \value{
 The abscissa.
@@ -27,20 +27,20 @@ Calculates the quantile of the Beta-Mixture distribution for a given probability
 \examples{
 ## Only 1 mixture component, i.e., weights = 1
 qbetaMix(
-  qt = 0.60,
+  p = 0.60,
   par = rbind(c(0.2, 0.4)),
   weights = 1
 )
 
 ## With 2 mixture components
 qbetaMix(
-  qt = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
+  p = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
 
 ## Can also specify q as a vector
 qbetaMix(
-  qt = seq(0, 1, .01),
+  p = seq(0, 1, .01),
   par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )

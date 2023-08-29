@@ -18,7 +18,7 @@ corresponding to the beta parameters of the K components.}
 and otherwise \code{P[X > x]}.}
 }
 \value{
-The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
+The (one minus) cdf value
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

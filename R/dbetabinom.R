@@ -161,7 +161,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #' @typed lower.tail : flag
 #'  if `TRUE` (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
-#' @return The (one minus) cdf value # TODO DO WE NEED THIS return and where is the "1-".
+#' @return The (one minus) cdf value
 #'
 #' @note `q` can be a vector.
 #'
@@ -196,9 +196,9 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #'
 #' @example examples/qbetaMix.R
 #' @export
-qbetaMix <- function(qt, par, weights, lower.tail = TRUE) {
+qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   f <- function(pi) {
-    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - qt
+    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - p
   }
   unirootResult <- uniroot(f, lower = 0, upper = 1)
   if (unirootResult$iter < 0) {
@@ -208,4 +208,4 @@ qbetaMix <- function(qt, par, weights, lower.tail = TRUE) {
     unirootResult$root
   }
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "qt")
+qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")
