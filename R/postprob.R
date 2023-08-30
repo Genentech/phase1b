@@ -73,7 +73,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
 
     ## now compute updated parameters
     betamixPost <- getBetamixPost(
-      x = x,
+      x = xi,
       n = n,
       par = parE,
       weights = weights
@@ -83,7 +83,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
   ## now compute the survival function at p, i.e. 1 - cdf at p:
   ret <- with(
     betamixPost,
-    pbetaMix(q = p, par = par, weights = weights, lower.tail = FALSE)
+    pbetaMix(q = xi, par = par, weights = weights, lower.tail = FALSE)
   )
 
   if (log.p) {

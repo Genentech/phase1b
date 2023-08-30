@@ -66,6 +66,6 @@ postprob(
       c(0.6, 0.4),
       c(1, 1)
     ),
-  weights = c(0.6, 0.4)
+  weights = c(0.5, 0.4)
 )
 }
