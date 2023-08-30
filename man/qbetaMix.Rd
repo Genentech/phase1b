@@ -7,14 +7,14 @@
 qbetaMix(p, par, weights, lower.tail = TRUE)
 }
 \arguments{
+\item{p}{(\code{numeric}):\cr the required probability}
+
 \item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
 
 \item{lower.tail}{(\code{flag}):\cr whether CDF at x taken at lower or upper tail}
-
-\item{qt}{(\code{numeric}):\cr the required probability}
 }
 \value{
 The abscissa.

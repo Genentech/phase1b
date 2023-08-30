@@ -183,7 +183,7 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #'
 #' Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
-#' @typed qt : numeric
+#' @typed p : numeric
 #'  the required probability
 #' @typed par : number
 #'  the beta parameters matrix, with K rows and 2 columns,
