@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="dbetabinom" timestamp="2023-08-30T07:23:54Z" hostname="aa9c4fb5d9be" tests="13" skipped="0" failures="0" errors="0" time="0.299">
-    <testcase time="0.013" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
-    <testcase time="0.088" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
-    <testcase time="0.027" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs"/>
-    <testcase time="0.00700000000000001" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
-    <testcase time="0.01" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
+  <testsuite name="dbetabinom" timestamp="2023-08-30T11:10:29Z" hostname="3c468d05ec33" tests="13" skipped="0" failures="0" errors="0" time="0.308">
+    <testcase time="0.015" classname="dbetabinom" name="the_dbetabinom_density_for_every_x_support_is_between_0_and_1"/>
+    <testcase time="0.087" classname="dbetabinom" name="the_sum_of_the_dbetabinom_density_for_all_x_is_1"/>
+    <testcase time="0.026" classname="dbetabinom" name="Beta_binomial_density_has_correct_numeric_result_for_specific_inputs"/>
+    <testcase time="0.00800000000000001" classname="dbetabinom" name="the_beta_mixture_has_a_result_between_0_and_1"/>
+    <testcase time="0.0109999999999999" classname="dbetabinom" name="the_beta_mixture_density_has_the_correct_numeric_result"/>
     <testcase time="0.011" classname="dbetabinom" name="the_sum_of_the_beta_mixture_density_for_all_x_is_1"/>
     <testcase time="0.01" classname="dbetabinom" name="Beta_mixture_density_has_the_correct_numeric_result"/>
     <testcase time="0.01" classname="dbetabinom" name="The_pbetaMix_has_incrementally_higher_cdf_with_increase_x_support"/>
-    <testcase time="0.01" classname="dbetabinom" name="The_pbetaMix_has_the_correct_number_result"/>
-    <testcase time="0.0089999999999999" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
-    <testcase time="0.012" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
+    <testcase time="0.00900000000000001" classname="dbetabinom" name="The_pbetaMix_has_the_correct_number_result"/>
+    <testcase time="0.01" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
+    <testcase time="0.011" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
     <testcase time="0.013" classname="dbetabinom" name="The_qbetaMix_has_the_correct_number_result"/>
-    <testcase time="0.0790000000000001" classname="dbetabinom" name="The_qbetaMix_has_a_number_result"/>
+    <testcase time="0.087" classname="dbetabinom" name="The_qbetaMix_has_a_number_result"/>
   </testsuite>
-  <testsuite name="helpers" timestamp="2023-08-30T07:23:54Z" hostname="aa9c4fb5d9be" tests="4" skipped="0" failures="0" errors="0" time="0.036">
-    <testcase time="0.018" classname="helpers" name="logit_works_as_expected"/>
+  <testsuite name="helpers" timestamp="2023-08-30T11:10:29Z" hostname="3c468d05ec33" tests="4" skipped="0" failures="0" errors="0" time="0.04">
+    <testcase time="0.021" classname="helpers" name="logit_works_as_expected"/>
     <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.00399999999999989" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.005" classname="helpers" name="logit_works_as_expected"/>
     <testcase time="0.01" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
   </testsuite>
 </testsuites>
