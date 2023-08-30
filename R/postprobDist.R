@@ -126,7 +126,7 @@ postprobDist <- function(x, n,
   bounds <- with(
     controlBetamixPost,
     qbetaMix(
-      q = c(epsilon, 1 - epsilon),
+      p = c(epsilon, 1 - epsilon),
       par = par,
       weights = weights
     )
