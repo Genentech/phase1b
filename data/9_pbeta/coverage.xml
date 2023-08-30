@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.0184049079754601" branch-rate="0" lines-covered="27" lines-valid="1467" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-30 13:49:22.991122">
+<coverage line-rate="0.0183548606390211" branch-rate="0" lines-covered="27" lines-valid="1471" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-30 14:42:26.382931">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.0184049079754601" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.0183548606390211" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="0" branch-rate="0" complexity="0">
           <methods>
@@ -2709,9 +2709,13 @@
                 <line number="140" hits="0" branch="false"/>
                 <line number="141" hits="0" branch="false"/>
                 <line number="142" hits="0" branch="false"/>
+                <line number="143" hits="0" branch="false"/>
                 <line number="144" hits="0" branch="false"/>
                 <line number="145" hits="0" branch="false"/>
-                <line number="147" hits="0" branch="false"/>
+                <line number="146" hits="0" branch="false"/>
+                <line number="148" hits="0" branch="false"/>
+                <line number="149" hits="0" branch="false"/>
+                <line number="151" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2774,9 +2778,13 @@
             <line number="140" hits="0" branch="false"/>
             <line number="141" hits="0" branch="false"/>
             <line number="142" hits="0" branch="false"/>
+            <line number="143" hits="0" branch="false"/>
             <line number="144" hits="0" branch="false"/>
             <line number="145" hits="0" branch="false"/>
-            <line number="147" hits="0" branch="false"/>
+            <line number="146" hits="0" branch="false"/>
+            <line number="148" hits="0" branch="false"/>
+            <line number="149" hits="0" branch="false"/>
+            <line number="151" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="predprob.R" filename="R/predprob.R" line-rate="0" branch-rate="0" complexity="0">
