@@ -133,7 +133,11 @@ postprobDist <- function(x, n,
   )
   intRes <- integrate(
     f = integrand,
-    lower = bounds[1],
+    lower =
+      max(
+        bounds[1],
+        ifelse(relativeDelta, 0, 0 - delta)
+      ),
     upper =
       min(
         ifelse(relativeDelta, 1, 1 - delta),
