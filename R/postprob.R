@@ -1,27 +1,39 @@
-#' @include dbetabinom.R
+#'  @include dbetabinom.R
 NULL
 
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Compute the posterior probability to be above threshold assuming a beta prior
 #' on the response rate
 #'
-#' Computes the posterior probability Pr(P_E > p | data). Prior is P_E ~ beta(a, b),
+#' Computes the posterior probability `Pr(P_E > p | data)`. Prior is `P_E ~ beta(a, b)`,
 #' with default set to be a uniform or beta(1,1).
 #'
 #' We observed x successes in n trials and so the posterior is
-#' P_E | data  ~ beta(a + x, b + n - x).
+#' `P_E | data  ~ beta(a + x, b + n - x)`.
 #'
-#' @param x number of successes
-#' @param n number of patients
-#' @param p threshold
-#' @param a first parameter of the beta prior (successes)
-#' @param b second parameter of the beta prior (failures)
+#' @typed x : number
+#'  number of successes.
+#' @typed n : number
+#'  number of patients.
+#' @typed p : number
+#'  threshold set to compute posterior probability.
+#' @typed a : matrix
+#'  first parameter `alpha` of the beta prior (successes).
+#' @typed b : matrix
+#'  second parameter `beta` of the beta prior (failures).
 #' @return The posterior probability that the response rate P_E is above a threshold p.
 #'
-#' @importFrom stats pbeta
+#' @note that `x`, can be a vector
 #'
 #' @example examples/postprobOld.R
 #' @export
 postprobOld <- function(x, n, p, a = 1, b = 1) {
+  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
+  assert_number(a, finite = TRUE)
+  assert_number(b, finite = TRUE)
+  assert_number(n, lower = 0, finite = TRUE)
+  assert_number(p, lower = 0, upper = 1, finite = TRUE)
   stats::pbeta(p, a + x, b + n - x, lower.tail = FALSE)
 }
 

@@ -48,9 +48,9 @@ Config/roxytypes: list(format = "({type}):\\cr {description}")
 Collate:
     'Phase1b-package.R'
     'betadiff.R'
-    'dbetabinom.R'
     'postprob.R'
     'boundsPostprob.R'
+    'dbetabinom.R'
     'predprob.R'
     'boundsPredprob.R'
     'data.R'
