@@ -126,14 +126,18 @@ postprobDist <- function(x, n,
   bounds <- with(
     controlBetamixPost,
     qbetaMix(
-      q = c(epsilon, 1 - epsilon),
+      p = c(epsilon, 1 - epsilon),
       par = par,
       weights = weights
     )
   )
   intRes <- integrate(
     f = integrand,
-    lower = bounds[1],
+    lower =
+      max(
+        bounds[1],
+        ifelse(relativeDelta, 0, 0 - delta)
+      ),
     upper =
       min(
         ifelse(relativeDelta, 1, 1 - delta),

@@ -11,8 +11,15 @@
 
 
 res1 <- ocPostprobDist(
-  nn = c(10, 20, 30), p = 0.4, deltaE = 0.1, deltaF = -0.1, tL = 0.6, tU = 0.6,
-  parE = c(1, 1), parS = c(5, 25), ns = 100
+  nn = c(10, 20, 30),
+  p = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  ns = 100
 )
 
 res1$oc
@@ -22,16 +29,32 @@ res1$oc
 # this call will generate d (distance for random looks around the look locations)
 # based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
 res2 <- ocPostprobDist(
-  nn = c(10, 20, 30), p = 0.4, deltaE = 0.1, deltaF = -0.1, tL = 0.6, tU = 0.6,
-  parE = c(1, 1), parS = c(5, 25), ns = 100, nr = TRUE
+  nn = c(10, 20, 30),
+  p = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  ns = 100, nr = TRUE
 )
 
 res2$oc
 
 # specify the distance for random looks around the look locations in nn (d=5 for illustration)
 res3 <- ocPostprobDist(
-  nn = c(10, 20, 30), p = 0.4, deltaE = 0.1, deltaF = -0.1, tL = 0.6, tU = 0.6,
-  parE = c(1, 1), parS = c(5, 25), ns = 100, nr = TRUE, d = 5
+  nn = c(10, 20, 30),
+  p = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  ns = 100,
+  nr = TRUE,
+  d = 5
 )
 
 res3$oc

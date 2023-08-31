@@ -2,24 +2,47 @@
 % Please edit documentation in R/dbetabinom.R
 \name{pbetaMix}
 \alias{pbetaMix}
-\title{Beta-mixture cdf}
+\title{Beta-Mixture CDF}
 \usage{
-pbetaMix(x, par, weights, lower.tail = TRUE)
+pbetaMix(q, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{the abscissa.}
+\item{q}{(\code{number}):\cr the abscissa.}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior which add up to 1.}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X <= x]},
+\item{lower.tail}{(\code{flag}):\cr if \code{TRUE} (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}.}
 }
 \value{
-the (one minus) cdf value.
+The (one minus) cdf value
 }
 \description{
-Note that \code{x} can be a vector.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Calculates the CDF of the Beta-Mixture distribution.
+}
+\note{
+\code{q} can be a vector.
+}
+\examples{
+pbetaMix(q = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
+
+# Can get the one minus CDF values.
+pbetaMix(q = 0.3, par = rbind(c(0.2, 0.4)), weights = 1, lower.tail = FALSE)
+
+## With 2 mixture components
+pbetaMix(
+  q = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
+
+## Can also specify x as a vector.
+pbetaMix(
+  q = seq(0, 1, .01), par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
 }

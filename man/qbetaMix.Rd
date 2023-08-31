@@ -2,21 +2,46 @@
 % Please edit documentation in R/dbetabinom.R
 \name{qbetaMix}
 \alias{qbetaMix}
-\title{Beta-mixture quantile function}
+\title{Beta-Mixture Quantile function}
 \usage{
-qbetaMix(q, par, weights)
+qbetaMix(p, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{q}{the required quantile.}
+\item{p}{(\code{numeric}):\cr the required probability}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
+\item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior.}
+\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior.}
+
+\item{lower.tail}{(\code{flag}):\cr whether CDF at x taken at lower or upper tail}
 }
 \value{
-the abscissa.
+The abscissa.
 }
 \description{
-Note that \code{x} can be a vector.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Calculates the quantile of the Beta-Mixture distribution for a given probability.
+}
+\examples{
+## Only 1 mixture component, i.e., weights = 1
+qbetaMix(
+  p = 0.60,
+  par = rbind(c(0.2, 0.4)),
+  weights = 1
+)
+
+## With 2 mixture components
+qbetaMix(
+  p = 0.6, par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
+
+## Can also specify q as a vector
+qbetaMix(
+  p = seq(0, 1, .01),
+  par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
 }

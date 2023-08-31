@@ -145,46 +145,67 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
 dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 
-#' Beta-mixture cdf
+#' Beta-Mixture CDF
 #'
-#' Note that `x` can be a vector.
+#' @description `r lifecycle::badge("experimental")`
 #'
-#' @param x the abscissa.
-#' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components.
-#' @param weights the mixture weights of the beta mixture prior.
-#' @param lower.tail logical; if TRUE (default), probabilities are `P[X <= x]`,
-#' and otherwise `P[X > x]`.
-#' @return the (one minus) cdf value.
+#' Calculates the CDF of the Beta-Mixture distribution.
 #'
+#' @typed q : number
+#'  the abscissa.
+#' @typed par : matrix
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : numeric
+#'  the mixture weights of the beta mixture prior which add up to 1.
+#' @typed lower.tail : flag
+#'  if `TRUE` (default), probabilities are `P[X <= x]`,
+#'  and otherwise `P[X > x]`.
+#' @return The (one minus) cdf value
+#'
+#' @note `q` can be a vector.
+#'
+#' @example examples/pbetaMix.R
 #' @export
-pbetaMix <- function(x, par, weights, lower.tail = TRUE) {
-  ret <- sum(weights * pbeta(x, par[, 1], par[, 2], lower.tail = lower.tail))
-  return(ret)
+pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
+  assert_number(q, lower = 0, upper = 1, finite = TRUE)
+  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
+  assert_matrix(par)
+  assert_flag(lower.tail)
+  sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
 }
-pbetaMix <- Vectorize(pbetaMix, vectorize.args = "x")
+pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
-#' Beta-mixture quantile function
+#' Beta-Mixture Quantile function
 #'
-#' Note that `x` can be a vector.
+#' @description `r lifecycle::badge("experimental")`
 #'
-#' @param q  the required quantile.
-#' @param par  the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components.
-#' @param weights  the mixture weights of the beta mixture prior.
-#' @return the abscissa.
+#' Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
+#' @typed p : numeric
+#'  the required probability
+#' @typed par : number
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components.
+#' @typed weights : matrix
+#'  the mixture weights of the beta mixture prior.
+#' @typed lower.tail : flag
+#'  whether CDF at x taken at lower or upper tail
+#' @return The abscissa.
+#'
+#' @example examples/qbetaMix.R
 #' @export
-qbetaMix <- function(q, par, weights) {
+qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   f <- function(pi) {
-    pbetaMix(x = pi, par = par, weights = weights) - q
+    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - p
   }
   unirootResult <- uniroot(f, lower = 0, upper = 1)
   if (unirootResult$iter < 0) {
-    return(NA)
+    NA
   } else {
-    return(unirootResult$root)
+    assert_number(unirootResult$root)
+    unirootResult$root
   }
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "q")
+qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")
