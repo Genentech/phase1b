@@ -2,7 +2,7 @@
 % Please edit documentation in R/dbetabinom.R
 \name{qbetaMix}
 \alias{qbetaMix}
-\title{Beta-Mixture Quantile function}
+\title{Beta-Mixture Quantile Function}
 \usage{
 qbetaMix(p, par, weights, lower.tail = TRUE)
 }

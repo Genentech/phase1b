@@ -1,4 +1,4 @@
-#' Beta-binomial density function
+#' Beta-Binomial Density Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -38,7 +38,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 }
 
 
-#' Beta-mixture-binomial density function
+#' Beta-Mixture-Binomial Density Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -74,6 +74,8 @@ dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
 dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 
 
+#' Argument list for Beta-Mixture Posterior distribution
+#'
 #' Computes the posterior parameters of a beta mixture
 #'
 #' @param x number of successes
@@ -178,7 +180,7 @@ pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
-#' Beta-Mixture Quantile function
+#' Beta-Mixture Quantile Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'

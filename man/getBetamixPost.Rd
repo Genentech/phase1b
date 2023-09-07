@@ -2,7 +2,7 @@
 % Please edit documentation in R/dbetabinom.R
 \name{getBetamixPost}
 \alias{getBetamixPost}
-\title{Computes the posterior parameters of a beta mixture}
+\title{Argument list for Beta-Mixture Posterior distribution}
 \usage{
 getBetamixPost(x, n, par, weights)
 }

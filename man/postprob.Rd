@@ -2,12 +2,16 @@
 % Please edit documentation in R/postprob.R
 \name{postprob}
 \alias{postprob}
-\title{@description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
+\title{Posterior Probability in Beta-Mixture distribution}
 \usage{
 postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 }
 \arguments{
 \item{x}{(\code{numeric}):\cr number of successes.}
+
+\item{n}{(\code{number}):\cr number of patients.}
+
+\item{p}{(\code{number}):\cr threshold that P_E is measured.}
 
 \item{parE}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.
@@ -26,10 +30,12 @@ the other arguments (except \code{p} and \code{log.p} of course).}
 The posterior probability that the response rate \code{P_E} is above \code{p}.
 }
 \description{
-Compute the posterior probability to be above threshold,
-with a beta mixture prior on the response rate.
+@description \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
+Compute the posterior probability to be above threshold,
+with a beta mixture prior on the response rate.
+
 Computes the posterior probability \code{Pr(P_E > p | data)}. Prior is
 \code{P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))}, i.e., a mixture of beta priors.
 Default is one component only with uniform or \code{beta(1,1)}.

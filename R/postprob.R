@@ -1,6 +1,8 @@
-#'  @include dbetabinom.R
+#' @include dbetabinom.R
 NULL
 
+#' Posterior Probability with uniform Beta Prior distribution
+#'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Compute the posterior probability to be above threshold assuming a beta prior
@@ -36,6 +38,8 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 }
 
 
+#' Posterior Probability in Beta-Mixture distribution
+#'
 #'  @description `r lifecycle::badge("experimental")`
 #'
 #' Compute the posterior probability to be above threshold,
@@ -52,9 +56,9 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 #'
 #' @typed x : numeric
 #'  number of successes.
-#' @types n : number
+#' @typed n : number
 #'  number of patients.
-#' @types p : number
+#' @typed p : number
 #'  threshold that P_E is measured.
 #' @typed parE : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,

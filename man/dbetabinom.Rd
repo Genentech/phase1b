@@ -2,7 +2,7 @@
 % Please edit documentation in R/dbetabinom.R
 \name{dbetabinom}
 \alias{dbetabinom}
-\title{Beta-binomial density function}
+\title{Beta-Binomial Density Function}
 \usage{
 dbetabinom(x, m, a, b, log = FALSE)
 }
