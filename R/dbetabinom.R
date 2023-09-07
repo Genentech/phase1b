@@ -56,6 +56,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
+#'
 #' @note `x` can be a vector.
 #'
 #' @example examples/dbetabinomMix.R
@@ -184,7 +185,7 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #' Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
 #' @typed p : numeric
-#'  the required probability
+#'  the required probability.
 #' @typed par : number
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.

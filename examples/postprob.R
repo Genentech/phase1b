@@ -1,4 +1,4 @@
-## Example taken from Lee and Liu
+## Example taken from Lee and Liu (2006)
 ##
 ## We observed 16 successes out of 23 patients
 ## We set a threshold of 0.60
