@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="dbetabinom" timestamp="2023-09-07T14:49:18Z" hostname="15073ebe37e6" tests="13" skipped="0" failures="0" errors="0" time="0.357">
+    <testcase time="0.0609999999999999" classname="dbetabinom" name="dbetabinom_for_every_x_support_is_between_0_and_1"/>
+    <testcase time="0.0900000000000001" classname="dbetabinom" name="Sum_of_the_dbetabinom_for_all_x_is_1"/>
+    <testcase time="0.028" classname="dbetabinom" name="dbetabinom_gives_correct_numeric_result"/>
+    <testcase time="0.0069999999999999" classname="dbetabinom" name="dbetabinomMix_gives_a_result_between_0_and_1"/>
+    <testcase time="0.011" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
+    <testcase time="0.011" classname="dbetabinom" name="Sum_of_dbetabinomMix_for_all_x_is_1"/>
+    <testcase time="0.01" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
+    <testcase time="0.011" classname="dbetabinom" name="pbetaMix_cdf_gives_incrementally_higher_cdf_with_increase_x_support"/>
+    <testcase time="0.01" classname="dbetabinom" name="pbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.01" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
+    <testcase time="0.012" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.015" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.081" classname="dbetabinom" name="qbetaMix_gives_a_number_result"/>
+  </testsuite>
+  <testsuite name="helpers" timestamp="2023-09-07T14:49:18Z" hostname="15073ebe37e6" tests="4" skipped="0" failures="0" errors="0" time="0.038">
+    <testcase time="0.02" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.01" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
+  </testsuite>
+  <testsuite name="postprob" timestamp="2023-09-07T14:49:18Z" hostname="15073ebe37e6" tests="5" skipped="0" failures="0" errors="0" time="0.071">
+    <testcase time="0.026" classname="postprob" name="postprobOld_gives_the_correct_number_result"/>
+    <testcase time="0.01" classname="postprob" name="postprobOld_gives_incrementally_higher_cdf_with_increase_x_support"/>
+    <testcase time="0.0149999999999999" classname="postprob" name="postprob_gives_the_correct_number_result"/>
+    <testcase time="0.01" classname="postprob" name="postprob_gives_the_correct_number_result"/>
+    <testcase time="0.01" classname="postprob" name="postprob_gives_incrementally_higher_cdf_with_increase_x_support"/>
+  </testsuite>
+</testsuites>
