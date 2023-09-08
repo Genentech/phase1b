@@ -1,4 +1,4 @@
-# -- postprobOld
+# postprobOld ----
 test_that("postprobOld gives the correct number result", {
   # Example from Lee & Liu (2006) A predictive probability design for phase II cancer clinical trials
   result <- postprobOld(x = 16, n = 23, p = 0.60, a = 0.6, b = 0.4)
