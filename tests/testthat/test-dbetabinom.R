@@ -59,7 +59,7 @@ test_that("dbetabinomMix gives the correct numeric result", {
   expect_equal(result, 0.03905469, tolerance = 1e-6)
 })
 
-## pbetaMix ----
+# pbetaMix ----
 
 test_that("pbetaMix cdf gives incrementally higher values with increase x support", {
   is_lower <- pbetaMix(
@@ -100,7 +100,7 @@ test_that("The complement of pbetaMix can be derived with a different lower.tail
   expect_equal(result, 1 - result_inversed, tolerance = 1e-5)
 })
 
-## qbetaMix ----
+# qbetaMix ----
 
 test_that("qbetaMix gives the correct number result", {
   result <- qbetaMix(
