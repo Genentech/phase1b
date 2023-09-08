@@ -5,7 +5,7 @@ test_that("dbetabinom for every x support is between 0 and 1", {
   expect_number(results, lower = 0, upper = 1)
 })
 
-test_that("Sum of the dbetabinom for all x is 1", {
+test_that("sum of the dbetabinom values over the whole support for x is 1", {
   result <- sum(dbetabinom(x = 0:10, m = 10, a = 1, b = 1))
   expect_equal(result, 1)
 })
