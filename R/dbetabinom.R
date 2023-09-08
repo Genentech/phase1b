@@ -76,7 +76,7 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 
 #' Compute Beta-Mixture-Binomial Posterior Distribution
 #'
-#' Computes the posterior parameters of a beta mixture
+#' Computes the posterior parameters of a beta-mixture-binomial distribution.
 #'
 #' @param x number of successes
 #' @param n number of patients
