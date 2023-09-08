@@ -24,8 +24,6 @@ NULL
 #'  second parameter `beta` of the beta prior (failures).
 #' @return The posterior probability that the response rate P_E is above a threshold p.
 #'
-#' @note that `x`, can be a vector.
-#'
 #' @example examples/postprobOld.R
 #' @export
 postprobBeta <- function(x, n, p, a = 1, b = 1) {
@@ -88,7 +86,6 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
-    ## now compute updated parameters
     betamixPost <- getBetamixPost(
       x = x,
       n = n,
@@ -98,7 +95,6 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
   }
   assert_list(betamixPost)
   assert_names(names(betamixPost), identical.to = c("par", "weights"))
-  ## now compute the survival function at p, i.e. 1 - cdf at p:
   ret <- with(
     betamixPost,
     pbetaMix(q = p, par = par, weights = weights, lower.tail = FALSE)

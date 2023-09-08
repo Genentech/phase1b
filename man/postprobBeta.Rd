@@ -30,9 +30,6 @@ with default set to be a uniform or beta(1,1).
 We observed \code{x} successes in n trials and so the posterior is
 \code{P_E | data  ~ beta(a + x, b + n - x)}.
 }
-\note{
-that \code{x}, can be a vector.
-}
 \examples{
 # Example taken from Lee & Liu (2006)
 # We observed 16 successes out of 23 patients # should we write this in the documentation
