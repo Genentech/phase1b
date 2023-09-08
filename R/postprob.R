@@ -12,7 +12,7 @@ NULL
 #' We observed `x` successes in n trials and so the posterior is
 #' `P_E | data  ~ beta(a + x, b + n - x)`.
 #'
-#' @typed x : number
+#' @typed x : numeric
 #'  number of successes.
 #' @typed n : number
 #'  number of patients.
