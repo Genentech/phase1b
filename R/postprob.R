@@ -42,7 +42,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Compute the posterior probability to be above threshold,
+#' Compute the posterior probability that the response probability `P_E` is above a threshold,
 #' with a beta mixture prior on the response rate.
 #'
 #' Computes the posterior probability `Pr(P_E > p | data)`. Prior is
