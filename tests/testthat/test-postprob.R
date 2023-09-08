@@ -33,7 +33,7 @@ test_that("postprob gives the correct number result", {
   expect_equal(result, 0.05559802, tolerance = 1e-5)
 })
 
-test_that("postprob gives incrementally higher cdf with increase x support", {
+test_that("postprob gives incrementally higher values with increased x", {
   is_lower <- postprob(
     x = 10,
     n = 23,
