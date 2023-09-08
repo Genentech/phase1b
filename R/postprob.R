@@ -28,11 +28,11 @@ NULL
 #'
 #' @example examples/postprobOld.R
 #' @export
-postprobOld <- function(x, n, p, a = 1, b = 1) {
+postprobBeta <- function(x, n, p, a = 1, b = 1) {
+  assert_number(n, lower = 0, finite = TRUE)
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_number(a, finite = TRUE)
   assert_number(b, finite = TRUE)
-  assert_number(n, lower = 0, finite = TRUE)
   assert_number(p, lower = 0, upper = 1, finite = TRUE)
   stats::pbeta(p, a + x, b + n - x, lower.tail = FALSE)
 }
@@ -81,6 +81,7 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 #' @export
 postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE) {
   if (missing(betamixPost)) {
+    assert_logical(log.p)
     if (is.vector(parE)) {
       # Here there is only one component.
       assert_true(identical(length(parE), 2L))
