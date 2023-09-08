@@ -61,7 +61,7 @@ test_that("dbetabinomMix gives the correct numeric result", {
 
 ## pbetaMix ----
 
-test_that("pbetaMix cdf gives incrementally higher cdf with increase x support", {
+test_that("pbetaMix cdf gives incrementally higher values with increase x support", {
   is_lower <- pbetaMix(
     q = 0.3,
     par = rbind(c(0.2, 0.4)),
