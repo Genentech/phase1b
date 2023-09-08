@@ -2,7 +2,7 @@
 % Please edit documentation in R/postprob.R
 \name{postprob}
 \alias{postprob}
-\title{Posterior Probability in Beta-Mixture distribution}
+\title{Posterior Probability of Efficacy Given Beta-Mixture Prior}
 \usage{
 postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 }
