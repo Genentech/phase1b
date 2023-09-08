@@ -59,7 +59,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #' @typed n : number
 #'  number of patients.
 #' @typed p : number
-#'  threshold that P_E is measured.
+#'  threshold that `P_E` is measured.
 #' @typed parE : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
