@@ -8,12 +8,12 @@ NULL
 #' Calculate operating characteristics for posterior probability method.
 #'
 #' The trial is stopped for efficacy if the posterior probability to be
-#' above p1 is larger than tU, and stopped for futility if the posterior
-#' probability to be below p0 is larger than tL:
+#' above `p1` is larger than `tU`, and stopped for futility if the posterior
+#' probability to be below `p0` is larger than `tL`:
 #'
 #' Stop criteria for Efficacy : `P_E(p > p1) > tU`
 #'
-#' Stop criteria for Futility `P_E(p < p0) < tL`
+#' Stop criteria for Futility : n`P_E(p < p0) < tL`
 #'
 #'
 #' Resulting Operating Characteristics include the following:
@@ -24,23 +24,22 @@ NULL
 #' - `PrEarlyEff`: probability of Early Go decision
 #' - `PrEarlyFut`: probability to decide for futility early
 #' - `PrEfficacy`: probability of Go decision
-#' - `PrFutility`: Probability of stop decision
+#' - `PrFutility`: Probability of Stop decision
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or grey decision zone
 #'
 #' @typed nn : numeric
 #'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 #'  specify in `nnF`.
-#'
 #' @typed p : number
 #'  assumed true rate of response.
 #'  true rate (scenario)
-#' @typed p0 :
+#' @typed p0 : number
 #'  lower efficacy threshold.
-#' @typed p1 :
+#' @typed p1 : number
 #'  upper efficacy threshold.
-#' @typed tL :
+#' @typed tL : number
 #'  probability threshold for being below `p0`.
-#' @typed tU :
+#' @typed tU : number
 #'  probability threshold for being above `p1`.
 #' @typed parE : numeric
 #'  beta parameters for the prior on the treatment proportion.
@@ -50,13 +49,13 @@ NULL
 #'  generate random look locations (not default)
 #' @typed d : numeric
 #'  distance for random looks around the look locations in `nn`.
-#' @typed nnF :
+#' @typed nnF : numeric
 #'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 #'  specify in `nnF`.
 #'
 #' @return A list with the following elements:
 #'
-#' - oc: matrix with operating characteristics (see Details section)
+#' - `oc`: matrix with operating characteristics (see Details section)
 #' Decision: vector of the decisions made in the simulated trials
 #' (`TRUE` for success, `FALSE` for failure, `NA` for no
 #' decision)
@@ -71,7 +70,8 @@ NULL
 ocPostprob <- function(nn, p, p0, p1, tL, tU, parE = c(1, 1),
                        ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   # Calculate operating characteristics via simulation
-  # nn: vector of look locations
+  # nn: sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+  #     it is specifed in `nnF`
   # s: decision reject H0 (TRUE) or fail to reject (FALSE)
   #    during trial if continuing (NA)
 

@@ -25,13 +25,13 @@ specify in \code{nnF}.}
 \item{p}{(\code{number}):\cr assumed true rate of response.
 true rate (scenario)}
 
-\item{p0}{(``):\cr lower efficacy threshold.}
+\item{p0}{(\code{number}):\cr lower efficacy threshold.}
 
-\item{p1}{(``):\cr upper efficacy threshold.}
+\item{p1}{(\code{number}):\cr upper efficacy threshold.}
 
-\item{tL}{(``):\cr probability threshold for being below \code{p0}.}
+\item{tL}{(\code{number}):\cr probability threshold for being below \code{p0}.}
 
-\item{tU}{(``):\cr probability threshold for being above \code{p1}.}
+\item{tU}{(\code{number}):\cr probability threshold for being above \code{p1}.}
 
 \item{parE}{(\code{numeric}):\cr beta parameters for the prior on the treatment proportion.}
 
@@ -41,13 +41,13 @@ true rate (scenario)}
 
 \item{d}{(\code{numeric}):\cr distance for random looks around the look locations in \code{nn}.}
 
-\item{nnF}{(``):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 specify in \code{nnF}.}
 }
 \value{
 A list with the following elements:
 \itemize{
-\item oc: matrix with operating characteristics (see Details section)
+\item \code{oc}: matrix with operating characteristics (see Details section)
 Decision: vector of the decisions made in the simulated trials
 (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
 decision)
@@ -64,12 +64,12 @@ SampleSize: vector of the sample sizes in the simulated trials
 Calculate operating characteristics for posterior probability method.
 
 The trial is stopped for efficacy if the posterior probability to be
-above p1 is larger than tU, and stopped for futility if the posterior
-probability to be below p0 is larger than tL:
+above \code{p1} is larger than \code{tU}, and stopped for futility if the posterior
+probability to be below \code{p0} is larger than \code{tL}:
 
 Stop criteria for Efficacy : \code{P_E(p > p1) > tU}
 
-Stop criteria for Futility \code{P_E(p < p0) < tL}
+Stop criteria for Futility : n\code{P_E(p < p0) < tL}
 
 Resulting Operating Characteristics include the following:
 \itemize{
@@ -79,7 +79,7 @@ maximum sample size)
 \item \code{PrEarlyEff}: probability of Early Go decision
 \item \code{PrEarlyFut}: probability to decide for futility early
 \item \code{PrEfficacy}: probability of Go decision
-\item \code{PrFutility}: Probability of stop decision
+\item \code{PrFutility}: Probability of Stop decision
 \item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or grey decision zone
 }
 }
