@@ -42,10 +42,8 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Compute the posterior probability that the response probability `P_E` is above a threshold,
-#' with a beta mixture prior on the response rate.
-#'
-#' Computes the posterior probability `Pr(P_E > p | data)`. Prior is
+#' Compute the posterior probability that the response probability `P_E`is above a threshold.
+#' such that this posterior probability can be expressed as `Pr(P_E > p | data)`. Prior is
 #' `P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))`, i.e., a mixture of beta priors.
 #' Default is one component only with uniform or `beta(1,1)`.
 #'
@@ -61,7 +59,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #' @typed p : number
 #'  threshold that `P_E` is measured.
 #' @typed parE : matrix
-#'  the beta parameters matrix, with `K` rows and 2 columns,
+#'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
 #'  Default is a uniform prior.
 #' @typed weights : vector
@@ -72,10 +70,8 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'  to speed up the computations. If supplied, this is directly used, bypassing
 #'  the other arguments (except `p` and `log.p` of course).
 #' @typed log.p : number
-#'  Return the log of the probability? (default: `FALSE`).
+#'  whether to return the log of the probability
 #' @return The posterior probability that the response rate `P_E` is above `p`.
-#'
-#' @note that `x` can be a vector.
 #'
 #' @example examples/postprob.R
 #' @export

@@ -13,7 +13,7 @@ postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 
 \item{p}{(\code{number}):\cr threshold that \code{P_E} is measured.}
 
-\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.
 Default is a uniform prior.}
 
@@ -24,7 +24,7 @@ uniform weights across mixture components.}
 to speed up the computations. If supplied, this is directly used, bypassing
 the other arguments (except \code{p} and \code{log.p} of course).}
 
-\item{log.p}{(\code{number}):\cr Return the log of the probability? (default: \code{FALSE}).}
+\item{log.p}{(\code{number}):\cr whether to return the log of the probability}
 }
 \value{
 The posterior probability that the response rate \code{P_E} is above \code{p}.
@@ -32,10 +32,8 @@ The posterior probability that the response rate \code{P_E} is above \code{p}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Compute the posterior probability that the response probability \code{P_E} is above a threshold,
-with a beta mixture prior on the response rate.
-
-Computes the posterior probability \code{Pr(P_E > p | data)}. Prior is
+Compute the posterior probability that the response probability \code{P_E}is above a threshold.
+such that this posterior probability can be expressed as \code{Pr(P_E > p | data)}. Prior is
 \code{P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))}, i.e., a mixture of beta priors.
 Default is one component only with uniform or \code{beta(1,1)}.
 
@@ -43,9 +41,6 @@ We observed \code{x} successes in n trials.
 
 Posterior is again a mixture of beta priors, with updated mixture weights
 and beta parameters.
-}
-\note{
-that \code{x} can be a vector.
 }
 \examples{
 ## Example taken from Lee and Liu (2006)
