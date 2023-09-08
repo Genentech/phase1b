@@ -2,12 +2,12 @@
 % Please edit documentation in R/postprob.R
 \name{postprobOld}
 \alias{postprobOld}
-\title{Posterior Probability with uniform Beta Prior distribution}
+\title{Posterior Probability of Efficacy Given Beta Prior}
 \usage{
 postprobOld(x, n, p, a = 1, b = 1)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes.}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
 \item{n}{(\code{number}):\cr number of patients.}
 
