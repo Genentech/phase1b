@@ -38,7 +38,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 }
 
 
-#' Posterior Probability in Beta-Mixture distribution
+#' Posterior Probability of Efficacy Given Beta-Mixture Prior
 #'
 #'  @description `r lifecycle::badge("experimental")`
 #'
