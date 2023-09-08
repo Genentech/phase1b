@@ -1,7 +1,7 @@
 # operating characteristics for posterior probability method
 
 # design details (example)
-# multiple looks @ 10, 20, 30 patietns
+# multiple looks @ 10, 20, 30 patients
 # True response rate of the treatment group=40%
 # stop for futility: P(response rate < 20% )> 60%
 # s top for efficacy: P(response rate > 30% )> 80%

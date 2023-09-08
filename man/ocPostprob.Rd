@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprob.R
 \name{ocPostprob}
 \alias{ocPostprob}
-\title{Calculate operating characteristics for posterior probability method}
+\title{Operating Characteristics for Posterior Probability method}
 \usage{
 ocPostprob(
   nn,
@@ -19,63 +19,75 @@ ocPostprob(
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy
-(if futility looks should be different, please specify also \code{nnF})}
+\item{nn}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+specify in \code{nnF}.}
 
-\item{p}{true rate (scenario)}
+\item{p}{(\code{number}):\cr assumed true rate of response.
+true rate (scenario)}
 
-\item{p0}{lower efficacy threshold}
+\item{p0}{(``):\cr lower efficacy threshold.}
 
-\item{p1}{upper efficacy threshold}
+\item{p1}{(``):\cr upper efficacy threshold.}
 
-\item{tL}{probability threshold for being below p0}
+\item{tL}{(``):\cr probability threshold for being below \code{p0}.}
 
-\item{tU}{probability threshold for being above p1}
+\item{tU}{(``):\cr probability threshold for being above \code{p1}.}
 
-\item{parE}{beta parameters for the prior on the treatment proportion}
+\item{parE}{(\code{numeric}):\cr beta parameters for the prior on the treatment proportion.}
 
-\item{ns}{number of simulations}
+\item{ns}{(\code{number}):\cr number of simulations.}
 
-\item{nr}{generate random look locations? (not default)}
+\item{nr}{(\code{number}):\cr generate random look locations (not default)}
 
-\item{d}{distance for random looks around the look locations in \code{nn}}
+\item{d}{(\code{numeric}):\cr distance for random looks around the look locations in \code{nn}.}
 
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
+\item{nnF}{(``):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+specify in \code{nnF}.}
 }
 \value{
 A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
+\itemize{
+\item oc: matrix with operating characteristics (see Details section)
 Decision: vector of the decisions made in the simulated trials
 (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
 decision)
 SampleSize: vector of the sample sizes in the simulated trials
-nn: vector of look locations that was supplied
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-params: multiple parameters
+\item \code{nn}: vector of look locations that was supplied
+\item \code{nnE}: vector of efficacy look locations
+\item \code{nnF}: vector of futility look locations
+\item \code{params}: multiple parameters
+}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Calculate operating characteristics for posterior probability method.
+
 The trial is stopped for efficacy if the posterior probability to be
 above p1 is larger than tU, and stopped for futility if the posterior
-probability to be below p0 is larger than tL.
-}
-\details{
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-PrStopEarly: probability to stop the trial early (before reaching the
+probability to be below p0 is larger than tL:
+
+Stop criteria for Efficacy : \code{P_E(p > p1) > tU}
+
+Stop criteria for Futility \code{P_E(p < p0) < tL}
+
+Resulting Operating Characteristics include the following:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
 maximum sample size)
-PrEarlyEff: probability to decide for efficacy early
-PrEarlyFut: probability to decide for futility early
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability to decide for futility early
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: Probability of stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or grey decision zone
+}
 }
 \examples{
 # operating characteristics for posterior probability method
 
 # design details (example)
-# multiple looks @ 10, 20, 30 patietns
+# multiple looks @ 10, 20, 30 patients
 # True response rate of the treatment group=40\%
 # stop for futility: P(response rate < 20\% )> 60\%
 # s top for efficacy: P(response rate > 30\% )> 80\%

@@ -1,45 +1,70 @@
 #' @include postprob.R
 NULL
 
-#' Calculate operating characteristics for posterior probability method
+#' Operating Characteristics for Posterior Probability method
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Calculate operating characteristics for posterior probability method.
 #'
 #' The trial is stopped for efficacy if the posterior probability to be
 #' above p1 is larger than tU, and stopped for futility if the posterior
-#' probability to be below p0 is larger than tL.
+#' probability to be below p0 is larger than tL:
 #'
-#' Returned operating characteristics in a matrix include:
-#' ExpectedN: expected number of patients in the trials
-#' PrStopEarly: probability to stop the trial early (before reaching the
+#' Stop criteria for Efficacy : `P_E(p > p1) > tU`
+#'
+#' Stop criteria for Futility `P_E(p < p0) < tL`
+#'
+#'
+#' Resulting Operating Characteristics include the following:
+#'
+#' - `ExpectedN`: expected number of patients in the trials
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
 #' maximum sample size)
-#' PrEarlyEff: probability to decide for efficacy early
-#' PrEarlyFut: probability to decide for futility early
-#' PrEfficacy: probability to decide for efficacy
-#' PrFutility: probability to decide for futility
-#' PrGrayZone: probability of no decision at the end ("gray zone")
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability to decide for futility early
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: Probability of stop decision
+#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or grey decision zone
 #'
-#' @param nn vector of look locations for efficacy
-#' (if futility looks should be different, please specify also \code{nnF})
-#' @param p true rate (scenario)
-#' @param p0 lower efficacy threshold
-#' @param p1 upper efficacy threshold
-#' @param tL probability threshold for being below p0
-#' @param tU probability threshold for being above p1
-#' @param parE beta parameters for the prior on the treatment proportion
-#' @param ns number of simulations
-#' @param nr generate random look locations? (not default)
-#' @param d distance for random looks around the look locations in \code{nn}
-#' @param nnF vector of look locations for futility
-#' (default: same as efficacy)
+#' @typed nn : numeric
+#'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+#'  specify in `nnF`.
+#'
+#' @typed p : number
+#'  assumed true rate of response.
+#'  true rate (scenario)
+#' @typed p0 :
+#'  lower efficacy threshold.
+#' @typed p1 :
+#'  upper efficacy threshold.
+#' @typed tL :
+#'  probability threshold for being below `p0`.
+#' @typed tU :
+#'  probability threshold for being above `p1`.
+#' @typed parE : numeric
+#'  beta parameters for the prior on the treatment proportion.
+#' @typed ns : number
+#'  number of simulations.
+#' @typed nr : number
+#'  generate random look locations (not default)
+#' @typed d : numeric
+#'  distance for random looks around the look locations in `nn`.
+#' @typed nnF :
+#'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+#'  specify in `nnF`.
+#'
 #' @return A list with the following elements:
-#' oc: matrix with operating characteristics (see Details section)
+#'
+#' - oc: matrix with operating characteristics (see Details section)
 #' Decision: vector of the decisions made in the simulated trials
-#' (\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
+#' (`TRUE` for success, `FALSE` for failure, `NA` for no
 #' decision)
 #' SampleSize: vector of the sample sizes in the simulated trials
-#' nn: vector of look locations that was supplied
-#' nnE: vector of efficacy look locations
-#' nnF: vector of futility look locations
-#' params: multiple parameters
+#' - `nn`: vector of look locations that was supplied
+#' - `nnE`: vector of efficacy look locations
+#' - `nnF`: vector of futility look locations
+#' - `params`: multiple parameters
 #'
 #' @example examples/ocPostprob.R
 #' @export
