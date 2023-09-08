@@ -1,7 +1,7 @@
 #' @include dbetabinom.R
 NULL
 
-#' Posterior Probability with uniform Beta Prior distribution
+#' Posterior Probability of Efficacy Given Beta Prior
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
