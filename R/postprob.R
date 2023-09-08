@@ -89,7 +89,6 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
       parE <- t(parE)
     }
     assert_matrix(parE)
-    # if prior weights of the beta mixture are not supplied
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
