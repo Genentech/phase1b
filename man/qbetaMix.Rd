@@ -2,12 +2,12 @@
 % Please edit documentation in R/dbetabinom.R
 \name{qbetaMix}
 \alias{qbetaMix}
-\title{Beta-Mixture Quantile function}
+\title{Beta-Mixture Quantile Function}
 \usage{
 qbetaMix(p, par, weights, lower.tail = TRUE)
 }
 \arguments{
-\item{p}{(\code{numeric}):\cr the required probability}
+\item{p}{(\code{numeric}):\cr the required probability.}
 
 \item{par}{(\code{number}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}

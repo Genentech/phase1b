@@ -2,7 +2,7 @@
 % Please edit documentation in R/dbetabinom.R
 \name{dbetabinomMix}
 \alias{dbetabinomMix}
-\title{Beta-mixture-binomial density function}
+\title{Beta-Mixture-Binomial Density Function}
 \usage{
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }

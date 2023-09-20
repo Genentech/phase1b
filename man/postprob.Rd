@@ -2,62 +2,58 @@
 % Please edit documentation in R/postprob.R
 \name{postprob}
 \alias{postprob}
-\title{Compute the posterior probability to be above threshold,
-with a beta mixture prior on the response rate.}
+\title{Posterior Probability of Efficacy Given Beta-Mixture Prior}
 \usage{
 postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{n}{number of patients}
+\item{n}{(\code{number}):\cr number of patients.}
 
-\item{p}{threshold}
+\item{p}{(\code{number}):\cr threshold that \code{P_E} is measured.}
 
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. Default is a
-uniform prior.}
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+corresponding to the beta parameters of the \code{K} components.
+Default is a uniform prior.}
 
-\item{weights}{the mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{betamixPost}{optional result of \code{\link{getBetamixPost}} in order
+\item{betamixPost}{(\code{matrix}):\cr optional result of \verb{[getBetamixPost()]} in order
 to speed up the computations. If supplied, this is directly used, bypassing
-the other arguments (except \code{p} and \code{log.p} of course)}
+the other arguments (except \code{p} and \code{log.p} of course).}
 
-\item{log.p}{Return the log of the probability? (default: FALSE)}
+\item{log.p}{(\code{number}):\cr whether to return the log of the probability}
 }
 \value{
-The posterior probability that the response rate P_E is above p.
+The posterior probability that the response rate \code{P_E} is above \code{p}.
 }
 \description{
-Computes the posterior probability \code{Pr(P_E > p | data)}. Prior is
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Compute the posterior probability that the response probability \code{P_E}is above a threshold.
+such that this posterior probability can be expressed as \code{Pr(P_E > p | data)}. Prior is
 \code{P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))}, i.e., a mixture of beta priors.
 Default is one component only with uniform or \code{beta(1,1)}.
-}
-\details{
-We observed x successes in n trials. Note that \code{x} can be a vector.
+
+We observed \code{x} successes in n trials.
 
 Posterior is again a mixture of beta priors, with updated mixture weights
 and beta parameters.
 }
 \examples{
-## Example taken from Lee and Liu
-##
-## We observed 16 successes out of 23 patients
-## We set a threshold of 0.60
-## Assume a beta(0.6,0.4) prior for P_E
-## Posterior will be a beta(16.6, 7.4), Pr(P_E > p | data) = 0.836
-##
-##
+# Example taken from Lee and Liu (2006)
+#
+# We observed 16 successes out of 23 patients
+# We set a threshold of 0.60
+# Assume a beta(0.6,0.4) prior for P_E
+# Posterior will be a beta(16.6, 7.4), Pr(P_E > p | data) = 0.836
 
 postprob(x = 16, n = 23, p = 0.60, par = c(0.6, 0.4))
 
-## We could instead specify a mixture prior
-## 2 component beta mixture prior, i.e., P_E ~ 0.6*beta(0.6,0.4) + 0.4*beta(1,1) and Pr(P_E > p | data) = 0.823
-##
-##
-##
+# We could instead specify a mixture prior
+# 2 component beta mixture prior, i.e., P_E ~ 0.6*beta(0.6,0.4) + 0.4*beta(1,1) and Pr(P_E > p | data) = 0.823
 
 postprob(
   x = 16, n = 23, p = 0.60,

@@ -1,4 +1,4 @@
-#' Beta-binomial density function
+#' Beta-Binomial Density Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -38,7 +38,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 }
 
 
-#' Beta-mixture-binomial density function
+#' Beta-Mixture-Binomial Density Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -56,6 +56,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
+#'
 #' @note `x` can be a vector.
 #'
 #' @example examples/dbetabinomMix.R
@@ -73,7 +74,9 @@ dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
 dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 
 
-#' Computes the posterior parameters of a beta mixture
+#' Compute Beta-Mixture-Binomial Posterior Distribution
+#'
+#' Computes the posterior parameters of a beta-mixture-binomial distribution.
 #'
 #' @param x number of successes
 #' @param n number of patients
@@ -177,14 +180,14 @@ pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
 pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
-#' Beta-Mixture Quantile function
+#' Beta-Mixture Quantile Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Calculates the quantile of the Beta-Mixture distribution for a given probability.
 #'
 #' @typed p : numeric
-#'  the required probability
+#'  the required probability.
 #' @typed par : number
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
