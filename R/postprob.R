@@ -24,7 +24,7 @@ NULL
 #'  second parameter `beta` of the beta prior (failures).
 #' @return The posterior probability that the response rate P_E is above a threshold p.
 #'
-#' @example examples/postprobOld.R
+#' @example examples/postprobBeta.R
 #' @export
 postprobBeta <- function(x, n, p, a = 1, b = 1) {
   assert_number(n, lower = 0, finite = TRUE)
