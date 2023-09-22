@@ -1,6 +1,97 @@
 #' @include postprob.R
 NULL
 
+
+
+
+# helper functions for OcPostProb
+# get_distance
+get_distance <- function(nn) {
+  assert_numeric(nn, unique = TRUE, sorted = TRUE)
+  dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
+  assert_numeric(dist0, sorted = TRUE)
+  dist <- sample(-dist0:dist0,
+    size = length(nn) - 1,
+    replace = TRUE,
+    prob = 2^(c(-dist0:0, rev(-dist0:(-1))) / 2)
+  )
+  dist
+}
+
+# get_looks helper function
+get_looks <- function(dist, nnE, nnF) {
+  assert_numeric(nnE)
+  assert_numeric(nnF)
+  nn <- unique(c(nnE, nnF))
+  assert_numeric(nn)
+  assert_numeric(dist)
+  nnr <- nn + c(dist, 0)
+  list(
+    nnrE = nnr[nn %in% nnE],
+    nnrF = nnr[nn %in% nnF]
+  )
+}
+
+# get_decision helper function
+get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnF) {
+      qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE) # for each
+      assert_number(qL, lower = 0, upper = 1)
+      decision <- ifelse(qL >= tL, FALSE, NA)
+    }
+    if (size_look %in% nnE) {
+      qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+    # }
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+
+# get_oc helper function
+#' Title
+#'
+#' @typed all_sizes
+#' @inheritParams get_looks
+#' @param decision
+#' @param nnrE
+#' @param nnrF
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+  sim <- length(all_sizes)
+  assert_logical(decision, len = sim)
+  assert_numeric(all_sizes)
+  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
+  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+  data.frame(
+    ExpectedN = mean(all_sizes, na.rm = TRUE),
+    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+    PrGrayZone = sum(is.na(decision)) / sim
+  )
+}
+
 #' Operating Characteristics for Posterior Probability method
 #'
 #' @description `r lifecycle::badge("experimental")`
@@ -91,85 +182,6 @@ NULL
 #'
 #' @example examples/ocPostprob.R
 #' @export
-#'
-
-#-- helper functions for OcPostProb
-#-- get_distance
-get_distance <- function(nn) {
-  assert_numeric(nn, unique = TRUE, sorted = TRUE)
-  dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
-  assert_numeric(dist0, sorted = TRUE)
-  dist <- sample(-dist0:dist0,
-    size = length(nn) - 1,
-    replace = TRUE,
-    prob = 2^(c(-dist0:0, rev(-dist0:(-1))) / 2)
-  )
-  dist
-}
-
-#-- get_looks helper function
-get_looks <- function(dist, nnE, nnF) {
-  assert_numeric(nnE)
-  assert_numeric(nnF)
-  nn <- unique(c(nnE, nnF))
-  assert_numeric(nn)
-  assert_numeric(dist)
-  nnr <- nn + c(dist, 0)
-  list(
-    nnrE = nnr[nn %in% nnE],
-    nnrF = nnr[nn %in% nnF]
-  )
-}
-
-#-- get_decision helper function
-get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
-  index_look <- 1
-  assert_numeric(nnr)
-  size_look <- nnr[index_look]
-  all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look <= length(nnr)) {
-    if (size_look %in% nnF) {
-      qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE) # for each
-      assert_number(qL, lower = 0, upper = 1)
-      decision <- ifelse(qL >= tL, FALSE, NA)
-    }
-    if (size_look %in% nnE) {
-      qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < tU, decision, TRUE)
-    }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
-    # }
-  }
-  list(
-    decision = decision,
-    all_sizes = all_sizes
-  )
-}
-
-#-- get_oc helper function
-get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  sim <- length(all_sizes)
-  assert_logical(decision, len = sim)
-  assert_numeric(all_sizes)
-  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
-  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
-  data.frame(
-    ExpectedN = mean(all_sizes, na.rm = TRUE),
-    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
-    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
-    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
-    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
-    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
-    PrGrayZone = sum(is.na(decision)) / sim
-  )
-}
-
-#-- ocPostprob
 ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
                        sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))

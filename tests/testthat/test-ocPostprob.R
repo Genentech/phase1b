@@ -95,7 +95,7 @@ test_that("get_decision has list outputs of length of sim each", {
   expect_numeric(tmp$all_sizes, max.len = sim)
 })
 
-#-- get_oc (helper function)
+# get_oc ----
 test_that("the probability results of get_oc are less than 1", {
   oc <- get_oc(
     all_sizes = sample(c(11, 14, 20), 10000, replace = TRUE),
@@ -118,7 +118,7 @@ test_that("the ExpectedN is within range based on vector of looks", {
   expect_numper(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes)) # can have more than 1 expect_true ?
 })
 
-# -- ocPostprob
+# ocPostprob ----
 test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
   results <- sum(ocPostprob$oc[4:7])
   expect_equal(result, 1)
