@@ -95,39 +95,6 @@ test_that("get_decision has list outputs of length of sim each", {
   expect_numeric(tmp$all_sizes, max.len = sim)
 })
 
-test_that("get_decision has list outputs of length of sim each", {
-  p <- 0.3
-  p0 <- 0.2
-  p1 <- 0.3
-  tL <- 0.5
-  tU <- 0.8
-  wiggle <- TRUE
-  randomdist <- NULL
-  decision <- all_sizes <- NA
-  sim <- 10000
-  for (k in 1:sim) {
-    if (length(nn) != 1 && wiggle && is.null(randomdist)) {
-      dist <- get_distance(nn)
-      nnr <- get_looks(dist, nnE, nnF)
-      nnrE <- nnr$nnrE
-      nnrF <- nnr$nnrF
-    } else {
-      nnrE <- nnE
-      nnrF <- nnF
-    }
-    nnr <- unique(c(nnrE, nnrF))
-    tmp <- get_decision(
-      nnr = nnr, response = response,
-      truep = truep, p0 = p0, p1 = p1,
-      parE = c(1, 1), nnE = nnrE,
-      nnF = nnrF, tL = tL, tU = tU
-    )
-    decision[k] <- tmp$decision
-    all_sizes[k] <- tmp$all_sizes
-  }
-  expect_equal(length(tmp$decision), length(tmp$all_sizes))
-})
-
 #-- get_oc (helper function)
 test_that("the probability results of get_oc are less than 1", {
   oc <- get_oc(
