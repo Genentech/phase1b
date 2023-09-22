@@ -2,20 +2,20 @@
 % Please edit documentation in R/postprob.R
 \name{postprobOld}
 \alias{postprobOld}
-\title{Posterior Probability with uniform Beta Prior distribution}
+\title{Posterior Probability of Efficacy Given Beta Prior}
 \usage{
 postprobOld(x, n, p, a = 1, b = 1)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes.}
+\item{x}{number of successes}
 
-\item{n}{(\code{number}):\cr number of patients.}
+\item{n}{number of patients}
 
-\item{p}{(\code{number}):\cr threshold set to compute posterior probability.}
+\item{p}{threshold}
 
-\item{a}{(\code{matrix}):\cr first parameter \code{alpha} of the beta prior (successes).}
+\item{a}{first parameter of the beta prior (successes)}
 
-\item{b}{(\code{matrix}):\cr second parameter \code{beta} of the beta prior (failures).}
+\item{b}{second parameter of the beta prior (failures)}
 }
 \value{
 The posterior probability that the response rate P_E is above a threshold p.
@@ -30,9 +30,6 @@ with default set to be a uniform or beta(1,1).
 We observed \code{x} successes in n trials and so the posterior is
 \code{P_E | data  ~ beta(a + x, b + n - x)}.
 }
-\note{
-that \code{x}, can be a vector.
-}
 \examples{
 # Example taken from Lee & Liu (2006)
 # We observed 16 successes out of 23 patients # should we write this in the documentation
@@ -42,6 +39,6 @@ that \code{x}, can be a vector.
 
 
 # Example taken from Lee and Liu (2006)
-postprobOld(x = 16, n = 23, p = 0.60, a = 0.6, b = 0.4)
+postprobBeta(x = 16, n = 23, p = 0.60, a = 0.6, b = 0.4)
 # Interpretation : The probability 16 of 23 successes is greater than 60 \% threshold is approximately 84 \%
 }

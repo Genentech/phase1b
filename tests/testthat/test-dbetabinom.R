@@ -5,7 +5,7 @@ test_that("dbetabinom for every x support is between 0 and 1", {
   expect_number(results, lower = 0, upper = 1)
 })
 
-test_that("Sum of the dbetabinom for all x is 1", {
+test_that("sum of the dbetabinom values over the whole support for x is 1", {
   result <- sum(dbetabinom(x = 0:10, m = 10, a = 1, b = 1))
   expect_equal(result, 1)
 })
@@ -59,9 +59,9 @@ test_that("dbetabinomMix gives the correct numeric result", {
   expect_equal(result, 0.03905469, tolerance = 1e-6)
 })
 
-## pbetaMix ----
+# pbetaMix ----
 
-test_that("pbetaMix cdf gives incrementally higher cdf with increase x support", {
+test_that("The pbetaMix has incrementally higher cdf with increase x support", {
   is_lower <- pbetaMix(
     q = 0.3,
     par = rbind(c(0.2, 0.4)),
@@ -100,7 +100,7 @@ test_that("The complement of pbetaMix can be derived with a different lower.tail
   expect_equal(result, 1 - result_inversed, tolerance = 1e-5)
 })
 
-## qbetaMix ----
+# qbetaMix ----
 
 test_that("qbetaMix gives the correct number result", {
   result <- qbetaMix(
