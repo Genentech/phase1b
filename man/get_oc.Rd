@@ -2,15 +2,28 @@
 % Please edit documentation in R/ocPostprob.R
 \name{get_oc}
 \alias{get_oc}
-\title{Title}
+\title{get_oc helper function}
 \usage{
 get_oc(all_sizes, nnr, decision, nnrE, nnrF)
 }
-\arguments{
-\item{nnrF}{}
-
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
+\value{
+A list of results containing :
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
+maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability to decide for Futility early
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: Probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
 }
 \description{
-Title
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Generates operating characteristics.
+}
+\examples{
+examples / ocPostprob.R
 }

@@ -1,11 +1,20 @@
 #' @include postprob.R
 NULL
 
-
-
-
-# helper functions for OcPostProb
-# get_distance
+#' get_distance
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
+#' Numeric looks `nn` must be of minimum two elements and will generate `length(nn)-1` distances.
+#'
+#' @param nn : number or numeric
+#' the union of `nnE` and `nnF` (if futility analysis or looks exists) supplied
+#'
+#' @return A numeric with `length(nn)-1` elements.
+#'
+#' @examples examples / ocPostprob.R
+#' @export
 get_distance <- function(nn) {
   assert_numeric(nn, unique = TRUE, sorted = TRUE)
   dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
@@ -18,7 +27,22 @@ get_distance <- function(nn) {
   dist
 }
 
-# get_looks helper function
+#' get_looks
+#'
+#' A helper function for `ocPostprob` that applies the numeric element of distance to looks `nn`.
+#'
+#' @typed dist : numeric
+#' Distance generated from `get_distance` in a numeric of at least one element.
+#' @typed nnE : numeric
+#'  sample size or sizes where study can be stopped for efficacy decision. If different for Futility decision,
+#'  specify in `nnF`.
+#' @typed nnF : numeric
+#'  sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.
+#'
+#' @return A numeric of looks with outputs from `get_distance` randomly added to looks.
+#' @export
+#'
+#' @examples examples / ocPostProb
 get_looks <- function(dist, nnE, nnF) {
   assert_numeric(nnE)
   assert_numeric(nnF)
@@ -32,7 +56,38 @@ get_looks <- function(dist, nnE, nnF) {
   )
 }
 
-# get_decision helper function
+#' get_decision
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' A helper function for `ocPostprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
+#'
+#' @inheritParams get_looks
+#' @typed response : numeric
+#' A numeric of bernoulli successes based on `size_look`,
+#' @typed : truep
+#' A numeric of the true response rate
+#' @typed truep : number
+#'  assumed true response rate nor true rate (scenario).
+#' @typed p0 : number
+#'  lower efficacy threshold of response rate.
+#' @typed p1 : number
+#'  upper efficacy threshold of response rate.
+#' @typed tL : number
+#'  posterior probability threshold for being below `p0`.
+#' @typed tU : number
+#'  posterior probability threshold for being above `p1`.
+#' @typed parE : numeric
+#'  beta parameters for the prior on the treatment proportion.
+#'
+#' @return A list of the following objects :
+#'  - `decision` : resulting numeric of decision, one of `TRUE` for GO, `FALSE`for STOP, `NA` for Gray zone
+#'  - `all_sizes` : resulting numeric of look size, anything below maximum
+#'                  look size is an indicated interim, futility or efficacy or both
+#'
+#' @export
+#'
+#' @examples
 get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   index_look <- 1
   assert_numeric(nnr)
@@ -62,19 +117,28 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
   )
 }
 
-# get_oc helper function
-#' Title
+#' get_oc helper function
 #'
-#' @typed all_sizes
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Generates operating characteristics.
+#'
 #' @inheritParams get_looks
-#' @param decision
-#' @param nnrE
-#' @param nnrF
+#' @inheritParams get_decision
 #'
-#' @return
+#' @return A list of results containing :
+#'
+#' - `ExpectedN`: expected number of patients in the trials
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability to decide for Futility early
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: Probability of Stop decision
+#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #' @export
 #'
-#' @examples
+#' @examples examples / ocPostprob.R
 get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   sim <- length(all_sizes)
   assert_logical(decision, len = sim)
@@ -122,35 +186,15 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' @typed nnE : numeric
 #'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 #'  specify in `nnF`.
-#' @typed truep : number
-#'  assumed true response rate nor true rate (scenario).
-#' @typed p0 : number
-#'  lower efficacy threshold of response rate.
-#' @typed p1 : number
-#'  upper efficacy threshold of response rate.
-#' @typed tL : number
-#'  posterior probability threshold for being below `p0`.
-#' @typed tU : number
-#'  posterior probability threshold for being above `p1`.
-#' @typed parE : numeric
-#'  beta parameters for the prior on the treatment proportion.
 #' @typed sim : number
-#'  number of simulations.
+#'  number of simulations
 #' @typed wiggle : logical
 #'  generate random look locations (not default)
 #'  if `TRUE`, specify `dist` (see @details)
 #' @typed dist : "`numeric` or `NULL`" #TODO ( was dl)... check Roxytypes
 #'  distance for random looks around the look locations in `nn`.
 #'  If `NULL`, only one location look will be set at nnE or nnF or n
-#' @typed nnF : numeric
-#'  sample size or sizes where study can be stopped for futility decision. If different for futility decision,
-#'  specify in `nnF`.
-#'  ## From helper functions
-#' @typed nnrE : numeric
-#'  same as `nnE` but if wiggle room and distance applied.
-#' @typed nnrF : numeric
-#'  same as `nnF` but if wiggle room and distance applied.
-#
+#' @inheritParams get_looks
 #'
 #' @return A list with the following elements:
 #'
@@ -163,7 +207,6 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `nnE`: vector of efficacy look locations
 #' - `nnF`: vector of futility look locations
 #' - `params`: multiple parameters
-#' -  `Decision` : resulting decision, one of `TRUE` for GO, `FALSE`for STOP, `NA` for Gray zone
 #'
 #' @details
 #' ## About arguments
@@ -173,12 +216,6 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
 #'  As default, `nnF` is set to the identical looks of `nnE`, and if `wiggle = TRUE`, all looks are the same, e.g.
 #'  `nnE = nnF` when wiggle and distance is applied.
-#'
-#' ## About helper function
-#'
-#' `get_distance` inputs `dist` into `get_looks` and thereafter contributes to arguments in `get_decision`.
-#' Finally, `get_oc` generates a list of parameters such as `decisions`, `all_sizes` and operating characteristics (oc).
-#'
 #'
 #' @example examples/ocPostprob.R
 #' @export

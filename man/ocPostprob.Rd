@@ -22,34 +22,15 @@ ocPostprob(
 \item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 specify in \code{nnF}.}
 
-\item{truep}{(\code{number}):\cr assumed true response rate nor true rate (scenario).}
-
-\item{p0}{(\code{number}):\cr lower efficacy threshold of response rate.}
-
-\item{p1}{(\code{number}):\cr upper efficacy threshold of response rate.}
-
-\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
-
-\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
-
-\item{parE}{(\code{numeric}):\cr beta parameters for the prior on the treatment proportion.}
-
-\item{sim}{(\code{number}):\cr number of simulations.}
+\item{sim}{(\code{number}):\cr number of simulations}
 
 \item{wiggle}{(\code{logical}):\cr generate random look locations (not default)
 if \code{TRUE}, specify \code{dist} (see @details)}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for futility decision. If different for futility decision,
-specify in \code{nnF}.
-\subsection{From helper functions}{
-}}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.}
 
 \item{dist}{(\code{numeric} or \code{NULL}#TODO ( was dl)... check Roxytypes):\cr distance for random looks around the look locations in \code{nn}.
 If \code{NULL}, only one location look will be set at nnE or nnF or n}
-
-\item{nnrE}{(\code{numeric}):\cr same as \code{nnE} but if wiggle room and distance applied.}
-
-\item{nnrF}{(\code{numeric}):\cr same as \code{nnF} but if wiggle room and distance applied.}
 }
 \value{
 A list with the following elements:
@@ -63,7 +44,6 @@ SampleSize: vector of the sample sizes in the simulated trials
 \item \code{nnE}: vector of efficacy look locations
 \item \code{nnF}: vector of futility look locations
 \item \code{params}: multiple parameters
-\item \code{Decision} : resulting decision, one of \code{TRUE} for GO, \code{FALSE}for STOP, \code{NA} for Gray zone
 }
 }
 \description{
@@ -100,12 +80,6 @@ If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will 
 If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
 As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
 \code{nnE = nnF} when wiggle and distance is applied.
-}
-
-\subsection{About helper function}{
-
-\code{get_distance} inputs \code{dist} into \code{get_looks} and thereafter contributes to arguments in \code{get_decision}.
-Finally, \code{get_oc} generates a list of parameters such as \code{decisions}, \code{all_sizes} and operating characteristics (oc).
 }
 }
 \examples{
