@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprob.R
 \name{get_distance}
 \alias{get_distance}
-\title{get_distance}
+\title{Generating random distance in looks for efficacy and futility.}
 \usage{
 get_distance(nn)
 }

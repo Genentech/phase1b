@@ -2,31 +2,32 @@
 % Please edit documentation in R/ocPostprob.R
 \name{get_decision}
 \alias{get_decision}
-\title{get_decision}
+\title{Generating random decision and sample size looks.}
 \usage{
 get_decision(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 }
 \arguments{
-\item{response}{(\code{numeric}):\cr A numeric of bernoulli successes based on \code{size_look},}
+\item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
-\item{truep}{(\code{number}):\cr assumed true response rate nor true rate (scenario).}
+\item{response}{(\code{numeric}):\cr A numeric of Bernoulli successes based on \code{size_look}}
+
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
 \item{p0}{(\code{number}):\cr lower efficacy threshold of response rate.}
 
 \item{p1}{(\code{number}):\cr upper efficacy threshold of response rate.}
 
-\item{parE}{(\code{numeric}):\cr beta parameters for the prior on the treatment proportion.}
+\item{parE}{(\code{numeric}):\cr Alpha and beta parameters for the prior on the treatment proportion.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for Futility decision,
+\item{nnE}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 specify in \code{nnF}.}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
 
 \item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
-
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
 A list of the following objects :

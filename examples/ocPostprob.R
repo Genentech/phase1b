@@ -1,4 +1,4 @@
-# operating characteristics for posterior probability method
+# Operating characteristics for posterior probability method
 
 # design details (example)
 # multiple looks @ 10, 20, 30 patients

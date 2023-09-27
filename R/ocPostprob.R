@@ -1,7 +1,7 @@
 #' @include postprob.R
 NULL
 
-#' get_distance
+#' Generating random distance in looks for efficacy and futility.
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -27,22 +27,29 @@ get_distance <- function(nn) {
   dist
 }
 
-#' get_looks
+#' Generating looks
 #'
-#' A helper function for `ocPostprob` that applies the numeric element of distance to looks `nn`.
+#' @description `r lifecycle::badge("experimental")`
 #'
-#' @typed dist : numeric
-#' Distance generated from `get_distance` in a numeric of at least one element.
+#' A helper function for `ocPostprob` that applies the numeric element of `dist` to looks `nn`.
+#'
+#' @typed dist : numeric or logical
+#' Distance for random looks around the look locations in `nn`,
+#' where `dist`is generated from `get_distance` in a numeric of at least one element.
+#' If `NULL`, only one location look will be set at `nnE` or `nnF`.
 #' @typed nnE : numeric
-#'  sample size or sizes where study can be stopped for efficacy decision. If different for Futility decision,
-#'  specify in `nnF`.
+#' Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+#' specify in `nnF`.
 #' @typed nnF : numeric
-#'  sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.
+#' Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.
 #'
 #' @return A numeric of looks with outputs from `get_distance` randomly added to looks.
+#' `nnrE`is the result for efficacy looks with random distance added.
+#' `nnrF`is the result for futility looks with random distance added.
+#'
 #' @export
 #'
-#' @examples examples / ocPostProb
+#' @examples examples / ocPostProb.R
 get_looks <- function(dist, nnE, nnF) {
   assert_numeric(nnE)
   assert_numeric(nnF)
@@ -56,19 +63,19 @@ get_looks <- function(dist, nnE, nnF) {
   )
 }
 
-#' get_decision
+#' Generating random decision and sample size looks.
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' A helper function for `ocPostprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
 #'
 #' @inheritParams get_looks
+#' @typed nnr : numeric
+#' union of `nnE`and `nnF`.
 #' @typed response : numeric
-#' A numeric of bernoulli successes based on `size_look`,
-#' @typed : truep
-#' A numeric of the true response rate
+#' A numeric of Bernoulli successes based on `size_look`
 #' @typed truep : number
-#'  assumed true response rate nor true rate (scenario).
+#'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
 #'  lower efficacy threshold of response rate.
 #' @typed p1 : number
@@ -78,7 +85,8 @@ get_looks <- function(dist, nnE, nnF) {
 #' @typed tU : number
 #'  posterior probability threshold for being above `p1`.
 #' @typed parE : numeric
-#'  beta parameters for the prior on the treatment proportion.
+#'  Alpha and beta parameters for the prior on the treatment proportion.
+#'  Default set at alpha = 1, beta = 1, or uniform prior.
 #'
 #' @return A list of the following objects :
 #'  - `decision` : resulting numeric of decision, one of `TRUE` for GO, `FALSE`for STOP, `NA` for Gray zone
@@ -117,7 +125,7 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
   )
 }
 
-#' get_oc helper function
+#' Creating list for operating characteristics.
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -125,6 +133,14 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
 #'
 #' @inheritParams get_looks
 #' @inheritParams get_decision
+#' @typed nnrE : numeric
+#' Looks with random distance, if applied on `nnE`.
+#' @typed nnrF : numeric
+#' Looks with random distance, if applied on `nnF`.
+#' @typed all_sizes : numeric
+#' Sample sizes of all looks simulated `length(sim)` times if `dist` applied.
+#' @typed decision : numeric
+#' Go, Stop or Gray Zone decisions of all looks simulated `length(sim)` times.
 #'
 #' @return A list of results containing :
 #'
@@ -167,10 +183,13 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' above `p1` is larger than `tU`, and stopped for futility if the posterior
 #' probability to be below `p0` is larger than `tL`:
 #'
-#' Stop criteria for Efficacy : `P_E(p > p1) > tU`
+#' Stop criteria for Efficacy :
 #'
-#' Stop criteria for Futility : `P_E(p < p0) > tL`
+#' `P_E(p > p1) > tU`
 #'
+#' Stop criteria for Futility :
+#'
+#' `P_E(p < p0) > tL`
 #'
 #' Resulting Operating Characteristics include the following:
 #'
@@ -183,30 +202,24 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `PrFutility`: Probability of Stop decision
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
-#' @typed nnE : numeric
-#'  sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
-#'  specify in `nnF`.
+#' @inheritParams get_looks
+#' @inheritParams get_decision
 #' @typed sim : number
 #'  number of simulations
 #' @typed wiggle : logical
 #'  generate random look locations (not default)
 #'  if `TRUE`, specify `dist` (see @details)
-#' @typed dist : "`numeric` or `NULL`" #TODO ( was dl)... check Roxytypes
-#'  distance for random looks around the look locations in `nn`.
-#'  If `NULL`, only one location look will be set at nnE or nnF or n
-#' @inheritParams get_looks
+#' @typed randomdist : logical
+#'  Random distance added to looks. if `NULL`, and `wiggle = TRUE`, function will
+#'  generate and add a random distance within range of the closest looks.
 #'
 #' @return A list with the following elements:
 #'
 #' - `oc`: matrix with operating characteristics (see Details section)
-#' Decision: vector of the decisions made in the simulated trials
-#' (`TRUE` for success, `FALSE` for failure, `NA` for no
-#' decision)
-#' SampleSize: vector of the sample sizes in the simulated trials
 #' - `nn`: vector of look locations that was supplied
 #' - `nnE`: vector of efficacy look locations
-#' - `nnF`: vector of futility look locations
-#' - `params`: multiple parameters
+#' - `nnF`: vector of futility look locations # TODO
+#' - `params`: multiple parameters# TODOs
 #'
 #' @details
 #' ## About arguments

@@ -2,24 +2,30 @@
 % Please edit documentation in R/ocPostprob.R
 \name{get_looks}
 \alias{get_looks}
-\title{get_looks}
+\title{Generating looks}
 \usage{
 get_looks(dist, nnE, nnF)
 }
 \arguments{
-\item{dist}{(\code{numeric}):\cr Distance generated from \code{get_distance} in a numeric of at least one element.}
+\item{dist}{(\verb{numeric or logical}):\cr Distance for random looks around the look locations in \code{nn},
+where \code{dist}is generated from \code{get_distance} in a numeric of at least one element.
+If \code{NULL}, only one location look will be set at \code{nnE} or \code{nnF}.}
 
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for Futility decision,
+\item{nnE}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 specify in \code{nnF}.}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
 }
 \value{
 A numeric of looks with outputs from \code{get_distance} randomly added to looks.
+\code{nnrE}is the result for efficacy looks with random distance added.
+\code{nnrF}is the result for futility looks with random distance added.
 }
 \description{
-A helper function for \code{ocPostprob} that applies the numeric element of distance to looks \code{nn}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+A helper function for \code{ocPostprob} that applies the numeric element of \code{dist} to looks \code{nn}.
 }
 \examples{
-examples / ocPostProb
+examples / ocPostProb.R
 }

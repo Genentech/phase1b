@@ -19,31 +19,40 @@ ocPostprob(
 )
 }
 \arguments{
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+\item{nnE}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
 specify in \code{nnF}.}
+
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
+
+\item{p0}{(\code{number}):\cr lower efficacy threshold of response rate.}
+
+\item{p1}{(\code{number}):\cr upper efficacy threshold of response rate.}
+
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
+
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
+
+\item{parE}{(\code{numeric}):\cr Alpha and beta parameters for the prior on the treatment proportion.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{sim}{(\code{number}):\cr number of simulations}
 
 \item{wiggle}{(\code{logical}):\cr generate random look locations (not default)
 if \code{TRUE}, specify \code{dist} (see @details)}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for futility decision if different from Efficacy decision.}
+\item{randomdist}{(\code{logical}):\cr Random distance added to looks. if \code{NULL}, and \code{wiggle = TRUE}, function will
+generate and add a random distance within range of the closest looks.}
 
-\item{dist}{(\code{numeric} or \code{NULL}#TODO ( was dl)... check Roxytypes):\cr distance for random looks around the look locations in \code{nn}.
-If \code{NULL}, only one location look will be set at nnE or nnF or n}
+\item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
 }
 \value{
 A list with the following elements:
 \itemize{
 \item \code{oc}: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-decision)
-SampleSize: vector of the sample sizes in the simulated trials
 \item \code{nn}: vector of look locations that was supplied
 \item \code{nnE}: vector of efficacy look locations
-\item \code{nnF}: vector of futility look locations
-\item \code{params}: multiple parameters
+\item \code{nnF}: vector of futility look locations # TODO
+\item \code{params}: multiple parameters# TODOs
 }
 }
 \description{
@@ -56,9 +65,13 @@ The trial is stopped for efficacy if the posterior probability to be
 above \code{p1} is larger than \code{tU}, and stopped for futility if the posterior
 probability to be below \code{p0} is larger than \code{tL}:
 
-Stop criteria for Efficacy : \code{P_E(p > p1) > tU}
+Stop criteria for Efficacy :
 
-Stop criteria for Futility : \code{P_E(p < p0) > tL}
+\code{P_E(p > p1) > tU}
+
+Stop criteria for Futility :
+
+\code{P_E(p < p0) > tL}
 
 Resulting Operating Characteristics include the following:
 \itemize{
@@ -83,7 +96,7 @@ As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code
 }
 }
 \examples{
-# operating characteristics for posterior probability method
+# Operating characteristics for posterior probability method
 
 # design details (example)
 # multiple looks @ 10, 20, 30 patients
