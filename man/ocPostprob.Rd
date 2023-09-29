@@ -12,7 +12,7 @@ ocPostprob(
   tL,
   tU,
   parE = c(1, 1),
-  sim = 1000,
+  sim = 50000,
   wiggle = FALSE,
   randomdist = NULL,
   nnF = nnE
@@ -38,7 +38,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{sim}{(\code{number}):\cr number of simulations}
 
 \item{wiggle}{(\code{logical}):\cr generate random look locations (not default)
-if \code{TRUE}, specify \code{dist} (see @details)}
+if \code{TRUE}, optional to specify \code{dist} (see @details)}
 
 \item{randomdist}{(\code{logical}):\cr Random distance added to looks. if \code{NULL}, and \code{wiggle = TRUE}, function will
 generate and add a random distance within range of the closest looks.}
@@ -48,7 +48,7 @@ generate and add a random distance within range of the closest looks.}
 \value{
 A list with the following elements:
 \itemize{
-\item \code{oc}: matrix with operating characteristics (see Details section)
+\item \code{oc}: matrix with operating characteristics (see @details section)
 \item \code{nn}: vector of look locations that was supplied
 \item \code{nnE}: vector of efficacy look locations
 \item \code{nnF}: vector of futility look locations # TODO
@@ -89,7 +89,7 @@ maximum sample size)
 \subsection{About arguments}{
 
 \code{ExpectedN} is an average of the simulated sample sizes.
-If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}
+If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
 If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
 As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
 \code{nnE = nnF} when wiggle and distance is applied.

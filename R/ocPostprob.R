@@ -13,19 +13,21 @@ NULL
 #'
 #' @return A numeric with `length(nn)-1` elements.
 #'
-#' @examples examples / ocPostprob.R
 #' @export
+#'
+#' @examples examples / ocPostprob.R
 get_distance <- function(nn) {
-  assert_numeric(nn, unique = TRUE, sorted = TRUE)
+  assert_numeric(nn, unique = TRUE, sorted = TRUE, min.len = 1)
   dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
   assert_numeric(dist0, sorted = TRUE)
   dist <- sample(-dist0:dist0,
     size = length(nn) - 1,
     replace = TRUE,
-    prob = 2^(c(-dist0:0, rev(-dist0:(-1))) / 2)
+    prob = 2^(-abs(-dist0:dist0) / 2)
   )
   dist
 }
+
 
 #' Generating looks
 #'
@@ -208,14 +210,14 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #'  number of simulations
 #' @typed wiggle : logical
 #'  generate random look locations (not default)
-#'  if `TRUE`, specify `dist` (see @details)
+#'  if `TRUE`, optional to specify `dist` (see @details)
 #' @typed randomdist : logical
 #'  Random distance added to looks. if `NULL`, and `wiggle = TRUE`, function will
 #'  generate and add a random distance within range of the closest looks.
 #'
 #' @return A list with the following elements:
 #'
-#' - `oc`: matrix with operating characteristics (see Details section)
+#' - `oc`: matrix with operating characteristics (see @details section)
 #' - `nn`: vector of look locations that was supplied
 #' - `nnE`: vector of efficacy look locations
 #' - `nnF`: vector of futility look locations # TODO
@@ -225,7 +227,7 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' ## About arguments
 #'
 #' `ExpectedN` is an average of the simulated sample sizes.
-#'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`
+#'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`.
 #'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
 #'  As default, `nnF` is set to the identical looks of `nnE`, and if `wiggle = TRUE`, all looks are the same, e.g.
 #'  `nnE = nnF` when wiggle and distance is applied.
@@ -233,7 +235,7 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' @example examples/ocPostprob.R
 #' @export
 ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
-                       sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = nnE) {
+                       sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
