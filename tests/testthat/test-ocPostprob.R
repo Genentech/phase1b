@@ -87,12 +87,12 @@ test_that("the PrFutility increases with increase futility looks", {
     sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
   )
 
-  res$oc$PrFutility
+  res_fut$oc$PrFutility # 0.048
   res_no_fut <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
     sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10)
   )
-  res_no_fut$oc$PrFutility
+  res_no_fut$oc$PrFutility # 0.031
   expect_true(res_fut$oc$PrFutility > res_no_fut$oc$PrFutility)
 })
 
@@ -103,13 +103,13 @@ test_that("the PrFfficacy increases with increase Efficacy looks", {
     sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(30)
   )
 
-  res_eff$oc$PrEfficacy
+  res_eff$oc$PrEfficacy # 0.691
   res_more_eff <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
     sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
   )
-  res_more_eff$oc$PrEfficacy
-  expect_true(res_eff$oc$PrEfficacy > res_more_eff$oc$PrEfficacy)
+  res_more_eff$oc$PrEfficacy # 0.728
+  expect_true(res_more_eff$oc$PrEfficacy > res_more_eff$oc$PrEfficacy)
 })
 
 # expect equal with tolerance ---
