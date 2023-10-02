@@ -1,7 +1,7 @@
 #' @include postprob.R
 NULL
 
-#' Generating random distance in looks for efficacy and futility.
+#' Generating random distance in given looks for sample sizes for efficacy and futility.
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -45,7 +45,7 @@ get_distance <- function(nn) {
 #' @typed nnF : numeric
 #' Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.
 #'
-#' @return A numeric of looks with outputs from `get_distance` randomly added to looks.
+#' @return Uses distance from `get_distance` to add to looks, creating wiggled looks:
 #' `nnrE`is the result for efficacy looks with random distance added.
 #' `nnrF`is the result for futility looks with random distance added.
 #'
@@ -107,7 +107,7 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
   assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
-      qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE) # for each
+      qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
       assert_number(qL, lower = 0, upper = 1)
       decision <- ifelse(qL >= tL, FALSE, NA)
     }
@@ -119,7 +119,6 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
-    # }
   }
   list(
     decision = decision,

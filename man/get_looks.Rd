@@ -17,7 +17,7 @@ specify in \code{nnF}.}
 \item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
 }
 \value{
-A numeric of looks with outputs from \code{get_distance} randomly added to looks.
+Uses distance from \code{get_distance} to add to looks, creating wiggled looks:
 \code{nnrE}is the result for efficacy looks with random distance added.
 \code{nnrF}is the result for futility looks with random distance added.
 }
