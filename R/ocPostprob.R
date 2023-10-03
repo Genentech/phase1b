@@ -3,8 +3,6 @@ NULL
 
 #' Generating random distance in given looks for sample sizes for efficacy and futility.
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
 #' Numeric looks `nn` must be of minimum two elements and will generate `length(nn)-1` distances.
 #'
@@ -13,10 +11,10 @@ NULL
 #'
 #' @return A numeric with `length(nn)-1` elements.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples examples / ocPostprob.R
-get_distance <- function(nn) {
+h_get_distance <- function(nn) {
   assert_numeric(nn, unique = TRUE, sorted = TRUE, min.len = 1)
   dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
   assert_numeric(dist0, sorted = TRUE)
@@ -27,16 +25,13 @@ get_distance <- function(nn) {
   )
 }
 
-
 #' Generating looks
-#'
-#' @description `r lifecycle::badge("experimental")`
 #'
 #' A helper function for `ocPostprob` that applies the numeric element of `dist` to looks `nn`.
 #'
 #' @typed dist : numeric or logical
 #' Distance for random looks around the look locations in `nn`,
-#' where `dist`is generated from `get_distance` in a numeric of at least one element.
+#' where `dist`is generated from `h_get_distance` in a numeric of at least one element.
 #' If `NULL`, only one location look will be set at `nnE` or `nnF`.
 #' @typed nnE : numeric
 #' Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
@@ -44,14 +39,14 @@ get_distance <- function(nn) {
 #' @typed nnF : numeric
 #' Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.
 #'
-#' @return Uses distance from `get_distance` to add to looks, creating wiggled looks:
+#' @return Uses distance from `h_get_distance` to add to looks, creating wiggled looks:
 #' `nnrE`is the result for efficacy looks with random distance added.
 #' `nnrF`is the result for futility looks with random distance added.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples examples / ocPostProb.R
-get_looks <- function(dist, nnE, nnF) {
+h_get_looks <- function(dist, nnE, nnF) {
   assert_numeric(nnE)
   assert_numeric(nnF)
   nn <- unique(c(nnE, nnF))
@@ -66,11 +61,9 @@ get_looks <- function(dist, nnE, nnF) {
 
 #' Generating random decision and sample size looks.
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' A helper function for `ocPostprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
 #'
-#' @inheritParams get_looks
+#' @inheritParams h_get_looks
 #' @typed nnr : numeric
 #' union of `nnE`and `nnF`.
 #' @typed response : numeric
@@ -94,10 +87,10 @@ get_looks <- function(dist, nnE, nnF) {
 #'  - `all_sizes` : resulting numeric of look size, anything below maximum
 #'                  look size is an indicated interim, futility or efficacy or both
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
-get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+h_get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -127,12 +120,10 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
 
 #' Creating list for operating characteristics.
 #'
-#' @description `r lifecycle::badge("experimental")`
-#'
 #' Generates operating characteristics.
 #'
-#' @inheritParams get_looks
-#' @inheritParams get_decision
+#' @inheritParams h_get_looks
+#' @inheritParams h_get_decision
 #' @typed nnrE : numeric
 #' Looks with random distance, if applied on `nnE`.
 #' @typed nnrF : numeric
@@ -152,10 +143,11 @@ get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF,
 #' - `PrEfficacy`: probability of Go decision
 #' - `PrFutility`: Probability of Stop decision
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
-#' @export
+#'
+#' @keywords internal
 #'
 #' @examples examples / ocPostprob.R
-get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   sim <- length(all_sizes)
   assert_logical(decision, len = sim)
   assert_numeric(all_sizes)
@@ -202,8 +194,8 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `PrFutility`: Probability of Stop decision
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
-#' @inheritParams get_looks
-#' @inheritParams get_decision
+#' @inheritParams h_get_looks
+#' @inheritParams h_get_decision
 #' @typed sim : number
 #'  number of simulations
 #' @typed wiggle : logical
@@ -239,8 +231,8 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   assert_logical(all_sizes)
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle && is.null(randomdist)) {
-      dist <- get_distance(nn = nn)
-      nnr <- get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
     } else {
@@ -248,7 +240,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    tmp <- get_decision(
+    tmp <- h_get_decision(
       nnr = nnr, response = response,
       truep = truep, p0 = p0, p1 = p1,
       parE = c(1, 1), nnE = nnrE,
@@ -257,7 +249,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
   list(
     oc = oc,
     Decision = decision,
