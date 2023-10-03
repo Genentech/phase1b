@@ -73,7 +73,7 @@ Stop criteria for Futility :
 
 \code{P_E(p < p0) > tL}
 
-Resulting Operating Characteristics include the following:
+Resulting operating characteristics include the following:
 \itemize{
 \item \code{ExpectedN}: expected number of patients in the trials
 \item \code{PrStopEarly}: probability to stop the trial early (before reaching the
