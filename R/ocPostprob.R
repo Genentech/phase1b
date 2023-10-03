@@ -222,8 +222,6 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `params`: multiple parameters# TODOs
 #'
 #' @details
-#' ## About arguments
-#'
 #' `ExpectedN` is an average of the simulated sample sizes.
 #'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`.
 #'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
