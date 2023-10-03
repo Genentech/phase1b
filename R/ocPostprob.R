@@ -20,12 +20,11 @@ get_distance <- function(nn) {
   assert_numeric(nn, unique = TRUE, sorted = TRUE, min.len = 1)
   dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
   assert_numeric(dist0, sorted = TRUE)
-  dist <- sample(-dist0:dist0,
+  sample(-dist0:dist0,
     size = length(nn) - 1,
     replace = TRUE,
     prob = 2^(-abs(-dist0:dist0) / 2)
   )
-  dist
 }
 
 
