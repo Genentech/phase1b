@@ -189,7 +189,7 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `PrStopEarly`: probability to stop the trial early (before reaching the
 #' maximum sample size)
 #' - `PrEarlyEff`: probability of Early Go decision
-#' - `PrEarlyFut`: probability to decide for Futility early
+#' - `PrEarlyFut`: probability of for Early Futility decision
 #' - `PrEfficacy`: probability of Go decision
 #' - `PrFutility`: Probability of Stop decision
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
