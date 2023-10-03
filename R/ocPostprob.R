@@ -237,7 +237,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   all_sizes <- vector(length = sim)
   assert_logical(decision)
   assert_logical(all_sizes)
-  for (k in 1:sim) {
+  for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle && is.null(randomdist)) {
       dist <- get_distance(nn = nn)
       nnr <- get_looks(dist = dist, nnE = nnE, nnF = nnF)
