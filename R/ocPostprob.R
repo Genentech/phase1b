@@ -191,7 +191,7 @@ get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #'
 #' `P_E(p < p0) > tL`
 #'
-#' Resulting Operating Characteristics include the following:
+#' Resulting operating characteristics include the following:
 #'
 #' - `ExpectedN`: expected number of patients in the trials
 #' - `PrStopEarly`: probability to stop the trial early (before reaching the
