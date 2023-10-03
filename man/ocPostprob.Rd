@@ -86,14 +86,11 @@ maximum sample size)
 }
 }
 \details{
-\subsection{About arguments}{
-
 \code{ExpectedN} is an average of the simulated sample sizes.
 If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
 If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
 As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
 \code{nnE = nnF} when wiggle and distance is applied.
-}
 }
 \examples{
 # Three looks--
