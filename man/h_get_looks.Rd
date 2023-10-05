@@ -2,29 +2,26 @@
 % Please edit documentation in R/ocPostprob.R
 \name{h_get_looks}
 \alias{h_get_looks}
-\title{Generating looks}
+\title{Generating looks from random distance}
 \usage{
 h_get_looks(dist, nnE, nnF)
 }
 \arguments{
-\item{dist}{(\verb{numeric or logical}):\cr Distance for random looks around the look locations in \code{nn},
+\item{dist}{(\verb{numeric or logical}):\cr distance for random looks around the look locations in \code{nn},
 where \code{dist}is generated from \code{h_get_distance} in a numeric of at least one element.
 If \code{NULL}, only one location look will be set at \code{nnE} or \code{nnF}.}
 
-\item{nnE}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
 specify in \code{nnF}.}
 
-\item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \value{
 Uses distance from \code{h_get_distance} to add to looks, creating wiggled looks:
-\code{nnrE}is the result for efficacy looks with random distance added.
-\code{nnrF}is the result for futility looks with random distance added.
+\code{nnrE}is the result for Efficacy looks with random distance added.
+\code{nnrF}is the result for Futility looks with random distance added.
 }
 \description{
 A helper function for \code{ocPostprob} that applies the numeric element of \code{dist} to looks \code{nn}.
-}
-\examples{
-examples / ocPostProb.R
 }
 \keyword{internal}

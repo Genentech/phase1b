@@ -19,40 +19,40 @@ ocPostprob(
 )
 }
 \arguments{
-\item{nnE}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for efficacy decision. If different for futility decision,
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
 specify in \code{nnF}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{p0}{(\code{number}):\cr lower efficacy threshold of response rate.}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p1}{(\code{number}):\cr upper efficacy threshold of response rate.}
+\item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
 
-\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}..}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{parE}{(\code{numeric}):\cr Alpha and beta parameters for the prior on the treatment proportion.
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment proportion.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{sim}{(\code{number}):\cr number of simulations}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{wiggle}{(\code{logical}):\cr generate random look locations (not default)
-if \code{TRUE}, optional to specify \code{dist} (see @details)}
+\item{wiggle}{(\code{logical}):\cr generate random look locations (not default).
+if \code{TRUE}, optional to specify \code{dist} (see @details).}
 
 \item{randomdist}{(\code{logical}):\cr Random distance added to looks. if \code{NULL}, and \code{wiggle = TRUE}, function will
 generate and add a random distance within range of the closest looks.}
 
-\item{nnF}{(\code{numeric}):\cr Sample size or sizes where study can be stopped for futility decision if different from efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \value{
 A list with the following elements:
 \itemize{
 \item \code{oc}: matrix with operating characteristics (see @details section)
 \item \code{nn}: vector of look locations that was supplied
-\item \code{nnE}: vector of efficacy look locations
-\item \code{nnF}: vector of futility look locations # TODO
-\item \code{params}: multiple parameters# TODOs
+\item \code{nnE}: vector of Efficacy look locations
+\item \code{nnF}: vector of Futility look locations
+\item \code{params}: multiple parameters
 }
 }
 \description{
@@ -61,8 +61,8 @@ A list with the following elements:
 Calculate operating characteristics for posterior probability method.
 
 It is assumed that the true response rate is \code{truep}.
-The trial is stopped for efficacy if the posterior probability to be
-above \code{p1} is larger than \code{tU}, and stopped for futility if the posterior
+The trial is stopped for Efficacy if the posterior probability to be
+above \code{p1} is larger than \code{tU}, and stopped for Futility if the posterior
 probability to be below \code{p0} is larger than \code{tL}:
 
 Stop criteria for Efficacy :
@@ -79,9 +79,9 @@ Resulting operating characteristics include the following:
 \item \code{PrStopEarly}: probability to stop the trial early (before reaching the
 maximum sample size)
 \item \code{PrEarlyEff}: probability of Early Go decision
-\item \code{PrEarlyFut}: probability to decide for Futility early
+\item \code{PrEarlyFut}: probability of for Early Stop decision
 \item \code{PrEfficacy}: probability of Go decision
-\item \code{PrFutility}: Probability of Stop decision
+\item \code{PrFutility}: probability of Stop decision
 \item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
 }
 }
@@ -93,13 +93,12 @@ As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code
 \code{nnE = nnF} when wiggle and distance is applied.
 }
 \examples{
-# Three looks--
-# design details (example)
-# multiple looks @ 10, 20, 30 patients
-# True response rate of the treatment group=40\%
-# Look for futility: P(response rate < 20\% )> 60\%
-# Look for efficacy: P(response rate > 30\% )> 80\%
-# prior of treatment arm parE= Beta(1,1)
+# For three looks of 10, 20 and 30 we have the following assumptions :
+# True response rate of the treatment group = 40\%
+# The following are the Go and Stop rules respectively :
+# Look for Efficacy: P(response rate > 30\% )> 80\%
+# Look for Futility: P(response rate < 20\% )> 60\%
+# Prior of treatment arm parE= Beta(1,1).
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 1000, wiggle = TRUE, randomdist = NULL, nnF = c(10, 20, 30)
@@ -107,7 +106,7 @@ res <- ocPostprob(
 
 res$oc
 
-# Specify distance
+# We specify the distance in this example.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 1000, wiggle = TRUE, randomdist = c(-1, 3), nnF = c(10, 20, 30)
@@ -115,7 +114,7 @@ res <- ocPostprob(
 
 res$oc
 
-# No Wiggle
+# Here, nnE = nnF, and no wiggle room is allowed. Random distance also not supplied.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
@@ -123,7 +122,7 @@ res <- ocPostprob(
 
 res$oc
 
-# Only one efficacy + many futility
+# Here, we only have one Futility and Efficacy look or stop.
 res <- ocPostprob(
   nnE = c(10), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10)
@@ -131,7 +130,7 @@ res <- ocPostprob(
 
 res$oc
 
-# Only one futility
+# Here, we only have one Futility but many Efficacy looks or stop.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 1000, wiggle = FALSE, randomdist = NULL, nnF = c(10)

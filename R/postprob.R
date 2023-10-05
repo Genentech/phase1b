@@ -27,7 +27,6 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
   stats::pbeta(p, a + x, b + n - x, lower.tail = FALSE)
 }
 
-
 #' Compute the posterior probability to be above threshold,
 #' with a beta mixture prior on the response rate.
 #'
@@ -63,20 +62,19 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 #' @export
 postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE) {
   if (missing(betamixPost)) {
-    ## if parE is a vector => situation where there is only one component
+    # If betamixPost is missing, then we would use the default parE
     if (is.vector(parE)) {
-      # Here there is only one component.
+      # Here there is only one component in the parE vector.
       assert_true(identical(length(parE), 2L))
-      # To get matrix with one row.
+      # To get matrix with one row, we transpose parE.
       parE <- t(parE)
     }
 
-    ## if prior weights of the beta mixture are not supplied
+    # If prior weights of the beta mixture are not supplied, weights are given
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
 
-    ## now compute updated parameters
     betamixPost <- getBetamixPost(
       x = x,
       n = n,
@@ -85,7 +83,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     )
   }
 
-  ## now compute the survival function at p, i.e. 1 - cdf at p:
+  # Here, we compute the survival function at p, i.e. 1 - cdf at p as lower.tail = FALSE:
   ret <- with(
     betamixPost,
     pbetaMix(q = p, par = par, weights = weights, lower.tail = FALSE)
