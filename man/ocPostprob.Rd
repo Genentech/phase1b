@@ -79,7 +79,11 @@ Resulting operating characteristics include the following:
 \item \code{PrStopEarly}: probability to stop the trial early (before reaching the
 maximum sample size)
 \item \code{PrEarlyEff}: probability of Early Go decision
+<<<<<<< HEAD
 \item \code{PrEarlyFut}: probability of for Early Stop decision
+=======
+\item \code{PrEarlyFut}: probability of for Early Futility decision
+>>>>>>> 14_ocPostProb
 \item \code{PrEfficacy}: probability of Go decision
 \item \code{PrFutility}: probability of Stop decision
 \item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
