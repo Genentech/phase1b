@@ -64,7 +64,7 @@ test_that("the ExpectedN is within range based on vector of looks", {
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)
   )
-  expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes)) # TODO
+  expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes))
 })
 
 # ocPostprob ----
