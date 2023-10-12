@@ -73,7 +73,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed p1 : number
 #'  upper Efficacy threshold of response rate.
 #' @typed tL : number
-#'  posterior probability threshold for being below `p0`..
+#'  posterior probability threshold for being below `p0`.
 #' @typed tU : number
 #'  posterior probability threshold for being above `p1`.
 #' @typed parE : numeric
