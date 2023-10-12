@@ -48,8 +48,8 @@ test_that("get_decision will give GO decision in favourable conditions", {
 # h_get_oc ----
 test_that("the probability results of get_oc are less than 1", {
   oc <- h_get_oc(
-    all_sizes = sample(c(11, 14, 20), 10000, replace = TRUE),
-    decision = sample(c(NA, TRUE, FALSE), 10000, replace = TRUE),
+    all_sizes = sample(c(11, 14, 20), size = 10000, replace = TRUE),
+    decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)
   )
@@ -57,13 +57,14 @@ test_that("the probability results of get_oc are less than 1", {
 })
 
 test_that("the ExpectedN is within range based on vector of looks", {
+  all_sizes <- sample(c(11, 14, 20), size = 10000, replace = TRUE)
   oc <- h_get_oc(
-    all_sizes = sample(c(11, 14, 20), 10000, replace = TRUE),
-    decision = sample(c(NA, TRUE, FALSE), 10000, replace = TRUE),
+    all_sizes = all_sizes,
+    decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)
   )
-  expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes))
+  expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes)) # TODO
 })
 
 # ocPostprob ----
@@ -85,28 +86,28 @@ test_that("the PrFutility increases with increase futility looks", {
   )
 
   res_fut$oc$PrFutility
-  res_no_fut <- ocPostprob(
+  res_one_fut <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 5000, wiggle = FALSE, randomdist = NULL, nnF = c(10)
+    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(10)
   )
-  res_no_fut$oc$PrFutility
-  expect_true(res_fut$oc$PrFutility > res_no_fut$oc$PrFutility)
+  res_one_fut$oc$PrFutility
+  expect_true(res_fut$oc$PrFutility > res_one_fut$oc$PrFutility)
 })
 
-test_that("the PrFfficacy increases with increase Efficacy looks", {
+test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   res_eff <- ocPostprob(
     nnE = c(30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 5000, wiggle = FALSE, randomdist = NULL, nnF = c(30)
+    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(30)
   )
 
   res_eff$oc$PrEfficacy
   res_more_eff <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 5000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
+    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
   )
   res_more_eff$oc$PrEfficacy
-  expect_true(res_more_eff$oc$PrEfficacy > res_more_eff$oc$PrEfficacy)
+  expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
 # ocPostprob  ---
