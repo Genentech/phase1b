@@ -1,4 +1,4 @@
-# h_get_distance (helper function) ----
+# h_get_distance ----
 test_that("h_get_distance gives an error with one element numeric", {
   expect_equal(h_get_distance(10), integer(0))
 })
