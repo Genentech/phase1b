@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="dbetabinom" timestamp="2023-10-12T14:45:37Z" hostname="cf10badb89ac" tests="13" skipped="0" failures="0" errors="0" time="0.352">
-    <testcase time="0.0590000000000001" classname="dbetabinom" name="dbetabinom_for_every_x_support_is_between_0_and_1"/>
-    <testcase time="0.088" classname="dbetabinom" name="sum_of_the_dbetabinom_values_over_the_whole_support_for_x_is_1"/>
-    <testcase time="0.025" classname="dbetabinom" name="dbetabinom_gives_correct_numeric_result"/>
-    <testcase time="0.011" classname="dbetabinom" name="dbetabinomMix_gives_a_result_between_0_and_1"/>
-    <testcase time="0.011" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
-    <testcase time="0.011" classname="dbetabinom" name="Sum_of_dbetabinomMix_for_all_x_is_1"/>
-    <testcase time="0.011" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
-    <testcase time="0.0109999999999999" classname="dbetabinom" name="The_pbetaMix_has_incrementally_higher_cdf_with_increase_x_support"/>
-    <testcase time="0.01" classname="dbetabinom" name="pbetaMix_gives_the_correct_number_result"/>
-    <testcase time="0.01" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
-    <testcase time="0.013" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
-    <testcase time="0.011" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
-    <testcase time="0.0810000000000001" classname="dbetabinom" name="qbetaMix_gives_a_number_result"/>
+  <testsuite name="dbetabinom" timestamp="2023-10-12T15:13:14Z" hostname="5ee6e182c2eb" tests="13" skipped="0" failures="0" errors="0" time="0.518">
+    <testcase time="0.072" classname="dbetabinom" name="dbetabinom_for_every_x_support_is_between_0_and_1"/>
+    <testcase time="0.12" classname="dbetabinom" name="sum_of_the_dbetabinom_values_over_the_whole_support_for_x_is_1"/>
+    <testcase time="0.033" classname="dbetabinom" name="dbetabinom_gives_correct_numeric_result"/>
+    <testcase time="0.015" classname="dbetabinom" name="dbetabinomMix_gives_a_result_between_0_and_1"/>
+    <testcase time="0.014" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
+    <testcase time="0.018" classname="dbetabinom" name="Sum_of_dbetabinomMix_for_all_x_is_1"/>
+    <testcase time="0.015" classname="dbetabinom" name="dbetabinomMix_gives_the_correct_numeric_result"/>
+    <testcase time="0.015" classname="dbetabinom" name="The_pbetaMix_has_incrementally_higher_cdf_with_increase_x_support"/>
+    <testcase time="0.0219999999999999" classname="dbetabinom" name="pbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.014" classname="dbetabinom" name="The_complement_of_pbetaMix_can_be_derived_with_a_different_lower.tail_flag"/>
+    <testcase time="0.019" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.0160000000000001" classname="dbetabinom" name="qbetaMix_gives_the_correct_number_result"/>
+    <testcase time="0.145" classname="dbetabinom" name="qbetaMix_gives_a_number_result"/>
   </testsuite>
-  <testsuite name="helpers" timestamp="2023-10-12T14:45:37Z" hostname="cf10badb89ac" tests="4" skipped="0" failures="0" errors="0" time="0.038">
-    <testcase time="0.0189999999999999" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.005" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.004" classname="helpers" name="logit_works_as_expected"/>
-    <testcase time="0.01" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
+  <testsuite name="helpers" timestamp="2023-10-12T15:13:14Z" hostname="5ee6e182c2eb" tests="4" skipped="0" failures="0" errors="0" time="0.079">
+    <testcase time="0.0370000000000001" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.0089999999999999" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.00900000000000012" classname="helpers" name="logit_works_as_expected"/>
+    <testcase time="0.024" classname="helpers" name="logit_gives_expected_value_for_example_value_0.2"/>
   </testsuite>
-  <testsuite name="ocPostprob" timestamp="2023-10-12T14:45:37Z" hostname="cf10badb89ac" tests="15" skipped="0" failures="0" errors="0" time="255.118">
-    <testcase time="0.026" classname="ocPostprob" name="h_get_distance_gives_an_error_with_one_element_numeric"/>
-    <testcase time="0.00700000000000001" classname="ocPostprob" name="h_get_distance_gives_results_within_range"/>
-    <testcase time="0.021" classname="ocPostprob" name="h_get_distance_gives_an_error_with_non_sorted_argument"/>
+  <testsuite name="ocPostprob" timestamp="2023-10-12T15:13:15Z" hostname="5ee6e182c2eb" tests="15" skipped="0" failures="0" errors="0" time="404.151">
+    <testcase time="0.0449999999999999" classname="ocPostprob" name="h_get_distance_gives_an_error_with_one_element_numeric"/>
+    <testcase time="0.012" classname="ocPostprob" name="h_get_distance_gives_results_within_range"/>
+    <testcase time="0.0289999999999999" classname="ocPostprob" name="h_get_distance_gives_an_error_with_non_sorted_argument"/>
+    <testcase time="0.0190000000000001" classname="ocPostprob" name="h_get_looks_gives_correct_results_if_input_is_identical"/>
     <testcase time="0.014" classname="ocPostprob" name="h_get_looks_gives_correct_results_if_input_is_identical"/>
-    <testcase time="0.01" classname="ocPostprob" name="h_get_looks_gives_correct_results_if_input_is_identical"/>
-    <testcase time="0.0219999999999999" classname="ocPostprob" name="get_decision_will_give_GO_decision_in_favourable_conditions"/>
-    <testcase time="0.013" classname="ocPostprob" name="the_probability_results_of_get_oc_are_less_than_1"/>
-    <testcase time="0.01" classname="ocPostprob" name="the_ExpectedN_is_within_range_based_on_vector_of_looks"/>
-    <testcase time="28.484" classname="ocPostprob" name="the_sum_of_Eff_Fut_Gray_zone_probabiliy_is_1"/>
-    <testcase time="91.008" classname="ocPostprob" name="the_PrFutility_increases_with_increase_futility_looks"/>
-    <testcase time="79.144" classname="ocPostprob" name="the_PrEfficacy_increases_with_increase_Efficacy_looks"/>
-    <testcase time="28.208" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
-    <testcase time="0.00399999999999068" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
-    <testcase time="28.142" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
-    <testcase time="0.00499999999999545" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
+    <testcase time="0.0329999999999999" classname="ocPostprob" name="get_decision_will_give_GO_decision_in_favourable_conditions"/>
+    <testcase time="0.0229999999999999" classname="ocPostprob" name="the_probability_results_of_get_oc_are_less_than_1"/>
+    <testcase time="0.0130000000000001" classname="ocPostprob" name="the_ExpectedN_is_within_range_based_on_vector_of_looks"/>
+    <testcase time="44.744" classname="ocPostprob" name="the_sum_of_Eff_Fut_Gray_zone_probabiliy_is_1"/>
+    <testcase time="145.969" classname="ocPostprob" name="the_PrFutility_increases_with_increase_futility_looks"/>
+    <testcase time="125.307" classname="ocPostprob" name="the_PrEfficacy_increases_with_increase_Efficacy_looks"/>
+    <testcase time="44.413" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
+    <testcase time="0.007000000000005" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
+    <testcase time="43.517" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
+    <testcase time="0.00599999999997181" classname="ocPostprob" name="ocPostprob_gives_results_that_are_within_range_to_stats_pbinom"/>
   </testsuite>
-  <testsuite name="postprob" timestamp="2023-10-12T14:49:52Z" hostname="cf10badb89ac" tests="5" skipped="0" failures="0" errors="0" time="0.06">
-    <testcase time="0.0149999999999864" classname="postprob" name="postprobBeta_gives_the_correct_number_result"/>
-    <testcase time="0.0110000000000241" classname="postprob" name="postprobBeta_gives_incrementally_higher_values_with_increase_x_support"/>
-    <testcase time="0.0109999999999673" classname="postprob" name="postprob_gives_the_correct_number_result"/>
-    <testcase time="0.0120000000000005" classname="postprob" name="postprob_gives_the_correct_number_result"/>
-    <testcase time="0.0110000000000241" classname="postprob" name="postprob_gives_incrementally_higher_values_with_increased_x"/>
+  <testsuite name="postprob" timestamp="2023-10-12T15:19:59Z" hostname="5ee6e182c2eb" tests="5" skipped="0" failures="0" errors="0" time="0.098">
+    <testcase time="0.0270000000000437" classname="postprob" name="postprobBeta_gives_the_correct_number_result"/>
+    <testcase time="0.0159999999999627" classname="postprob" name="postprobBeta_gives_incrementally_higher_values_with_increase_x_support"/>
+    <testcase time="0.0219999999999914" classname="postprob" name="postprob_gives_the_correct_number_result"/>
+    <testcase time="0.0180000000000291" classname="postprob" name="postprob_gives_the_correct_number_result"/>
+    <testcase time="0.0149999999999864" classname="postprob" name="postprob_gives_incrementally_higher_values_with_increased_x"/>
   </testsuite>
 </testsuites>
