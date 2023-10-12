@@ -111,19 +111,17 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
 })
 
 # ocPostprob  ---
-# The following are the rules for Go and Stop and the corresponding
-# number of responders and response rate,
-# where P_E(truep >= 0.45) > 0.70 for a Go decision and
-# where P_E(truep <= 0.45) > 0.90 for a Stop decision
-# Pre-calculation indicate that :
-# Go criteria: 20 out of 40, means >= 50% response rate
-# Stop criteria: 13 out of 40, means <= 32.5% response rate.
 test_that("ocPostprob gives results that are within range to stats::pbinom", {
   set.seed(1989)
+  # Go criteria is P_E(truep >= 0.45) > 0.70
+  # Stop criteria is P_E(truep <= 0.45) > 0.90
   res1 <- ocPostprob(
     nnE = 40, truep = 0.5, p0 = 0.45, p1 = 0.45, tL = 0.9, tU = 0.7,
     parE = c(1, 1), sim = 50000
   )
+  # Pre-calculation indicate that :
+  # Go criteria: 20 out of 40, means >= 50% response rate
+  # Stop criteria: 13 out of 40, means <= 32.5% response rate.
   expect_equal(res1$oc$PrEfficacy, 0.56226)
   p.go <- 1 - pbinom(q = 20 - 1, size = 40, prob = 0.5)
   expect_true(abs(p.go - res1$oc$PrEfficacy) < 1e-3)
@@ -131,10 +129,15 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
 
 test_that("ocPostprob gives results that are within range to stats::pbinom", {
   set.seed(1989)
+  # Go criteria is P_E(truep >= 0.45) > 0.70
+  # Stop criteria is P_E(truep <= 0.45) > 0.90
   res1 <- ocPostprob(
     nnE = 40, truep = 0.5, p0 = 0.45, p1 = 0.45, tL = 0.9, tU = 0.7,
     parE = c(1, 1), sim = 50000
   )
+  # Pre-calculation indicate that :
+  # Go criteria: 20 out of 40, means >= 50% response rate
+  # Stop criteria: 13 out of 40, means <= 32.5% response rate.
   expect_equal(res1$oc$PrFutility, 0.01998)
   p.stop <- pbinom(q = 13, size = 40, prob = 0.5)
   p.stop

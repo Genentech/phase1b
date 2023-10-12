@@ -9,7 +9,7 @@ h_get_decision(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
-\item{response}{(\code{numeric}):\cr A numeric of Bernoulli successes based on \code{size_look}.}
+\item{response}{(\code{numeric}):\cr a numeric of Bernoulli successes based on \code{size_look}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
