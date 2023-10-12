@@ -70,7 +70,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
       parE <- t(parE)
     }
 
-    # If prior weights of the beta mixture are not supplied, weights are given
+    # If prior weights of the beta mixture are not supplied, weights are given.
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
