@@ -39,8 +39,8 @@ h_get_distance <- function(nn) {
 #'  sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.
 #'
 #' @return Uses distance from `h_get_distance` to add to looks, creating wiggled looks:
-#'  `nnrE`is the result for Efficacy looks with random distance added.
-#'  `nnrF`is the result for Futility looks with random distance added.
+#'  - `nnrE` is the result for Efficacy looks with random distance added.
+#'  - `nnrF` is the result for Futility looks with random distance added.
 #'
 #' @keywords internal
 #'
