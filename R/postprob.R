@@ -62,7 +62,7 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 #' @export
 postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE) {
   if (missing(betamixPost)) {
-    # If betamixPost is missing, then we would use the default parE
+    # If betamixPost is missing, then we would use the default parE.
     if (is.vector(parE)) {
       # Here there is only one component in the parE vector.
       assert_true(identical(length(parE), 2L))
