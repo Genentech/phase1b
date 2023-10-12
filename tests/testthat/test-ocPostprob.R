@@ -15,7 +15,7 @@ test_that("h_get_distance gives an error with non sorted argument", {
   expect_error(h_get_distance(c(30, 20, 10)))
 })
 
-# h_get_looks (helper function) ----
+# h_get_looks ----
 test_that("h_get_looks gives correct results if input is identical", {
   dist <- c(0, 5)
   results <- h_get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
@@ -28,15 +28,13 @@ test_that("h_get_looks gives correct results if input is identical", {
   expect_equal(results$nnrE, results$nnrF)
 })
 
-# h_get_decision (helper function) --
-# Here, the following rules are applied :
-# Stop criteria for Efficacyas P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.8
-# Stop criteria for Futility as P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.5
-# There is a high probability of a Go decision when the threshold to Go is low.
+# h_get_decision ----
 test_that("get_decision will give GO decision in favourable conditions", {
   tmp <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
+    # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.8
+    # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.5
     p0 = 0.2,
     p1 = 0.5,
     tL = 0.2,
