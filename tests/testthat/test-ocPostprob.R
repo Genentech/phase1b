@@ -18,13 +18,13 @@ test_that("h_get_distance gives an error with non sorted argument", {
 # h_get_looks (helper function) ----
 test_that("h_get_looks gives correct results if input is identical", {
   dist <- c(0, 5)
-  results <- get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+  results <- h_get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   expect_equal(results$nnrE, results$nnrF)
 })
 
-test_that("get_looks gives correct results if input is identical", {
+test_that("h_get_looks gives correct results if input is identical", {
   dist <- c(0, 5)
-  results <- get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+  results <- h_get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   expect_equal(results$nnrE, results$nnrF)
 })
 
