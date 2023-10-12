@@ -83,7 +83,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @return A list of the following objects :
 #'  - `decision` : resulting numeric of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting numeric of look size, anything below maximum
-#'                  look size is an indicated interim, Futility or Efficacy or both.
+#'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal
 #'
