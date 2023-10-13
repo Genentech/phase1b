@@ -11,7 +11,6 @@ test_that("postprobBeta gives incrementally higher values with increase x suppor
   expect_true(is_lower < is_higher)
 })
 
-
 # postprob ---
 test_that("postprob gives the correct number result", {
   # Example from Lee & Liu (2006) A predictive probability design for phase II cancer clinical trials

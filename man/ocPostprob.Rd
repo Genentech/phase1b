@@ -2,114 +2,139 @@
 % Please edit documentation in R/ocPostprob.R
 \name{ocPostprob}
 \alias{ocPostprob}
-\title{Calculate operating characteristics for posterior probability method}
+\title{Operating Characteristics for Posterior Probability method}
 \usage{
 ocPostprob(
-  nn,
-  p,
+  nnE,
+  truep,
   p0,
   p1,
   tL,
   tU,
   parE = c(1, 1),
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  sim = 50000,
+  wiggle = FALSE,
+  randomdist = NULL,
+  nnF = nnE
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy
-(if futility looks should be different, please specify also \code{nnF})}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
+specify in \code{nnF}.}
 
-\item{p}{true rate (scenario)}
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{p0}{lower efficacy threshold}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p1}{upper efficacy threshold}
+\item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
 
-\item{tL}{probability threshold for being below p0}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
-\item{tU}{probability threshold for being above p1}
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{parE}{beta parameters for the prior on the treatment proportion}
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment proportion.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{ns}{number of simulations}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{nr}{generate random look locations? (not default)}
+\item{wiggle}{(\code{logical}):\cr generate random look locations (not default).
+if \code{TRUE}, optional to specify \code{dist} (see @details).}
 
-\item{d}{distance for random looks around the look locations in \code{nn}}
+\item{randomdist}{(\code{logical}):\cr Random distance added to looks. if \code{NULL}, and \code{wiggle = TRUE}, function will
+generate and add a random distance within range of the closest looks.}
 
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \value{
 A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-decision)
-SampleSize: vector of the sample sizes in the simulated trials
-nn: vector of look locations that was supplied
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-params: multiple parameters
+\itemize{
+\item \code{oc}: matrix with operating characteristics (see @details section)
+\item \code{nn}: vector of look locations that was supplied
+\item \code{nnE}: vector of Efficacy look locations
+\item \code{nnF}: vector of Futility look locations
+\item \code{params}: multiple parameters
+}
 }
 \description{
-The trial is stopped for efficacy if the posterior probability to be
-above p1 is larger than tU, and stopped for futility if the posterior
-probability to be below p0 is larger than tL.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Calculate operating characteristics for posterior probability method.
+
+It is assumed that the true response rate is \code{truep}.
+The trial is stopped for Efficacy if the posterior probability to be
+above \code{p1} is larger than \code{tU}, and stopped for Futility if the posterior
+probability to be below \code{p0} is larger than \code{tL}:
+
+Stop criteria for Efficacy :
+
+\code{P_E(p > p1) > tU}
+
+Stop criteria for Futility :
+
+\code{P_E(p < p0) > tL}
+
+Resulting operating characteristics include the following:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
+maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of for Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
 }
 \details{
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-PrStopEarly: probability to stop the trial early (before reaching the
-maximum sample size)
-PrEarlyEff: probability to decide for efficacy early
-PrEarlyFut: probability to decide for futility early
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+\code{ExpectedN} is an average of the simulated sample sizes.
+If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
+If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
+As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
+\code{nnE = nnF} when wiggle and distance is applied.
 }
 \examples{
-# operating characteristics for posterior probability method
-
-# design details (example)
-# multiple looks @ 10, 20, 30 patietns
-# True response rate of the treatment group=40\%
-# stop for futility: P(response rate < 20\% )> 60\%
-# s top for efficacy: P(response rate > 30\% )> 80\%
-# prior of treatment arm parE= Beta(1,1)
-res1 <- ocPostprob(
-  nn = c(10, 20, 30), p = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6, tU = 0.8,
-  parE = c(1, 1), ns = 1000
+# For three looks of 10, 20 and 30 we have the following assumptions :
+# True response rate of the treatment group = 40\%
+# The following are the Go and Stop rules respectively :
+# Look for Efficacy: P(response rate > 30\% )> 80\%
+# Look for Futility: P(response rate < 20\% )> 60\%
+# Prior of treatment arm parE= Beta(1,1).
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 50000, wiggle = TRUE, randomdist = NULL, nnF = c(10, 20, 30)
 )
-res1$oc
 
-# this call will generate d (distance for random looks around the look locations)
-# based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
-res2 <- ocPostprob(
-  nn = c(10, 20, 30), p = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6, tU = 0.8,
-  parE = c(1, 1), ns = 1000, nr = TRUE
-)
-res2$oc
+res$oc
 
-# now d is specified:
-res3 <- ocPostprob(
-  nn = c(10, 20, 30), p = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6, tU = 0.8,
-  parE = c(1, 1), ns = 1000, nr = TRUE, d = 5
+# We specify the distance in this example.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 50000, wiggle = TRUE, randomdist = c(-1, 3), nnF = c(10, 20, 30)
 )
-res3$oc
 
-# finally, we can also have separate specification of efficacy and
-# futility analyses. E.g. here have futility decisions only at the final analysis:
-res4 <- ocPostprob(
-  nn = c(10, 20, 30), p = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6, tU = 0.8,
-  parE = c(1, 1), ns = 1000, nr = TRUE, d = 5,
-  nnF = c(30)
+res$oc
+
+# Here, nnE = nnF, and no wiggle room is allowed. Random distance also not supplied.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
 )
-res4$oc
-# compared to res3, we see that there is no early futility stopping anymore,
-# and the overall probability for stopping for futility (which is the type II error here)
-# is much lower.
+
+res$oc
+
+# Here, we only have one Futility and Efficacy look or stop.
+res <- ocPostprob(
+  nnE = c(10), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = 10
+)
+
+res$oc
+
+# Here, we only have one Futility but many Efficacy looks or stop.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = 10
+)
+
+res$oc
 }
