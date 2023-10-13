@@ -88,7 +88,7 @@ test_that("the PrFutility increases with increase futility looks", {
   res_fut$oc$PrFutility
   res_one_fut <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(10)
+    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = 10
   )
   res_one_fut$oc$PrFutility
   expect_true(res_fut$oc$PrFutility > res_one_fut$oc$PrFutility)
