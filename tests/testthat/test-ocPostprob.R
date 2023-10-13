@@ -98,7 +98,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   res_eff <- ocPostprob(
     nnE = c(30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = c(30)
+    sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = 30
   )
 
   res_eff$oc$PrEfficacy
