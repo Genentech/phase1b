@@ -4,47 +4,48 @@
 \alias{betadiff}
 \alias{dbetadiff}
 \alias{pbetadiff}
-\alias{qbetadiff}
 \title{The Difference between Two Beta Distributions}
 \usage{
 dbetadiff(z, parY, parX)
 
 pbetadiff(q, parY, parX)
-
-qbetadiff(p, parY, parX)
 }
 \arguments{
-\item{z}{vector of differences}
+\item{z}{(\code{numeric}):\cr vector of differences between Control and Treatment arms}
 
-\item{parY}{two parameters of Y's beta distribution (Treatment)}
+\item{parY}{(\code{numeric}):\cr two parameters of Y's Beta distribution (Treatment)}
 
-\item{parX}{two parameters of X's beta distribution (Control)}
+\item{parX}{(\code{numeric}):\cr two parameters of X's Beta distribution (Control)}
 
-\item{q}{vector of quantiles}
-
-\item{p}{vector of probabilities}
+\item{q}{(\code{number}):\cr vector of quantiles}
 }
 \value{
 \code{dbetadiff} gives the density, \code{pbetadiff} the distribution function,
 \code{qbetadiff} the quantile function.
+
+\code{pbetadiff} the distribution function,
+\code{qbetadiff} the quantile function.
 }
 \description{
 Density, distribution function and quantile function for
-the distribution of the difference of two beta distributions with parameters parX and parY
+the distribution of the difference of two Beta distributions with parameters parX and parY
 }
 \examples{
-## Plot pdf of the betadiff distribution
+# dbetadiff ----
+
+# We calculate and plot density (pdf) of the Beta distribution distribution
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# The difference between Control and Treatment
 z <- seq(from = -1, to = 1, length = 100)
 plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
-## calculate probability
-
-## for Go:
+# dbetadiff ----
+# calculate probability of Go, a positive difference of 15\%
+# for Go:
 test <- integrate(
   f = dbetadiff,
   parY = parY,
@@ -55,12 +56,7 @@ test <- integrate(
 str(test)
 test$value
 
-## vary close to the Monte Carlo result:
-mean(rbeta(n = 1e6, parY[1], parY[2]) -
-  rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-
-
-## similar case for Stop:
+# dbetadiff for Stop:
 integrate(
   f = dbetadiff,
   parY = parY,
@@ -69,14 +65,61 @@ integrate(
   upper = 0.5
 )
 
-mean(rbeta(n = 1e6, parY[1], parY[2]) -
-  rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
-
+# qbetadiff ----
 test <- qbetadiff(
   p = 0.2,
   parY = parY,
   parX = parX
 )
+
+# pbetadiff ----
+pbetadiff(
+  q = test,
+  parY = parY,
+  parX = parX
+)
+# dbetadiff ----
+
+# We calculate and plot density (pdf) of the Beta distribution distribution
+parX <- c(1, 52)
+parY <- c(5.5, 20.5)
+
+# The difference between Control and Treatment
+z <- seq(from = -1, to = 1, length = 100)
+plot(z, dbetadiff(z, parY = parY, parX = parX),
+  type = "l"
+)
+
+# dbetadiff ----
+# calculate probability of Go, a positive difference of 15\%
+# for Go:
+test <- integrate(
+  f = dbetadiff,
+  parY = parY,
+  parX = parX,
+  lower = 0.15,
+  upper = 1
+)
+str(test)
+test$value
+
+# dbetadiff for Stop:
+integrate(
+  f = dbetadiff,
+  parY = parY,
+  parX = parX,
+  lower = -1,
+  upper = 0.5
+)
+
+# qbetadiff ----
+test <- qbetadiff(
+  p = 0.2,
+  parY = parY,
+  parX = parX
+)
+
+# pbetadiff ----
 pbetadiff(
   q = test,
   parY = parY,

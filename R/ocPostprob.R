@@ -97,7 +97,7 @@ get_looks <- function(dist, nnE, nnF) {
 #'
 #' @export
 #'
-#' @examples
+#' @examples examples / ocPostProb.R
 get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   index_look <- 1
   assert_numeric(nnr)

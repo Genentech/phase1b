@@ -1,15 +1,18 @@
-## Plot pdf of the betadiff distribution
+# dbetadiff ----
+
+# We calculate and plot density (pdf) of the Beta distribution distribution
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# The difference between Control and Treatment
 z <- seq(from = -1, to = 1, length = 100)
 plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
-## calculate probability
-
-## for Go:
+# dbetadiff ----
+# calculate probability of Go, a positive difference of 15%
+# for Go:
 test <- integrate(
   f = dbetadiff,
   parY = parY,
@@ -20,12 +23,7 @@ test <- integrate(
 str(test)
 test$value
 
-## vary close to the Monte Carlo result:
-mean(rbeta(n = 1e6, parY[1], parY[2]) -
-  rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-
-
-## similar case for Stop:
+# dbetadiff for Stop:
 integrate(
   f = dbetadiff,
   parY = parY,
@@ -34,14 +32,14 @@ integrate(
   upper = 0.5
 )
 
-mean(rbeta(n = 1e6, parY[1], parY[2]) -
-  rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
-
+# qbetadiff ----
 test <- qbetadiff(
   p = 0.2,
   parY = parY,
   parX = parX
 )
+
+# pbetadiff ----
 pbetadiff(
   q = test,
   parY = parY,

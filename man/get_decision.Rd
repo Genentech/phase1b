@@ -42,3 +42,6 @@ look size is an indicated interim, futility or efficacy or both
 
 A helper function for \code{ocPostprob} to generate numeric of decisions \code{decisions} and random looks \code{all_sizes}.
 }
+\examples{
+examples / ocPostProb.R
+}
