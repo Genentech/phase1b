@@ -1,18 +1,17 @@
 # dbetadiff ----
 
-# We calculate and plot density (pdf) of the Beta distribution distribution
+# We calculate and plot of density (pdf) of the Beta distribution of the difference.
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
-# The difference between Control and Treatment
+# The difference between Control and Treatment is denoted as z.
 z <- seq(from = -1, to = 1, length = 100)
 plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
 # dbetadiff ----
-# calculate probability of Go, a positive difference of 15%
-# for Go:
+# Calculate probability of Go, if difference was at least 15%.
 test <- integrate(
   f = dbetadiff,
   parY = parY,
@@ -23,25 +22,11 @@ test <- integrate(
 str(test)
 test$value
 
-# dbetadiff for Stop:
+# Calculate probability of Stop, if difference was at most 50%.
 integrate(
   f = dbetadiff,
   parY = parY,
   parX = parX,
   lower = -1,
   upper = 0.5
-)
-
-# qbetadiff ----
-test <- qbetadiff(
-  p = 0.2,
-  parY = parY,
-  parX = parX
-)
-
-# pbetadiff ----
-pbetadiff(
-  q = test,
-  parY = parY,
-  parX = parX
 )

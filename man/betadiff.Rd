@@ -3,49 +3,45 @@
 \name{betadiff}
 \alias{betadiff}
 \alias{dbetadiff}
-\alias{pbetadiff}
 \title{The Difference between Two Beta Distributions}
 \usage{
 dbetadiff(z, parY, parX)
-
-pbetadiff(q, parY, parX)
 }
 \arguments{
-\item{z}{(\code{numeric}):\cr vector of differences between Control and Treatment arms}
+\item{z}{(\code{numeric}):\cr vector of differences between Control and Treatment arms such that \code{Z = Y-X}}
 
-\item{parY}{(\code{numeric}):\cr two parameters of Y's Beta distribution (Treatment)}
+\item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
-\item{parX}{(\code{numeric}):\cr two parameters of X's Beta distribution (Control)}
-
-\item{q}{(\code{number}):\cr vector of quantiles}
+\item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 }
 \value{
-\code{dbetadiff} gives the density, \code{pbetadiff} the distribution function,
-\code{qbetadiff} the quantile function.
-
-\code{pbetadiff} the distribution function,
-\code{qbetadiff} the quantile function.
+\code{dbetadiff} gives the density
 }
 \description{
 Density, distribution function and quantile function for
-the distribution of the difference of two Beta distributions with parameters parX and parY
+the distribution of the difference of two Beta distributions with parameters parX and parY.
+We denote \code{X} and \code{Y} as two random variables representing the response rate of Control and Treatment
+group respectively. The assignment of Control and Treatment is practically interchangeable.
+We denote \code{Z} as the difference between two groups such that \code{Z = Y-X}.
+}
+\note{
+\code{X} and \code{Y} can be either Control or Treatment and \code{Z = X-Y}, subject to assumptions
 }
 \examples{
 # dbetadiff ----
 
-# We calculate and plot density (pdf) of the Beta distribution distribution
+# We calculate and plot of density (pdf) of the Beta distribution of the difference.
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
-# The difference between Control and Treatment
+# The difference between Control and Treatment is denoted as z.
 z <- seq(from = -1, to = 1, length = 100)
 plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
 # dbetadiff ----
-# calculate probability of Go, a positive difference of 15\%
-# for Go:
+# Calculate probability of Go, if difference was at least 15\%.
 test <- integrate(
   f = dbetadiff,
   parY = parY,
@@ -56,73 +52,12 @@ test <- integrate(
 str(test)
 test$value
 
-# dbetadiff for Stop:
+# Calculate probability of Stop, if difference was at most 50\%.
 integrate(
   f = dbetadiff,
   parY = parY,
   parX = parX,
   lower = -1,
   upper = 0.5
-)
-
-# qbetadiff ----
-test <- qbetadiff(
-  p = 0.2,
-  parY = parY,
-  parX = parX
-)
-
-# pbetadiff ----
-pbetadiff(
-  q = test,
-  parY = parY,
-  parX = parX
-)
-# dbetadiff ----
-
-# We calculate and plot density (pdf) of the Beta distribution distribution
-parX <- c(1, 52)
-parY <- c(5.5, 20.5)
-
-# The difference between Control and Treatment
-z <- seq(from = -1, to = 1, length = 100)
-plot(z, dbetadiff(z, parY = parY, parX = parX),
-  type = "l"
-)
-
-# dbetadiff ----
-# calculate probability of Go, a positive difference of 15\%
-# for Go:
-test <- integrate(
-  f = dbetadiff,
-  parY = parY,
-  parX = parX,
-  lower = 0.15,
-  upper = 1
-)
-str(test)
-test$value
-
-# dbetadiff for Stop:
-integrate(
-  f = dbetadiff,
-  parY = parY,
-  parX = parX,
-  lower = -1,
-  upper = 0.5
-)
-
-# qbetadiff ----
-test <- qbetadiff(
-  p = 0.2,
-  parY = parY,
-  parX = parX
-)
-
-# pbetadiff ----
-pbetadiff(
-  q = test,
-  parY = parY,
-  parX = parX
 )
 }

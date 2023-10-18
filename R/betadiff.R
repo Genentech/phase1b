@@ -1,24 +1,25 @@
 #' The Difference between Two Beta Distributions
 #'
 #' Density, distribution function and quantile function for
-#' the distribution of the difference of two Beta distributions with parameters parX and parY
+#' the distribution of the difference of two Beta distributions with parameters parX and parY.
+#' We denote `X` and `Y` as two random variables representing the response rate of Control and Treatment
+#' group respectively. The assignment of Control and Treatment is practically interchangeable.
+#' We denote `Z` as the difference between two groups such that `Z = Y-X`.
 #'
 #' @typed z : numeric
-#'  vector of differences between Control and Treatment arms
+#'  vector of differences between Control and Treatment arms such that `Z = Y-X`
 #' @typed parX : numeric
-#'  two parameters of X's Beta distribution (Control)
+#'  two parameters of `X`'s Beta distribution (Control)
 #' @typed parY : numeric
-#'  two parameters of Y's Beta distribution (Treatment)
-#' @return `dbetadiff` gives the density, `pbetadiff` the distribution function,
-#' `qbetadiff` the quantile function.
+#'  two parameters of `Y`'s Beta distribution (Treatment)
+#' @return `dbetadiff` gives the density
 #'
-#' @name betadiff
+#' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
 #'
 #' @importFrom stats dbeta integrate
-#'
-#' @rdname betadiff
-#'
 #' @example examples/betadiff.R
+#' @name betadiff
+#' @rdname betadiff
 #' @export
 dbetadiff <- function(z, parY, parX) {
   assert_numeric(z, finite = TRUE)
@@ -39,13 +40,13 @@ dbetadiff <- function(z, parY, parX) {
   integrandPos <- function(x, zval) {
     exp(
       stats::dbeta(x = x, parX[1], parX[2], log = TRUE) +
-        stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE)
+        stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE) # y, if z = y-x
     )
   }
   integrandNeg <- function(y, zval) {
     exp(
       stats::dbeta(x = y, parY[1], parY[2], log = TRUE) +
-        stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE)
+        stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE) # x
     )
   }
   assert_number(eps)
@@ -71,19 +72,20 @@ dbetadiff <- function(z, parY, parX) {
     )$value
   }
 
-  return(ret)
+  ret
 }
 
-#' @importFrom stats integrate
-#' @rdname betadiff
-#' @inheritParams dbetadiff
+
+#' @inheritParams betadiff
 #' @typed q : number
 #'  vector of quantiles
-#' @return `pbetadiff` the distribution function,
-#' `qbetadiff` the quantile function.
-
 #'
-#' @example examples/betadiff.R
+#' @return `pbetadiff` the distribution function
+#'
+#' @importFrom stats integrate
+#' @example examples/pbetadiff.R
+#' @name pbetadiff
+#' @rdname pbetadiff
 #' @export
 pbetadiff <- function(q, parY, parX) {
   stats::integrate(
@@ -97,14 +99,18 @@ pbetadiff <- function(q, parY, parX) {
   )$value
 }
 
-#' @importFrom stats uniroot
 #' @typed p : number
 #'  vector of probabilities
-#' @rdname betadiff #TODO should we use @describeIn ? description
-#' @return `qbetadiff` the quantile function.
+#' @return `qbetadiff`, the quantile function.
+#'
+#' @inheritParams dbetadiff
+#'
+#' @importFrom stats uniroot
+#' @example examples/qbetadiff.R
+#' @rdname pbetadiff
+#' @name pbetadiff
 #' @export
 #'
-#' @example examples/betadiff.R
 qbetadiff <- function(p, parY, parX) {
   target <- function(q) {
     pbetadiff(

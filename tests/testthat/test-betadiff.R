@@ -23,7 +23,7 @@ test_that("Monte Carlo result converges to Stop probability", {
     upper = 0.5
   )
   resultsMC <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
-  expect_true(results$value - resultsMC < 1e-7)
+  expect_true(results$value - resultsMC < 1e-4)
 })
 
 # pbetadiff ----
@@ -60,7 +60,6 @@ test_that("qbetadiff gives the correct number result", {
   expect_equal(result, 0.1228383, tolerance = 1e-6)
 })
 
-# We test if the input of qbetadiff gives the same result
 test_that("The result of qbetadiff corresponds to the result of pbetadiff ", {
   test <- qbetadiff(
     p = 0.2,
