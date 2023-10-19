@@ -22,7 +22,7 @@ sumbetadiff gives the mode, credible interval of the distribution function,
 along with the probabilities of above cutB and below cutW.
 }
 \description{
-A function to summerize the characters of a betadiff distribution \code{\link{betadiff}}
+A function to summerize the characters of a betadiff distribution \code{\link{dbetadiff}}
 }
 \examples{
 parX <- c(1, 52)
