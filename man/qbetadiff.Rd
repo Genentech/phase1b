@@ -8,6 +8,10 @@ qbetadiff(p, parY, parX)
 }
 \arguments{
 \item{p}{(\code{number}):\cr vector of probabilities}
+
+\item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
+
+\item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 }
 \value{
 \code{qbetadiff}, the quantile function.

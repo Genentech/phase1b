@@ -123,7 +123,7 @@ pbetadiff <- function(q, parY, parX) {
 #'  vector of probabilities
 #' @return `qbetadiff`, the quantile function.
 #'
-#' @inheritParams dbetadiff
+#' @inheritParams betadiff
 #'
 #' @importFrom stats uniroot
 #' @example examples/qbetadiff.R
