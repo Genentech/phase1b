@@ -50,6 +50,11 @@ test_that("The pbetadiff has incrementally higher cdf with increase x support", 
   expect_true(is_lower < is_higher)
 })
 
+test_that("The entire Z domain from -1 to 1 gives a pbetadiff of 1", {
+  result <- pbetadiff(1, parY, parX)
+  expect_equal(result, 1)
+})
+
 # qbetadiff ----
 test_that("qbetadiff gives the correct number result", {
   result <- qbetadiff(

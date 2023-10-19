@@ -291,7 +291,7 @@ the following probabilistic calculations.
 Let $X$ and $Y$ be two independent random variables where $X\sim \text{Beta}(a_x,b_x)$
 and $Y\sim \text{Beta}(a_y,b_y)$. Of interest is calculating the distribution of the
 difference of $X$ and $Y$ and so, in order to do so, we can utilize a transformation
-of variables by defining the following random variables $Z$ and $W$ such that $Z=X-Y$
+of variables by defining the following random variables $Z$ and $W$ such that $Z=Y-X$
 and $W=X$. Recalling basic probability theory, we have that determinant of the Jacobian
 matrix of this transformation is as follows:
 

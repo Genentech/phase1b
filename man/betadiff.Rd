@@ -18,6 +18,10 @@ dbetadiff(z, parY, parX)
 \code{dbetadiff} gives the density
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+The Probability Density Function of the difference of two Beta Distributions.
+
 Density, distribution function and quantile function for
 the distribution of the difference of two Beta distributions with parameters parX and parY.
 We denote \code{X} and \code{Y} as two random variables representing the response rate of Control and Treatment
@@ -30,7 +34,8 @@ We denote \code{Z} as the difference between two groups such that \code{Z = Y-X}
 \examples{
 # dbetadiff ----
 
-# We calculate and plot of density (pdf) of the Beta distribution of the difference.
+# We calculate and plot of density (pdf) of the Beta distribution of the difference
+# using the following parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
@@ -40,7 +45,6 @@ plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
-# dbetadiff ----
 # Calculate probability of Go, if difference was at least 15\%.
 test <- integrate(
   f = dbetadiff,

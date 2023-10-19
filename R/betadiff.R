@@ -1,5 +1,9 @@
 #' The Difference between Two Beta Distributions
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' The Probability Density Function of the difference of two Beta Distributions.
+#'
 #' Density, distribution function and quantile function for
 #' the distribution of the difference of two Beta distributions with parameters parX and parY.
 #' We denote `X` and `Y` as two random variables representing the response rate of Control and Treatment
@@ -55,7 +59,9 @@ dbetadiff <- function(z, parY, parX) {
   for (i in seq_along(z)[zPos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
+      # we transform the bounds to follow the support of integrandPos
       lower = eps,
+      # the upper bounds here are between 0 and 1
       upper = 1 - z[i],
       zval = z[i],
       subdivisions = 1000L,
@@ -66,7 +72,9 @@ dbetadiff <- function(z, parY, parX) {
   for (i in seq_along(z)[zNeg]) {
     ret[i] <- stats::integrate(
       f = integrandNeg,
+      # we transform the bounds to follow the support of integrandNeg
       lower = eps,
+      # the upper bounds here are between 0 and 1
       upper = 1 + z[i],
       zval = z[i],
       subdivisions = 1000L,
@@ -77,11 +85,15 @@ dbetadiff <- function(z, parY, parX) {
   ret
 }
 
-
+#' Beta difference Cumulative Probability Function
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Calculates the Cumulative Probability Function of the Beta difference for a given probability.
+#'
 #' @inheritParams betadiff
 #' @typed q : number
 #'  vector of quantiles
-#'
 #' @return `pbetadiff` the distribution function
 #'
 #' @importFrom stats integrate
@@ -101,6 +113,12 @@ pbetadiff <- function(q, parY, parX) {
   )$value
 }
 
+#' Beta difference Quantile Function
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Calculates the quantile of the Beta difference for a given probability.
+#'
 #' @typed p : number
 #'  vector of probabilities
 #' @return `qbetadiff`, the quantile function.
@@ -109,8 +127,8 @@ pbetadiff <- function(q, parY, parX) {
 #'
 #' @importFrom stats uniroot
 #' @example examples/qbetadiff.R
-#' @rdname pbetadiff
-#' @name pbetadiff
+#' @rdname qbetadiff
+#' @name qbetadiff
 #' @export
 #'
 qbetadiff <- function(p, parY, parX) {
