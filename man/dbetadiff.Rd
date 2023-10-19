@@ -22,7 +22,7 @@ dbetadiff(z, parY, parX)
 The Probability Density Function of the difference of two Beta Distributions.
 
 Density, distribution function and quantile function for
-the distribution of the difference of two Beta distributions with parameters parX and parY.
+the distribution of the difference of two Beta distributions with parameters \code{parX} and \code{parY}.
 We denote \code{X} and \code{Y} as two random variables representing the response rate of Control and Treatment
 group respectively. The assignment of Control and Treatment is practically interchangeable.
 We denote \code{Z} as the difference between two groups such that \code{Z = Y-X}.
