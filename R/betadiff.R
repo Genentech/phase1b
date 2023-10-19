@@ -21,9 +21,8 @@
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
 #'
 #' @importFrom stats dbeta integrate
+#' @rdname dbetadiff
 #' @example examples/betadiff.R
-#' @name betadiff
-#' @rdname betadiff
 #' @export
 dbetadiff <- function(z, parY, parX) {
   assert_numeric(z, finite = TRUE)
@@ -91,15 +90,15 @@ dbetadiff <- function(z, parY, parX) {
 #'
 #' Calculates the Cumulative Probability Function of the Beta difference for a given probability.
 #'
-#' @inheritParams betadiff
+#' @inheritParams dbetadiff
 #' @typed q : number
 #'  vector of quantiles
+#'
 #' @return `pbetadiff` the distribution function
 #'
 #' @importFrom stats integrate
-#' @example examples/pbetadiff.R
-#' @name pbetadiff
 #' @rdname pbetadiff
+#' @example examples/pbetadiff.R
 #' @export
 pbetadiff <- function(q, parY, parX) {
   stats::integrate(
@@ -119,18 +118,16 @@ pbetadiff <- function(q, parY, parX) {
 #'
 #' Calculates the quantile of the Beta difference for a given probability.
 #'
+#' @inheritParams dbetadiff
 #' @typed p : number
 #'  vector of probabilities
+
 #' @return `qbetadiff`, the quantile function.
-#'
-#' @inheritParams betadiff
-#'
+
 #' @importFrom stats uniroot
-#' @example examples/qbetadiff.R
 #' @rdname qbetadiff
-#' @name qbetadiff
+#' @example examples/qbetadiff.R
 #' @export
-#'
 qbetadiff <- function(p, parY, parX) {
   target <- function(q) {
     pbetadiff(
