@@ -2,33 +2,32 @@
 % Please edit documentation in R/postprob.R
 \name{postprob}
 \alias{postprob}
-\title{Compute the posterior probability to be above threshold,
-with a beta mixture prior on the response rate.}
+\title{Posterior Probability of Efficacy Given Beta-Mixture Prior}
 \usage{
 postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{n}{number of patients}
+\item{n}{(\code{number}):\cr number of patients.}
 
-\item{p}{threshold}
+\item{p}{(\code{number}):\cr threshold that \code{P_E} is measured.}
 
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. Default is a
-uniform prior.}
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+corresponding to the beta parameters of the \code{K} components.
+Default is a uniform prior.}
 
-\item{weights}{the mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{betamixPost}{optional result of \code{\link{getBetamixPost}} in order
+\item{betamixPost}{(\code{matrix}):\cr optional result of \verb{[getBetamixPost()]} in order
 to speed up the computations. If supplied, this is directly used, bypassing
-the other arguments (except \code{p} and \code{log.p} of course)}
+the other arguments (except \code{p} and \code{log.p} of course).}
 
-\item{log.p}{Return the log of the probability? (default: FALSE)}
+\item{log.p}{(\code{number}):\cr whether to return the log of the probability}
 }
 \value{
-The posterior probability that the response rate P_E is above p.
+The posterior probability that the response rate \code{P_E} is above \code{p}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -42,9 +41,6 @@ We observed \code{x} successes in n trials.
 
 Posterior is again a mixture of beta priors, with updated mixture weights
 and beta parameters.
-}
-\note{
-that \code{x} can be a vector.
 }
 \examples{
 # Example taken from Lee and Liu (2006)

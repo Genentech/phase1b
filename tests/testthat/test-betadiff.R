@@ -1,5 +1,9 @@
 # dbetadiff ----
 
+# The following examples use the following parameters:
+parX <- c(1, 52)
+parY <- c(5.5, 20.5)
+
 # We calculate the Go criteria and compare it with a Monte Carlo result
 test_that("Monte Carlo result converges to Go probability", {
   results <- integrate(
@@ -10,7 +14,7 @@ test_that("Monte Carlo result converges to Go probability", {
     upper = 1
   )
   resultsMC <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-  expect_true(results$value - resultsMC < 1e-7)
+  expect_true(abs(results$value - resultsMC) < 1e-3)
 })
 
 # We calculate the Go criteria and compare it with a Monte Carlo result
@@ -23,7 +27,7 @@ test_that("Monte Carlo result converges to Stop probability", {
     upper = 0.5
   )
   resultsMC <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
-  expect_true(results$value - resultsMC < 1e-4)
+  expect_true(abs(results$value - resultsMC) < 1e-4)
 })
 
 # pbetadiff ----

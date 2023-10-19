@@ -12,24 +12,31 @@ NULL
 #' We observed `x` successes in n trials and so the posterior is
 #' `P_E | data  ~ beta(a + x, b + n - x)`.
 #'
-#' @param x number of successes
-#' @param n number of patients
-#' @param p threshold
-#' @param a first parameter of the beta prior (successes)
-#' @param b second parameter of the beta prior (failures)
+#' @typed x : numeric
+#'  number of successes.
+#' @typed n : number
+#'  number of patients.
+#' @typed p : number
+#'  threshold set to compute posterior probability.
+#' @typed a : matrix
+#'  first parameter `alpha` of the beta prior (successes).
+#' @typed b : matrix
+#'  second parameter `beta` of the beta prior (failures).
 #' @return The posterior probability that the response rate P_E is above a threshold p.
 #'
-#' @importFrom stats pbeta
-#'
-#' @example examples/postprobOld.R
+#' @example examples/postprobBeta.R
 #' @export
-postprobOld <- function(x, n, p, a = 1, b = 1) {
+postprobBeta <- function(x, n, p, a = 1, b = 1) {
+  assert_number(n, lower = 0, finite = TRUE)
+  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
+  assert_number(a, finite = TRUE)
+  assert_number(b, finite = TRUE)
+  assert_number(p, lower = 0, upper = 1, finite = TRUE)
   stats::pbeta(p, a + x, b + n - x, lower.tail = FALSE)
 }
 
 
-#' Compute the posterior probability to be above threshold,
-#' with a beta mixture prior on the response rate.
+#' Posterior Probability of Efficacy Given Beta-Mixture Prior
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -43,40 +50,42 @@ postprobOld <- function(x, n, p, a = 1, b = 1) {
 #' Posterior is again a mixture of beta priors, with updated mixture weights
 #' and beta parameters.
 #'
-#' @param x number of successes
-#' @param n number of patients
-#' @param p threshold
-#' @param parE the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components. Default is a
-#' uniform prior.
-#' @param weights the mixture weights of the beta mixture prior. Default are
-#' uniform weights across mixture components.
-#' @param betamixPost optional result of \code{\link{getBetamixPost}} in order
-#' to speed up the computations. If supplied, this is directly used, bypassing
-#' the other arguments (except \code{p} and \code{log.p} of course)
-#' @param log.p Return the log of the probability? (default: FALSE)
-#' @return The posterior probability that the response rate P_E is above p.
-#'
-#' @note that `x` can be a vector.
+#' @typed x : numeric
+#'  number of successes.
+#' @typed n : number
+#'  number of patients.
+#' @typed p : number
+#'  threshold that `P_E` is measured.
+#' @typed parE : matrix
+#'  the beta parameters matrix, with `K` rows and 2 columns,
+#'  corresponding to the beta parameters of the `K` components.
+#'  Default is a uniform prior.
+#' @typed weights : vector
+#'  The mixture weights of the beta mixture prior. Default are
+#'  uniform weights across mixture components.
+#' @typed betamixPost : matrix
+#'  optional result of `[getBetamixPost()]` in order
+#'  to speed up the computations. If supplied, this is directly used, bypassing
+#'  the other arguments (except `p` and `log.p` of course).
+#' @typed log.p : number
+#'  whether to return the log of the probability
+#' @return The posterior probability that the response rate `P_E` is above `p`.
 #'
 #' @example examples/postprob.R
 #' @export
 postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE) {
   if (missing(betamixPost)) {
-    ## if parE is a vector => situation where there is only one component
+    assert_flag(log.p)
     if (is.vector(parE)) {
       # Here there is only one component.
       assert_true(identical(length(parE), 2L))
       # To get matrix with one row.
       parE <- t(parE)
     }
-
-    ## if prior weights of the beta mixture are not supplied
+    assert_matrix(parE)
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
-
-    ## now compute updated parameters
     betamixPost <- getBetamixPost(
       x = x,
       n = n,
@@ -84,8 +93,8 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
       weights = weights
     )
   }
-
-  ## now compute the survival function at p, i.e. 1 - cdf at p:
+  assert_list(betamixPost)
+  assert_names(names(betamixPost), identical.to = c("par", "weights"))
   ret <- with(
     betamixPost,
     pbetaMix(q = p, par = par, weights = weights, lower.tail = FALSE)
