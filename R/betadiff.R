@@ -16,7 +16,7 @@
 #'  two parameters of `X`'s Beta distribution (Control)
 #' @typed parY : numeric
 #'  two parameters of `Y`'s Beta distribution (Treatment)
-#' @return `dbetadiff` gives the density
+#' @return The density values.
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
 #'
