@@ -25,15 +25,15 @@
 #' @example examples/betadiff.R
 #' @export
 dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
-  assert_numeric(z, finite = TRUE)
+  assert_numeric(z, min.len = 1, finite = TRUE, typed.missing = TRUE, null.ok = FALSE)
   ret <- z
   # determine which z are positive and which negative
   zPos <- z >= 0
   zNeg <- z < 0
   # use epsilon to avoid infinite function values
-  assert_numeric(parY, len = 2, lower = 0, any.missing = FALSE, finite = TRUE)
-  assert_numeric(parX, len = 2, lower = 0, any.missing = FALSE, finite = TRUE)
-  assert_number(eps, finite = TRUE, null.ok = FALSE)
+  assert_numeric(parY, len = 2, lower = eps, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = eps, any.missing = FALSE, finite = TRUE)
+  assert_number(eps, finite = TRUE)
 
   integrandPos <- function(x, zval) {
     exp(

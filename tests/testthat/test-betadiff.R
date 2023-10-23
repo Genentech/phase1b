@@ -4,6 +4,12 @@
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# We test whether dbetadiff will accept an empty numeric
+test_that("dbetadiff gives error with empty numeric for z", {
+  z <- NA
+  expect_error(dbetadiff(z, parY = parY, parX = parX))
+})
+
 # We calculate the Go criteria and compare it with a Monte Carlo result
 test_that("Monte Carlo result converges to Go probability", {
   results <- integrate(
