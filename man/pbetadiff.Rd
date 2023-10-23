@@ -13,8 +13,7 @@ pbetadiff(q, parY, parX, rel.tol = .Machine$double.eps^0.1)
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{rel.tol}{(\code{number}):\cr lowest floating point number.
-Default is given by \code{.Machine$double.eps^0.1}}
+\item{rel.tol}{(\code{number}):\cr lowest floating point number}
 }
 \value{
 \code{pbetadiff} the distribution function

@@ -17,11 +17,9 @@
 #' @typed parY : numeric
 #'  two parameters of `Y`'s Beta distribution (Treatment)
 #' @typed eps : number
-#'  lowest floating point number.
-#'  Default is given by `.Machine$double.eps`
+#'  lowest floating point number
 #' @typed rel.tol : number
-#'  lowest floating point number.
-#'  Default is given by `.Machine$double.eps^0.1`
+#'  lowest floating point number
 #' @return The density values.
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
@@ -37,8 +35,8 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
   zPos <- z >= 0
   zNeg <- z < 0
   # use epsilon to avoid infinite function values
-  assert_numeric(parY, len = 2, lower = eps, any.missing = FALSE, finite = TRUE)
-  assert_numeric(parX, len = 2, lower = eps, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_number(eps, finite = TRUE)
 
   integrandPos <- function(x, zval) {

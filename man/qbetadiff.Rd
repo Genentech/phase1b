@@ -13,8 +13,7 @@ qbetadiff(p, parY, parX, eps = .Machine$double.eps)
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{eps}{(\code{number}):\cr lowest floating point number.
-Default is given by \code{.Machine$double.eps}}
+\item{eps}{(\code{number}):\cr lowest floating point number}
 }
 \value{
 \code{qbetadiff}, the quantile function.
