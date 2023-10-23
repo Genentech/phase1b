@@ -29,7 +29,7 @@
 #' @example examples/betadiff.R
 #' @export
 dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
-  assert_numeric(z, min.len = 1, finite = TRUE, typed.missing = TRUE, null.ok = FALSE)
+  assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
   ret <- z
   # determine which z are positive and which negative
   zPos <- z >= 0
