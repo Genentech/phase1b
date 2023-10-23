@@ -18,6 +18,12 @@ dbetadiff(
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
+
+\item{eps}{(\code{number}):\cr lowest floating point number.
+Default is given by \code{.Machine$double.eps}}
+
+\item{rel.tol}{(\code{number}):\cr lowest floating point number.
+Default is given by \code{.Machine$double.eps^0.1}}
 }
 \value{
 The density values.

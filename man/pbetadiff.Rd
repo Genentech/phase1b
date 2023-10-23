@@ -4,7 +4,7 @@
 \alias{pbetadiff}
 \title{Beta difference Cumulative Probability Function}
 \usage{
-pbetadiff(q, parY, parX)
+pbetadiff(q, parY, parX, rel.tol = .Machine$double.eps^0.1)
 }
 \arguments{
 \item{q}{(\code{number}):\cr vector of quantiles}
@@ -12,6 +12,9 @@ pbetadiff(q, parY, parX)
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
+
+\item{rel.tol}{(\code{number}):\cr lowest floating point number.
+Default is given by \code{.Machine$double.eps^0.1}}
 }
 \value{
 \code{pbetadiff} the distribution function

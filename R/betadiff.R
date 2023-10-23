@@ -16,6 +16,12 @@
 #'  two parameters of `X`'s Beta distribution (Control)
 #' @typed parY : numeric
 #'  two parameters of `Y`'s Beta distribution (Treatment)
+#' @typed eps : number
+#'  lowest floating point number.
+#'  Default is given by `.Machine$double.eps`
+#' @typed rel.tol : number
+#'  lowest floating point number.
+#'  Default is given by `.Machine$double.eps^0.1`
 #' @return The density values.
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
@@ -93,7 +99,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
 #' @rdname pbetadiff
 #' @example examples/pbetadiff.R
 #' @export
-pbetadiff <- function(q, parY, parX) {
+pbetadiff <- function(q, parY, parX, rel.tol = .Machine$double.eps^0.1) {
   stats::integrate(
     f = dbetadiff,
     parY = parY,
@@ -101,7 +107,7 @@ pbetadiff <- function(q, parY, parX) {
     lower = -1,
     upper = q,
     subdivisions = 1000L,
-    rel.tol = .Machine$double.eps^0.1
+    rel.tol = rel.tol
   )$value
 }
 
@@ -114,14 +120,13 @@ pbetadiff <- function(q, parY, parX) {
 #' @inheritParams dbetadiff
 #' @typed p : number
 #'  vector of probabilities
-
 #' @return `qbetadiff`, the quantile function.
 
 #' @importFrom stats uniroot
 #' @rdname qbetadiff
 #' @example examples/qbetadiff.R
 #' @export
-qbetadiff <- function(p, parY, parX) {
+qbetadiff <- function(p, parY, parX, eps = .Machine$double.eps) {
   target <- function(q) {
     pbetadiff(
       q = q,
