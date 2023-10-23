@@ -4,7 +4,13 @@
 \alias{dbetadiff}
 \title{The Difference between Two Beta Distributions}
 \usage{
-dbetadiff(z, parY, parX)
+dbetadiff(
+  z,
+  parY,
+  parX,
+  eps = .Machine$double.eps,
+  rel.tol = .Machine$double.eps^0.1
+)
 }
 \arguments{
 \item{z}{(\code{numeric}):\cr vector of differences between Control and Treatment arms such that \code{Z = Y-X}}

@@ -24,21 +24,16 @@
 #' @rdname dbetadiff
 #' @example examples/betadiff.R
 #' @export
-dbetadiff <- function(z, parY, parX) {
+dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
   assert_numeric(z, finite = TRUE)
   ret <- z
-
   # determine which z are positive and which negative
   zPos <- z >= 0
   zNeg <- z < 0
-  assert_logical(zPos)
-  assert_logical(zNeg)
-
   # use epsilon to avoid infinite function values
-  eps <- .Machine$double.eps
-
-  assert_numeric(parY, finite = TRUE)
-  assert_numeric(parX, finite = TRUE)
+  assert_numeric(parY, len = 2, lower = 0, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = 0, any.missing = FALSE, finite = TRUE)
+  assert_number(eps, finite = TRUE, null.ok = FALSE)
 
   integrandPos <- function(x, zval) {
     exp(
@@ -54,7 +49,6 @@ dbetadiff <- function(z, parY, parX) {
         stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE)
     )
   }
-  assert_number(eps)
   for (i in seq_along(z)[zPos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
@@ -64,7 +58,7 @@ dbetadiff <- function(z, parY, parX) {
       upper = 1 - z[i],
       zval = z[i],
       subdivisions = 1000L,
-      rel.tol = .Machine$double.eps^0.1
+      rel.tol = rel.tol
     )$value
   }
 
@@ -77,10 +71,9 @@ dbetadiff <- function(z, parY, parX) {
       upper = 1 + z[i],
       zval = z[i],
       subdivisions = 1000L,
-      rel.tol = .Machine$double.eps^0.1
+      rel.tol = rel.tol
     )$value
   }
-
   ret
 }
 
