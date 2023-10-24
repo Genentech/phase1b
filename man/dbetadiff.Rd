@@ -21,7 +21,7 @@ dbetadiff(
 
 \item{eps}{(\code{number}):\cr lowest floating point number as lower bound of integration}
 
-\item{rel.tol}{(\code{number}):\cr lowest floating point number for argument in \code{integrate}}
+\item{rel.tol}{(\code{number}):\cr lowest floating point number for argument in \code{stats::integrate}}
 }
 \value{
 The density values
