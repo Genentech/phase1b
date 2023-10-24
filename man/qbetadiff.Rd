@@ -16,7 +16,7 @@ qbetadiff(p, parY, parX, eps = .Machine$double.eps)
 \item{eps}{(\code{number}):\cr lowest floating point number}
 }
 \value{
-\code{qbetadiff}, the quantile function.
+The quantile values.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -24,13 +24,11 @@ qbetadiff(p, parY, parX, eps = .Machine$double.eps)
 Calculates the quantile of the Beta difference for a given probability.
 }
 \examples{
-# qbetadiff ----
-
-# We calculate quantile function of the Beta distribution of difference
-# using the following parameters:
+# The following examples use these parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# qbetadiff ----
 # Calculate quantile when at there is at least 20\% of difference.
 test <- qbetadiff(
   p = 0.2,

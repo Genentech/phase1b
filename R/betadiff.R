@@ -20,13 +20,13 @@
 #'  lowest floating point number
 #' @typed rel.tol : number
 #'  lowest floating point number
-#' @return The density values.
+#' @return The density values
 #'
-#' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions
+#' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
 #'
 #' @importFrom stats dbeta integrate
 #' @rdname dbetadiff
-#' @example examples/betadiff.R
+#' @example examples/dbetadiff.R
 #' @export
 dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
   assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
@@ -91,7 +91,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
 #' @typed q : number
 #'  vector of quantiles
 #'
-#' @return `pbetadiff` the distribution function
+#' @return The probability distribution value
 #'
 #' @importFrom stats integrate
 #' @rdname pbetadiff
@@ -118,7 +118,7 @@ pbetadiff <- function(q, parY, parX, rel.tol = .Machine$double.eps^0.1) {
 #' @inheritParams dbetadiff
 #' @typed p : number
 #'  vector of probabilities
-#' @return `qbetadiff`, the quantile function.
+#' @return The quantile values.
 
 #' @importFrom stats uniroot
 #' @rdname qbetadiff

@@ -16,7 +16,7 @@ pbetadiff(q, parY, parX, rel.tol = .Machine$double.eps^0.1)
 \item{rel.tol}{(\code{number}):\cr lowest floating point number}
 }
 \value{
-\code{pbetadiff} the distribution function
+The probability distribution value
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -24,10 +24,11 @@ pbetadiff(q, parY, parX, rel.tol = .Machine$double.eps^0.1)
 Calculates the Cumulative Probability Function of the Beta difference for a given probability.
 }
 \examples{
-# pbetadiff ----
+# The following examples use these parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# pbetadiff ----
 # Calculate probability based on quantile `Q(Z) =< 0.122838`
 pbetadiff(
   q = 0.122838,

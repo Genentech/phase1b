@@ -24,7 +24,7 @@ dbetadiff(
 \item{rel.tol}{(\code{number}):\cr lowest floating point number}
 }
 \value{
-The density values.
+The density values
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -38,13 +38,10 @@ group respectively. The assignment of Control and Treatment is practically inter
 We denote \code{Z} as the difference between two groups such that \code{Z = Y-X}.
 }
 \note{
-\code{X} and \code{Y} can be either Control or Treatment and \code{Z = X-Y}, subject to assumptions
+\code{X} and \code{Y} can be either Control or Treatment and \code{Z = X-Y}, subject to assumptions.
 }
 \examples{
-# dbetadiff ----
-
-# We calculate and plot of density (pdf) of the Beta distribution of the difference
-# using the following parameters:
+# The following examples use these parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
@@ -54,6 +51,7 @@ plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
+# dbetadiff ----
 # Calculate probability of Go, if difference was at least 15\%.
 test <- integrate(
   f = dbetadiff,

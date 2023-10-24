@@ -1,7 +1,4 @@
-# dbetadiff ----
-
-# We calculate and plot of density (pdf) of the Beta distribution of the difference
-# using the following parameters:
+# The following examples use these parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
@@ -11,6 +8,7 @@ plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
+# dbetadiff ----
 # Calculate probability of Go, if difference was at least 15%.
 test <- integrate(
   f = dbetadiff,

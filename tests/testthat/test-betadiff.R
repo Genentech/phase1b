@@ -1,15 +1,13 @@
-# dbetadiff ----
-
-# The following examples use the following parameters:
+# The following examples use these parameters:
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
+# dbetadiff ----
 test_that("dbetadiff gives error with empty numeric for z", {
   z <- NA
   expect_error(dbetadiff(z, parY = parY, parX = parX))
 })
 
-# We calculate the Go criteria and compare it with a Monte Carlo result
 test_that("Monte Carlo result converges to Go probability", {
   results <- integrate(
     f = dbetadiff,
@@ -22,7 +20,6 @@ test_that("Monte Carlo result converges to Go probability", {
   expect_true(abs(results$value - resultsMC) < 1e-3)
 })
 
-# We calculate the Go criteria and compare it with a Monte Carlo result
 test_that("Monte Carlo result converges to Stop probability", {
   results <- integrate(
     f = dbetadiff,
