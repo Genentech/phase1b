@@ -19,7 +19,7 @@
 #' @typed eps : number
 #'  lowest floating point number as lower bound of integration
 #' @typed rel.tol : number
-#'  lowest floating point number for argument in `stats::integrate`
+#'  used in [stats::integrate]
 #' @return The density values
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
