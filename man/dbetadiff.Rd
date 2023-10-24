@@ -19,9 +19,9 @@ dbetadiff(
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{eps}{(\code{number}):\cr lowest floating point number}
+\item{eps}{(\code{number}):\cr lowest floating point number as lower bound of integration}
 
-\item{rel.tol}{(\code{number}):\cr lowest floating point number}
+\item{rel.tol}{(\code{number}):\cr lowest floating point number for argument in \code{integrate}}
 }
 \value{
 The density values

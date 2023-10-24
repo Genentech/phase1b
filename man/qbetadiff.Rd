@@ -13,7 +13,7 @@ qbetadiff(p, parY, parX, eps = .Machine$double.eps)
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{eps}{(\code{number}):\cr lowest floating point number}
+\item{eps}{(\code{number}):\cr lowest floating point number as lower bound of integration}
 }
 \value{
 The quantile values.

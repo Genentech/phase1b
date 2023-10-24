@@ -16,8 +16,8 @@ test_that("Monte Carlo result converges to Go probability", {
     lower = 0.15,
     upper = 1
   )
-  resultsMC <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-  expect_true(abs(results$value - resultsMC) < 1e-3)
+  expected <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
+  expect_equal(results$value, expected, tolerance = 1e-3)
 })
 
 test_that("Monte Carlo result converges to Stop probability", {
@@ -28,8 +28,8 @@ test_that("Monte Carlo result converges to Stop probability", {
     lower = -1,
     upper = 0.5
   )
-  resultsMC <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
-  expect_true(abs(results$value - resultsMC) < 1e-4)
+  expected <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) < 0.5)
+  expect_equal(results$value, expected, tolerance = 1e-4)
 })
 
 # pbetadiff ----
@@ -82,5 +82,5 @@ test_that("The result of qbetadiff corresponds to the result of pbetadiff ", {
     parY = parY,
     parX = parX
   )
-  expect_true(0.2 - result < 1e-7)
+  expect_equal(0.2, result, tolerance = 1e-4)
 })

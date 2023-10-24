@@ -17,9 +17,9 @@
 #' @typed parY : numeric
 #'  two parameters of `Y`'s Beta distribution (Treatment)
 #' @typed eps : number
-#'  lowest floating point number
+#'  lowest floating point number as lower bound of integration
 #' @typed rel.tol : number
-#'  lowest floating point number
+#'  lowest floating point number for argument in `integrate`
 #' @return The density values
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
