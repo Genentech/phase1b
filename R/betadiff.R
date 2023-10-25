@@ -31,8 +31,8 @@
 dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
   assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
   ret <- z
-  is_zPos <- z >= 0
-  is_zNeg <- z < 0
+  is_z_pos <- z >= 0
+  is_z_neg <- z < 0
 
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
