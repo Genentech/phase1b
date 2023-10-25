@@ -52,7 +52,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
         stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE)
     )
   }
-  for (i in seq_along(z)[zPos]) {
+  for (i in seq_along(z)[is_zPos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
       # We transform the bounds to follow the support of integrandPos here.
@@ -65,7 +65,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
     )$value
   }
 
-  for (i in seq_along(z)[zNeg]) {
+  for (i in seq_along(z)[is_zNeg]) {
     ret[i] <- stats::integrate(
       f = integrandNeg,
       # We transform the bounds to follow the support of integrandNeg.
