@@ -8,7 +8,6 @@ plot(z, dbetadiff(z, parY = parY, parX = parX),
   type = "l"
 )
 
-# dbetadiff ----
 # Calculate probability of Go, if difference was at least 15%.
 test <- integrate(
   f = dbetadiff,

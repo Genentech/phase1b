@@ -31,10 +31,9 @@
 dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
   assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
   ret <- z
-  # determine which z are positive and which negative
-  zPos <- z >= 0
-  zNeg <- z < 0
-  # use epsilon to avoid infinite function values
+  is_zPos <- z >= 0
+  is_zNeg <- z < 0
+
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_number(eps, finite = TRUE)
@@ -56,9 +55,9 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
   for (i in seq_along(z)[zPos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
-      # we transform the bounds to follow the support of integrandPos
+      # We transform the bounds to follow the support of integrandPos here.
       lower = eps,
-      # the upper bounds here are between 0 and 1
+      # The upper bounds here are between 0 and 1.
       upper = 1 - z[i],
       zval = z[i],
       subdivisions = 1000L,
@@ -69,9 +68,9 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
   for (i in seq_along(z)[zNeg]) {
     ret[i] <- stats::integrate(
       f = integrandNeg,
-      # we transform the bounds to follow the support of integrandNeg
+      # We transform the bounds to follow the support of integrandNeg.
       lower = eps,
-      # the upper bounds here are between 0 and 1
+      # The upper bounds here are between 0 and 1.
       upper = 1 + z[i],
       zval = z[i],
       subdivisions = 1000L,

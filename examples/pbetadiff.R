@@ -2,7 +2,6 @@
 parX <- c(1, 52)
 parY <- c(5.5, 20.5)
 
-# pbetadiff ----
 # Calculate probability based on quantile `Q(Z) =< 0.122838`
 pbetadiff(
   q = 0.122838,
