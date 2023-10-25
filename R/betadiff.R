@@ -1,73 +1,102 @@
 #' The Difference between Two Beta Distributions
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' The Probability Density Function of the difference of two Beta Distributions.
+#'
 #' Density, distribution function and quantile function for
-#' the distribution of the difference of two beta distributions with parameters parX and parY
+#' the distribution of the difference of two Beta distributions with parameters `parX` and `parY`.
+#' We denote `X` and `Y` as two random variables representing the response rate of Control and Treatment
+#' group respectively. The assignment of Control and Treatment is practically interchangeable.
+#' We denote `Z` as the difference between two groups such that `Z = Y-X`.
 #'
-#' @param z vector of differences
-#' @param q vector of quantiles
-#' @param p vector of probabilities
-#' @param parX two parameters of X's beta distribution (Control)
-#' @param parY two parameters of Y's beta distribution (Treatment)
+#' @typed z : numeric
+#'  vector of differences between Control and Treatment arms such that `Z = Y-X`
+#' @typed parX : numeric
+#'  two parameters of `X`'s Beta distribution (Control)
+#' @typed parY : numeric
+#'  two parameters of `Y`'s Beta distribution (Treatment)
+#' @typed eps : number
+#'  lowest floating point number as lower bound of integration
+#' @typed rel.tol : number
+#'  used in [stats::integrate()]
+#' @return The density values
 #'
-#' @return \code{dbetadiff} gives the density, \code{pbetadiff} the distribution function,
-#' \code{qbetadiff} the quantile function.
+#' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
 #'
-#' @example examples/betadiff.R
-#' @name betadiff
 #' @importFrom stats dbeta integrate
-#' @rdname betadiff
+#' @rdname dbetadiff
+#' @example examples/dbetadiff.R
 #' @export
-dbetadiff <- function(z, parY, parX) {
+dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
+  assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
   ret <- z
+  is_z_pos <- z >= 0
+  is_z_neg <- z < 0
 
-  ## determine which z are positive and which negative
-  zPos <- z >= 0
-  zNeg <- z < 0
-
-  ## use epsilon to avoid infinite function values
-  eps <- .Machine$double.eps
+  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_number(eps, finite = TRUE)
 
   integrandPos <- function(x, zval) {
     exp(
       stats::dbeta(x = x, parX[1], parX[2], log = TRUE) +
+        # x + zval = y, if z = y - x
         stats::dbeta(x = x + zval, parY[1], parY[2], log = TRUE)
     )
   }
-
   integrandNeg <- function(y, zval) {
     exp(
       stats::dbeta(x = y, parY[1], parY[2], log = TRUE) +
+        # y - zval = x, if  z = y - x
         stats::dbeta(x = y - zval, parX[1], parX[2], log = TRUE)
     )
   }
-
-  for (i in seq_along(z)[zPos]) {
+  for (i in seq_along(z)[is_z_pos]) {
     ret[i] <- stats::integrate(
       f = integrandPos,
-      lower = eps, upper = 1 - z[i],
+      # We transform the bounds to follow the support of integrandPos here.
+      lower = eps,
+      # The upper bounds here are between 0 and 1.
+      upper = 1 - z[i],
       zval = z[i],
       subdivisions = 1000L,
-      rel.tol = .Machine$double.eps^0.1
+      rel.tol = rel.tol
     )$value
   }
 
-  for (i in seq_along(z)[zNeg]) {
+  for (i in seq_along(z)[is_z_neg]) {
     ret[i] <- stats::integrate(
       f = integrandNeg,
-      lower = eps, upper = 1 + z[i],
+      # We transform the bounds to follow the support of integrandNeg.
+      lower = eps,
+      # The upper bounds here are between 0 and 1.
+      upper = 1 + z[i],
       zval = z[i],
       subdivisions = 1000L,
-      rel.tol = .Machine$double.eps^0.1
+      rel.tol = rel.tol
     )$value
   }
-
-  return(ret)
+  ret
 }
 
+#' Beta difference Cumulative Probability Function
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Calculates the Cumulative Probability Function of the Beta difference for a given probability.
+#'
+#' @inheritParams dbetadiff
+#' @typed q : number
+#'  vector of quantiles
+#'
+#' @return The probability distribution value
+#'
 #' @importFrom stats integrate
-#' @rdname betadiff
+#' @rdname pbetadiff
+#' @example examples/pbetadiff.R
 #' @export
-pbetadiff <- function(q, parY, parX) {
+pbetadiff <- function(q, parY, parX, rel.tol = .Machine$double.eps^0.1) {
   stats::integrate(
     f = dbetadiff,
     parY = parY,
@@ -75,15 +104,26 @@ pbetadiff <- function(q, parY, parX) {
     lower = -1,
     upper = q,
     subdivisions = 1000L,
-    rel.tol = .Machine$double.eps^0.1
+    rel.tol = rel.tol
   )$value
 }
 
+#' Beta difference Quantile Function
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Calculates the quantile of the Beta difference for a given probability.
+#'
+#' @inheritParams dbetadiff
+#' @typed p : number
+#'  vector of probabilities
+#' @return The quantile values.
 
 #' @importFrom stats uniroot
-#' @rdname betadiff
+#' @rdname qbetadiff
+#' @example examples/qbetadiff.R
 #' @export
-qbetadiff <- function(p, parY, parX) {
+qbetadiff <- function(p, parY, parX, eps = .Machine$double.eps) {
   target <- function(q) {
     pbetadiff(
       q = q,

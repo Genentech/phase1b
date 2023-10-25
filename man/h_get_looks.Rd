@@ -18,8 +18,10 @@ specify in \code{nnF}.}
 }
 \value{
 Uses distance from \code{h_get_distance} to add to looks, creating wiggled looks:
-\code{nnrE}is the result for Efficacy looks with random distance added.
-\code{nnrF}is the result for Futility looks with random distance added.
+\itemize{
+\item \code{nnrE} is the result for Efficacy looks with random distance added.
+\item \code{nnrF} is the result for Futility looks with random distance added.
+}
 }
 \description{
 A helper function for \code{ocPostprob} that applies the numeric element of \code{dist} to looks \code{nn}.

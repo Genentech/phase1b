@@ -39,8 +39,8 @@ h_get_distance <- function(nn) {
 #'  sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.
 #'
 #' @return Uses distance from `h_get_distance` to add to looks, creating wiggled looks:
-#'  `nnrE`is the result for Efficacy looks with random distance added.
-#'  `nnrF`is the result for Futility looks with random distance added.
+#'  - `nnrE` is the result for Efficacy looks with random distance added.
+#'  - `nnrF` is the result for Futility looks with random distance added.
 #'
 #' @keywords internal
 #'
@@ -63,9 +63,9 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'
 #' @inheritParams h_get_looks
 #' @typed nnr : numeric
-#' union of `nnE`and `nnF`.
+#'  union of `nnE`and `nnF`.
 #' @typed response : numeric
-#' A numeric of Bernoulli successes based on `size_look`.
+#'  a numeric of Bernoulli successes based on `size_look`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
@@ -73,7 +73,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed p1 : number
 #'  upper Efficacy threshold of response rate.
 #' @typed tL : number
-#'  posterior probability threshold for being below `p0`..
+#'  posterior probability threshold for being below `p0`.
 #' @typed tU : number
 #'  posterior probability threshold for being above `p1`.
 #' @typed parE : numeric
@@ -81,9 +81,9 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #'
 #' @return A list of the following objects :
-#'  - `decision` : resulting numeric of decision, one of `TRUE` for Go, `FALSE`for Stop, `NA` for Gray zone.
+#'  - `decision` : resulting numeric of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting numeric of look size, anything below maximum
-#'                  look size is an indicated interim, Futility or Efficacy or both.
+#'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal
 #'

@@ -9,7 +9,7 @@ h_get_decision(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
-\item{response}{(\code{numeric}):\cr A numeric of Bernoulli successes based on \code{size_look}.}
+\item{response}{(\code{numeric}):\cr a numeric of Bernoulli successes based on \code{size_look}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
@@ -25,14 +25,14 @@ specify in \code{nnF}.}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 
-\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}..}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 }
 \value{
 A list of the following objects :
 \itemize{
-\item \code{decision} : resulting numeric of decision, one of \code{TRUE} for Go, \code{FALSE}for Stop, \code{NA} for Gray zone.
+\item \code{decision} : resulting numeric of decision, one of \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting numeric of look size, anything below maximum
 look size is an indicated interim, Futility or Efficacy or both.
 }

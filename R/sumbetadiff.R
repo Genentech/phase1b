@@ -4,7 +4,7 @@ NULL
 ##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
 ##'
 ##'
-##' A function to summerize the characters of a betadiff distribution \code{\link{betadiff}}
+##' A function to summerize the characters of a betadiff distribution \code{\link{dbetadiff}}
 ##'
 ##'
 ##' @param parX two parameters of X's beta distribution (Control)
