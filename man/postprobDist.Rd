@@ -18,19 +18,18 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{number of successes (in the treatment group). Note that \code{x}
-can be a vector.}
+\item{x}{(``):\cr number of successes (in the treatment group). Note that \code{x} can be a vector.}
 
-\item{n}{number of patients (in the treatment group)}
+\item{n}{(``):\cr number of patients (in the treatment group)}
 
-\item{xS}{number of successes in the SOC group (default: 0)}
+\item{xS}{(``):\cr number of successes in the SOC group (default: 0)}
 
-\item{nS}{number of patients in the SOC group (default: 0)}
+\item{nS}{(``):\cr number of patients in the SOC group (default: 0)}
 
-\item{delta}{margin by which the response rate in the treatment group should
+\item{delta}{(``):\cr margin by which the response rate in the treatment group should
 be better than in the SOC group (default: 0)}
 
-\item{relativeDelta}{should the delta be relative? (not default). If this is
+\item{relativeDelta}{(``):\cr should the delta be relative? (not default). If this is
 \code{TRUE}, then a relative delta is used. This means we want to have
 response at least in delta proportion of the SOC non-responding patients.
 Non-responding patients rate is 1 - P_S, and we want to have P_S + (1 - P_S)
@@ -39,37 +38,38 @@ Non-responding patients rate is 1 - P_S, and we want to have P_S + (1 - P_S)
 posterior probability Pr(P_E > P_S + (1 - P_S) * delta | data).
 }}
 
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
+\item{parE}{(``):\cr the beta typedeters matrix, with K rows and 2 columns,
+corresponding to the beta typedeters of the K components. default is a
 uniform prior.}
 
-\item{weights}{the mixture weights of the beta mixture prior. Default are
+\item{weights}{(``):\cr the mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{parS}{beta parameters for the SOC group (default: uniform)}
+\item{parS}{(``):\cr beta typedeters for the SOC group (default: uniform)}
 
-\item{weightsS}{weights for the SOC group (default: uniform)}
+\item{weightsS}{(``):\cr weights for the SOC group (default: uniform)}
 }
 \value{
 the posterior probability
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Using the approach by Thall and Simon (Biometrics, 1994), evaluate the
-posterior probability of having Pr(P_E > P_S + delta | data) (but see below
-for relative delta margin). Both for the new treatment E as well as for the
-SOC S data might be available. However the default is that no data is
-available for the SOC, corresponding to the single arm trial situation. Note
+posterior probability of having \code{Pr(P_E > P_S + delta | data)} (but see below
+for relative delta margin). Both for the new treatment \code{E} as well as for the
+Standard of Care (SOC): \code{S} data might be available. However the default is that no data is
+available for the \code{SOC}, corresponding to the single arm trial situation. Note
 that a uniform prior is the useful default for the treatment proportion,
-while in the single arm trial an informative prior on the SOC proportion is
+while in the single arm trial an informative prior on the \code{SOC} proportion is
 useful.
-}
-\details{
-Beta mixture prior can be specified for the treatment (\code{parE}
-and \code{weights} parameters) and control proportion (\code{parS} and
-\code{weightsS} parameters), see \code{\link{postprob}} for details. Note
+
+Beta mixture prior can be specified for the treatment \code{parE}
+and \code{weights} typedeters) and control proportion \code{parS} and
+\code{weightsS} typedeters), see \code{postprob} for details. Note
 that being able to specify a beta mixture prior also on the control
 treatment is e.g. important for the futility decision making (see the
-\code{\link{oc2}} code).
+\code{oc2} code).
 }
 \examples{
 ## example similar to Lee and Liu:
