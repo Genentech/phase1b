@@ -16,8 +16,8 @@ NULL
 #' useful.
 #'
 #' Beta mixture prior can be specified for the treatment `parE`
-#' and `weights` typedeters) and control proportion `parS` and
-#' `weightsS` typedeters), see `postprob` for details. Note
+#' and `weights` parameters) and control proportion `parS` and
+#' `weightsS` parameters), see `postprob` for details. Note
 #' that being able to specify a beta mixture prior also on the control
 #' treatment is e.g. important for the futility decision making (see the
 #' `oc2` code).
@@ -32,23 +32,23 @@ NULL
 #'  number of patients in the SOC group (default: 0)
 #' @typed delta :
 #'  margin by which the response rate in the treatment group should
-#' be better than in the SOC group (default: 0)
+#'  be better than in the SOC group (default: 0)
 #' @typed relativeDelta :
 #'  should the delta be relative? (not default). If this is
-#' `TRUE`, then a relative delta is used. This means we want to have
-#' response at least in delta proportion of the SOC non-responding patients.
-#' Non-responding patients rate is 1 - P_S, and we want to have P_S + (1 - P_S)
-#' * delta response rate (at least) in the treatment. That is, we evaluate the
-#' posterior probability Pr(P_E > P_S + (1 - P_S) * delta | data).
+#'  `TRUE`, then a relative delta is used. This means we want to have
+#'  response at least in delta proportion of the SOC non-responding patients.
+#'  Non-responding patients rate is `1 - P_S`, and we want to have
+#'  `P_S + (1 - P_S)` * delta response rate (at least) in the treatment. That is, we evaluate the
+#'  posterior probability `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
 #' @typed parE :
-#'  the beta typedeters matrix, with K rows and 2 columns,
-#' corresponding to the beta typedeters of the K components. default is a
-#' uniform prior.
+#'  the beta parameters matrix, with K rows and 2 columns,
+#'  corresponding to the beta parameters of the K components. default is a
+#'  uniform prior.
 #' @typed weights :
 #'  the mixture weights of the beta mixture prior. Default are
 #' uniform weights across mixture components.
 #' @typed parS :
-#'  beta typedeters for the SOC group (default: uniform)
+#'  beta parameters for the SOC group (default: uniform)
 #' @typed weightsS :
 #'  weights for the SOC group (default: uniform)
 #' @return the posterior probability
@@ -64,78 +64,85 @@ postprobDist <- function(x, n,
                          weights,
                          parS = c(1, 1),
                          weightsS) {
-  ## if parE is a vector => situation where there is only one component
-  if (is.vector(parE)) {
-    ## check that it has exactly two entries
-    stopifnot(identical(length(parE), 2L))
-
-    ## and transpose to matrix with one row
-    parE <- t(parE)
-  }
-
-  ## if prior weights of the beta mixture are not supplied
-  if (missing(weights)) {
-    weights <- rep(1, nrow(parE))
-  }
-
-  ## if parS is a vector => situation where there is only one component
-  if (is.vector(parS)) {
-    ## check that it has exactly two entries
-    stopifnot(identical(length(parS), 2L))
-
-    ## and transpose to matrix with one row
+  if (is.vector(parE)) { # This is for the simple case beta.
+    assert_true(identical(length(parE), 2L))
+    assert_true(identical(length(parE), 2L))
     parS <- t(parS)
   }
-
-  ## if prior weights of the beta mixture are not supplied
   if (missing(weightsS)) {
     weightsS <- rep(1, nrow(parS))
   }
+  assert_number(weightsS, lower = 0, finite = TRUE)
 
-  ## compute updated beta typedeters
   activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
   controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
 
-  ## use numerical integration to compute this probability, as given on p.338
-  ## in the article by Thall and Simon (1994):
+  assert_names(names(activeBetamixPost), identical.to = c("par", "weights"))
+  assert_names(names(controlBetamixPost), identical.to = c("par", "weights"))
+  # use numerical integration to compute this probability, as given on p.338
+  # in the article by Thall and Simon (1994):
   integrand <-
     if (relativeDelta) {
-      function(p) {
+      function(p) { # TODO a separate helper function
         cdf <- postprob(
           x = x,
           p = (1 - delta) * p + delta,
           betamixPost = activeBetamixPost
         )
-
         pdf <- with(
           controlBetamixPost,
           dbetaMix(x = p, par = par, weights = weights)
         )
-
         return(cdf * pdf)
       }
+
+      ### a helper function for above if relativeDelta == TRUE
+      integrant_relDelta <- function(p) {
+        cdf <- postprob(
+          x = x,
+          p = (1 - delta) * p + delta,
+          betamixPost = activeBetamixPost
+        )
+        pdf <- with(
+          controlBetamixPost,
+          dbetaMix(x = p, par = par, weights = weights)
+        )
+        cdf * pdf
+      }
+      ###
     } else {
-      function(p) {
+      function(p) { # TODO a separate helper function
         cdf <- postprob(
           x = x,
           p = p + delta,
           betamixPost = activeBetamixPost
         )
-
         pdf <- with(
           controlBetamixPost,
           dbetaMix(x = p, par = par, weights = weights)
         )
-
         return(cdf * pdf)
       }
+      ### a helper function for above if relativeDelta == TRUE
+      integrand_p <- function(p) {
+        cdf <- postprob(
+          x = x,
+          p = p + delta,
+          betamixPost = activeBetamixPost
+        )
+        pdf <- with(
+          controlBetamixPost,
+          dbetaMix(x = p, par = par, weights = weights)
+        )
+        cdf * pdf
+      }
+      ###
     }
-
-  ## do the integration. be careful to cover the region where there can
-  ## really be any non-zero values. I.e. only integrate over the region where
-  ## the beta density of the control is non-zero.
+  # do the integration. be careful to cover the region where there can
+  # really be any non-zero values. I.e. only integrate over the region where
+  # the beta density of the control is non-zero.
   epsilon <- 1e-13
-  bounds <- with(
+  bounds <- with( # TO DO function ?
     controlBetamixPost,
     qbetaMix(
       p = c(epsilon, 1 - epsilon),
@@ -156,7 +163,6 @@ postprobDist <- function(x, n,
         bounds[2]
       )
   )
-
   if (intRes$message == "OK") {
     return(intRes$value)
   } else {

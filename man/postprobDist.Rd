@@ -32,20 +32,18 @@ be better than in the SOC group (default: 0)}
 \item{relativeDelta}{(``):\cr should the delta be relative? (not default). If this is
 \code{TRUE}, then a relative delta is used. This means we want to have
 response at least in delta proportion of the SOC non-responding patients.
-Non-responding patients rate is 1 - P_S, and we want to have P_S + (1 - P_S)
-\itemize{
-\item delta response rate (at least) in the treatment. That is, we evaluate the
-posterior probability Pr(P_E > P_S + (1 - P_S) * delta | data).
-}}
+Non-responding patients rate is `1 - P_S`, and we want to have
+`P_S + (1 - P_S)` * delta response rate (at least) in the treatment. That is, we evaluate the
+posterior probability `Pr(P_E > P_S + (1 - P_S) * delta | data)`.}
 
-\item{parE}{(``):\cr the beta typedeters matrix, with K rows and 2 columns,
-corresponding to the beta typedeters of the K components. default is a
+\item{parE}{(``):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components. default is a
 uniform prior.}
 
 \item{weights}{(``):\cr the mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{parS}{(``):\cr beta typedeters for the SOC group (default: uniform)}
+\item{parS}{(``):\cr beta parameters for the SOC group (default: uniform)}
 
 \item{weightsS}{(``):\cr weights for the SOC group (default: uniform)}
 }
@@ -65,8 +63,8 @@ while in the single arm trial an informative prior on the \code{SOC} proportion 
 useful.
 
 Beta mixture prior can be specified for the treatment \code{parE}
-and \code{weights} typedeters) and control proportion \code{parS} and
-\code{weightsS} typedeters), see \code{postprob} for details. Note
+and \code{weights} parameters) and control proportion \code{parS} and
+\code{weightsS} parameters), see \code{postprob} for details. Note
 that being able to specify a beta mixture prior also on the control
 treatment is e.g. important for the futility decision making (see the
 \code{oc2} code).
