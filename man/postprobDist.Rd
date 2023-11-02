@@ -18,37 +18,36 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{(``):\cr number of successes (in the treatment group). Note that \code{x} can be a vector.}
+\item{x}{(\code{vector}):\cr vector of success counts in the treatment group. Vector of minimum length of 1.}
 
-\item{n}{(``):\cr number of patients (in the treatment group)}
+\item{n}{(\code{number}):\cr number of patients (in the treatment group).}
 
-\item{xS}{(``):\cr number of successes in the SOC group (default: 0)}
+\item{xS}{(\code{vector}):\cr vector of success counts in the SOC group (default: 0). Vector of minimum length of 1.}
 
-\item{nS}{(``):\cr number of patients in the SOC group (default: 0)}
+\item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0)}
 
-\item{delta}{(``):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0)}
+\item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the SOC group (default: 0). Must be >= \code{0}.  see @note.
+? response rate in delta proportion of the SOC non-responding patients.}
 
-\item{relativeDelta}{(``):\cr should the delta be relative? (not default). If this is
-\code{TRUE}, then a relative delta is used. This means we want to have
-response at least in delta proportion of the SOC non-responding patients.
-Non-responding patients rate is `1 - P_S`, and we want to have
-`P_S + (1 - P_S)` * delta response rate (at least) in the treatment. That is, we evaluate the
-posterior probability `Pr(P_E > P_S + (1 - P_S) * delta | data)`.}
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the SOC non-responding patients. see @note.}
 
-\item{parE}{(``):\cr the beta parameters matrix, with K rows and 2 columns,
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components. default is a
 uniform prior.}
 
-\item{weights}{(``):\cr the mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{parS}{(``):\cr beta parameters for the SOC group (default: uniform)}
+\item{parS}{(\code{matrix}):\cr beta parameters for the SOC group (default: uniform)}
 
-\item{weightsS}{(``):\cr weights for the SOC group (default: uniform)}
+\item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform)}
+
+\item{epsilon}{(\verb{# TODO}):\cr # do the integration. be careful to cover the region where there can}
 }
 \value{
-the posterior probability
+The posterior probability
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -69,8 +68,33 @@ that being able to specify a beta mixture prior also on the control
 treatment is e.g. important for the futility decision making (see the
 \code{oc2} code).
 }
+\note{
+on \verb{relative Delta} and \code{delta}.
+
+When \code{relativeDelta = TRUE}, then it is assumed that \code{delta != 0}.
+
+Given \code{delta != 0}, it is assumed that :
+\itemize{
+\item The posterior is calculate on \code{p + delta}.
+\item \code{P_S} is the response rate of the SOC group or \code{p}.
+\item \code{1-P_S} is the non-response rate of the SOC group.
+\item The treatment group's response rate is assumed to be greater than
+\code{P_S + (1-P_S)}.
+\item Delta is assumed to be the difference between \code{P_S} and \code{1-P_S}
+\item It is desirable to achieve a minimum response rate of
+\code{P_S + (1 - P_S)*delta} response rate in the treatment group.
+\item The expression for posterior probability is thus:
+\code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+}
+
+If \code{delta = 0} :
+\itemize{
+\item The default \code{delta = 0} is assumed.
+\item \code{p} is the minimum response rate of which the posterior is calculate on.
+}
+}
 \examples{
-## example similar to Lee and Liu:
+# example similar to Lee and Liu:
 postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
 
 ## these two should give the same result:
@@ -83,14 +107,14 @@ postprobDist(
 )
 
 postprob(x = 27, n = 34, p = 0.65, parE = c(1, 1))
-## ok, almost
+# ok, almost
 
-## try out mixtures:
-## play around with the beta parameters and weights to
-## get a feeling.
-## Note that very extreme beta parameters do no longer increase
-## the return value, because then that mixture component is too
-## unlikely a posteriori
+# try out mixtures:
+# play around with the beta parameters and weights to
+# get a feeling.
+# Note that very extreme beta parameters do no longer increase
+# the return value, because then that mixture component is too
+# unlikely a posteriori
 postprobDist(
   x = 16, n = 23,
   parE =
