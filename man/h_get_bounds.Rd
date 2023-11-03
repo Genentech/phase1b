@@ -2,12 +2,12 @@
 % Please edit documentation in R/postprobDist.R
 \name{h_get_bounds}
 \alias{h_get_bounds}
-\title{Generating bounds for the integration of Beta Mixture Posterior}
+\title{Generating bounds for the Integration of Beta Mixture Posterior}
 \usage{
 h_get_bounds(betamixPost)
 }
 \arguments{
-\item{betamixPost}{(\code{list}):\cr arguments of \code{par}and \code{weights} of Beta Mixture Posterior in format list. see \verb{[getBetaMix]}}
+\item{betamixPost}{(\code{list}):\cr arguments of \code{par}and \code{weights} of Beta Mixture Posterior in format list. See \verb{[getBetaMix()]}.}
 
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
 corresponding to the beta parameters of the \code{K} components.}

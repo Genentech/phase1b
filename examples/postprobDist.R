@@ -33,3 +33,8 @@ postprobDist(
     ),
   weightsS = c(1, 3)
 )
+# try these examples
+
+# 1. Experimental arm only, uniform prior in both E and S arms
+# 2. Experimental arm and SOC
+# 3. Experimental arm only, with beta mix prior for S arms, uniform for E

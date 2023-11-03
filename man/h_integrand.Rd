@@ -2,12 +2,9 @@
 % Please edit documentation in R/postprobDist.R
 \name{h_integrand}
 \alias{h_integrand}
-\title{The Posterior Beta Mixture Integrand when relative Delta base on \code{p}}
+\title{The Posterior Beta Mixture Integrand when Delta is absolute.}
 \usage{
-h_integrand(p)
-}
-\arguments{
-\item{p}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
+h_integrand(p_s, delta, x, activeBetamixPost, controlBetamixPost)
 }
 \value{
 An R function that is an argument for \verb{[stats::integrate()]}.

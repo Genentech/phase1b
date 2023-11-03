@@ -4,7 +4,7 @@
 \alias{h_integrand_relDelta}
 \title{The Posterior Beta Mixture Integrand based on \code{delta}}
 \usage{
-h_integrand_relDelta(p)
+h_integrand_relDelta(p_s, delta, x, activeBetamixPost, controlBetamixPost)
 }
 \arguments{
 \item{p}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}

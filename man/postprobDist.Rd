@@ -20,15 +20,14 @@ postprobDist(
 \arguments{
 \item{x}{(\code{vector}):\cr vector of success counts in the treatment group. Vector of minimum length of 1.}
 
-\item{n}{(\code{number}):\cr number of patients (in the treatment group).}
+\item{n}{(\code{number}):\cr number of patients in the treatment group.}
 
 \item{xS}{(\code{vector}):\cr vector of success counts in the SOC group (default: 0). Vector of minimum length of 1.}
 
 \item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0)}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0). Must be >= \code{0}.  see @note.
-? response rate in delta proportion of the SOC non-responding patients.}
+be better than in the SOC group (default: 0). Must be >= \code{0}.  see @note.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. see @note.}
@@ -44,7 +43,8 @@ uniform weights across mixture components.}
 
 \item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform)}
 
-\item{epsilon}{(\verb{# TODO}):\cr # do the integration. be careful to cover the region where there can}
+\item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
+the interval of integration.}
 }
 \value{
 The posterior probability
@@ -55,11 +55,36 @@ The posterior probability
 Using the approach by Thall and Simon (Biometrics, 1994), evaluate the
 posterior probability of having \code{Pr(P_E > P_S + delta | data)} (but see below
 for relative delta margin). Both for the new treatment \code{E} as well as for the
-Standard of Care (SOC): \code{S} data might be available. However the default is that no data is
-available for the \code{SOC}, corresponding to the single arm trial situation. Note
-that a uniform prior is the useful default for the treatment proportion,
-while in the single arm trial an informative prior on the \code{SOC} proportion is
+Standard of Care (SOC): \code{S} data might be available. However the default assumption is that no data is
+available for the \code{SOC}, corresponding to the single arm trial situation
+where we only rely on incoming data from the Experimental arm. In the case
+
+Using the approach by Thall and Simon (Biometrics, 1994), we evaluate the
+posterior probability of having a desired improvement of treatment effect to
+standard of care, SOC. When there is no standard of care,
+
+The choice of prior will consider the following :
+
+For single arm trial, an informative prior on the SOC proportion is
 useful.
+Otherwise, a uniform prior is the useful default for the treatment proportion. see @note.
+
+The calculation of \code{delta} :
+
+The desired improvement is denoted as \code{delta}. There are two options in calculating \code{delta}.
+The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+The posterior in question can be expressed as \code{Pr(P_E > P_S + delta | data)}.
+\enumerate{
+\item The absolute case is when we define an absolute delta, greater than \code{P_S},
+the response rate of the \code{SOC} group such that
+the posterior is \code{Pr(P_E > P_S + delta | data)}.
+\item In the relative case, we suppose that the treatment group's
+response rate is assumed to be greater than \code{P_S + (1-P_S)*delta} such that
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+}
+}
+\note{
+on beta Priors
 
 Beta mixture prior can be specified for the treatment \code{parE}
 and \code{weights} parameters) and control proportion \code{parS} and
@@ -67,31 +92,13 @@ and \code{weights} parameters) and control proportion \code{parS} and
 that being able to specify a beta mixture prior also on the control
 treatment is e.g. important for the futility decision making (see the
 \code{oc2} code).
-}
-\note{
-on \verb{relative Delta} and \code{delta}.
 
-When \code{relativeDelta = TRUE}, then it is assumed that \code{delta != 0}.
-
-Given \code{delta != 0}, it is assumed that :
-\itemize{
-\item The posterior is calculate on \code{p + delta}.
-\item \code{P_S} is the response rate of the SOC group or \code{p}.
-\item \code{1-P_S} is the non-response rate of the SOC group.
-\item The treatment group's response rate is assumed to be greater than
-\code{P_S + (1-P_S)}.
-\item Delta is assumed to be the difference between \code{P_S} and \code{1-P_S}
-\item It is desirable to achieve a minimum response rate of
-\code{P_S + (1 - P_S)*delta} response rate in the treatment group.
-\item The expression for posterior probability is thus:
-\code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
-}
-
-If \code{delta = 0} :
-\itemize{
-\item The default \code{delta = 0} is assumed.
-\item \code{p} is the minimum response rate of which the posterior is calculate on.
-}
+Beta mixture prior can be specified for the treatment in \code{parE}
+and \code{weights} parameters) and SOC in \code{parS} and
+\code{weightsS} parameters), see \verb{[postprob()]} for details. Note
+that being able to specify a beta mixture prior also on the control
+treatment is important for the futility decision making (see the
+\verb{[oc2()]} code).
 }
 \examples{
 # example similar to Lee and Liu:
@@ -129,4 +136,9 @@ postprobDist(
     ),
   weightsS = c(1, 3)
 )
+# try these examples
+
+# 1. Experimental arm only, uniform prior in both E and S arms
+# 2. Experimental arm and SOC
+# 3. Experimental arm only, with beta mix prior for S arms, uniform for E
 }
