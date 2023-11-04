@@ -1,5 +1,8 @@
 # example similar to Lee and Liu:
-postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
+postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), relativeDelta = TRUE)
+
+# when relativeDelta is used
+postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1, relativeDelta = TRUE)
 
 ## these two should give the same result:
 postprobDist(
@@ -36,5 +39,64 @@ postprobDist(
 # try these examples
 
 # 1. Experimental arm only, uniform prior in both E and S arms
+x <- 16
+xS <- 0
+nS <- 0
+n <- 23
+parE <- t(c(0.6, 0.4))
+parS <- t(c(0.6, 0.4))
+weights <- rep(1, nrow(parE))
+weightsS <- rep(1, nrow(parS))
+delta <- 0
+relativeDelta <- FALSE
+
+
+postprobDist(
+  x = 16,
+  n = 23,
+  xS = 0,
+  nS = 0,
+  delta = 0,
+  relativeDelta = FALSE,
+  parE = c(1, 1),
+  weights,
+  parS = c(1, 1),
+  weightsS
+)
 # 2. Experimental arm and SOC
+x <- 16
+xS <- 0
+nS <- 0
+n <- 23
+parE <- t(c(0.6, 0.4))
+parS <- t(c(0.6, 0.4))
+weights <- rep(1, nrow(parE))
+weightsS <- rep(1, nrow(parS))
+delta <- 0
+relativeDelta <- TRUE
+
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0,
+  relativeDelta = FALSE,
+  parE = c(1, 1),
+  weights,
+  parS = c(1, 1),
+  weightsS
+)
 # 3. Experimental arm only, with beta mix prior for S arms, uniform for E
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0,
+  relativeDelta = FALSE,
+  parE = c(1, 1),
+  weights,
+  parS = c(4, 5),
+  weightsS
+)

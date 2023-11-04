@@ -4,7 +4,7 @@ NULL
 
 #' The Posterior Beta Mixture Integrand based on `delta`
 #'
-#' The helper function to generate Integrand function given relative Delta.
+#' The helper function to generate Integrand function when  `relative Delta = TRUE`.
 #'
 #' @typed p : number
 #'  probability of success or response rate of standard of care or `SOC` group.
@@ -12,14 +12,14 @@ NULL
 #' @return An R function that is an argument for `[stats::integrate()]`.
 #'
 #' @keywords internal
-h_integrand_relDelta <- function(p_s, delta, x, activeBetamixPost, controlBetamixPost) {
+h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
   cdf <- postprob(
     x = x,
-    p = (1 - p_s) * p_s + delta,
+    p = (1 - p_s) * delta + p_s,
     betamixPost = activeBetamixPost
   )
   pdf <- with(
-    controlBetamixPost,
+    controlBetamixPost = controlBetamixPost,
     dbetaMix(x = p_s, par = par, weights = weights)
   )
   cdf * pdf
@@ -27,7 +27,8 @@ h_integrand_relDelta <- function(p_s, delta, x, activeBetamixPost, controlBetami
 
 #' The Posterior Beta Mixture Integrand when Delta is absolute.
 #'
-#' The helper function to generate Integrand function when relative Delta not given.
+#' The helper function to generate Integrand function when `relative Delta = FALSE`
+#' , a default setting.
 #' A numerical integration to compute this probability is given on p.338
 #  in the article by Thall and Simon (1994, Biometrics):
 #'
@@ -36,14 +37,14 @@ h_integrand_relDelta <- function(p_s, delta, x, activeBetamixPost, controlBetami
 #' @return An R function that is an argument for `[stats::integrate()]`.
 #'
 #' @keywords internal
-h_integrand <- function(p_s, delta, x, activeBetamixPost, controlBetamixPost) {
+h_integrand <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
   cdf <- postprob(
     x = x,
     p = p_s + delta,
     betamixPost = activeBetamixPost
   )
   pdf <- with(
-    controlBetamixPost,
+    controlBetamixPost = controlBetamixPost,
     dbetaMix(x = p_s, par = par, weights = weights)
   )
   cdf * pdf
@@ -199,8 +200,6 @@ postprobDist <- function(x,
     epsilon <- .Machine$double.xmin
     integrand <- h_integrand
   }
-  epsilon <- .Machine$double.xmin
-  h_get_bounds(betamixPost)
   bounds <- h_get_bounds(betamixPost = controlBetamixPost)
   intRes <- integrate(
     f = integrand,
@@ -214,9 +213,9 @@ postprobDist <- function(x,
         ifelse(relativeDelta, 1, 1 - delta),
         bounds[2]
       ),
-    delta = delta,
     x = x,
-    activeBetamixPost = activeBetamixPost,
+    delta = delta,
+    betamixPost = activeBetamixPost,
     controlBetamixPost = controlBetamixPost
   )
   if (intRes$message == "OK") {

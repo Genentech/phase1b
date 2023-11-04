@@ -4,13 +4,14 @@
 \alias{h_integrand}
 \title{The Posterior Beta Mixture Integrand when Delta is absolute.}
 \usage{
-h_integrand(p_s, delta, x, activeBetamixPost, controlBetamixPost)
+h_integrand(p_s, delta, x, betamixPost, controlBetamixPost)
 }
 \value{
 An R function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
-The helper function to generate Integrand function when relative Delta not given.
+The helper function to generate Integrand function when \verb{relative Delta = FALSE}
+, a default setting.
 A numerical integration to compute this probability is given on p.338
 }
 \keyword{internal}

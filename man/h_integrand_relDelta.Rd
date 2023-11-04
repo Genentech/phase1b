@@ -4,7 +4,7 @@
 \alias{h_integrand_relDelta}
 \title{The Posterior Beta Mixture Integrand based on \code{delta}}
 \usage{
-h_integrand_relDelta(p_s, delta, x, activeBetamixPost, controlBetamixPost)
+h_integrand_relDelta(p_s, delta, x, betamixPost, controlBetamixPost)
 }
 \arguments{
 \item{p}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
@@ -13,6 +13,6 @@ h_integrand_relDelta(p_s, delta, x, activeBetamixPost, controlBetamixPost)
 An R function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
-The helper function to generate Integrand function given relative Delta.
+The helper function to generate Integrand function when  \verb{relative Delta = TRUE}.
 }
 \keyword{internal}
