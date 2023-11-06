@@ -81,8 +81,8 @@ postprobDist <- function(x, n,
   }
 
   ## compute updated beta parameters
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
 
   ## use numerical integration to compute this probability, as given on p.338
   ## in the article by Thall and Simon (1994):

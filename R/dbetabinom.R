@@ -78,18 +78,23 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #'
 #' Computes the posterior parameters of a beta-mixture-binomial distribution.
 #'
-#' @param x number of successes
-#' @param n number of patients
-#' @param par the beta parameters matrix, with K rows and 2 columns,
+#' @typed x :
+#'  number of successes
+#' @typed n :
+#'  number of patients
+#' @typed par :
+#'  the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights
-#' @return a list with the updated beta parameters and weights
+#' @typed weights :
+#'  the mixture weights
+#' @return A list with the updated beta parameters and weights
 #'
 #' @importFrom stats dbeta dbinom
 #'
-#' @example examples/getBetamixPost.R
+#' @keywords internal
+#'
 #' @export
-getBetamixPost <- function(x, n, par, weights) {
+h_getBetamixPost <- function(x, n, par, weights) {
   ## check the format
   stopifnot(
     is.matrix(par),

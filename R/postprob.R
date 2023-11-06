@@ -86,7 +86,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
-    betamixPost <- getBetamixPost(
+    betamixPost <- h_getBetamixPost(
       x = x,
       n = n,
       par = parE,
