@@ -89,6 +89,7 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #'
 #' @example examples/getBetamixPost.R
 #' @export
+
 getBetamixPost <- function(x, n, par, weights) {
   ## check the format
   stopifnot(

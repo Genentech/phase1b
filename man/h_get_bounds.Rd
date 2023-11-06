@@ -4,7 +4,7 @@
 \alias{h_get_bounds}
 \title{Generating bounds for the Integration of Beta Mixture Posterior}
 \usage{
-h_get_bounds(betamixPost)
+h_get_bounds(controlBetamixPost)
 }
 \arguments{
 \item{betamixPost}{(\code{list}):\cr arguments of \code{par}and \code{weights} of Beta Mixture Posterior in format list. See \verb{[getBetaMix()]}.}

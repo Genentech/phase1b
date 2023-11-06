@@ -15,11 +15,12 @@ NULL
 h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
   cdf <- postprob(
     x = x,
+    n = n,
     p = (1 - p_s) * delta + p_s,
-    betamixPost = activeBetamixPost
+    betamixPost
   )
   pdf <- with(
-    controlBetamixPost = controlBetamixPost,
+    controlBetamixPost,
     dbetaMix(x = p_s, par = par, weights = weights)
   )
   cdf * pdf
@@ -37,14 +38,16 @@ h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost)
 #' @return An R function that is an argument for `[stats::integrate()]`.
 #'
 #' @keywords internal
+#'
 h_integrand <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
   cdf <- postprob(
     x = x,
+    n = n,
     p = p_s + delta,
-    betamixPost = activeBetamixPost
+    betamixPost
   )
   pdf <- with(
-    controlBetamixPost = controlBetamixPost,
+    controlBetamixPost,
     dbetaMix(x = p_s, par = par, weights = weights)
   )
   cdf * pdf
@@ -68,10 +71,10 @@ h_integrand <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
 #'
 #' @keywords internal
 #'
-h_get_bounds <- function(betamixPost) {
+h_get_bounds <- function(controlBetamixPost) {
   epsilon <- .Machine$double.xmin
   with(
-    betamixPost,
+    controlBetamixPost,
     qbetaMix(
       p = c(epsilon, 1 - epsilon),
       par = par,
@@ -200,7 +203,7 @@ postprobDist <- function(x,
     epsilon <- .Machine$double.xmin
     integrand <- h_integrand
   }
-  bounds <- h_get_bounds(betamixPost = controlBetamixPost)
+  bounds <- h_get_bounds(controlBetamixPost = controlBetamixPost)
   intRes <- integrate(
     f = integrand,
     lower =
@@ -213,8 +216,8 @@ postprobDist <- function(x,
         ifelse(relativeDelta, 1, 1 - delta),
         bounds[2]
       ),
-    x = x,
     delta = delta,
+    x = x,
     betamixPost = activeBetamixPost,
     controlBetamixPost = controlBetamixPost
   )

@@ -102,7 +102,7 @@ treatment is important for the futility decision making (see the
 }
 \examples{
 # example similar to Lee and Liu:
-postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), relativeDelta = TRUE)
+postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), relativeDelta = FALSE)
 
 # when relativeDelta is used
 postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1, relativeDelta = TRUE)
@@ -141,19 +141,7 @@ postprobDist(
 )
 # try these examples
 
-# 1. Experimental arm only, uniform prior in both E and S arms
-x <- 16
-xS <- 0
-nS <- 0
-n <- 23
-parE <- t(c(0.6, 0.4))
-parS <- t(c(0.6, 0.4))
-weights <- rep(1, nrow(parE))
-weightsS <- rep(1, nrow(parS))
-delta <- 0
-relativeDelta <- FALSE
-
-
+# 1. Experimental arm only (strictly single arm trial), uniform prior in both E and S arms.
 postprobDist(
   x = 16,
   n = 23,
@@ -166,18 +154,7 @@ postprobDist(
   parS = c(1, 1),
   weightsS
 )
-# 2. Experimental arm and SOC
-x <- 16
-xS <- 0
-nS <- 0
-n <- 23
-parE <- t(c(0.6, 0.4))
-parS <- t(c(0.6, 0.4))
-weights <- rep(1, nrow(parE))
-weightsS <- rep(1, nrow(parS))
-delta <- 0
-relativeDelta <- TRUE
-
+# 2. Experimental arm and SOC, uniform prior in both E and S arms.
 postprobDist(
   x = 16,
   n = 20,
@@ -190,7 +167,7 @@ postprobDist(
   parS = c(1, 1),
   weightsS
 )
-# 3. Experimental arm only, with beta mix prior for S arms, uniform for E
+# 3. Experimental and SOC arm, with beta mix prior for S arms, uniform for E
 postprobDist(
   x = 16,
   n = 20,
@@ -202,5 +179,35 @@ postprobDist(
   weights,
   parS = c(4, 5),
   weightsS
+)
+
+# 3b. Experimental and SOC arm, with beta mix prior for S arm, uniform for E
+# The SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0,
+  relativeDelta = FALSE,
+  parE = c(1, 1),
+  weights,
+  parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
+  weightsS = c(2, 5, 3)
+)
+
+# 3c. Experimental and SOC arm, with beta mix prior for both arms
+# For each of the SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0,
+  relativeDelta = FALSE,
+  parE = rbind(c(1, 1), c(3, 4), c(8, 9)),
+  weights = c(5, 3, 2),
+  parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
+  weightsS = c(2, 5, 3)
 )
 }
