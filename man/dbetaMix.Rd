@@ -2,23 +2,33 @@
 % Please edit documentation in R/dbetabinom.R
 \name{dbetaMix}
 \alias{dbetaMix}
-\title{Beta-mixture density function}
+\title{Beta-Mixture density function}
 \usage{
 dbetaMix(x, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{the abscissa}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior of length K.
+Each element of the numeric is assigned to a pair of beta parameters.}
 
-\item{log}{return the log value? (not default)}
+\item{log}{(\code{flag}):\cr Default is \code{FALSE}. If \code{TRUE},log values of the Beta-Mixture density function are returned}
 }
 \value{
 the (log) density values
 }
 \description{
-Note that \code{x} can be a vector.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+The Beta Mixture density can be calculated with the combination of K set of beta parameters and K
+length of weights.
+}
+\details{
+Calculating \code{log} or non-log Beta-Mixture density values of support \code{x}.
+}
+\note{
+\code{x} can be a vector of \code{length > 1}
 }

@@ -128,3 +128,99 @@ test_that("qbetaMix gives a number result", {
   )
   expect_numeric(result)
 })
+
+# h_getBetamixPost --
+
+# We expect the results to be in list # TODO why it doenst work
+test_that("h_getBetamixPost gives the correct Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = matrix(c(1, 2), ncol = 2),
+    # in postprob, a numeric vector is transposed to a matrix
+  )
+  # TODO could we try expect_type and type is list ?
+  expect_list(result)
+})
+
+test_that("h_getBetamixPost gives the correct Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = matrix(c(1, 2), ncol = 2),
+    # in postprob, a numeric vector is transposed to a matrix
+  )
+  expect_equal(result$par, t(c(17, 9)))
+})
+
+test_that("h_getBetamixPost gives the Mixture weights", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2)), #  or matrix...in postprob, a numeric vector is transposed to a matrix
+    weights = c(0.6)
+  )
+  expect_equal(result$weights, c(1))
+})
+
+# Checking updated weights,for the case where there are two sets of beta parameters
+test_that("h_getBetamixPost gives correct the Mixture weights", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4)), # in postprob, a numeric vector is transposed to a matrix
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result$weights, c(0.5085758, 0.4914242))
+})
+
+# Checking updated par, for the case where there are two sets of beta parameters
+test_that("h_getBetamixPost gives correct the Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4)), # in postprob, a numeric vector is transposed to a matrix
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result$par, rbind(c(17, 9), c(19, 11)))
+})
+
+# Checking updated weights, for the case where there are three sets of beta parameters
+test_that("h_getBetamixPost gives the correct Mixture weights", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4), c(10, 10)), # in postprob, a numeric vector is transposed to a matrix
+    weights = c(0.6, 0.4, 0.5)
+  )
+  expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671))
+})
+
+# Checking updated par, for the case where there are three sets of beta parameters
+test_that("h_getBetamixPost gives the correct Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4), c(10, 10)), # in postprob, a numeric vector is transposed to a matrix
+    weights = c(0.6, 0.4, 0.5)
+  )
+  expect_equal(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
+})
+
+
+# TODO
+# For case when K rows of weights exceed length of par. # what kind of error is this
+test_that("Gives warning when nrow(weights) not equal to length(par) in h_getBetamixPost", {
+  result <-
+    expect_warning(results)
+})
+test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
+  expect_warning(
+    results <- h_getBetamixPost(
+      x = 16,
+      n = 23,
+      par = rbind(c(1, 2)), # in postprob, a numeric vector is transposed to a matrix
+      weights = c(0.6, 0.4)
+    ), "Assertion on 'weights' failed: Must have length 1, but has length 2."
+  )
+})

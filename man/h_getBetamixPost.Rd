@@ -2,24 +2,23 @@
 % Please edit documentation in R/dbetabinom.R
 \name{h_getBetamixPost}
 \alias{h_getBetamixPost}
-\title{Compute Beta-Mixture-Binomial Posterior Distribution}
+\title{Compute Beta-Mixture-Binomial Posterior Distribution's parameters and weights.}
 \usage{
 h_getBetamixPost(x, n, par, weights)
 }
 \arguments{
-\item{x}{(``):\cr number of successes}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{n}{(``):\cr number of patients}
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 
-\item{par}{(``):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
-
-\item{weights}{(``):\cr the mixture weights}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior of length K.
+Each element of the numeric is assigned to a pair of beta parameters.}
 }
 \value{
 A list with the updated beta parameters and weights
 }
 \description{
-Computes the posterior parameters of a beta-mixture-binomial distribution.
+A helper function that computes the posterior parameters of a beta-mixture-binomial distribution.
 }
 \keyword{internal}

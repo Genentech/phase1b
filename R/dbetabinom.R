@@ -37,22 +37,19 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
   }
 }
 
-
 #' Beta-Mixture-Binomial Density Function
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Calculates the density function for a mixture of beta-binomial distributions.
 #'
-#' @typed x : numeric
-#'  number of successes.
-#' @typed m : number
-#'  number of trials.
+#' @inheritParams dbetabinom
 #' @typed par : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : numeric
-#'  the mixture weights of the beta mixture prior.
+#'  the mixture weights of the beta mixture prior of length K.
+#'  Each element of the numeric is assigned to a pair of beta parameters.
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
@@ -74,19 +71,13 @@ dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
 dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 
 
-#' Compute Beta-Mixture-Binomial Posterior Distribution
+#' Compute Beta-Mixture-Binomial Posterior Distribution's parameters and weights.
 #'
-#' Computes the posterior parameters of a beta-mixture-binomial distribution.
+#' A helper function that computes the posterior parameters of a beta-mixture-binomial distribution.
 #'
-#' @typed x :
-#'  number of successes
-#' @typed n :
-#'  number of patients
-#' @typed par :
-#'  the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @typed weights :
-#'  the mixture weights
+#' @inheritParams dbetabinom
+#' @inheritParams dbetabinomMix
+#'
 #' @return A list with the updated beta parameters and weights
 #'
 #' @importFrom stats dbeta dbinom
@@ -95,59 +86,58 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #'
 #' @export
 h_getBetamixPost <- function(x, n, par, weights) {
-  ## check the format
-  stopifnot(
-    is.matrix(par),
-    is.numeric(par),
-    identical(ncol(par), 2L),
-    all(par > 0),
-    identical(nrow(par), length(weights)),
-    all(weights > 0)
-  )
-
-  ## renormalize weights
+  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
+  assert_numeric(n, lower = 0, finite = TRUE)
+  assert_matrix(par)
+  assert_numeric(weights, min = 0, len = nrow(par), finite = TRUE)
+  # We renormalize weights.
   weights <- weights / sum(weights)
-
-  ## now compute updated parameters
+  # We now compute updated parameters.
   postPar <- par
   postPar[, 1] <- postPar[, 1] + x
   postPar[, 2] <- postPar[, 2] + n - x
   postParProb <- postPar[, 1] / (postPar[, 1] + postPar[, 2])
-
-  ## compute updated mixture probabilities
+  # We compute updated mixture probabilities.
   tmp <- exp(
     stats::dbinom(x, size = n, prob = postParProb, log = TRUE) +
       stats::dbeta(postParProb, par[, 1], par[, 2], log = TRUE) -
       stats::dbeta(postParProb, postPar[, 1], postPar[, 2], log = TRUE)
   )
-
+  # We compute the updated weights of the posterior
   postWeights <- weights * tmp / sum(weights * tmp)
-
-  return(list(
+  assert_numeric(postWeights)
+  list(
     par = postPar,
     weights = postWeights
-  ))
+  )
 }
 
 
-#' Beta-mixture density function
+#' Beta-Mixture density function
 #'
-#' Note that `x` can be a vector.
+#' Calculating `log` or non-log Beta-Mixture density values of support `x`.
 #'
-#' @param x the abscissa
-#' @param par the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components
-#' @param weights the mixture weights of the beta mixture prior
-#' @param log return the log value? (not default)
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' The Beta Mixture density can be calculated with the combination of K set of beta parameters and K
+#' length of weights.
+#'
+#' @inheritParams dbetabinom
+#' @inheritParams dbetabinomMix
+#' @typed log : flag
+#'  Default is `FALSE`. If `TRUE`,log values of the Beta-Mixture density function are returned
+#'
 #' @return the (log) density values
+#'
+#' @note `x` can be a vector of `length > 1`
 #'
 #' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {
   ret <- sum(weights * dbeta(x, par[, 1], par[, 2]))
   if (log) {
-    return(log(ret))
+    log(ret)
   } else {
-    return(ret)
+    ret
   }
 }
 dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
