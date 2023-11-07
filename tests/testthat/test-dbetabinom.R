@@ -42,8 +42,8 @@ test_that("Sum of dbetabinomMix for all x is 1", {
     dbetabinomMix(
       x = 0:20,
       m = 20,
-      par = matrix(c(1, 2), ncol = 2, nrow = 1),
-      weights = c(0.2, 0.8)
+      par = matrix(c(1, 2), ncol = 2, nrow = 1), # TODO or rbind
+      weights = c(0.2, 0.8) # TODO avoid this kind of error
     )
   )
   expect_equal(result, 1)
@@ -139,7 +139,7 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
     par = matrix(c(1, 2), ncol = 2),
     # in postprob, a numeric vector is transposed to a matrix
   )
-  expect_list(result) # TODO expect_type and type is list
+  expect_list(result, types = "numeric", null.ok = FALSE) # TODO expect_type and type is list
 })
 
 test_that("h_getBetamixPost gives the correct Mixture parameters", {
@@ -206,6 +206,15 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
   expect_equal(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
+test_that("Names within getBetamixPost are `par` and `weights` ", {
+  results <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2)), # in postprob, a numeric vector is transposed to a matrix
+    weights = 1
+  )
+  expect_names(names(results), identical.to = c("par", "weights"))
+})
 
 # TODO
 # For case when K rows of weights exceed length of par. # what kind of error is this
@@ -213,6 +222,7 @@ test_that("Gives warning when nrow(weights) not equal to length(par) in h_getBet
   result <-
     expect_warning(results)
 })
+
 test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
   expect_warning(
     results <- h_getBetamixPost(
