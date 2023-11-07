@@ -139,8 +139,7 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
     par = matrix(c(1, 2), ncol = 2),
     # in postprob, a numeric vector is transposed to a matrix
   )
-  # TODO could we try expect_type and type is list ?
-  expect_list(result)
+  expect_list(result) # TODO expect_type and type is list
 })
 
 test_that("h_getBetamixPost gives the correct Mixture parameters", {
