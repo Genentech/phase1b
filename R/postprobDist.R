@@ -2,22 +2,34 @@
 #' @include postprob.R
 NULL
 
-#' The Posterior Beta Mixture Integrand based on `delta`
+#' The Posterior Beta Mixture Integrand when `delta` is relative.
 #'
 #' The helper function to generate Integrand function when  `relative Delta = TRUE`.
 #'
-#' @typed p : number
+#' A numerical integration to compute this probability is given on p.338
+#  in the article by Thall and Simon (1994, Biometrics):
+#'
+#' @typed delta : numeric
+#'  the margin of which treatment group `E` is superior than the success rate of
+#'  the standard of care `S`. If the `p_S` or success rate of `S` is `0`,
+#'  then the difference between two groups is merely `delta`. See also @note
+#' @typed p_s : number
 #'  probability of success or response rate of standard of care or `SOC` group.
+#' @typed activeBetamixPost : list
+#'  a list of posterior parameters of a beta-mixture-binomial distribution with generic names
+#'  `par` and `weights`. See `[getBetaMix()]`.
+#' @typed controlBetamixPost : list
+#'  a list of posterior parameters of a beta-mixture-binomial distribution with generic names
+#'  `par` and `weights`. See `[getBetaMix()]`.
 #'
 #' @return An R function that is an argument for `[stats::integrate()]`.
 #'
 #' @keywords internal
-h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
+h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
   cdf <- postprob(
-    x = x,
-    n = n,
+    x = 0, # dummy x for Vectorize()
     p = (1 - p_s) * delta + p_s,
-    betamixPost
+    betamixPost = activeBetamixPost
   )
   pdf <- with(
     controlBetamixPost,
@@ -28,8 +40,10 @@ h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost)
 
 #' The Posterior Beta Mixture Integrand when Delta is absolute.
 #'
-#' The helper function to generate Integrand function when `relative Delta = FALSE`
-#' , a default setting.
+#' The helper function to generate Integrand function when `relative Delta = FALSE`,
+#' a default setting.
+#' See `[postprobDist()]`
+#'
 #' A numerical integration to compute this probability is given on p.338
 #  in the article by Thall and Simon (1994, Biometrics):
 #'
@@ -39,12 +53,11 @@ h_integrand_relDelta <- function(p_s, delta, x, betamixPost, controlBetamixPost)
 #'
 #' @keywords internal
 #'
-h_integrand <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
+h_integrand <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
   cdf <- postprob(
-    x = x,
-    n = n,
+    x = 0, # dummy x for Vectorize()
     p = p_s + delta,
-    betamixPost
+    betamixPost = activeBetamixPost
   )
   pdf <- with(
     controlBetamixPost,
@@ -58,15 +71,8 @@ h_integrand <- function(p_s, delta, x, betamixPost, controlBetamixPost) {
 #' Using the quantile of the Beta Mixture Distribution from parameters given by standard of care `SOC` or
 #' experimental group `E` to determine bounds as inputs to `[stats::integrate()]`
 #'
-#' @typed betamixPost : list
+#' @typed controlbetamixPost : list
 #'  arguments of `par`and `weights` of Beta Mixture Posterior in format list. See `[getBetaMix()]`.
-#' @typed par : matrix
-#'  the beta parameters matrix, with `K` rows and 2 columns,
-#'  corresponding to the beta parameters of the `K` components.
-#' @typed weights : vector
-#'  The mixture weights of the beta mixture prior. Default are
-#'  uniform weights across mixture components.
-#'
 #' @return Integrand function
 #'
 #' @keywords internal
@@ -83,49 +89,35 @@ h_get_bounds <- function(controlBetamixPost) {
   )
 }
 
-#' Compute the posterior probability with beta prior on SOC
+#' Compute the Posterior Probability with Beta Prior on `SOC`
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Using the approach by Thall and Simon (Biometrics, 1994), evaluate the
-#' posterior probability of having `Pr(P_E > P_S + delta | data)` (but see below
-#' for relative delta margin). Both for the new treatment `E` as well as for the
-#' Standard of Care (SOC): `S` data might be available. However the default assumption is that no data is
-#' available for the `SOC`, corresponding to the single arm trial situation
-#' where we only rely on incoming data from the Experimental arm. In the case
+#' Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
+#' posterior probability of achieving superior response rate in the treatment group compared to  standard of care (SOC).
+#' See notes below for two formulations of the difference in response rates.
 #'
-#' Using the approach by Thall and Simon (Biometrics, 1994), we evaluate the
-#' posterior probability of having a desired improvement of treatment effect to
-#' standard of care, SOC. When there is no standard of care,
+#' In reality, data may or may not be complete for both the new treatment `E` as well as for the SOC group,
+#' `S`. Accordingly prior distribution should be specified.
 #'
-#' The choice of prior will consider the following :
+#' 1. No precedent data :
+#' The default setting is a uniform prior of `Beta(1,1)`. This can be used to reflect no precedent data
+#' in both the `E` and `S` arms.
 #'
-#' For single arm trial, an informative prior on the SOC proportion is
-#' useful.
-#' Otherwise, a uniform prior is the useful default for the treatment proportion. see @note.
+#' 2a. Precedent data for only either `E` :
+#' A user input prior is given by user to reflect precedent data of the `E` arm.
+#' For each set of prior parameters, user can input weighting. See (4)
 #'
-#' The calculation of `delta` :
+#' 2b. Precedent data for only either `S` :
+#' A user input prior is given by user to reflect precedent data of the `S` arm.
+#' For each set of prior parameters, user can input weighting. See (4)
 #'
-#' The desired improvement is denoted as `delta`. There are two options in calculating `delta`.
-#' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
-#' The posterior in question can be expressed as `Pr(P_E > P_S + delta | data)`.
+#' Choice of Weights
 #'
-#' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
-#' the response rate of the `SOC` group such that
-#' the posterior is `Pr(P_E > P_S + delta | data)`.
+#' 3. In the simple case of no mixture of priors, the one Beta parameter are weighted as `100 %`.
 #'
-#' 2. In the relative case, we suppose that the treatment group's
-#' response rate is assumed to be greater than `P_S + (1-P_S)*delta` such that
-#' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
-#'
-#' @note on beta Priors
-#'
-#' Beta mixture prior can be specified for the treatment `parE`
-#' and `weights` parameters) and control proportion `parS` and
-#' `weightsS` parameters), see `postprob` for details. Note
-#' that being able to specify a beta mixture prior also on the control
-#' treatment is e.g. important for the futility decision making (see the
-#' `oc2` code).
+#' 4. In the Beta Binomial Mixture case, users can allocate a non-negative weighting and can exceed `100 %`,
+#'  which the algorithm will normalised such that all weights sum to 1.
 #'
 #' @typed x : vector
 #'  vector of success counts in the treatment group. Vector of minimum length of 1.
@@ -147,7 +139,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  uniform prior.
 #' @typed weights : matrix
 #'  the mixture weights of the beta mixture prior. Default are
-#'  uniform weights across mixture components.
+#'  equal weights across mixture components.
 #' @typed parS : matrix
 #'  beta parameters for the SOC group (default: uniform)
 #' @typed weightsS : matrix
@@ -158,12 +150,25 @@ h_get_bounds <- function(controlBetamixPost) {
 #' @return The posterior probability
 #'
 #' @note
-#' Beta mixture prior can be specified for the treatment in `parE`
-#' and `weights` parameters) and SOC in `parS` and
-#' `weightsS` parameters), see `[postprob()]` for details. Note
-#' that being able to specify a beta mixture prior also on the control
-#' treatment is important for the futility decision making (see the
-#' `[oc2()]` code).
+#'
+#' ## Delta :
+#'
+#' The desired improvement is denoted as `delta`. There are two options in using `delta`.
+#' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
+#'
+#' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
+#' the response rate of the `SOC` group such that
+#' the posterior is `Pr(P_E > P_S + delta | data)`.
+#'
+#' 2. In the relative case, we suppose that the treatment group's
+#' response rate is assumed to be greater than `P_S + (1-P_S)*delta` such that
+#' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
+#'
+#' @details
+#'
+#' The beta mixture prior for the E arm requires argument `parE` and `weights`.
+#' The beta mixture prior for the E arm requires argument `parS` and `weightsS`.
+#' See `[postprob()]` for details.
 #'
 #' @example examples/postprobDist.R
 #' @export
@@ -172,7 +177,7 @@ postprobDist <- function(x,
                          n,
                          xS = 0,
                          nS = 0,
-                         delta = 0,
+                         delta,
                          relativeDelta = FALSE,
                          parE = c(1, 1),
                          weights,
@@ -217,8 +222,7 @@ postprobDist <- function(x,
         bounds[2]
       ),
     delta = delta,
-    x = x,
-    betamixPost = activeBetamixPost,
+    activeBetamixPost = activeBetamixPost,
     controlBetamixPost = controlBetamixPost
   )
   if (intRes$message == "OK") {

@@ -126,6 +126,7 @@ getBetamixPost <- function(x, n, par, weights) {
 }
 
 
+
 #' Beta-mixture density function
 #'
 #' Note that `x` can be a vector.

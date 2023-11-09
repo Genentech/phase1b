@@ -4,14 +4,30 @@
 \alias{h_integrand}
 \title{The Posterior Beta Mixture Integrand when Delta is absolute.}
 \usage{
-h_integrand(p_s, delta, x, betamixPost, controlBetamixPost)
+h_integrand(p_s, delta, activeBetamixPost, controlBetamixPost)
+}
+\arguments{
+\item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
+
+\item{delta}{(\code{numeric}):\cr the margin of which treatment group \code{E} is superior than the success rate of
+the standard of care \code{S}. If the \code{p_S} or success rate of \code{S} is \code{0},
+then the difference between two groups is merely \code{delta}. See also @note}
+
+\item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
+\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
+
+\item{controlBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
+\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
 }
 \value{
 An R function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
-The helper function to generate Integrand function when \verb{relative Delta = FALSE}
-, a default setting.
+The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+a default setting.
+See \verb{[postprobDist()]}
+}
+\details{
 A numerical integration to compute this probability is given on p.338
 }
 \keyword{internal}
