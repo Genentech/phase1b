@@ -2,17 +2,15 @@
 #' @include postprob.R
 NULL
 
-#' The Posterior Beta Mixture Integrand when `delta` is relative.
+#' The Posterior Beta Mixture Integrand when `delta` is relative
 #'
-#' The helper function to generate Integrand function when  `relative Delta = TRUE`.
-#'
-#' A numerical integration to compute this probability is given on p.338
-#  in the article by Thall and Simon (1994, Biometrics):
+#' The helper function to generate Integrand function when `relative Delta = TRUE`.
 #'
 #' @typed delta : numeric
 #'  the margin of which treatment group `E` is superior than the success rate of
-#'  the standard of care `S`. If the `p_S` or success rate of `S` is `0`,
+#'  the standard of care `S`. If the `p_s` or success rate of `S` is `0`,
 #'  then the difference between two groups is merely `delta`. See also @note
+#'  about the calculation of `delta` when `relative Delta = TRUE`
 #' @typed p_s : number
 #'  probability of success or response rate of standard of care or `SOC` group.
 #' @typed activeBetamixPost : list
@@ -25,9 +23,10 @@ NULL
 #' @return An R function that is an argument for `[stats::integrate()]`.
 #'
 #' @keywords internal
+#'
 h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
   cdf <- postprob(
-    x = 0, # dummy x for Vectorize()
+    x = 0, # we denote a dummy x for Vectorize()
     p = (1 - p_s) * delta + p_s,
     betamixPost = activeBetamixPost
   )
@@ -38,14 +37,10 @@ h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPo
   cdf * pdf
 }
 
-#' The Posterior Beta Mixture Integrand when Delta is absolute.
+#' The Posterior Beta Mixture Integrand when Delta is absolute
 #'
 #' The helper function to generate Integrand function when `relative Delta = FALSE`,
 #' a default setting.
-#' See `[postprobDist()]`
-#'
-#' A numerical integration to compute this probability is given on p.338
-#  in the article by Thall and Simon (1994, Biometrics):
 #'
 #' @inheritParams h_integrand_relDelta
 #'
@@ -55,7 +50,7 @@ h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPo
 #'
 h_integrand <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
   cdf <- postprob(
-    x = 0, # dummy x for Vectorize()
+    x = 0, # we denote a dummy x for Vectorize()
     p = p_s + delta,
     betamixPost = activeBetamixPost
   )
@@ -71,8 +66,7 @@ h_integrand <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
 #' Using the quantile of the Beta Mixture Distribution from parameters given by standard of care `SOC` or
 #' experimental group `E` to determine bounds as inputs to `[stats::integrate()]`
 #'
-#' @typed controlbetamixPost : list
-#'  arguments of `par`and `weights` of Beta Mixture Posterior in format list. See `[getBetaMix()]`.
+#' @inheritParams h_integrand_relDelta
 #' @return Integrand function
 #'
 #' @keywords internal
@@ -94,56 +88,56 @@ h_get_bounds <- function(controlBetamixPost) {
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-#' posterior probability of achieving superior response rate in the treatment group compared to  standard of care (SOC).
-#' See notes below for two formulations of the difference in response rates.
+#' posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC):
+#'
+#' `Pr(P_E > P_S | data) = \int 1-F(p_s + delta | alpha_E + x, beta_E + n- x) f(p_s; alpha_S, beta_S`.
+#' See @note below for two formulations of the difference in response rates.
 #'
 #' In reality, data may or may not be complete for both the new treatment `E` as well as for the SOC group,
-#' `S`. Accordingly prior distribution should be specified.
+#' `S`. Accordingly, prior distributions should be specified. The following is a guidance in possible user cases :
 #'
 #' 1. No precedent data :
 #' The default setting is a uniform prior of `Beta(1,1)`. This can be used to reflect no precedent data
 #' in both the `E` and `S` arms.
 #'
-#' 2a. Precedent data for only either `E` :
+#' 2a. Precedent data for only `E` :
 #' A user input prior is given by user to reflect precedent data of the `E` arm.
 #' For each set of prior parameters, user can input weighting. See (4)
 #'
-#' 2b. Precedent data for only either `S` :
+#' 2b. Precedent data for only `S` :
 #' A user input prior is given by user to reflect precedent data of the `S` arm.
 #' For each set of prior parameters, user can input weighting. See (4)
 #'
-#' Choice of Weights
-#'
-#' 3. In the simple case of no mixture of priors, the one Beta parameter are weighted as `100 %`.
+#' 3. In the simple case of no mixture of priors given, the Beta parameters are weighted as `100 %`.
 #'
 #' 4. In the Beta Binomial Mixture case, users can allocate a non-negative weighting and can exceed `100 %`,
-#'  which the algorithm will normalised such that all weights sum to 1.
+#'  to which the algorithm will normalize the weights such that all weights sum to 1.
 #'
-#' @typed x : vector
-#'  vector of success counts in the treatment group. Vector of minimum length of 1.
+#' @typed x : numeric
+#'  number of success counts in the treatment group. Number of minimum length of 1.
 #' @typed n : number
 #'  number of patients in the treatment group.
-#' @typed xS : vector
-#'  vector of success counts in the SOC group (default: 0). Vector of minimum length of 1.
+#' @typed xS : numeric
+#'  number of success counts in the SOC group (default: 0). Number of minimum length of 1.
 #' @typed nS : number
 #'  number of patients in the SOC group (default: 0)
 #' @typed delta : number
 #'  margin by which the response rate in the treatment group should
-#'  be better than in the SOC group (default: 0). Must be >= `0`.  see @note.
+#'  be better than in the SOC group (default: 0). Must be >= `0`. See @note.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the SOC non-responding patients. see @note.
+#'  response rate in magnitude of `delta` of the SOC non-responding patients. See @note.
 #' @typed parE : matrix
 #'  the beta parameters matrix, with K rows and 2 columns,
-#'  corresponding to the beta parameters of the K components. default is a
-#'  uniform prior.
+#'  corresponding to the beta parameters of the K components. Default is a
+#'  uniform prior `Beta(1,1)`. See @details.
 #' @typed weights : matrix
 #'  the mixture weights of the beta mixture prior. Default are
 #'  equal weights across mixture components.
 #' @typed parS : matrix
-#'  beta parameters for the SOC group (default: uniform)
+#'  beta parameters for the SOC group (default: uniform). ee @details.
 #' @typed weightsS : matrix
-#'  weights for the SOC group (default: uniform)
+#'  weights for the SOC group (default: uniform).
 #' @typed epsilon : number
 #'  the smallest non-negative floating number to represent the lower bound for
 #'  the interval of integration.
@@ -161,7 +155,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #' the posterior is `Pr(P_E > P_S + delta | data)`.
 #'
 #' 2. In the relative case, we suppose that the treatment group's
-#' response rate is assumed to be greater than `P_S + (1-P_S)*delta` such that
+#' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
 #' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
 #'
 #' @details
@@ -172,7 +166,6 @@ h_get_bounds <- function(controlBetamixPost) {
 #'
 #' @example examples/postprobDist.R
 #' @export
-
 postprobDist <- function(x,
                          n,
                          xS = 0,

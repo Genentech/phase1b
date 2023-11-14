@@ -2,7 +2,7 @@
 % Please edit documentation in R/postprobDist.R
 \name{h_integrand_relDelta}
 \alias{h_integrand_relDelta}
-\title{The Posterior Beta Mixture Integrand when \code{delta} is relative.}
+\title{The Posterior Beta Mixture Integrand when \code{delta} is relative}
 \usage{
 h_integrand_relDelta(p_s, delta, activeBetamixPost, controlBetamixPost)
 }
@@ -10,8 +10,9 @@ h_integrand_relDelta(p_s, delta, activeBetamixPost, controlBetamixPost)
 \item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
 
 \item{delta}{(\code{numeric}):\cr the margin of which treatment group \code{E} is superior than the success rate of
-the standard of care \code{S}. If the \code{p_S} or success rate of \code{S} is \code{0},
-then the difference between two groups is merely \code{delta}. See also @note}
+the standard of care \code{S}. If the \code{p_s} or success rate of \code{S} is \code{0},
+then the difference between two groups is merely \code{delta}. See also @note
+about the calculation of \code{delta} when \verb{relative Delta = TRUE}}
 
 \item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
 \code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
@@ -23,9 +24,6 @@ then the difference between two groups is merely \code{delta}. See also @note}
 An R function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
-The helper function to generate Integrand function when  \verb{relative Delta = TRUE}.
-}
-\details{
-A numerical integration to compute this probability is given on p.338
+The helper function to generate Integrand function when \verb{relative Delta = TRUE}.
 }
 \keyword{internal}

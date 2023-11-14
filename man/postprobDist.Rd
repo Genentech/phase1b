@@ -18,30 +18,30 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{vector}):\cr vector of success counts in the treatment group. Vector of minimum length of 1.}
+\item{x}{(\code{numeric}):\cr number of success counts in the treatment group. Number of minimum length of 1.}
 
 \item{n}{(\code{number}):\cr number of patients in the treatment group.}
 
-\item{xS}{(\code{vector}):\cr vector of success counts in the SOC group (default: 0). Vector of minimum length of 1.}
+\item{xS}{(\code{numeric}):\cr number of success counts in the SOC group (default: 0). Number of minimum length of 1.}
 
 \item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0)}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0). Must be >= \code{0}.  see @note.}
+be better than in the SOC group (default: 0). Must be >= \code{0}. See @note.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the SOC non-responding patients. see @note.}
+response rate in magnitude of \code{delta} of the SOC non-responding patients. See @note.}
 
 \item{parE}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
-uniform prior.}
+corresponding to the beta parameters of the K components. Default is a
+uniform prior \code{Beta(1,1)}. See @details.}
 
 \item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior. Default are
 equal weights across mixture components.}
 
-\item{parS}{(\code{matrix}):\cr beta parameters for the SOC group (default: uniform)}
+\item{parS}{(\code{matrix}):\cr beta parameters for the SOC group (default: uniform). ee @details.}
 
-\item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform)}
+\item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform).}
 
 \item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
 the interval of integration.}
@@ -53,30 +53,30 @@ The posterior probability
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-posterior probability of achieving superior response rate in the treatment group compared to  standard of care (SOC).
-See notes below for two formulations of the difference in response rates.
+posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC):
+
+\verb{Pr(P_E > P_S | data) = \\int 1-F(p_s + delta | alpha_E + x, beta_E + n- x) f(p_s; alpha_S, beta_S}.
+See @note below for two formulations of the difference in response rates.
 
 In reality, data may or may not be complete for both the new treatment \code{E} as well as for the SOC group,
-\code{S}. Accordingly prior distribution should be specified.
+\code{S}. Accordingly, prior distributions should be specified. The following is a guidance in possible user cases :
 \enumerate{
 \item No precedent data :
 The default setting is a uniform prior of \code{Beta(1,1)}. This can be used to reflect no precedent data
 in both the \code{E} and \code{S} arms.
 }
 
-2a. Precedent data for only either \code{E} :
+2a. Precedent data for only \code{E} :
 A user input prior is given by user to reflect precedent data of the \code{E} arm.
 For each set of prior parameters, user can input weighting. See (4)
 
-2b. Precedent data for only either \code{S} :
+2b. Precedent data for only \code{S} :
 A user input prior is given by user to reflect precedent data of the \code{S} arm.
 For each set of prior parameters, user can input weighting. See (4)
-
-Choice of Weights
 \enumerate{
-\item In the simple case of no mixture of priors, the one Beta parameter are weighted as \verb{100 \%}.
+\item In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
 \item In the Beta Binomial Mixture case, users can allocate a non-negative weighting and can exceed \verb{100 \%},
-which the algorithm will normalised such that all weights sum to 1.
+to which the algorithm will normalize the weights such that all weights sum to 1.
 }
 }
 \details{
@@ -94,19 +94,33 @@ The absolute case when \code{relativeDelta = FALSE} and relative as when \code{r
 the response rate of the \code{SOC} group such that
 the posterior is \code{Pr(P_E > P_S + delta | data)}.
 \item In the relative case, we suppose that the treatment group's
-response rate is assumed to be greater than \code{P_S + (1-P_S)*delta} such that
+response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
 the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
 }
 }
 }
 \examples{
-# example similar to Lee and Liu:
-postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1, relativeDelta = FALSE)
+# An example similar to Lee and Liu (2008).
+postprobDist(
+  x = 16,
+  n = 23,
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = FALSE
+)
 
-# when relativeDelta is used.
-postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1, relativeDelta = TRUE)
+# When relativeDelta is TRUE.
+postprobDist(
+  x = 16,
+  n = 23,
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = TRUE
+)
 
-# these two should give the same result:
+# Varying SOC priors.
 postprobDist(
   x = 27, n = 34,
   xS = 0, nS = 0,
@@ -115,15 +129,7 @@ postprobDist(
   parS = c(50007530, 49924090)
 )
 
-postprob(x = 27, n = 34, p = 0.65, parE = c(1, 1))
-# ok, almost
-
-# try out mixtures:
-# play around with the beta parameters and weights to
-# get a feeling.
-# Note that very extreme beta parameters do no longer increase
-# the return value, because then that mixture component is too
-# unlikely a posteriori
+# When there are mixed parameters in both Experimental and SOC arm. r
 postprobDist(
   x = 16, n = 23,
   parE =
@@ -139,9 +145,9 @@ postprobDist(
   weightsS = c(1, 3),
   delta = 0.1
 )
-# try these examples
 
-# 1. Experimental arm only (strictly single arm trial), uniform prior in both E and S arms.
+# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm. Default used.
+# Non-uniform Prior used for SOC arm as no precedent data.
 postprobDist(
   x = 16,
   n = 23,
@@ -149,11 +155,10 @@ postprobDist(
   nS = 0,
   delta = 0,
   relativeDelta = FALSE,
-  parE = c(1, 1),
-  parS = c(1, 1),
+  parS = c(2, 3),
   weightsS = c(1)
 )
-# 2. Experimental arm and SOC, uniform prior in both E and S arms.
+# Experimental arm and SOC, uniform prior in both E and S arms, default setting used.
 postprobDist(
   x = 16,
   n = 20,
@@ -161,11 +166,9 @@ postprobDist(
   nS = 20,
   delta = 0,
   relativeDelta = FALSE,
-  parE = c(1, 1),
-  parS = c(1, 1),
   weightsS = c(1)
 )
-# 3. Experimental and SOC arm, with beta mix prior for S arms with 50:50 weighting, uniform for E.
+# Experimental and SOC arm, with beta mix prior for SOC arms with equal weighting, uniform for E.
 postprobDist(
   x = 16,
   n = 20,
@@ -179,30 +182,30 @@ postprobDist(
   weightsS = c(1, 2)
 )
 
-# 3b. Experimental and SOC arm, with beta mix prior for S arm, uniform for E.
+# Experimental and SOC arm, with beta mix prior for SOC arm, uniform for E.
 # The SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights.
-# We can have weights exceeding 1 because it will be internally normalised to sum to 1.
+# We can have weights exceeding 1 because it will be normalised to sum to 1.
 postprobDist(
   x = 16,
   n = 20,
   xS = 10,
   nS = 20,
-  delta = 0,
+  delta = 0.1,
   relativeDelta = FALSE,
   parE = c(1, 1),
   parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
   weightsS = c(2, 5, 3)
 )
 
-# 4. Experimental and SOC arm, with beta mix prior for both arms.
+# Experimental and SOC arm, with beta mix prior for both arms.
 # For each of the SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights.
 postprobDist(
   x = 16,
   n = 20,
   xS = 10,
   nS = 20,
-  delta = 0,
-  relativeDelta = FALSE,
+  delta = 0.1,
+  relativeDelta = TRUE,
   parE = rbind(c(1, 1), c(3, 4), c(8, 9)),
   weights = c(5, 3, 2),
   parS = rbind(c(4, 5), c(2, 3), c(4, 4)),

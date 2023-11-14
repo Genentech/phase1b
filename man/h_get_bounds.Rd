@@ -7,7 +7,8 @@
 h_get_bounds(controlBetamixPost)
 }
 \arguments{
-\item{controlbetamixPost}{(\code{list}):\cr arguments of \code{par}and \code{weights} of Beta Mixture Posterior in format list. See \verb{[getBetaMix()]}.}
+\item{controlBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
+\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
 }
 \value{
 Integrand function
