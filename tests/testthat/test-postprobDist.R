@@ -103,8 +103,8 @@ test_that("h_integrand_relDelta gives the correct numerical result", {
   nS <- 20
   parE <- t(c(1, 3))
   parS <- t(c(1, 1))
-  weights <- c(1)
-  weightsS <- c(1)
+  weights <- 1
+  weightsS <- 1
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- TRUE
