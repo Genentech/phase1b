@@ -15,6 +15,6 @@ Integrand function
 }
 \description{
 Using the quantile of the Beta Mixture Distribution from parameters given by standard of care \code{SOC} or
-experimental group \code{E} to determine bounds as inputs to \verb{[stats::integrate()]}
+experimental group \code{E} to determine bounds as inputs to \verb{[stats::integrate()]}.
 }
 \keyword{internal}

@@ -24,22 +24,28 @@ postprobDist(
 
 \item{xS}{(\code{numeric}):\cr number of success counts in the SOC group (default: 0). Number of minimum length of 1.}
 
-\item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0)}
+\item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0).}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0). Must be >= \code{0}. See @note.}
+be better than in the SOC group (default: 0). Must be >= \code{0}. See note.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the SOC non-responding patients. See @note.}
+response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
 
-\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. Default is a
-uniform prior \code{Beta(1,1)}. See @details.}
+\item{parE}{(\code{matrix}):\cr beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components for \code{E} group. Default is a
+uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data
+in both the \code{E} and \code{S} arms. See details.}
 
-\item{weights}{(\code{matrix}):\cr the mixture weights of the beta mixture prior. Default are
-equal weights across mixture components.}
+\item{weights}{(\code{matrix}):\cr the non-negative mixture weights of the beta mixture prior. Default are
+equal weights across mixture components.
+In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
+Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.}
 
-\item{parS}{(\code{matrix}):\cr beta parameters for the SOC group (default: uniform). ee @details.}
+\item{parS}{(\code{matrix}):\cr beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components for \code{S} group. Default is a
+uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data
+in both the \code{E} and \code{S} arms. See details.}
 
 \item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform).}
 
@@ -56,28 +62,7 @@ Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
 posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC):
 
 \verb{Pr(P_E > P_S | data) = \\int 1-F(p_s + delta | alpha_E + x, beta_E + n- x) f(p_s; alpha_S, beta_S}.
-See @note below for two formulations of the difference in response rates.
-
-In reality, data may or may not be complete for both the new treatment \code{E} as well as for the SOC group,
-\code{S}. Accordingly, prior distributions should be specified. The following is a guidance in possible user cases :
-\enumerate{
-\item No precedent data :
-The default setting is a uniform prior of \code{Beta(1,1)}. This can be used to reflect no precedent data
-in both the \code{E} and \code{S} arms.
-}
-
-2a. Precedent data for only \code{E} :
-A user input prior is given by user to reflect precedent data of the \code{E} arm.
-For each set of prior parameters, user can input weighting. See (4)
-
-2b. Precedent data for only \code{S} :
-A user input prior is given by user to reflect precedent data of the \code{S} arm.
-For each set of prior parameters, user can input weighting. See (4)
-\enumerate{
-\item In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
-\item In the Beta Binomial Mixture case, users can allocate a non-negative weighting and can exceed \verb{100 \%},
-to which the algorithm will normalize the weights such that all weights sum to 1.
-}
+See note below for two formulations of the difference in response rates.
 }
 \details{
 The beta mixture prior for the E arm requires argument \code{parE} and \code{weights}.
@@ -115,6 +100,16 @@ postprobDist(
   x = 16,
   n = 23,
   parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = TRUE
+)
+
+# When relativeDelta is TRUE. For a sequence of success outcomes for Experimental arm.
+postprobDist(
+  x = c(seq(1:23)),
+  n = 23,
+  parE = c(0.2, 0.8),
   parS = c(0.6, 0.4),
   delta = 0.1,
   relativeDelta = TRUE

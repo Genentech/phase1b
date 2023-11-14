@@ -18,6 +18,16 @@ postprobDist(
   relativeDelta = TRUE
 )
 
+# When relativeDelta is TRUE. For a sequence of success outcomes for Experimental arm.
+postprobDist(
+  x = c(seq(1:23)),
+  n = 23,
+  parE = c(0.2, 0.8),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = TRUE
+)
+
 # Varying SOC priors.
 postprobDist(
   x = 27, n = 34,

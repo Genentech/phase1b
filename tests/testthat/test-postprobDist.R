@@ -1,4 +1,4 @@
-# postprobBeta ----
+# postprobDist ----
 test_that("postprobDist gives the correct number result", {
   result <- postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1)
   expect_equal(result, 0.4431067, tolerance = 1e-5)
@@ -10,7 +10,7 @@ test_that("postprobDist gives incrementally higher values with increase x suppor
   expect_true(is_lower < is_higher)
 })
 
-test_that("postprob gives the correct number result", {
+test_that("postprobDist gives the correct number result", {
   result <- postprobDist(
     x = 10,
     n = 23,
@@ -27,7 +27,7 @@ test_that("postprob gives the correct number result", {
   expect_equal(result, 0.3143941, tolerance = 1e-5)
 })
 
-test_that("postprob gives incrementally higher values with increased x", {
+test_that("postprobDist gives incrementally higher values with increased x", {
   is_lower <- postprobDist(
     x = 10,
     n = 23,
@@ -148,8 +148,8 @@ test_that("h_integrand gives the correct numerical result", {
   nS <- 20
   parE <- t(c(1, 3))
   parS <- t(c(1, 1))
-  weights <- c(1)
-  weightsS <- c(1)
+  weights <- 1
+  weightsS <- 1
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- TRUE
@@ -171,8 +171,8 @@ test_that("h_integrand gives the correct numerical result", {
   nS <- 20
   parE <- t(c(1, 3))
   parS <- t(c(1, 1))
-  weights <- c(1)
-  weightsS <- c(1)
+  weights <- 1
+  weightsS <- 1
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- FALSE
