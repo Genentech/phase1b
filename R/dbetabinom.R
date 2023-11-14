@@ -8,7 +8,7 @@
 #' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
 #' @typed x : numeric
-#'  number of successes.
+#'  number of successes. Can be a vector of `length(x) > 1`.
 #' @typed m : number
 #'  number of trials.
 #' @typed a : numeric
@@ -18,8 +18,6 @@
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The density values of the beta-binomial distribution at `x`.
-#'
-#' @note `x`, `a` and `b` can be vectors.
 #'
 #' @example examples/dbetabinom.R
 #' @export
@@ -54,8 +52,6 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
 #'
-#' @note `x` can be a vector.
-#'
 #' @example examples/dbetabinomMix.R
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
@@ -83,8 +79,6 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #' @importFrom stats dbeta dbinom
 #'
 #' @keywords internal
-#'
-#' @export
 h_getBetamixPost <- function(x, n, par, weights) {
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_numeric(n, lower = 0, finite = TRUE)
@@ -128,8 +122,6 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #'  Default is `FALSE`. If `TRUE`,log values of the Beta-Mixture density function are returned
 #'
 #' @return the (log) density values
-#'
-#' @note `x` can be a vector of `length > 1`
 #'
 #' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {

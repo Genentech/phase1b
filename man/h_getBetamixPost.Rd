@@ -7,7 +7,7 @@
 h_getBetamixPost(x, n, par, weights)
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of successes.}
+\item{x}{(\code{numeric}):\cr number of successes. Can be a vector of \code{length(x) > 1}.}
 
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}

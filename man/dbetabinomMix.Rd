@@ -7,7 +7,7 @@
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of successes.}
+\item{x}{(\code{numeric}):\cr number of successes. Can be a vector of \code{length(x) > 1}.}
 
 \item{m}{(\code{number}):\cr number of trials.}
 
@@ -26,9 +26,6 @@ The (log) density values of the mixture of beta-binomial distributions at \code{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Calculates the density function for a mixture of beta-binomial distributions.
-}
-\note{
-\code{x} can be a vector.
 }
 \examples{
 dbetabinomMix(x = 2, m = 29, par = rbind(c(0.2, 0.4)), weights = 1)
