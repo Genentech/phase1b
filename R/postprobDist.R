@@ -135,7 +135,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  the mixture weights of the beta mixture prior. Default are
 #'  equal weights across mixture components.
 #' @typed parS : matrix
-#'  beta parameters for the SOC group (default: uniform). ee @details.
+#'  beta parameters for the SOC group (default: uniform). See details.
 #' @typed weightsS : matrix
 #'  weights for the SOC group (default: uniform).
 #' @typed epsilon : number
