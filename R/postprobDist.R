@@ -6,7 +6,7 @@ NULL
 #'
 #' The helper function to generate Integrand function when `relative Delta = TRUE`.
 #'
-#' @typed delta : numeric
+#' @typed delta : number
 #'  the margin of which treatment group `E` is superior than the success rate of
 #'  the standard of care `S`. If the `p_s` or success rate of `S` is `0`,
 #'  then the difference between two groups is merely `delta`. See also @note
