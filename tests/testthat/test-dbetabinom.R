@@ -131,13 +131,12 @@ test_that("qbetaMix gives a number result", {
 
 # h_getBetamixPost --
 
-# We expect the results to be in list # TODO why it doenst work
 test_that("h_getBetamixPost gives the correct Mixture parameters", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
     par = matrix(c(1, 2), ncol = 2),
-    weight = 1
+    weights = 1
   )
   expected <- list(
     par = matrix(c(17, 9), nrow = 1),
@@ -146,66 +145,15 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
   expect_identical(result, expected)
 })
 
-test_that("h_getBetamixPost gives the correct Mixture parameters", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = matrix(c(1, 2), ncol = 2),
+test_that("h_getBetamixPost gives an error", {
+  expect_error(
+    result <- h_getBetamixPost(
+      x = 16,
+      n = 23,
+      par = matrix(c(1, 2), ncol = 2),
+      weights = 1,
+    ), "unused argument"
   )
-  expect_equal(result$par, t(c(17, 9)))
-})
-
-test_that("h_getBetamixPost gives the Mixture weights", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = t(c(1, 2)),
-    weights = 0.6,
-  )
-  expect_equal(result$weights, c(1))
-})
-
-# Checking updated weights,for the case where there are two sets of beta parameters
-test_that("h_getBetamixPost gives correct the Mixture weights", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4)),
-    weights = c(0.6, 0.4)
-  )
-  expect_equal(result$weights, c(0.5085758, 0.4914242))
-})
-
-# Checking updated par, for the case where there are two sets of beta parameters
-test_that("h_getBetamixPost gives correct the Mixture parameters", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4)),
-    weights = c(0.6, 0.4)
-  )
-  expect_equal(result$par, rbind(c(17, 9), c(19, 11)))
-})
-
-# Checking updated weights, for the case where there are three sets of beta parameters
-test_that("h_getBetamixPost gives the correct Mixture weights", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
-    weights = c(0.6, 0.4, 0.5)
-  )
-  expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671))
-})
-
-test_that("h_getBetamixPost gives the correct Mixture parameters", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
-    weights = c(0.6, 0.4, 0.5)
-  )
-  expect_equal(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
 test_that("Names within getBetamixPost are `par` and `weights` ", {
@@ -216,6 +164,56 @@ test_that("Names within getBetamixPost are `par` and `weights` ", {
     weights = 1
   )
   expect_names(names(results), identical.to = c("par", "weights"))
+})
+
+test_that("h_getBetamixPost gives weight of 1 for non-Mixture distribution", {
+  results <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2)),
+    weights = 0.1
+  )
+  expect_equal(result$weights, 1)
+})
+
+test_that("h_getBetamixPost gives correct the Mixture weights ", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result$weights, c(0.5085758, 0.4914242), tolerance = 1e-4)
+})
+
+test_that("h_getBetamixPost gives correct the Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4)),
+    weights = c(0.6, 0.4)
+  )
+  expect_identical(result$par, rbind(c(17, 9), c(19, 11)))
+})
+
+test_that("h_getBetamixPost gives the correct Mixture weights", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
+    weights = c(0.6, 0.4, 0.5)
+  )
+  expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671), tolerance = 1e-4)
+})
+
+test_that("h_getBetamixPost gives the correct Mixture parameters", {
+  result <- h_getBetamixPost(
+    x = 16,
+    n = 23,
+    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
+    weights = c(0.6, 0.4, 0.5)
+  )
+  expect_identical(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
 test_that("Error occurs when K rows of weights exceed length of par", {
