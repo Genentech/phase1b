@@ -67,7 +67,7 @@ dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
 dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 
 
-#' Compute Beta-Mixture-Binomial Posterior Distribution's parameters and weights.
+#' Compute Beta-Mixture-Binomial Posterior Distribution
 #'
 #' A helper function that computes the posterior parameters of a beta-mixture-binomial distribution.
 #'
