@@ -47,7 +47,7 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #'  corresponding to the beta parameters of the K components.
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior of length K.
-#'  Each element of the numeric is assigned to a pair of beta parameters.
+#'  Each element corresponds to the row of beta parameters in `par`.
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
