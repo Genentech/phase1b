@@ -32,22 +32,22 @@ be better than in the SOC group. Must be >= \code{0}. See note.}
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
 
-\item{parE}{(\code{matrix}):\cr beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components for \code{E} group. Default is a
-uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data
-in both the \code{E} and \code{S} arms. See details.}
+\item{parE}{(\verb{numeric or matrix}):\cr beta parameters numeric of two elements. If K row > 1, then beta parameters are
+a matrix of h K rows and 2 columns, corresponding to the beta parameters of the K components
+for \code{E} group. The rows correspond to mixture components and each column corresponds to
+alpha and beta.
+Default is a uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data. See details.}
 
-\item{weights}{(\code{matrix}):\cr the non-negative mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior. Default are
 equal weights across mixture components.
 In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
 Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.}
 
-\item{parS}{(\code{matrix}):\cr beta parameters matrix, with K rows and 2 columns,
+\item{parS}{(\verb{numeric or matrix}):\cr beta parameters numeric of if K row > 1, then matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components for \code{S} group. Default is a
-uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data
-in both the \code{E} and \code{S} arms. See details.}
+uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data. See details.}
 
-\item{weightsS}{(\code{matrix}):\cr weights for the SOC group (default: uniform).}
+\item{weightsS}{(\code{numeric}):\cr weights for the SOC group (default: uniform).}
 
 \item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
 the interval of integration.}
@@ -98,7 +98,7 @@ postprobDist(
 # For a sequence of success outcomes for Experimental arm.
 postprobDist(
   x = c(16, 17),
-  n = c(23),
+  n = 23,
   parE = c(0.6, 0.4),
   parS = c(0.6, 0.4),
   delta = 0.1,
@@ -138,7 +138,8 @@ postprobDist(
 
 # When there are mixed parameters in both Experimental and SOC arm.
 postprobDist(
-  x = 16, n = 23,
+  x = 16,
+  n = 23,
   parE =
     rbind(
       c(0.6, 0.4),
@@ -185,7 +186,7 @@ postprobDist(
   delta = 0,
   relativeDelta = FALSE,
   parE = c(1, 1),
-  weights = c(1),
+  weights = 1,
   parS = rbind(c(4, 5), c(1, 3)),
   weightsS = c(1, 2)
 )
