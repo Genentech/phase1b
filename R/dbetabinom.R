@@ -119,7 +119,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #' @inheritParams dbetabinom
 #' @inheritParams dbetabinomMix
 #' @typed log : flag
-#'  Default is `FALSE`. If `TRUE`,log values of the Beta-Mixture density function are returned
+#'  whether log values of the beta-mixture density function are returned.
 #'
 #' @return the (log) density values
 #'
