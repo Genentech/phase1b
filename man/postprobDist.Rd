@@ -115,7 +115,7 @@ postprobDist(
   relativeDelta = TRUE
 )
 
-# When relativeDelta is TRUE. For a sequence of success outcomes for Experimental arm.
+# When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
 postprobDist(
   x = c(seq(1:23)),
   n = 23,
@@ -175,6 +175,7 @@ postprobDist(
   relativeDelta = FALSE,
   weightsS = c(1)
 )
+
 # Experimental and SOC arm, with beta mix prior for SOC arms with equal weighting, uniform for E.
 postprobDist(
   x = 16,

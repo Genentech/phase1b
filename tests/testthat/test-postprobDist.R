@@ -111,7 +111,7 @@ test_that("postprobDist gives an error when length(par)", {
       parS = c(0.6, 0.4),
       delta = 0.1,
       relativeDelta = FALSE
-    ),
+    ), "must have length 1, but has length 2"
   )
 })
 
@@ -127,7 +127,7 @@ test_that("postprobDist gives an error", {
       parS = c(0.6, 0.4),
       weights = c(0.5),
       weightsS = c(0.3),
-    ),
+    ), "Must have length 1"
   )
 })
 
@@ -138,11 +138,11 @@ test_that("postprobDist gives an error", {
       n = 23,
       xS = c(10, 12),
       nS = c(20),
-      parE = c(0.6, 0.4), # idk why
+      parE = c(0.6, 0.4),
       parS = c(0.6, 0.4),
       delta = 0.1,
       relativeDelta = FALSE
-    ),
+    ), "Must have length 1."
   )
 })
 
@@ -153,11 +153,11 @@ test_that("postprobDist gives an error", {
       n = 23,
       xS = c(10, 12),
       nS = c(20, 21),
-      parE = c(0.6, 0.4), # idk why
+      parE = c(0.6, 0.4),
       parS = c(0.6, 0.4),
       delta = 0.1,
       relativeDelta = FALSE
-    ),
+    ), "Must have length 1."
   )
 })
 

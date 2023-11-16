@@ -88,6 +88,7 @@ postprobDist(
   relativeDelta = FALSE,
   weightsS = c(1)
 )
+
 # Experimental and SOC arm, with beta mix prior for SOC arms with equal weighting, uniform for E.
 postprobDist(
   x = 16,

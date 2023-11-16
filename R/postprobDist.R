@@ -174,6 +174,16 @@ postprobDist <- function(x,
   if (missing(weightsS)) {
     weightsS <- rep(1, nrow(parS))
   }
+  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
+  assert_number(n, lower = x, finite = TRUE)
+  assert_number(xS, lower = 0, upper = n, finite = TRUE)
+  assert_numeric(nS, lower = 0, finite = TRUE)
+  assert_number(delta, lower = 0, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_numeric(weights, lower = 0, finite = TRUE)
+  assert_numeric(weightsS, lower = 0, finite = TRUE)
+  assert_numeric(parE, lower = 0, finite = TRUE)
+  assert_numeric(parS, lower = 0, finite = TRUE)
   activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
   controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   assert_names(names(activeBetamixPost), identical.to = c("par", "weights"))
