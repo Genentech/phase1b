@@ -11,7 +11,7 @@ postprobDist(
 # For a sequence of success outcomes for Experimental arm.
 postprobDist(
   x = c(16, 17),
-  n = c(23),
+  n = 23,
   parE = c(0.6, 0.4),
   parS = c(0.6, 0.4),
   delta = 0.1,
@@ -51,7 +51,8 @@ postprobDist(
 
 # When there are mixed parameters in both Experimental and SOC arm.
 postprobDist(
-  x = 16, n = 23,
+  x = 16,
+  n = 23,
   parE =
     rbind(
       c(0.6, 0.4),
@@ -98,7 +99,7 @@ postprobDist(
   delta = 0,
   relativeDelta = FALSE,
   parE = c(1, 1),
-  weights = c(1),
+  weights = 1,
   parS = rbind(c(4, 5), c(1, 3)),
   weightsS = c(1, 2)
 )
