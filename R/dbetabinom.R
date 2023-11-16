@@ -74,7 +74,7 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #' @inheritParams dbetabinom
 #' @inheritParams dbetabinomMix
 #'
-#' @return A list with the updated beta parameters and weights
+#' @return A list with the updated beta parameters and weights.
 #'
 #' @importFrom stats dbeta dbinom
 #'
