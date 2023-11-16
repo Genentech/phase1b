@@ -19,8 +19,6 @@
 #'  whether to return the log density value (not default).
 #' @return The density values of the beta-binomial distribution at `x`.
 #'
-#' @note `x`, `a` and `b` can be vectors.
-#'
 #' @example examples/dbetabinom.R
 #' @export
 dbetabinom <- function(x, m, a, b, log = FALSE) {
@@ -56,8 +54,6 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #' @typed log : flag
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
-#'
-#' @note `x` can be a vector.
 #'
 #' @example examples/dbetabinomMix.R
 #' @export

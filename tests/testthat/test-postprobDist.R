@@ -10,6 +10,13 @@ test_that("postprobDist gives incrementally higher values with increase x suppor
   expect_true(is_lower < is_higher)
 })
 
+test_that("postprobDist gives incrementally higher values with increase x support", {
+  expected_lower <- postprobDist(x = 16, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
+  expected_higher <- postprobDist(x = 20, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
+  result <- postprobDist(x = c(16, 20), n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
+  expect_identical(result, c(expected_lower, expected_higher))
+})
+
 test_that("postprobDist gives the correct number result", {
   result <- postprobDist(
     x = 10,
@@ -93,6 +100,65 @@ test_that("postprobDist gives the correct number result", {
     weightsS = c(0.3, 0.7),
   )
   expect_equal(result, 0.3248885, tolerance = 1e-4)
+})
+
+test_that("postprobDist gives an error when length(par)", {
+  expect_error(
+    results <- postprobDist(
+      x = c(16, 17),
+      n = c(23, 20),
+      parE = c(0.6, 0.4),
+      parS = c(0.6, 0.4),
+      delta = 0.1,
+      relativeDelta = FALSE
+    ),
+  )
+})
+
+test_that("postprobDist gives an error", {
+  expect_error(
+    results <- postprobDist(
+      x = c(10, 16),
+      n = 23,
+      xS = c(9, 10),
+      nS = c(20, 22),
+      delta = 0.1,
+      parE = c(0.6, 0.4),
+      parS = c(0.6, 0.4),
+      weights = c(0.5),
+      weightsS = c(0.3),
+    ),
+  )
+})
+
+test_that("postprobDist gives an error", {
+  expect_error(
+    results <- postprobDist(
+      x = 16,
+      n = 23,
+      xS = c(10, 12),
+      nS = c(20),
+      parE = c(0.6, 0.4), # idk why
+      parS = c(0.6, 0.4),
+      delta = 0.1,
+      relativeDelta = FALSE
+    ),
+  )
+})
+
+test_that("postprobDist gives an error", {
+  expect_error(
+    results <- postprobDist(
+      x = 16,
+      n = 23,
+      xS = c(10, 12),
+      nS = c(20, 21),
+      parE = c(0.6, 0.4), # idk why
+      parS = c(0.6, 0.4),
+      delta = 0.1,
+      relativeDelta = FALSE
+    ),
+  )
 })
 
 # h_integrand_relDelta--

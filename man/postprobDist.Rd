@@ -18,16 +18,16 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of success counts in the treatment group. Number of minimum length of 1.}
+\item{x}{(\code{numeric}):\cr number of success counts in the treatment group.}
 
 \item{n}{(\code{number}):\cr number of patients in the treatment group.}
 
-\item{xS}{(\code{numeric}):\cr number of success counts in the SOC group (default: 0). Number of minimum length of 1.}
+\item{xS}{(\code{number}):\cr number of success counts in the SOC group.}
 
-\item{nS}{(\code{number}):\cr number of patients in the SOC group (default: 0).}
+\item{nS}{(\code{number}):\cr number of patients in the SOC group.}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0). Must be >= \code{0}. See note.}
+be better than in the SOC group. Must be >= \code{0}. See note.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
@@ -95,6 +95,16 @@ postprobDist(
   relativeDelta = FALSE
 )
 
+# For a sequence of success outcomes for Experimental arm.
+postprobDist(
+  x = c(16, 17),
+  n = c(23),
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = FALSE
+)
+
 # When relativeDelta is TRUE.
 postprobDist(
   x = 16,
@@ -117,14 +127,16 @@ postprobDist(
 
 # Varying SOC priors.
 postprobDist(
-  x = 27, n = 34,
-  xS = 0, nS = 0,
+  x = 27,
+  n = 34,
+  xS = 0,
+  nS = 0,
   delta = 0.15,
   parE = c(1, 1),
   parS = c(50007530, 49924090)
 )
 
-# When there are mixed parameters in both Experimental and SOC arm. r
+# When there are mixed parameters in both Experimental and SOC arm.
 postprobDist(
   x = 16, n = 23,
   parE =

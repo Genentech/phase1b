@@ -8,6 +8,16 @@ postprobDist(
   relativeDelta = FALSE
 )
 
+# For a sequence of success outcomes for Experimental arm.
+postprobDist(
+  x = c(16, 17),
+  n = c(23),
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = FALSE
+)
+
 # When relativeDelta is TRUE.
 postprobDist(
   x = 16,
@@ -30,14 +40,16 @@ postprobDist(
 
 # Varying SOC priors.
 postprobDist(
-  x = 27, n = 34,
-  xS = 0, nS = 0,
+  x = 27,
+  n = 34,
+  xS = 0,
+  nS = 0,
   delta = 0.15,
   parE = c(1, 1),
   parS = c(50007530, 49924090)
 )
 
-# When there are mixed parameters in both Experimental and SOC arm. r
+# When there are mixed parameters in both Experimental and SOC arm.
 postprobDist(
   x = 16, n = 23,
   parE =

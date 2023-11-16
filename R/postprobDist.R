@@ -92,16 +92,16 @@ h_get_bounds <- function(controlBetamixPost) {
 #' See note below for two formulations of the difference in response rates.
 #'
 #' @typed x : numeric
-#'  number of success counts in the treatment group. Number of minimum length of 1.
+#'  number of success counts in the treatment group.
 #' @typed n : number
 #'  number of patients in the treatment group.
-#' @typed xS : numeric
-#'  number of success counts in the SOC group (default: 0). Number of minimum length of 1.
+#' @typed xS : number
+#'  number of success counts in the SOC group.
 #' @typed nS : number
-#'  number of patients in the SOC group (default: 0).
+#'  number of patients in the SOC group.
 #' @typed delta : number
 #'  margin by which the response rate in the treatment group should
-#'  be better than in the SOC group (default: 0). Must be >= `0`. See note.
+#'  be better than in the SOC group. Must be >= `0`. See note.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
 #'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
