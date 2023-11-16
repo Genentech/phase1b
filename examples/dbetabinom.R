@@ -27,6 +27,13 @@ dbetabinomMix(
   log = FALSE
 )
 
+# dbetaMix --
+dbetaMix(
+  x = 1:20,
+  par = rbind(c(1, 2), c(2, 5)),
+  weights = c(1, 2)
+)
+
 # pbetaMix --
 pbetaMix(
   q = 0.3,
