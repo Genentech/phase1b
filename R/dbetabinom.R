@@ -8,7 +8,7 @@
 #' `p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)`
 #'
 #' @typed x : numeric
-#'  number of successes. Can be a vector of `length(x) > 1`.
+#'  number of successes.
 #' @typed m : number
 #'  number of trials.
 #' @typed a : numeric
@@ -82,7 +82,7 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 h_getBetamixPost <- function(x, n, par, weights) {
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_numeric(n, lower = 0, finite = TRUE)
-  assert_matrix(par)
+  assert_matrix(par, min.rows = 1, max.cols = 2)
   assert_numeric(weights, min = 0, len = nrow(par), finite = TRUE)
   # We renormalize weights.
   weights <- weights / sum(weights)

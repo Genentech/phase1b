@@ -7,7 +7,7 @@
 dbetabinomMix(x, m, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of successes. Can be a vector of \code{length(x) > 1}.}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
 \item{m}{(\code{number}):\cr number of trials.}
 
@@ -15,7 +15,7 @@ dbetabinomMix(x, m, par, weights, log = FALSE)
 corresponding to the beta parameters of the K components.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior of length K.
-Each element of the numeric is assigned to a pair of beta parameters.}
+Each element corresponds to the row of beta parameters in \code{par}.}
 
 \item{log}{(\code{flag}):\cr whether to return the log density value (not default).}
 }

@@ -7,7 +7,7 @@
 dbetabinom(x, m, a, b, log = FALSE)
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of successes. Can be a vector of \code{length(x) > 1}.}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
 \item{m}{(\code{number}):\cr number of trials.}
 
