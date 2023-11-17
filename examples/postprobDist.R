@@ -49,7 +49,7 @@ postprobDist(
   parS = c(50007530, 49924090)
 )
 
-# When there are mixed parameters in both Experimental and SOC arm.
+# When we use beta mixtures for both the Experimental and SOC arms.
 postprobDist(
   x = 16,
   n = 23,
