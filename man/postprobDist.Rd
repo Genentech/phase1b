@@ -43,9 +43,9 @@ Weights can exceed 1, to which the algorithm will normalize the weights such tha
 
 \item{parS}{(\verb{numeric or matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
-for the \code{E} group. See details.}
+for the \code{S} group. See details.}
 
-\item{weightsS}{(\code{numeric}):\cr weights for the SOC group (default: uniform).}
+\item{weightsS}{(\code{numeric}):\cr weights for the SOC group. See also \code{weights}.}
 
 \item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
 the interval of integration.}

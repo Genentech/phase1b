@@ -117,9 +117,9 @@ h_get_bounds <- function(controlBetamixPost) {
 #' @typed parS : numeric or matrix
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
-#'  for the `E` group. See details.
+#'  for the `S` group. See details.
 #' @typed weightsS : numeric
-#'  weights for the SOC group (default: uniform).
+#'  weights for the SOC group. See also `weights`.
 #' @typed epsilon : number
 #'  the smallest non-negative floating number to represent the lower bound for
 #'  the interval of integration.
