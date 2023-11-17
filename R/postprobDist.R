@@ -112,7 +112,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  alpha and beta.
 #'  Default is a uniform prior `Beta(1,1)` which can be used to reflect no precedent data. See details.
 #' @typed weights : numeric
-#'  the non-negative mixture weights of the beta mixture prior. Default are
+#'  the non-negative mixture weights of the beta mixture prior for group `E`. 
 #'  equal weights across mixture components.
 #'  In the simple case of no mixture of priors given, the Beta parameters are weighted as `100 %`.
 #'  Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
