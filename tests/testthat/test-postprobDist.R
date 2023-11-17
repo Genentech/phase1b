@@ -79,7 +79,7 @@ test_that("postprobDist gives the correct number result", {
       c(1, 1)
     ),
     weights = c(0.5, 0.5),
-    weightsS = c(0.3, 0.7),
+    weightsS = c(0.3, 0.7)
   )
   expect_equal(result, 0.3248885, tolerance = 1e-4)
 })
