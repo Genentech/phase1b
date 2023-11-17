@@ -1,4 +1,5 @@
 # postprobDist ----
+
 test_that("postprobDist gives the correct number result", {
   result <- postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1)
   expect_equal(result, 0.4431067, tolerance = 1e-5)
