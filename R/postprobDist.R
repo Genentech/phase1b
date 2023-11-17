@@ -106,20 +106,18 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
 #'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
 #' @typed parE : "`numeric` or `matrix`"
-#'  beta parameters numeric of two elements. If K row > 1, then beta parameters are
-#'  a matrix of h K rows and 2 columns, corresponding to the beta parameters of the K components
-#'  for `E` group. The rows correspond to mixture components and each column corresponds to
-#'  alpha and beta.
-#'  Default is a uniform prior `Beta(1,1)` which can be used to reflect no precedent data. See details.
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution
+#'  for the `E` group. See details.
 #' @typed weights : numeric
-#'  the non-negative mixture weights of the beta mixture prior for group `E`. 
+#'  the non-negative mixture weights of the beta mixture prior for group `E`.
 #'  equal weights across mixture components.
 #'  In the simple case of no mixture of priors given, the Beta parameters are weighted as `100 %`.
 #'  Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
 #' @typed parS : numeric or matrix
-#'  beta parameters numeric of if K row > 1, then matrix, with K rows and 2 columns,
-#'  corresponding to the beta parameters of the K components for `S` group. Default is a
-#'  uniform prior `Beta(1,1)` which can be used to reflect no precedent data. See details.
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution
+#'  for the `E` group. See details.
 #' @typed weightsS : numeric
 #'  weights for the SOC group (default: uniform).
 #' @typed epsilon : number

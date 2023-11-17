@@ -32,20 +32,18 @@ be better than in the SOC group. Must be >= \code{0}. See note.}
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
 
-\item{parE}{(\verb{numeric or matrix}):\cr beta parameters numeric of two elements. If K row > 1, then beta parameters are
-a matrix of h K rows and 2 columns, corresponding to the beta parameters of the K components
-for \code{E} group. The rows correspond to mixture components and each column corresponds to
-alpha and beta.
-Default is a uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data. See details.}
+\item{parE}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{E} group. See details.}
 
-\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{E}.
 equal weights across mixture components.
 In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
 Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.}
 
-\item{parS}{(\verb{numeric or matrix}):\cr beta parameters numeric of if K row > 1, then matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components for \code{S} group. Default is a
-uniform prior \code{Beta(1,1)} which can be used to reflect no precedent data. See details.}
+\item{parS}{(\verb{numeric or matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{E} group. See details.}
 
 \item{weightsS}{(\code{numeric}):\cr weights for the SOC group (default: uniform).}
 
@@ -105,19 +103,9 @@ postprobDist(
   relativeDelta = FALSE
 )
 
-# When relativeDelta is TRUE.
-postprobDist(
-  x = 16,
-  n = 23,
-  parE = c(0.6, 0.4),
-  parS = c(0.6, 0.4),
-  delta = 0.1,
-  relativeDelta = TRUE
-)
-
 # When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
 postprobDist(
-  x = c(seq(1:23)),
+  x = 1:23,
   n = 23,
   parE = c(0.2, 0.8),
   parS = c(0.6, 0.4),
@@ -125,18 +113,7 @@ postprobDist(
   relativeDelta = TRUE
 )
 
-# Varying SOC priors.
-postprobDist(
-  x = 27,
-  n = 34,
-  xS = 0,
-  nS = 0,
-  delta = 0.15,
-  parE = c(1, 1),
-  parS = c(50007530, 49924090)
-)
-
-# When there are mixed parameters in both Experimental and SOC arm.
+# When we use beta mixtures for both the Experimental and SOC arms.
 postprobDist(
   x = 16,
   n = 23,
@@ -174,36 +151,7 @@ postprobDist(
   nS = 20,
   delta = 0,
   relativeDelta = FALSE,
-  weightsS = c(1)
-)
-
-# Experimental and SOC arm, with beta mix prior for SOC arms with equal weighting, uniform for E.
-postprobDist(
-  x = 16,
-  n = 20,
-  xS = 10,
-  nS = 20,
-  delta = 0,
-  relativeDelta = FALSE,
-  parE = c(1, 1),
-  weights = 1,
-  parS = rbind(c(4, 5), c(1, 3)),
-  weightsS = c(1, 2)
-)
-
-# Experimental and SOC arm, with beta mix prior for SOC arm, uniform for E.
-# The SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights.
-# We can have weights exceeding 1 because it will be normalised to sum to 1.
-postprobDist(
-  x = 16,
-  n = 20,
-  xS = 10,
-  nS = 20,
-  delta = 0.1,
-  relativeDelta = FALSE,
-  parE = c(1, 1),
-  parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
-  weightsS = c(2, 5, 3)
+  weightsS = 1
 )
 
 # Experimental and SOC arm, with beta mix prior for both arms.

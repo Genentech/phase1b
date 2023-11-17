@@ -18,16 +18,6 @@ postprobDist(
   relativeDelta = FALSE
 )
 
-# When relativeDelta is TRUE.
-postprobDist(
-  x = 16,
-  n = 23,
-  parE = c(0.6, 0.4),
-  parS = c(0.6, 0.4),
-  delta = 0.1,
-  relativeDelta = TRUE
-)
-
 # When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
 postprobDist(
   x = 1:23,
@@ -36,17 +26,6 @@ postprobDist(
   parS = c(0.6, 0.4),
   delta = 0.1,
   relativeDelta = TRUE
-)
-
-# Varying SOC priors.
-postprobDist(
-  x = 27,
-  n = 34,
-  xS = 0,
-  nS = 0,
-  delta = 0.15,
-  parE = c(1, 1),
-  parS = c(50007530, 49924090)
 )
 
 # When we use beta mixtures for both the Experimental and SOC arms.
@@ -88,35 +67,6 @@ postprobDist(
   delta = 0,
   relativeDelta = FALSE,
   weightsS = 1
-)
-
-# Experimental and SOC arm, with beta mix prior for SOC arms with equal weighting, uniform for E.
-postprobDist(
-  x = 16,
-  n = 20,
-  xS = 10,
-  nS = 20,
-  delta = 0,
-  relativeDelta = FALSE,
-  parE = c(1, 1),
-  weights = 1,
-  parS = rbind(c(4, 5), c(1, 3)),
-  weightsS = c(1, 2)
-)
-
-# Experimental and SOC arm, with beta mix prior for SOC arm, uniform for E.
-# The SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights.
-# We can have weights exceeding 1 because it will be normalised to sum to 1.
-postprobDist(
-  x = 16,
-  n = 20,
-  xS = 10,
-  nS = 20,
-  delta = 0.1,
-  relativeDelta = FALSE,
-  parE = c(1, 1),
-  parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
-  weightsS = c(2, 5, 3)
 )
 
 # Experimental and SOC arm, with beta mix prior for both arms.
