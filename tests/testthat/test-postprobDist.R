@@ -65,7 +65,7 @@ test_that("postprobDist gives incrementally higher values with increased x", {
   expect_true(is_lower < is_higher)
 })
 
-test_that("postprobDist gives the correct number result", {
+test_that("postprobDist gives the correct result with a weighted beta-mixture", {
   result <- postprobDist(
     x = 10,
     n = 23,
