@@ -103,7 +103,7 @@ test_that("postprobDist gives the correct number result", {
   expect_equal(result, 0.3248885, tolerance = 1e-4)
 })
 
-test_that("postprobDist gives an error when length(par)", {
+test_that("postprobDist gives an error when n is not a number", {
   expect_error(
     results <- postprobDist(
       x = c(16, 17),
