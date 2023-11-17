@@ -18,7 +18,7 @@ postprobDist(
   relativeDelta = FALSE
 )
 
-# When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
+# When we use a relative difference and look at several possible number of responses.
 postprobDist(
   x = 1:23,
   n = 23,
