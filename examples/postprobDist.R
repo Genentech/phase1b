@@ -30,7 +30,7 @@ postprobDist(
 
 # When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
 postprobDist(
-  x = c(seq(1:23)),
+  x = 1:23,
   n = 23,
   parE = c(0.2, 0.8),
   parS = c(0.6, 0.4),
