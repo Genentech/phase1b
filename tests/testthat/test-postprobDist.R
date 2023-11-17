@@ -5,7 +5,7 @@ test_that("postprobDist gives the correct number result", {
   expect_equal(result, 0.4431067, tolerance = 1e-5)
 })
 
-test_that("postprobDist gives incrementally higher values with increase x support", {
+test_that("postprobDist gives incrementally higher values with larger x", {
   is_lower <- postprobDist(x = 16, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
   is_higher <- postprobDist(x = 20, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
   expect_true(is_lower < is_higher)
