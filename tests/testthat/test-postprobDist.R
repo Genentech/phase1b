@@ -18,7 +18,7 @@ test_that("postprobDist gives incrementally higher values with increase x suppor
   expect_identical(result, c(expected_lower, expected_higher))
 })
 
-test_that("postprobDist gives the correct number result", {
+test_that("postprobDist gives the correct result for a beta-mixture example", {
   result <- postprobDist(
     x = 10,
     n = 23,
