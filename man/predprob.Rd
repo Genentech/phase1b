@@ -8,21 +8,21 @@ successful, with a fixed response rate threshold}
 predprob(x, n, Nmax, p, thetaT, parE = c(1, 1), weights)
 }
 \arguments{
-\item{x}{number of successes}
+\item{x}{(\code{number}):\cr number of successes}
 
-\item{n}{number of patients}
+\item{n}{(\code{number}):\cr number of patients}
 
-\item{Nmax}{maximum number of patients at the end of the trial}
+\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial}
 
-\item{p}{threshold on the response rate}
+\item{p}{(\code{number}):\cr threshold on the response rate}
 
-\item{thetaT}{threshold on the probability to be above p}
+\item{thetaT}{(\code{number}):\cr threshold on the probability to be above p}
 
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
+\item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components. default is a
 uniform prior.}
 
-\item{weights}{the mixture weights of the beta mixture prior. Default are
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 }
 \value{
@@ -32,22 +32,22 @@ list called \code{table} is returned as attribute of the returned number.
 \description{
 Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability
-Pr(P_E > p) >= thetaT,
+\code{Pr(P_E > p) >= thetaT},
 where p is the fixed response rate threshold.
 Then the predictive probability for success is:
-pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > p|x,Y=i)>=thetaT}
-where Y is the number of future responses in the treatment group and x is
-the current number of responses in the treatment group (out of n).
-The prior is P_E ~ beta(a, b), default uniform which is a beta(1,1).
+\verb{pp = sum over i: Pr(Y=i|x,n)*I\{Pr(P_E > p|x,Y=i)>=thetaT\}}
+where \code{Y} is the number of future responses in the treatment group and \code{x} is
+the current number of responses in the treatment group out of n.
+The prior is \code{P_E ~ beta(a, b)}, default uniform which is a \code{beta(1,1)}.
 However, also a beta mixture prior can be specified.
 }
 \details{
 A table with the following contents will be included in the \code{table} attribute of
 the return value:
-i: Y=i (number of future successes in Nmax-n subjects)
-py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
-b: Pr(P_E > p | x, Y=i) using beta (mixture) posterior
-bgttheta: indicator I(b>thetaT)
+\code{i}: \code{Y=i} (number of future successes in Nmax-n subjects)
+\code{py}: \code{Pr(Y=i|x)} using beta-(mixture)-binomial distribution
+\code{b}: \code{Pr(P_E > p | x, Y=i)} using beta posterior
+bgttheta: indicator \code{I(b>thetaT)}.
 }
 \examples{
 ## The original Lee and Liu (Table 1) example:
