@@ -105,7 +105,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
 #'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
-#' @typed parE : numeric or matrix
+#' @typed parE : "`numeric` or `matrix`"
 #'  beta parameters numeric of two elements. If K row > 1, then beta parameters are
 #'  a matrix of h K rows and 2 columns, corresponding to the beta parameters of the K components
 #'  for `E` group. The rows correspond to mixture components and each column corresponds to
