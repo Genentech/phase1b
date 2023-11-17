@@ -27,5 +27,5 @@ The beta-mixture density can be calculated with the combination of K set of beta
 length of weights.
 }
 \details{
-Calculating \code{log} or non-log Beta-Mixture density values of support \code{x}.
+Calculating beta-mixture density values of support \code{x}.
 }
