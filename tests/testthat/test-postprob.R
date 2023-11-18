@@ -19,7 +19,7 @@ test_that("postprob gives the correct number result", {
 })
 
 test_that("postprob gives the correct number result", {
-  # 2 component beta mixture prior, i.e., P_E ~ 1*beta(0.6,0.4) + 1*beta(1,1) and Pr(P_E > p | data) = 0.823
+  # 2 component beta mixture prior, i.e., P_E ~ 0.5*beta(0.6,0.4) + 0.5*beta(1,1) and Pr(P_E > p | data) = 0.05559802
   result <- postprob(
     x = 10,
     n = 23,

@@ -36,16 +36,13 @@ response rate in magnitude of \code{delta} of the SOC non-responding patients. S
 and each row corresponds to each component of a beta-mixture distribution
 for the \code{E} group. See details.}
 
-\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{E}.
-equal weights across mixture components.
-In the simple case of no mixture of priors given, the Beta parameters are weighted as \verb{100 \%}.
-Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.}
+\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{E}. See details.}
 
-\item{parS}{(\verb{numeric or matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+\item{parS}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
 for the \code{S} group. See details.}
 
-\item{weightsS}{(\code{numeric}):\cr weights for the SOC group. See also \code{weights}.}
+\item{weightsS}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{S}. See details.}
 
 \item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
 the interval of integration.}
@@ -63,9 +60,12 @@ posterior probability of achieving superior response rate in the treatment group
 See note below for two formulations of the difference in response rates.
 }
 \details{
-The beta mixture prior for the E arm requires argument \code{parE} and \code{weights}.
-The beta mixture prior for the E arm requires argument \code{parS} and \code{weightsS}.
+The beta mixture prior for the \code{E} arm requires argument \code{parE} and \code{weights}.
+The beta mixture prior for the \code{S} arm requires argument \code{parS} and \code{weightsS}.
 See \verb{[postprob()]} for details.
+
+If a beta-mixture is used, by default, the weights are uniform across the components.
+Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
 }
 \note{
 \subsection{Delta :}{
@@ -103,7 +103,7 @@ postprobDist(
   relativeDelta = FALSE
 )
 
-# When relativeDelta is TRUE and for a sequence of success outcomes for Experimental arm.
+# When we use a relative difference and look at several possible number of responses.
 postprobDist(
   x = 1:23,
   n = 23,

@@ -110,16 +110,13 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  and each row corresponds to each component of a beta-mixture distribution
 #'  for the `E` group. See details.
 #' @typed weights : numeric
-#'  the non-negative mixture weights of the beta mixture prior for group `E`.
-#'  equal weights across mixture components.
-#'  In the simple case of no mixture of priors given, the Beta parameters are weighted as `100 %`.
-#'  Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
+#'  the non-negative mixture weights of the beta mixture prior for group `E`. See details.
 #' @typed parS : "`numeric` or `matrix`"
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
 #'  for the `S` group. See details.
 #' @typed weightsS : numeric
-#'  weights for the SOC group. See also `weights`.
+#'  the non-negative mixture weights of the beta mixture prior for group `S`. See details.
 #' @typed epsilon : number
 #'  the smallest non-negative floating number to represent the lower bound for
 #'  the interval of integration.
@@ -142,9 +139,12 @@ h_get_bounds <- function(controlBetamixPost) {
 #'
 #' @details
 #'
-#' The beta mixture prior for the E arm requires argument `parE` and `weights`.
-#' The beta mixture prior for the E arm requires argument `parS` and `weightsS`.
+#' The beta mixture prior for the `E` arm requires argument `parE` and `weights`.
+#' The beta mixture prior for the `S` arm requires argument `parS` and `weightsS`.
 #' See `[postprob()]` for details.
+#'
+#' If a beta-mixture is used, by default, the weights are uniform across the components.
+#' Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
 #'
 #' @example examples/postprobDist.R
 #' @export
