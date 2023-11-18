@@ -46,7 +46,7 @@ postprobDist(
   delta = 0.1
 )
 
-# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm. Default used.
+# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm.
 # Non-uniform Prior used for SOC arm as no precedent data.
 postprobDist(
   x = 16,
@@ -56,7 +56,7 @@ postprobDist(
   delta = 0,
   relativeDelta = FALSE,
   parS = c(2, 3),
-  weightsS = c(1)
+  weightsS = 1
 )
 # Experimental arm and SOC, uniform prior in both E and S arms, default setting used.
 postprobDist(

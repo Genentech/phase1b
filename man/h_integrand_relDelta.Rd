@@ -9,8 +9,8 @@ h_integrand_relDelta(p_s, delta, activeBetamixPost, controlBetamixPost)
 \arguments{
 \item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
 
-\item{delta}{(\code{number}):\cr the margin of which treatment group \code{E} is superior than the success rate of
-the standard of care \code{S}. See also note about the calculation of \code{delta} when \verb{relative Delta = TRUE}.}
+\item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the SOC group. Must be >= \code{0}. See note.}
 
 \item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
 \code{par} and \code{weights}. See \verb{[getBetaMix()]}.}

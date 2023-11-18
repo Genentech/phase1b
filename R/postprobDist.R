@@ -7,8 +7,8 @@ NULL
 #' The helper function to generate Integrand function when `relative Delta = TRUE`.
 #'
 #' @typed delta : number
-#'  the margin of which treatment group `E` is superior than the success rate of
-#'  the standard of care `S`. See also note about the calculation of `delta` when `relative Delta = TRUE`.
+#'  margin by which the response rate in the treatment group should
+#'  be better than in the SOC group. Must be >= `0`. See note.
 #' @typed p_s : number
 #'  probability of success or response rate of standard of care or `SOC` group.
 #' @typed activeBetamixPost : list
@@ -86,11 +86,10 @@ h_get_bounds <- function(controlBetamixPost) {
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-#' posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC):
-#'
-#' `Pr(P_E > P_S | data) = \int 1-F(p_s + delta | alpha_E + x, beta_E + n- x) f(p_s; alpha_S, beta_S`.
+#' posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC).
 #' See note below for two formulations of the difference in response rates.
 #'
+#' @inheritParams h_integrand_relDelta
 #' @typed x : numeric
 #'  number of success counts in the treatment group.
 #' @typed n : number
@@ -99,9 +98,6 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  number of success counts in the SOC group.
 #' @typed nS : number
 #'  number of patients in the SOC group.
-#' @typed delta : number
-#'  margin by which the response rate in the treatment group should
-#'  be better than in the SOC group. Must be >= `0`. See note.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
 #'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.

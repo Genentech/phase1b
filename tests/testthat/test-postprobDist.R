@@ -11,7 +11,7 @@ test_that("postprobDist gives incrementally higher values with larger x", {
   expect_true(is_lower < is_higher)
 })
 
-test_that("postprobDist gives incrementally higher values with larger x", {
+test_that("postprobDist gives higher values with larger x and returns identical result when x is a vector", {
   expected_lower <- postprobDist(x = 16, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
   expected_higher <- postprobDist(x = 20, n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
   result <- postprobDist(x = c(16, 20), n = 23, delta = 0.1, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
@@ -35,7 +35,7 @@ test_that("postprobDist gives the correct result for a beta-mixture example", {
   expect_equal(result, 0.3143941, tolerance = 1e-5)
 })
 
-test_that("postprobDist gives incrementally higher values with increased x", {
+test_that("postprobDist gives incrementally higher values with larger x for a beta-mixture example", {
   is_lower <- postprobDist(
     x = 10,
     n = 23,
@@ -65,7 +65,7 @@ test_that("postprobDist gives incrementally higher values with increased x", {
   expect_true(is_lower < is_higher)
 })
 
-test_that("postprobDist gives the correct result with a weighted beta-mixture", {
+test_that("postprobDist gives the correct result for a weighted beta-mixture", {
   result <- postprobDist(
     x = 10,
     n = 23,
@@ -109,7 +109,7 @@ test_that("postprobDist gives an error when xS and nS are not numbers", {
       parS = c(0.6, 0.4),
       weights = c(0.5),
       weightsS = c(0.3),
-    ), "number of items to replace is not a multiple of replacement length"
+    ), "Must have length 1"
   )
 })
 

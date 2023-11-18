@@ -54,9 +54,7 @@ The posterior probability
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC):
-
-\verb{Pr(P_E > P_S | data) = \\int 1-F(p_s + delta | alpha_E + x, beta_E + n- x) f(p_s; alpha_S, beta_S}.
+posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC).
 See note below for two formulations of the difference in response rates.
 }
 \details{
@@ -131,7 +129,7 @@ postprobDist(
   delta = 0.1
 )
 
-# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm. Default used.
+# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm.
 # Non-uniform Prior used for SOC arm as no precedent data.
 postprobDist(
   x = 16,
@@ -141,7 +139,7 @@ postprobDist(
   delta = 0,
   relativeDelta = FALSE,
   parS = c(2, 3),
-  weightsS = c(1)
+  weightsS = 1
 )
 # Experimental arm and SOC, uniform prior in both E and S arms, default setting used.
 postprobDist(
