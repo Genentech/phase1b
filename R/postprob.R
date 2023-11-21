@@ -63,7 +63,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'  The mixture weights of the beta mixture prior. Default are
 #'  uniform weights across mixture components.
 #' @typed betamixPost : matrix
-#'  optional result of `[getBetamixPost()]` in order
+#'  optional result of `[h_getBetamixPost()]` in order
 #'  to speed up the computations. If supplied, this is directly used, bypassing
 #'  the other arguments (except `p` and `log.p` of course).
 #' @typed log.p : number

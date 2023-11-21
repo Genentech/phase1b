@@ -20,7 +20,7 @@ Default is a uniform prior.}
 \item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
-\item{betamixPost}{(\code{matrix}):\cr optional result of \verb{[getBetamixPost()]} in order
+\item{betamixPost}{(\code{matrix}):\cr optional result of \verb{[h_getBetamixPost()]} in order
 to speed up the computations. If supplied, this is directly used, bypassing
 the other arguments (except \code{p} and \code{log.p} of course).}
 

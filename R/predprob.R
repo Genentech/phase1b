@@ -59,11 +59,11 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   ## if prior weights of the beta mixture are not supplied
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
-    ## (don't need to be normalized, this is done in getBetamixPost)
+    ## (don't need to be normalized, this is done in h_getBetamixPost)
   }
 
   ## now compute updated parameters
-  betamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
 
   py <- with(
     betamixPost,

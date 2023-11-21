@@ -126,8 +126,8 @@ test_that("h_integrand_relDelta gives the correct numerical result for a beta-mi
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- TRUE
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   results <- h_integrand_relDelta(
     p_s = p_s,
     delta = delta,
@@ -149,8 +149,8 @@ test_that("h_integrand_relDelta gives the correct numerical result for a weighte
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- TRUE
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   results <- h_integrand_relDelta(
     p_s = p_s,
     delta = delta,
@@ -173,8 +173,8 @@ test_that("h_integrand gives the correct numerical result for a beta-mixture", {
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- TRUE
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   results <- h_integrand(
     p_s = p_s,
     delta = delta,
@@ -196,8 +196,8 @@ test_that("h_integrand works as expected for a weighted beta-mixture.", {
   p_s <- 0.1
   delta <- 0.1
   relativeDelta <- FALSE
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   results <- h_integrand(
     p_s = p_s,
     delta = delta,

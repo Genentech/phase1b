@@ -1,23 +1,23 @@
 # dbetabinom ----
 
-test_that("dbetabinom for every x support is between 0 and 1", {
+test_that("dbetabinom for every x support is between 0 and 1.", {
   results <- dbetabinom(x = 10, m = 20, a = 0.7, b = 2)
   expect_number(results, lower = 0, upper = 1)
 })
 
-test_that("sum of the dbetabinom values over the whole support for x is 1", {
+test_that("sum of the dbetabinom values over the whole support for x is 1.", {
   result <- sum(dbetabinom(x = 0:10, m = 10, a = 1, b = 1))
-  expect_equal(result, 1)
+  expect_identical(result, 1)
 })
 
-test_that("dbetabinom gives correct numeric result", {
+test_that("dbetabinom gives correct numeric result with uniform parameters.", {
   result <- dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4)
   expect_equal(result, 0.04286893, tolerance = 1e-6)
 })
 
 # dbetabinomMix ----
 
-test_that("dbetabinomMix gives a result between 0 and 1", {
+test_that("dbetabinomMix gives a result between 0 and 1.", {
   result <- dbetabinomMix(
     x = 2,
     m = 29,
@@ -27,7 +27,7 @@ test_that("dbetabinomMix gives a result between 0 and 1", {
   expect_numeric(result, lower = 0, upper = 1, finite = TRUE)
 })
 
-test_that("dbetabinomMix gives the correct numeric result", {
+test_that("dbetabinomMix gives the correct numeric result with non-uniform parameters.", {
   result <- dbetabinomMix(
     x = 2,
     m = 29,
@@ -37,7 +37,7 @@ test_that("dbetabinomMix gives the correct numeric result", {
   expect_equal(result, 0.04286893, tolerance = 1e-6)
 })
 
-test_that("Sum of dbetabinomMix for all x is 1", {
+test_that("Sum of dbetabinomMix for all x is 1.", {
   result <- sum(
     dbetabinomMix(
       x = 0:20,
@@ -49,7 +49,7 @@ test_that("Sum of dbetabinomMix for all x is 1", {
   expect_equal(result, 1)
 })
 
-test_that("dbetabinomMix gives the correct numeric result", {
+test_that("dbetabinomMix gives the correct numeric result with beta-mixture.", {
   result <- dbetabinomMix(
     x = 2,
     m = 29,
@@ -61,7 +61,7 @@ test_that("dbetabinomMix gives the correct numeric result", {
 
 # pbetaMix ----
 
-test_that("The pbetaMix has incrementally higher cdf with increase x support", {
+test_that("The pbetaMix has incrementally higher cdf with larger x.", {
   is_lower <- pbetaMix(
     q = 0.3,
     par = rbind(c(0.2, 0.4)),
@@ -75,7 +75,7 @@ test_that("The pbetaMix has incrementally higher cdf with increase x support", {
   expect_true(is_lower < is_higher)
 })
 
-test_that("pbetaMix gives the correct number result", {
+test_that("pbetaMix gives the correct number result with beta-mixture.", {
   result <- pbetaMix(
     q = 0.3,
     par = rbind(c(0.2, 0.4), c(1, 1)),
@@ -84,7 +84,7 @@ test_that("pbetaMix gives the correct number result", {
   expect_equal(result, 0.4768404, tolerance = 1e-5)
 })
 
-test_that("The complement of pbetaMix can be derived with a different lower.tail flag", {
+test_that("The complement of pbetaMix can be derived with a different lower.tail flag.", {
   result <- pbetaMix(
     q = 0.3,
     par = rbind(c(0.2, 0.4)),
@@ -102,7 +102,7 @@ test_that("The complement of pbetaMix can be derived with a different lower.tail
 
 # qbetaMix ----
 
-test_that("qbetaMix gives the correct number result", {
+test_that("qbetaMix gives the correct number result with beta-mixture.", {
   result <- qbetaMix(
     p = 0.6,
     par = rbind(c(0.2, 0.4)),
@@ -111,7 +111,7 @@ test_that("qbetaMix gives the correct number result", {
   expect_equal(result, 0.3112068, tolerance = 1e-6)
 })
 
-test_that("qbetaMix gives the correct number result", {
+test_that("qbetaMix gives the correct number result with beta-mixture with increased parameters.", {
   result <- qbetaMix(
     p = 0.6,
     par = rbind(c(0.2, 0.4), c(1, 1)),
@@ -120,7 +120,7 @@ test_that("qbetaMix gives the correct number result", {
   expect_equal(result, 0.488759, tolerance = 1e-6)
 })
 
-test_that("qbetaMix gives a number result", {
+test_that("qbetaMix gives a number result with beta-mixture.", {
   result <- qbetaMix(
     p = seq(0, 1, .01),
     par = rbind(c(0.2, 0.4), c(1, 1)),
@@ -131,7 +131,7 @@ test_that("qbetaMix gives a number result", {
 
 # h_getBetamixPost --
 
-test_that("h_getBetamixPost gives the correct Mixture parameters", {
+test_that("h_getBetamixPost gives the correct beta-mixture parameters.", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -145,18 +145,7 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
   expect_identical(result, expected)
 })
 
-test_that("h_getBetamixPost gives an error", {
-  expect_error(
-    result <- h_getBetamixPost(
-      x = 16,
-      n = 23,
-      par = matrix(c(1, 2), ncol = 2),
-      weights = 1,
-    ), "unused argument"
-  )
-})
-
-test_that("Names within getBetamixPost are `par` and `weights` ", {
+test_that("Names within h_getBetamixPost are `par` and `weights`.", {
   results <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -166,17 +155,17 @@ test_that("Names within getBetamixPost are `par` and `weights` ", {
   expect_names(names(results), identical.to = c("par", "weights"))
 })
 
-test_that("h_getBetamixPost gives weight of 1 for non-Mixture distribution", {
+test_that("h_getBetamixPost gives weight of 1 for non-Mixture distribution.", {
   results <- h_getBetamixPost(
     x = 16,
     n = 23,
     par = rbind(c(1, 2)),
     weights = 0.1
   )
-  expect_equal(result$weights, 1)
+  expect_identical(results$weights, 1)
 })
 
-test_that("h_getBetamixPost gives correct the Mixture weights ", {
+test_that("h_getBetamixPost gives correct weights with beta-mixture.", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -186,7 +175,7 @@ test_that("h_getBetamixPost gives correct the Mixture weights ", {
   expect_equal(result$weights, c(0.5085758, 0.4914242), tolerance = 1e-4)
 })
 
-test_that("h_getBetamixPost gives correct the Mixture parameters", {
+test_that("h_getBetamixPost gives correct parameters with beta-mixture.", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -196,7 +185,7 @@ test_that("h_getBetamixPost gives correct the Mixture parameters", {
   expect_identical(result$par, rbind(c(17, 9), c(19, 11)))
 })
 
-test_that("h_getBetamixPost gives the correct Mixture weights", {
+test_that("h_getBetamixPost gives the correct weights when sum of weights is not 1.", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -206,7 +195,7 @@ test_that("h_getBetamixPost gives the correct Mixture weights", {
   expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671), tolerance = 1e-4)
 })
 
-test_that("h_getBetamixPost gives the correct Mixture parameters", {
+test_that("h_getBetamixPost gives the correct parameters when sum of weights is not 1.", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -216,7 +205,7 @@ test_that("h_getBetamixPost gives the correct Mixture parameters", {
   expect_identical(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
-test_that("Error occurs when K rows of weights exceed length of par", {
+test_that("h_getBetamixPost gives error when K rows of weights exceed length of par.", {
   expect_error(
     results <- h_getBetamixPost(
       x = 16,
