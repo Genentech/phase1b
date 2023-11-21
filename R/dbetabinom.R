@@ -112,8 +112,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' The beta-mixture density can be calculated with the combination of K set of beta parameters and K
-#' length of weights.
+#' The beta-mixture distribution is defined by K beta parameters and the corresponding weights.
 #'
 #' @inheritParams dbetabinom
 #' @inheritParams dbetabinomMix
