@@ -1,6 +1,6 @@
 # postprobDist ----
 
-test_that("postprobDist gives the correct number result", {
+test_that("postprobDist gives the correct number result.", {
   result <- postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4), delta = 0.1)
   expect_equal(result, 0.4431067, tolerance = 1e-5)
 })
@@ -18,7 +18,7 @@ test_that("postprobDist gives higher values with larger x and returns identical 
   expect_identical(result, c(expected_lower, expected_higher))
 })
 
-test_that("postprobDist gives the correct result for a beta-mixture example", {
+test_that("postprobDist gives the correct result for a beta-mixture", {
   result <- postprobDist(
     x = 10,
     n = 23,
@@ -35,7 +35,7 @@ test_that("postprobDist gives the correct result for a beta-mixture example", {
   expect_equal(result, 0.3143941, tolerance = 1e-5)
 })
 
-test_that("postprobDist gives incrementally higher values with larger x for a beta-mixture example", {
+test_that("postprobDist gives incrementally higher values with larger x for a beta-mixture", {
   is_lower <- postprobDist(
     x = 10,
     n = 23,
@@ -84,7 +84,7 @@ test_that("postprobDist gives the correct result for a weighted beta-mixture", {
   expect_equal(result, 0.3248885, tolerance = 1e-4)
 })
 
-test_that("postprobDist gives an error when n is not a number", {
+test_that("postprobDist gives an error when n is not a number.", {
   expect_error(
     results <- postprobDist(
       x = c(16, 17),
@@ -113,8 +113,8 @@ test_that("postprobDist gives an error when xS and nS are not numbers", {
   )
 })
 
-# h_integrand_relDelta--
-test_that("h_integrand_relDelta gives the correct numerical result", {
+# h_integrand_relDelta ----
+test_that("h_integrand_relDelta gives the correct numerical result for a beta-mixture.", {
   x <- 16
   n <- 23
   xS <- 10
@@ -137,7 +137,7 @@ test_that("h_integrand_relDelta gives the correct numerical result", {
   expect_equal(results, 0.0001352829, tolerance = 1e-4)
 })
 
-test_that("h_integrand_relDelta gives the correct numerical result with a weighted beta-mixture.", {
+test_that("h_integrand_relDelta gives the correct numerical result for a weighted beta-mixture.", {
   x <- 16
   n <- 23
   xS <- 10
@@ -160,8 +160,8 @@ test_that("h_integrand_relDelta gives the correct numerical result with a weight
   expect_equal(results, 6.498862e-05, tolerance = 1e-4)
 })
 
-# h_integrand --
-test_that("h_integrand gives the correct numerical result", {
+# h_integrand ----
+test_that("h_integrand gives the correct numerical result for a beta-mixture", {
   x <- 16
   n <- 23
   xS <- 10
@@ -184,7 +184,7 @@ test_that("h_integrand gives the correct numerical result", {
   expect_equal(results, 0.0001352828, tolerance = 1e-4)
 })
 
-test_that("h_integrand gives the correct numerical result with a weighted beta-mixture.", {
+test_that("h_integrand works as expected for a weighted beta-mixture.", {
   x <- 16
   n <- 23
   xS <- 10
