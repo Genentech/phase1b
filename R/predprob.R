@@ -24,15 +24,15 @@ NULL
 #' bgttheta: indicator `I(b>thetaT)`.
 #'
 #' @typed x : number
-#'  number of successes
+#'  number of successes.
 #' @typed n : number
-#' number of patients
+#' number of patients.
 #' @typed Nmax : number
-#' maximum number of patients at the end of the trial
+#' maximum number of patients at the end of the trial.
 #' @typed p : number
-#' threshold on the response rate
+#' threshold on the response rate.
 #' @typed thetaT : number
-#' threshold on the probability to be above p
+#' threshold on the probability to be above p.
 #' @typed parE : numeric
 #' the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components. default is a
@@ -53,11 +53,10 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
                      weights) {
   # m = Nmax - n future observations
   m <- Nmax - n
-
   # if par is a vector => situation where there is only one component
   if (is.vector(parE)) {
     # check that it has exactly two entries
-    stopifnot(identical(length(parE), 2L))
+    assert_true(identical(length(parE), 2L))
     # and transpose to matrix with one row
     parE <- t(parE)
   }
@@ -75,8 +74,6 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   # now with the beta binomial mixture:
   # posterior probabilities to be above threshold p
   b <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)
-
-  # prepare the return value
   ret <- structure(sum(py * (b > thetaT)),
     table =
       round(

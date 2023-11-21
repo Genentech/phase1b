@@ -8,15 +8,15 @@ successful, with a fixed response rate threshold}
 predprob(x, n, Nmax, p, thetaT, parE = c(1, 1), weights)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes}
+\item{x}{(\code{number}):\cr number of successes.}
 
-\item{n}{(\code{number}):\cr number of patients}
+\item{n}{(\code{number}):\cr number of patients.}
 
-\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial}
+\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial.}
 
-\item{p}{(\code{number}):\cr threshold on the response rate}
+\item{p}{(\code{number}):\cr threshold on the response rate.}
 
-\item{thetaT}{(\code{number}):\cr threshold on the probability to be above p}
+\item{thetaT}{(\code{number}):\cr threshold on the probability to be above p.}
 
 \item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components. default is a
