@@ -108,7 +108,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
 
 #' Beta-Mixture density function
 #'
-#' Calculating beta-mixture density values of support `x`.
+#' This function calculates beta-mixture density values.
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
