@@ -19,8 +19,6 @@
 #'  whether to return the log density value (not default).
 #' @return The density values of the beta-binomial distribution at `x`.
 #'
-#' @note `x`, `a` and `b` can be vectors.
-#'
 #' @example examples/dbetabinom.R
 #' @export
 dbetabinom <- function(x, m, a, b, log = FALSE) {
@@ -57,8 +55,6 @@ dbetabinom <- function(x, m, a, b, log = FALSE) {
 #'  whether to return the log density value (not default).
 #' @return The (log) density values of the mixture of beta-binomial distributions at `x`.
 #'
-#' @note `x` can be a vector.
-#'
 #' @example examples/dbetabinomMix.R
 #' @export
 dbetabinomMix <- function(x, m, par, weights, log = FALSE) {
@@ -89,6 +85,7 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #'
 #' @example examples/getBetamixPost.R
 #' @export
+
 getBetamixPost <- function(x, n, par, weights) {
   ## check the format
   stopifnot(
@@ -123,6 +120,7 @@ getBetamixPost <- function(x, n, par, weights) {
     weights = postWeights
   ))
 }
+
 
 
 #' Beta-mixture density function

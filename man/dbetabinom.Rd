@@ -28,9 +28,6 @@ Calculates the density function of the beta-binomial distribution.
 The beta-binomial density function has the following form:
 \verb{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
 }
-\note{
-\code{x}, \code{a} and \code{b} can be vectors.
-}
 \examples{
 dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4, log = FALSE)
 
