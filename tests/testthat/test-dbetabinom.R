@@ -155,7 +155,7 @@ test_that("Names within h_getBetamixPost are `par` and `weights`.", {
   expect_names(names(results), identical.to = c("par", "weights"))
 })
 
-test_that("h_getBetamixPost gives weight of 1 for non-Mixture distribution.", {
+test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
   results <- h_getBetamixPost(
     x = 16,
     n = 23,
