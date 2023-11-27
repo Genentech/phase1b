@@ -23,9 +23,8 @@ the (log) density values
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-The beta-mixture density can be calculated with the combination of K set of beta parameters and K
-length of weights.
+The beta-mixture distribution is defined by K beta parameters and the corresponding weights.
 }
 \details{
-Calculating beta-mixture density values of support \code{x}.
+This function calculates beta-mixture density values.
 }

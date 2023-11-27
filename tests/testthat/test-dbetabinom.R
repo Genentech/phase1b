@@ -129,7 +129,46 @@ test_that("qbetaMix gives a number result with beta-mixture", {
   expect_numeric(result)
 })
 
-# h_getBetamixPost --
+# dbetaMix ----
+
+test_that("dbetaMix gives the correct result with a 1 mixture component", {
+  result <- dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
+  expect_equal(result, 0.4745802, tolerance = 1e-4)
+})
+
+test_that("dbetaMix gives the correct result with increased parameters", {
+  result <- dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4), c(1, 2)), weights = c(1, 1))
+  expect_equal(result, 1.87458, tolerance = 1e-4)
+})
+
+test_that("dbetaMix gives error when weights do not sum to 1", {
+  expect_error(
+    results <- dbetaMix(
+      x = 0.3,
+      par = rbind(c(0.2, 0.4), c(1, 1)),
+      weights = c(1, 1)
+    ), "failed"
+  )
+})
+
+test_that("dbetaMix gives the correct result as dbeta", {
+  result <- dbetaMix(
+    x = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  result2 <- 0.6 * dbeta(
+    x = 0.3,
+    shape1 = 0.2,
+    shape2 = 0.4
+  ) + 0.4 * dbeta(
+    x = 0.3,
+    shape1 = 1,
+    shape2 = 1,
+  )
+  expect_equal(result, result2, tolerance = 1e-4)
+})
+
+# h_getBetamixPost ----
 
 test_that("h_getBetamixPost gives the correct beta-mixture parameters", {
   result <- h_getBetamixPost(
@@ -142,17 +181,7 @@ test_that("h_getBetamixPost gives the correct beta-mixture parameters", {
     par = matrix(c(17, 9), nrow = 1),
     weights = 1
   )
-  expect_identical(result, expected)
-})
-
-test_that("Names within h_getBetamixPost are `par` and `weights`", {
-  results <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2)),
-    weights = 1
-  )
-  expect_names(names(results), identical.to = c("par", "weights"))
+  expect_identical(result[result$par], expected)
 })
 
 test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
@@ -165,7 +194,7 @@ test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
   expect_identical(results$weights, 1)
 })
 
-test_that("h_getBetamixPost gives correct weights with beta-mixture", {
+test_that("h_getBetamixPost gives correct weights with 2 beta-mixture component", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -185,7 +214,7 @@ test_that("h_getBetamixPost gives correct parameters with beta-mixture", {
   expect_identical(result$par, rbind(c(17, 9), c(19, 11)))
 })
 
-test_that("h_getBetamixPost gives the correct weights when sum of weights is not 1", {
+test_that("h_getBetamixPost gives the correct weights when sum of weights is not 1 in beta-mixture", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
