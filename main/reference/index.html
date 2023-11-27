@@ -36,12 +36,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -94,11 +88,6 @@
         <dd>Example of time to event dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="betadiff.html">dbetadiff()</a></code> <code><a href="betadiff.html">pbetadiff()</a></code> <code><a href="betadiff.html">qbetadiff()</a></code> 
-        </dt>
-        <dd>The Difference between Two Beta Distributions</dd>
-      </dl><dl><dt>
-          
           <code><a href="boundsPostprob.html">boundsPostprob()</a></code> 
         </dt>
         <dd>Decision cutpoints for boundary (based on posterior probability)</dd>
@@ -111,22 +100,22 @@
           
           <code><a href="dbetaMix.html">dbetaMix()</a></code> 
         </dt>
-        <dd>Beta-mixture density function</dd>
+        <dd>Beta-Mixture density function</dd>
       </dl><dl><dt>
           
           <code><a href="dbetabinom.html">dbetabinom()</a></code> 
         </dt>
-        <dd>Beta-binomial density function</dd>
+        <dd>Beta-Binomial Density Function</dd>
       </dl><dl><dt>
           
           <code><a href="dbetabinomMix.html">dbetabinomMix()</a></code> 
         </dt>
-        <dd>Beta-mixture-binomial density function</dd>
+        <dd>Beta-Mixture-Binomial Density Function</dd>
       </dl><dl><dt>
           
-          <code><a href="getBetamixPost.html">getBetamixPost()</a></code> 
+          <code><a href="dbetadiff.html">dbetadiff()</a></code> 
         </dt>
-        <dd>Computes the posterior parameters of a beta mixture</dd>
+        <dd>The Difference between Two Beta Distributions</dd>
       </dl><dl><dt>
           
           <code><a href="logit.html">logit()</a></code> 
@@ -158,7 +147,7 @@ historical data on control</dd>
           
           <code><a href="ocPostprob.html">ocPostprob()</a></code> 
         </dt>
-        <dd>Calculate operating characteristics for posterior probability method</dd>
+        <dd>Operating Characteristics for Posterior Probability method</dd>
       </dl><dl><dt>
           
           <code><a href="ocPostprobDist.html">ocPostprobDist()</a></code> 
@@ -193,7 +182,12 @@ using the predictive probability method with beta priors</dd>
           
           <code><a href="pbetaMix.html">pbetaMix()</a></code> 
         </dt>
-        <dd>Beta-mixture cdf</dd>
+        <dd>Beta-Mixture CDF</dd>
+      </dl><dl><dt>
+          
+          <code><a href="pbetadiff.html">pbetadiff()</a></code> 
+        </dt>
+        <dd>Beta difference Cumulative Probability Function</dd>
       </dl><dl><dt>
           
           <code><a href="plotBounds.html">plotBounds()</a></code> 
@@ -213,19 +207,17 @@ using the predictive probability method with beta priors</dd>
           
           <code><a href="postprob.html">postprob()</a></code> 
         </dt>
-        <dd>Compute the posterior probability to be above threshold,
-with a beta mixture prior on the response rate.</dd>
+        <dd>Posterior Probability of Efficacy Given Beta-Mixture Prior</dd>
+      </dl><dl><dt>
+          
+          <code><a href="postprobBeta.html">postprobBeta()</a></code> 
+        </dt>
+        <dd>Posterior Probability of Efficacy Given Beta Prior</dd>
       </dl><dl><dt>
           
           <code><a href="postprobDist.html">postprobDist()</a></code> 
         </dt>
-        <dd>Compute the posterior probability with beta prior on SOC</dd>
-      </dl><dl><dt>
-          
-          <code><a href="postprobOld.html">postprobOld()</a></code> 
-        </dt>
-        <dd>Compute the posterior probability to be above threshold assuming a beta prior
-on the response rate</dd>
+        <dd>Compute the Posterior Probability with Beta Prior on <code>SOC</code></dd>
       </dl><dl><dt>
           
           <code><a href="predprob.html">predprob()</a></code> 
@@ -242,7 +234,12 @@ successful, with a prior distribution on the SOC</dd>
           
           <code><a href="qbetaMix.html">qbetaMix()</a></code> 
         </dt>
-        <dd>Beta-mixture quantile function</dd>
+        <dd>Beta-Mixture Quantile Function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="qbetadiff.html">qbetadiff()</a></code> 
+        </dt>
+        <dd>Beta difference Quantile Function</dd>
       </dl><dl><dt>
           
           <code><a href="runShinyPhase1b.html">runShinyPhase1b()</a></code> 

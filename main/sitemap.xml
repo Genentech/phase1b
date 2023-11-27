@@ -49,9 +49,6 @@
     <loc>https://genentech.github.io/phase1b/reference/TTEdata.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/phase1b/reference/betadiff.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/phase1b/reference/boundsPostprob.html</loc>
   </url>
   <url>
@@ -67,7 +64,31 @@
     <loc>https://genentech.github.io/phase1b/reference/dbetabinomMix.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/phase1b/reference/getBetamixPost.html</loc>
+    <loc>https://genentech.github.io/phase1b/reference/dbetadiff.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_getBetamixPost.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_get_bounds.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_get_decision.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_get_distance.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_get_looks.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_get_oc.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_integrand.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/h_integrand_relDelta.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/index.html</loc>
@@ -121,6 +142,9 @@
     <loc>https://genentech.github.io/phase1b/reference/pbetaMix.html</loc>
   </url>
   <url>
+    <loc>https://genentech.github.io/phase1b/reference/pbetadiff.html</loc>
+  </url>
+  <url>
     <loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc>
   </url>
   <url>
@@ -133,10 +157,10 @@
     <loc>https://genentech.github.io/phase1b/reference/postprob.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/phase1b/reference/postprobDist.html</loc>
+    <loc>https://genentech.github.io/phase1b/reference/postprobBeta.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/phase1b/reference/postprobOld.html</loc>
+    <loc>https://genentech.github.io/phase1b/reference/postprobDist.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/predprob.html</loc>
@@ -146,6 +170,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/qbetaMix.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/qbetadiff.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/runShinyPhase1b.html</loc>

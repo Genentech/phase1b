@@ -53,12 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -317,7 +311,7 @@ where <span class="math inline">\(X\sim \text{Beta}(a_x,b_x)\)</span>
 and <span class="math inline">\(Y\sim \text{Beta}(a_y,b_y)\)</span>. Of
 interest is calculating the distribution of the difference of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and so, in order to do so, we can
 utilize a transformation of variables by defining the following random
-variables <span class="math inline">\(Z\)</span> and <span class="math inline">\(W\)</span> such that <span class="math inline">\(Z=X-Y\)</span> and <span class="math inline">\(W=X\)</span>. Recalling basic probability theory,
+variables <span class="math inline">\(Z\)</span> and <span class="math inline">\(W\)</span> such that <span class="math inline">\(Z=Y-X\)</span> and <span class="math inline">\(W=X\)</span>. Recalling basic probability theory,
 we have that determinant of the Jacobian matrix of this transformation
 is as follows:</p>
 <p><span class="math display">\[\begin{align*}
@@ -372,7 +366,7 @@ variables can be characterized by @ref(eq:betadiff). However, these
 integrals are not analytically tractable and so we approximate them
 using <code>R</code>’s built-in <code><a href="https://rdrr.io/r/stats/integrate.html" class="external-link">integrate()</a></code> function inside
 of the <code>phase1b</code> R-package function
-<code><a href="../reference/betadiff.html">betadiff()</a></code>.</p>
+<code>betadiff()</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="predprob">Predictive Probabilities<a class="anchor" aria-label="anchor" href="#predprob"></a>
@@ -719,14 +713,14 @@ simulated trials, we issue the following command:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPostprob.html">ocPostprob</a></span><span class="op">(</span></span>
-<span>  nn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.2</span>, p1 <span class="op">=</span> <span class="fl">0.3</span>, tL <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  tU <span class="op">=</span> <span class="fl">0.8</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">10000</span></span>
+<span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.2</span>, p1 <span class="op">=</span> <span class="fl">0.3</span>, tL <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  tU <span class="op">=</span> <span class="fl">0.8</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, sim <span class="op">=</span> <span class="fl">10000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, randomdist <span class="op">=</span> <span class="cn">NULL</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in ocPostprob(nnE = c(10, 20, 30), truep = 0.4, p0 = 0.2, p1 = 0.3, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
 <span><span class="va">results</span><span class="op">$</span><span class="va">oc</span></span>
-<span><span class="co">#&gt;      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span></span>
-<span><span class="co">#&gt; [1,]    19.119      0.6722     0.6195     0.0527     0.7598      0.054</span></span>
-<span><span class="co">#&gt;      PrGrayZone</span></span>
-<span><span class="co">#&gt; [1,]     0.1862</span></span></code></pre></div>
+<span><span class="co">#&gt;   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span></span>
+<span><span class="co">#&gt; 1    19.119      0.6722     0.6195     0.0527     0.7598      0.054     0.1862</span></span></code></pre></div>
 <p>Here the object <code>results</code> is a list, which stores the
 operating characteristics of running the simulations inside the element
 <code>oc</code>. From our simulations we have that the expected number
@@ -747,7 +741,7 @@ fell into the grayzone.</p>
 <p>The user may be interested in showing that the novel combination is
 superior to the historical control when comparing PET-CR rates. In order
 to make such a comparison, we can make use of the
-<code><a href="../reference/betadiff.html">dbetadiff()</a></code> function to compute the distribution of the
+<code><a href="../reference/dbetadiff.html">dbetadiff()</a></code> function to compute the distribution of the
 difference in PET-CR rates between the novel combination and the
 historical control. This is a relatively simple task and, from the
 Bayesian point of view, this is simply the distribution of the
@@ -781,7 +775,7 @@ distribution of the difference in PET-CR with the code for
 <code class="sourceCode R"><span><span class="va">parX</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span></span>
 <span><span class="va">parY</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">55</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">55</span><span class="op">)</span></span>
 <span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.001</span><span class="op">)</span></span>
-<span><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/betadiff.html">dbetadiff</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">parY</span>, <span class="va">parX</span><span class="op">)</span></span>
+<span><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dbetadiff.html">dbetadiff</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">parY</span>, <span class="va">parX</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x.poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span>, <span class="va">xx</span><span class="op">)</span></span>
 <span><span class="va">y.poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span><span class="op">)</span>, <span class="va">dens</span><span class="op">)</span></span>
@@ -839,9 +833,9 @@ decision (shaded green) is much larger than the probability of a no go
 decision (shaded red). In fact, we can calculate those exact probability
 values of a go/no go decision with the following commands:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/betadiff.html">pbetadiff</a></span><span class="op">(</span><span class="fl">0.05</span>, parY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">55</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">55</span><span class="op">)</span>, parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pbetadiff.html">pbetadiff</a></span><span class="op">(</span><span class="fl">0.05</span>, parY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">55</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">55</span><span class="op">)</span>, parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.02684542</span></span>
-<span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="../reference/betadiff.html">pbetadiff</a></span><span class="op">(</span><span class="fl">0.15</span>, parY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">55</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">55</span><span class="op">)</span>, parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="../reference/pbetadiff.html">pbetadiff</a></span><span class="op">(</span><span class="fl">0.15</span>, parY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">55</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">55</span><span class="op">)</span>, parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.6558079</span></span></code></pre></div>
 <p>From our “large” threshold of exceeding 60%, we see that we would
 declare a go decision in this situation since the probability that <span class="math inline">\(\Delta\)</span> exceeds 15% is equal to 66% which
@@ -866,7 +860,7 @@ example but with a much lower response rate of <span class="math inline">\(42/80
 <code class="sourceCode R"><span><span class="va">parX</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span></span>
 <span><span class="va">parY</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span> <span class="op">+</span> <span class="fl">42</span>, <span class="fl">4.25</span> <span class="op">+</span> <span class="fl">80</span> <span class="op">-</span> <span class="fl">42</span><span class="op">)</span></span>
 <span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.001</span><span class="op">)</span></span>
-<span><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/betadiff.html">dbetadiff</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">parY</span>, <span class="va">parX</span><span class="op">)</span></span>
+<span><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dbetadiff.html">dbetadiff</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">parY</span>, <span class="va">parX</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x.poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span>, <span class="va">xx</span><span class="op">)</span></span>
 <span><span class="va">y.poly</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span><span class="op">)</span>, <span class="va">dens</span><span class="op">)</span></span>
@@ -1065,7 +1059,7 @@ A summary plot of Go/No Go decisions over different true rates
 <h3 id="PredProb-advanced">Advanced predictive probability design<a class="anchor" aria-label="anchor" href="#PredProb-advanced"></a>
 </h3>
 <p>As an extension of the <a href="#PredProb">basic example</a>, this
-example shows a way to use predictive proabilities (<em>PP</em>) to
+example shows a way to use predictive probabilities (<em>PP</em>) to
 conduct interim analyses allowing gray zones at the final analyses,
 i.e. trial results where neither efficacy nor futility decisions are
 made are possible (refering to the advance <em>PP</em> design in the
