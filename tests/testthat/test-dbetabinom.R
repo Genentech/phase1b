@@ -204,7 +204,7 @@ test_that("h_getBetamixPost gives correct weights with 2 beta-mixture component"
   expect_equal(result$weights, c(0.5085758, 0.4914242), tolerance = 1e-4)
 })
 
-test_that("h_getBetamixPost gives correct parameters with beta-mixture", {
+test_that("h_getBetamixPost gives correct beta parameters with beta-mixture", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
@@ -224,7 +224,7 @@ test_that("h_getBetamixPost gives the correct weights when sum of weights is not
   expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671), tolerance = 1e-4)
 })
 
-test_that("h_getBetamixPost gives the correct parameters when sum of weights is not 1", {
+test_that("h_getBetamixPost gives the correct beta parameters when sum of weights is not 1", {
   result <- h_getBetamixPost(
     x = 16,
     n = 23,
