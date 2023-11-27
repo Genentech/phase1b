@@ -123,7 +123,9 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #'
 #' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {
-  assert_numeric(sum(weights), lower = 0, upper = 1, finite = TRUE, any.missing = TRUE)
+  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_equal(sum(weights), 1)
+  assert_identical(length(weights), nrow(par))
   ret <- sum(weights * dbeta(x, par[, 1], par[, 2]))
   if (log) {
     log(ret)
