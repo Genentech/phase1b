@@ -178,8 +178,8 @@ postprobDist <- function(x,
   assert_numeric(weightsS, lower = 0, finite = TRUE)
   assert_numeric(parE, lower = 0, finite = TRUE)
   assert_numeric(parS, lower = 0, finite = TRUE)
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  controlBetamixPost <- getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
   assert_names(names(activeBetamixPost), identical.to = c("par", "weights"))
   assert_names(names(controlBetamixPost), identical.to = c("par", "weights"))
   if (relativeDelta) {

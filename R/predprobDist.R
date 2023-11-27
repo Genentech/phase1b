@@ -100,7 +100,7 @@ predprobDist <- function(x, n,
   ## if prior weights of the beta mixture are not supplied
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
-    ## (don't need to be normalized, this is done in getBetamixPost)
+    ## (don't need to be normalized, this is done in h_getBetamixPost)
   }
 
   ## if parS is a vector => situation where there is only one component
@@ -119,7 +119,7 @@ predprobDist <- function(x, n,
 
   ## now compute updated parameters for beta mixture distribution on the
   ## treatment proportion
-  activeBetamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
 
   ## now with the beta binomial mixture:
   py <- with(
@@ -160,7 +160,7 @@ predprobDist <- function(x, n,
     ## counts in future SOC patients:
     mS <- NmaxControl - nS
 
-    controlBetamixPost <- getBetamixPost(
+    controlBetamixPost <- h_getBetamixPost(
       x = xS, n = nS, par = parS,
       weights = weightsS
     )

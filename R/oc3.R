@@ -113,7 +113,7 @@ oc3 <- function(method =
   ## if prior weights of the beta mixture are not supplied
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
-    ## (don't need to be normalized, this is done in getBetamixPost)
+    ## (don't need to be normalized, this is done in h_getBetamixPost)
   }
 
   ## allocation to active and control arms:

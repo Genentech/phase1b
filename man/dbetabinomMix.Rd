@@ -14,7 +14,8 @@ dbetabinomMix(x, m, par, weights, log = FALSE)
 \item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
 
-\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior of length K.
+Each element corresponds to the row of beta parameters in \code{par}.}
 
 \item{log}{(\code{flag}):\cr whether to return the log density value (not default).}
 }

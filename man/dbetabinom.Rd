@@ -29,9 +29,9 @@ The beta-binomial density function has the following form:
 \verb{p(x) = (m! / (x!*(m-x)!)) * Beta(x+a,m-x+b) / Beta(a,b)}
 }
 \examples{
+# dbetabinom --
 dbetabinom(x = 2, m = 29, a = 0.2, b = 0.4, log = FALSE)
 
 # Can also specify x as a vector.
-
 dbetabinom(x = 1:28, m = 29, a = 0.2, b = 0.4, log = FALSE)
 }
