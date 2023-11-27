@@ -1040,7 +1040,7 @@ legend(.1, .6,
 ## Advanced predictive probability design {#PredProb-advanced}
 
 As an extension of the [basic example](#PredProb), this example shows a way to
-use predictive proabilities (*PP*) to conduct interim analyses allowing gray
+use predictive probabilities (*PP*) to conduct interim analyses allowing gray
 zones at the final analyses, i.e. trial results where neither efficacy nor futility
 decisions are made are possible (refering to the advance *PP* design in the
 predictive probability section). Such a final analysis design was used in the

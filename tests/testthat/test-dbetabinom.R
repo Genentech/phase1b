@@ -137,8 +137,8 @@ test_that("dbetaMix gives the correct result with a 1 mixture component", {
 })
 
 test_that("dbetaMix gives the correct result with increased parameters", {
-  result <- dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4), c(1, 2)), weights = c(1, 1))
-  expect_equal(result, 1.87458, tolerance = 1e-4)
+  result <- dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4), c(1, 2)), weights = c(0.1, 0.9))
+  expect_equal(result, 1.307458, tolerance = 1e-4)
 })
 
 test_that("dbetaMix gives error when weights do not sum to 1", {
@@ -181,7 +181,7 @@ test_that("h_getBetamixPost gives the correct beta-mixture parameters", {
     par = matrix(c(17, 9), nrow = 1),
     weights = 1
   )
-  expect_identical(result[result$par], expected)
+  expect_identical(result, expected)
 })
 
 test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
@@ -191,7 +191,11 @@ test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
     par = rbind(c(1, 2)),
     weights = 0.1
   )
-  expect_identical(results$weights, 1)
+  expected <- list(
+    par = rbind(c(17, 9)),
+    weights = 1
+  )
+  expect_identical(results, expected)
 })
 
 test_that("h_getBetamixPost gives correct weights with 2 beta-mixture component", {
@@ -202,15 +206,6 @@ test_that("h_getBetamixPost gives correct weights with 2 beta-mixture component"
     weights = c(0.6, 0.4)
   )
   expect_equal(result$weights, c(0.5085758, 0.4914242), tolerance = 1e-4)
-})
-
-test_that("h_getBetamixPost gives correct beta parameters with beta-mixture", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4)),
-    weights = c(0.6, 0.4)
-  )
   expect_identical(result$par, rbind(c(17, 9), c(19, 11)))
 })
 
@@ -222,15 +217,6 @@ test_that("h_getBetamixPost gives the correct weights when sum of weights is not
     weights = c(0.6, 0.4, 0.5)
   )
   expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671), tolerance = 1e-4)
-})
-
-test_that("h_getBetamixPost gives the correct beta parameters when sum of weights is not 1", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
-    weights = c(0.6, 0.4, 0.5)
-  )
   expect_identical(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
