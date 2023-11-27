@@ -121,11 +121,12 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #'
 #' @return the (log) density values
 #'
+#' @example examples/dbetaMix.R
 #' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
-  assert_equal(sum(weights), 1)
-  assert_identical(length(weights), nrow(par))
+  assert_true(all.equal(sum(weights), 1))
+  assert_true(identical(length(weights), nrow(par)))
   ret <- sum(weights * dbeta(x, par[, 1], par[, 2]))
   if (log) {
     log(ret)

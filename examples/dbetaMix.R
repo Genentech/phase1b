@@ -13,9 +13,3 @@ dbetaMix(
   par = rbind(c(0.2, 0.4), c(1, 1)),
   weights = c(0.6, 0.4)
 )
-
-dbetaMix(
-  x = seq(0, 1, .01),
-  par = rbind(c(1, 1)),
-  weights = c(0.6, 0.4)
-)
