@@ -19,19 +19,20 @@ predprob(x, n, Nmax, p, thetaT, parE = c(1, 1), weights)
 \item{thetaT}{(\code{number}):\cr threshold on the probability to be above p.}
 
 \item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
+corresponding to the beta parameters of the K components. Default is a
 uniform prior.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior. Default are
-uniform weights across mixture components.}
+equal weights across mixture components. Weights can exceed 1 which will be
+normalised in \code{getBetamixPost}}
 }
 \value{
 The predictive probability, a numeric value. In addition, a
-list called \code{table} is returned as attribute of the returned number.
+\code{list} called \code{table} is returned as attribute of the returned number.
 }
 \description{
 Compute the predictive probability of trial success given current data.
-Success means that at the end of the trial the posterior probability
+Success means that at the end of the trial the posterior probability is
 \code{Pr(P_E > p) >= thetaT},
 where p is the fixed response rate threshold.
 Then the predictive probability for success is:
@@ -39,14 +40,13 @@ Then the predictive probability for success is:
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of n.
 The prior is \code{P_E ~ beta(a, b)}, default uniform which is a \code{beta(1,1)}.
-However, also a beta mixture prior can be specified.
+However, a beta mixture prior can also be specified.
 }
 \details{
-A table with the following contents will be included in the \code{table} attribute of
-the return value:
-\code{i}: \code{Y=i} (number of future successes in Nmax-n subjects)
-\code{py}: \code{Pr(Y=i|x)} using beta-(mixture)-binomial distribution
-\code{b}: \code{Pr(P_E > p | x, Y=i)} using beta posterior
+A table with the following contents will be included in the return output :
+\code{i}: \code{Y = i}, number of future successes in Nmax-n subjects.
+\code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
+\code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
 bgttheta: indicator \code{I(b>thetaT)}.
 }
 \examples{
