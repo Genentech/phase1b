@@ -51,14 +51,6 @@ NULL
 #'
 #' @example examples/predprob.R
 #' @export
-x <- 16
-n <- 23
-m <- 17
-Nmax <- 40
-p <- 0.6
-thetaT <- 0.9
-parE <- t(c(0.6, 0.4))
-weights <- rep(1, nrow(parE))
 predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
                      weights) {
   # m = Nmax - n future observations
@@ -70,10 +62,7 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   }
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
-    ## (don't need to be normalized, this is done in h_getBetamixPost)
   }
-
-  ## now compute updated parameters
   betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
 
   py <- with(
