@@ -2,8 +2,10 @@
 #' @include postprob.R
 NULL
 
+#' Predictive probability of trial success
+#'
 #' Compute the predictive probability that the trial will be
-#' successful, with a fixed response rate threshold
+#' successful, with a fixed response rate threshold.
 #'
 #' Compute the predictive probability of trial success given current data.
 #' Success means that at the end of the trial the posterior probability is
@@ -13,7 +15,7 @@ NULL
 #' `pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > p|x,Y=i)>=thetaT}`
 #' where `Y` is the number of future responses in the treatment group and `x` is
 #' the current number of responses in the treatment group out of n.
-#' The prior is `P_E ~ beta(a, b)`, default uniform which is a `beta(1,1)`.
+#' The prior of `Y` is `P_E ~ beta(a, b)`, default uniform which is a `beta(1,1)`.
 #' However, a beta mixture prior can also be specified.
 #'
 #' A table with the following contents will be included in the return output :
@@ -49,6 +51,14 @@ NULL
 #'
 #' @example examples/predprob.R
 #' @export
+x <- 16
+n <- 23
+m <- 17
+Nmax <- 40
+p <- 0.6
+thetaT <- 0.9
+parE <- t(c(0.6, 0.4))
+weights <- rep(1, nrow(parE))
 predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
                      weights) {
   # m = Nmax - n future observations
@@ -72,16 +82,17 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   )
   # posterior probabilities to be above threshold p
   posterior <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)
-  structure(sum(density * (posterior > thetaT)),
-    table =
-      round(
-        cbind(
-          i = c(0:m),
-          density,
-          posterior,
-          bgttheta = (posterior > thetaT)
-        ),
-        4
-      )
+  assert_numeric(density, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_numeric(posterior, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_number(thetaT, lower = 0, upper = 1, finite = TRUE)
+  list(
+    result = sum(density * (posterior > thetaT)),
+    table = data.frame(
+      counts = c(0:m),
+      cumul_counts = n + (0:m),
+      density = round(density, 4),
+      posterior = round(posterior, 4),
+      result_theta = ifelse((posterior > thetaT), 1, 0)
+    )
   )
 }
