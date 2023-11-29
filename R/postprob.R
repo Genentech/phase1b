@@ -35,7 +35,6 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
   stats::pbeta(p, a + x, b + n - x, lower.tail = FALSE)
 }
 
-
 #' Posterior Probability of Efficacy Given Beta-Mixture Prior
 #'
 #' @description `r lifecycle::badge("experimental")`
@@ -64,7 +63,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'  The mixture weights of the beta mixture prior. Default are
 #'  uniform weights across mixture components.
 #' @typed betamixPost : matrix
-#'  optional result of `[getBetamixPost()]` in order
+#'  optional result of `[h_getBetamixPost()]` in order
 #'  to speed up the computations. If supplied, this is directly used, bypassing
 #'  the other arguments (except `p` and `log.p` of course).
 #' @typed log.p : number
@@ -86,7 +85,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
-    betamixPost <- getBetamixPost(
+    betamixPost <- h_getBetamixPost(
       x = x,
       n = n,
       par = parE,

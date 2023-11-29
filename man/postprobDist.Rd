@@ -2,14 +2,14 @@
 % Please edit documentation in R/postprobDist.R
 \name{postprobDist}
 \alias{postprobDist}
-\title{Compute the posterior probability with beta prior on SOC}
+\title{Compute the Posterior Probability with Beta Prior on \code{SOC}}
 \usage{
 postprobDist(
   x,
   n,
   xS = 0,
   nS = 0,
-  delta = 0,
+  delta,
   relativeDelta = FALSE,
   parE = c(1, 1),
   weights,
@@ -18,83 +18,103 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{number of successes (in the treatment group). Note that \code{x}
-can be a vector.}
+\item{x}{(\code{numeric}):\cr number of success counts in the treatment group.}
 
-\item{n}{number of patients (in the treatment group)}
+\item{n}{(\code{number}):\cr number of patients in the treatment group.}
 
-\item{xS}{number of successes in the SOC group (default: 0)}
+\item{xS}{(\code{number}):\cr number of success counts in the SOC group.}
 
-\item{nS}{number of patients in the SOC group (default: 0)}
+\item{nS}{(\code{number}):\cr number of patients in the SOC group.}
 
-\item{delta}{margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0)}
+\item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the SOC group. Must be >= \code{0}. See note.}
 
-\item{relativeDelta}{should the delta be relative? (not default). If this is
-\code{TRUE}, then a relative delta is used. This means we want to have
-response at least in delta proportion of the SOC non-responding patients.
-Non-responding patients rate is 1 - P_S, and we want to have P_S + (1 - P_S)
-\itemize{
-\item delta response rate (at least) in the treatment. That is, we evaluate the
-posterior probability Pr(P_E > P_S + (1 - P_S) * delta | data).
-}}
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
 
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
-uniform prior.}
+\item{parE}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{E} group. See details.}
 
-\item{weights}{the mixture weights of the beta mixture prior. Default are
-uniform weights across mixture components.}
+\item{weights}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{E}. See details.}
 
-\item{parS}{beta parameters for the SOC group (default: uniform)}
+\item{parS}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{S} group. See details.}
 
-\item{weightsS}{weights for the SOC group (default: uniform)}
+\item{weightsS}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{S}. See details.}
+
+\item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
+the interval of integration.}
 }
 \value{
-the posterior probability
+The posterior probability
 }
 \description{
-Using the approach by Thall and Simon (Biometrics, 1994), evaluate the
-posterior probability of having Pr(P_E > P_S + delta | data) (but see below
-for relative delta margin). Both for the new treatment E as well as for the
-SOC S data might be available. However the default is that no data is
-available for the SOC, corresponding to the single arm trial situation. Note
-that a uniform prior is the useful default for the treatment proportion,
-while in the single arm trial an informative prior on the SOC proportion is
-useful.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
+posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC).
+See note below for two formulations of the difference in response rates.
 }
 \details{
-Beta mixture prior can be specified for the treatment (\code{parE}
-and \code{weights} parameters) and control proportion (\code{parS} and
-\code{weightsS} parameters), see \code{\link{postprob}} for details. Note
-that being able to specify a beta mixture prior also on the control
-treatment is e.g. important for the futility decision making (see the
-\code{\link{oc2}} code).
+The beta mixture prior for the \code{E} arm requires argument \code{parE} and \code{weights}.
+The beta mixture prior for the \code{S} arm requires argument \code{parS} and \code{weightsS}.
+See \verb{[postprob()]} for details.
+
+If a beta-mixture is used, by default, the weights are uniform across the components.
+Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
+}
+\note{
+\subsection{Delta :}{
+
+The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
+The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+\enumerate{
+\item The absolute case is when we define an absolute delta, greater than \code{P_S},
+the response rate of the \code{SOC} group such that
+the posterior is \code{Pr(P_E > P_S + delta | data)}.
+\item In the relative case, we suppose that the treatment group's
+response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+}
+}
 }
 \examples{
-## example similar to Lee and Liu:
-postprobDist(x = 16, n = 23, parE = c(0.6, 0.4), parS = c(0.6, 0.4))
-
-## these two should give the same result:
+# An example similar to Lee and Liu (2008).
 postprobDist(
-  x = 27, n = 34,
-  xS = 0, nS = 0,
-  delta = 0.15,
-  parE = c(1, 1),
-  parS = c(50007530, 49924090)
+  x = 16,
+  n = 23,
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = FALSE
 )
 
-postprob(x = 27, n = 34, p = 0.65, parE = c(1, 1))
-## ok, almost
-
-## try out mixtures:
-## play around with the beta parameters and weights to
-## get a feeling.
-## Note that very extreme beta parameters do no longer increase
-## the return value, because then that mixture component is too
-## unlikely a posteriori
+# For a sequence of success outcomes for Experimental arm.
 postprobDist(
-  x = 16, n = 23,
+  x = c(16, 17),
+  n = 23,
+  parE = c(0.6, 0.4),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = FALSE
+)
+
+# When we use a relative difference and look at several possible number of responses.
+postprobDist(
+  x = 1:23,
+  n = 23,
+  parE = c(0.2, 0.8),
+  parS = c(0.6, 0.4),
+  delta = 0.1,
+  relativeDelta = TRUE
+)
+
+# When we use beta mixtures for both the Experimental and SOC arms.
+postprobDist(
+  x = 16,
+  n = 23,
   parE =
     rbind(
       c(0.6, 0.4),
@@ -105,6 +125,45 @@ postprobDist(
       c(0.6, 0.4),
       c(10, 10)
     ),
-  weightsS = c(1, 3)
+  weightsS = c(1, 3),
+  delta = 0.1
+)
+
+# Experimental arm only (strictly single arm trial), uniform prior in Experimental arm.
+# Non-uniform Prior used for SOC arm as no precedent data.
+postprobDist(
+  x = 16,
+  n = 23,
+  xS = 0,
+  nS = 0,
+  delta = 0,
+  relativeDelta = FALSE,
+  parS = c(2, 3),
+  weightsS = 1
+)
+# Experimental arm and SOC, uniform prior in both E and S arms, default setting used.
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0,
+  relativeDelta = FALSE,
+  weightsS = 1
+)
+
+# Experimental and SOC arm, with beta mix prior for both arms.
+# For each of the SOC arm is of 3 priors, therefore 3 sets of beta parameters, and 3 weights.
+postprobDist(
+  x = 16,
+  n = 20,
+  xS = 10,
+  nS = 20,
+  delta = 0.1,
+  relativeDelta = TRUE,
+  parE = rbind(c(1, 1), c(3, 4), c(8, 9)),
+  weights = c(5, 3, 2),
+  parS = rbind(c(4, 5), c(2, 3), c(4, 4)),
+  weightsS = c(2, 5, 3)
 )
 }

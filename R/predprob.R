@@ -60,10 +60,13 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
   }
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
+    ## (don't need to be normalized, this is done in h_getBetamixPost)
   }
-  betamixPost <- getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  assert_list(betamixPost, any.missing = FALSE, types = "numeric")
-  density <- with(
+
+  ## now compute updated parameters
+  betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+
+  py <- with(
     betamixPost,
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
   )

@@ -2,23 +2,46 @@
 % Please edit documentation in R/dbetabinom.R
 \name{dbetaMix}
 \alias{dbetaMix}
-\title{Beta-mixture density function}
+\title{Beta-Mixture density function}
 \usage{
 dbetaMix(x, par, weights, log = FALSE)
 }
 \arguments{
-\item{x}{the abscissa}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{par}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components}
+\item{par}{(\code{matrix}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{the mixture weights of the beta mixture prior}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior of length K.
+Each element corresponds to the row of beta parameters in \code{par}.}
 
-\item{log}{return the log value? (not default)}
+\item{log}{(\code{flag}):\cr whether log values of the beta-mixture density function are returned.}
 }
 \value{
 the (log) density values
 }
 \description{
-Note that \code{x} can be a vector.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+The beta-mixture distribution is defined by K beta parameters and the corresponding weights.
+}
+\details{
+This function calculates beta-mixture density values.
+}
+\examples{
+# Calculating the density of a mixture.
+dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4)), weights = 1)
+
+# With 2 mixture components
+dbetaMix(
+  x = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
+
+# Can also specify x as a vector
+dbetaMix(
+  x = seq(0, 1, .01),
+  par = rbind(c(0.2, 0.4), c(1, 1)),
+  weights = c(0.6, 0.4)
+)
 }
