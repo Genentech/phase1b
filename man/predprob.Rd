@@ -24,13 +24,12 @@ corresponding to the beta parameters of the K components.}
 }
 \value{
 A \code{list} is returned with names \code{result} for predictive probability and
-\code{table} of numeric values with counts, densities, posterior and result of indicator function.
+\code{table} of numeric values with counts of responses in the remaining patients,
+probabilities of these counts, corresponding probabilities to be above threshold,
+and trial success indicators.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-Compute the predictive probability that the trial will be
-successful with fixed response rate threshold
 
 Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability is
@@ -47,7 +46,7 @@ A table with the following contents will be included in the return output :
 \item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
 \item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
 \item \code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
-\item \code{result_thetaT}: indicator \code{I(b>thetaT)}.
+\item \code{success}: indicator \code{I(b>thetaT)}.
 }
 }
 \examples{

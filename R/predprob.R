@@ -6,9 +6,6 @@ NULL
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Compute the predictive probability that the trial will be
-#' successful with fixed response rate threshold
-#'
 #' Compute the predictive probability of trial success given current data.
 #' Success means that at the end of the trial the posterior probability is
 #' `Pr(P_E > p) >= thetaT`,
@@ -41,7 +38,9 @@ NULL
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior.
 #' @return A `list` is returned with names `result` for predictive probability and
-#'  `table` of numeric values with counts of responses in the remaining patients, probabilities of these counts, corresponding probabilities to be above threshold, and trial success indicator.
+#'  `table` of numeric values with counts of responses in the remaining patients,
+#'  probabilities of these counts, corresponding probabilities to be above threshold,
+#'  and trial success indicators.
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #'  design for phase II cancer clinical trials. Clinical Trials, 5(2),
