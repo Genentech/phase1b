@@ -23,17 +23,18 @@ uniform prior.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior. Default are
 equal weights across mixture components. Weights can exceed 1 which will be
-normalised in \code{getBetamixPost}}
+normalised in \verb{[h_getBetamixPost()]}.}
 }
 \value{
-The predictive probability, a numeric value. In addition, a
-\code{list} called \code{table} is returned as attribute of the returned number.
+A \code{list} is returned with names \code{result} for predictive probability and
+\code{table} of numeric values with counts, densities, posterior and result of indicator function.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Compute the predictive probability that the trial will be
-successful, with a fixed response rate threshold.
-}
-\details{
+successful with fixed response rate threshold
+
 Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability is
 \code{Pr(P_E > p) >= thetaT},
@@ -42,14 +43,14 @@ Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y=i|x,n)*I\{Pr(P_E > p|x,Y=i)>=thetaT\}}
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of n.
-The prior of \code{Y} is \code{P_E ~ beta(a, b)}, default uniform which is a \code{beta(1,1)}.
-However, a beta mixture prior can also be specified.
+The prior of \code{Y} is \code{P_E ~ beta(a, b)} has prior \code{beta(1,1)} or other if beta mixture prior
+specified.
 
 A table with the following contents will be included in the return output :
-\code{i}: \code{Y = i}, number of future successes in Nmax-n subjects.
+\code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
 \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
 \code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
-bgttheta: indicator \code{I(b>thetaT)}.
+\code{result_thetaT}: indicator \code{I(b>thetaT)}.
 }
 \examples{
 # The original Lee and Liu (Table 1) example:
