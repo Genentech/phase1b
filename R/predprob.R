@@ -23,7 +23,7 @@ NULL
 #' - `i`: `Y = i`, number of future successes in `Nmax-n` subjects.
 #' - `density`: `Pr(Y = i|x)` using beta-(mixture)-binomial distribution.
 #' - `posterior`: `Pr(P_E > p | x, Y=i)` using beta posterior.
-#' - `result_thetaT`: indicator `I(b>thetaT)`.
+#' - `success`: indicator `I(b>thetaT)`.
 #'
 #' @typed x : number
 #'  number of successes.
