@@ -41,7 +41,7 @@ NULL
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior.
 #' @return A `list` is returned with names `result` for predictive probability and
-#'  `table` of numeric values with counts, densities, posterior and result of indicator function.
+#'  `table` of numeric values with counts of responses in the remaining patients, probabilities of these counts, corresponding probabilities to be above threshold, and trial success indicator.
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #'  design for phase II cancer clinical trials. Clinical Trials, 5(2),
