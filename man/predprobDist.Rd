@@ -59,9 +59,11 @@ The predictive probability, a numeric value. In addition, a
 list called \code{tables} is returned as attribute of the returned number.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability
-Pr(P_E > P_S + delta_0 | data) >= thetaT. Then the
+\code{Pr(P_E > P_S + delta_0 | data) >= thetaT}. Then the
 predictive probability for success is:
 pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > P_S + delta|x,Y=i)>=thetaT},
 where Y is the number of future responses in the treatment group and x is
@@ -70,8 +72,7 @@ Prior is P_E ~ beta(a, b), default uniform which is a beta(1,1).
 However, also a beta mixture prior can be specified. Analogously
 for P_S either a classic beta prior or a beta mixture prior can be
 specified.
-}
-\details{
+
 Also data on the SOC might be available. Then the predictive probability is
 more generally defined as
 pp = sum over i, j: Pr(Y=i|x,n)*Pr(Z=j|xS, nS)*I{Pr(P_E > P_S +

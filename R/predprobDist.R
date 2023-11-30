@@ -5,9 +5,11 @@ NULL
 #' Compute the predictive probability that the trial will be
 #' successful, with a prior distribution on the SOC
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Compute the predictive probability of trial success given current data.
 #' Success means that at the end of the trial the posterior probability
-#' Pr(P_E > P_S + delta_0 | data) >= thetaT. Then the
+#' `Pr(P_E > P_S + delta_0 | data) >= thetaT`. Then the
 #' predictive probability for success is:
 #' pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > P_S + delta|x,Y=i)>=thetaT},
 #' where Y is the number of future responses in the treatment group and x is
