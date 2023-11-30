@@ -46,12 +46,6 @@ Pr(Pr(P &amp;gt; p | x, Y) &amp;gt;= tT | x) &amp;lt; phiL"><!-- mathjax --><scr
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -150,11 +144,7 @@ the corresponding response rate (pU), predictive probability
 <span class="r-in"><span>  nvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.20</span>, tT <span class="op">=</span> <span class="fl">0.80</span>,</span></span>
 <span class="r-in"><span>  phiL <span class="op">=</span> <span class="fl">0.10</span>, phiU <span class="op">=</span> <span class="fl">0.90</span>, a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    nvec xL     pL    ppL  postL   UciL xU   pU    ppU  postU   LciU</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   10  0 0.0000 0.0268 0.0859 0.2589  4 0.40 0.9287 0.9496 0.1500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   20  2 0.1000 0.0269 0.1787 0.2826  7 0.35 0.9600 0.9569 0.1773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   30  5 0.1667 0.0446 0.3931 0.3190  9 0.30 0.9604 0.9254 0.1663</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   40  9 0.2250 0.0000 0.7040 0.3598 10 0.25 1.0000 0.8177 0.1424</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x, n, Nmax, p, tT, parE = c(a, b)):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="co">## From this we see e.g. that at the first IA at 10 pts, we would stop for futility</span></span></span>
 <span class="r-in"><span><span class="co">## if no patient responded, and for efficacy if 4 or more pts responded.</span></span></span>
 </code></pre></div>

@@ -76,12 +76,6 @@ PrGrayZone: probability between Go and Stop ,"Evaluate" or Gray decision zone
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -225,7 +219,7 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  18.20366      0.6914    0.64994    0.04146    0.77056    0.04392    0.18552</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   18.1539     0.69234    0.64808    0.04426    0.76818     0.0462    0.18562</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We specify the distance in this example.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
@@ -235,7 +229,7 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1062     0.67374    0.62056    0.05318      0.754    0.05424    0.19176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1176      0.6731    0.61966    0.05344    0.75148    0.05506    0.19346</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, nnE = nnF, and no wiggle room is allowed. Random distance also not supplied.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
@@ -245,7 +239,7 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1004     0.67382    0.61982      0.054    0.75462    0.05548     0.1899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.0504     0.67848    0.62594    0.05254    0.75644    0.05398    0.18958</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, we only have one Futility and Efficacy look or stop.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
@@ -255,7 +249,7 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10           0          0          0    0.36654    0.04568    0.58778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10           0          0          0    0.37004     0.0453    0.58466</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, we only have one Futility but many Efficacy looks or stop.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
@@ -265,7 +259,7 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1208           0    0.62526          0    0.75678    0.04656    0.19666</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1736           0    0.62144          0    0.75282    0.04578     0.2014</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
