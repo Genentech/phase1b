@@ -18,12 +18,9 @@ predprob(x, n, Nmax, p, thetaT, parE = c(1, 1), weights)
 \item{thetaT}{(\code{number}):\cr threshold on the probability to be above p.}
 
 \item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. Default is a
-uniform prior.}
+corresponding to the beta parameters of the K components.}
 
-\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior. Default are
-equal weights across mixture components. Weights can exceed 1 which will be
-normalised in \verb{[h_getBetamixPost()]}.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 }
 \value{
 A \code{list} is returned with names \code{result} for predictive probability and
@@ -43,14 +40,15 @@ Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y=i|x,n)*I\{Pr(P_E > p|x,Y=i)>=thetaT\}}
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of n.
-The prior of \code{Y} is \code{P_E ~ beta(a, b)} has prior \code{beta(1,1)} or other if beta mixture prior
-specified.
+The prior for the response rate in the experimental arm is \code{P_E ~ beta(a, b)}.
 
 A table with the following contents will be included in the return output :
-\code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
-\code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
-\code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
-\code{result_thetaT}: indicator \code{I(b>thetaT)}.
+\itemize{
+\item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
+\item \code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
+\item \code{result_thetaT}: indicator \code{I(b>thetaT)}.
+}
 }
 \examples{
 # The original Lee and Liu (Table 1) example:
