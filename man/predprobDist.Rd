@@ -22,37 +22,7 @@ predprobDist(
 )
 }
 \arguments{
-\item{x}{number of successes (in the treatment group)}
-
-\item{n}{number of patients (in the treatment group)}
-
-\item{xS}{number of successes in the SOC group (default: 0)}
-
-\item{nS}{number of patients in the SOC group (default: 0)}
-
-\item{Nmax}{maximum number of patients at the end of the trial (in the
-treatment group)}
-
-\item{NmaxControl}{maximum number of patients at the end of the trial in the
-SOC group (default: 0)}
-
-\item{delta}{margin by which the response rate in the treatment group should
-be better than in the SOC group (default: 0)}
-
-\item{relativeDelta}{see \code{\link{postprobDist}}}
-
-\item{parE}{the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
-uniform prior.}
-
-\item{weights}{the mixture weights of the beta mixture prior. Default are
-uniform weights across mixture components.}
-
-\item{parS}{beta prior parameters in the SOC group (default: uniform)}
-
-\item{weightsS}{weights for the SOC group (default: uniform)}
-
-\item{thetaT}{threshold on the probability to be used}
+\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
 The predictive probability, a numeric value. In addition, a
@@ -65,35 +35,56 @@ Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability
 \code{Pr(P_E > P_S + delta_0 | data) >= thetaT}. Then the
 predictive probability for success is:
-pp = sum over i: Pr(Y=i|x,n)*I{Pr(P_E > P_S + delta|x,Y=i)>=thetaT},
-where Y is the number of future responses in the treatment group and x is
-the current number of responses in the treatment group (out of n).
-Prior is P_E ~ beta(a, b), default uniform which is a beta(1,1).
+\verb{pp = sum over i: Pr(Y = i | x , n)*I\{Pr(P_E > P_S + delta | x,Y=i) >= thetaT\}},
+where \code{Y} is the number of future responses in the treatment group and \code{x} is
+the current number of responses in the treatment group out of \code{n}.
+Prior is \code{P_E ~ beta(a, b)} and uniform which is a beta(1,1).
 However, also a beta mixture prior can be specified. Analogously
-for P_S either a classic beta prior or a beta mixture prior can be
+for \code{P_S} either a classic beta prior or a beta mixture prior can be
 specified.
 
 Also data on the SOC might be available. Then the predictive probability is
 more generally defined as
-pp = sum over i, j: Pr(Y=i|x,n)*Pr(Z=j|xS, nS)*I{Pr(P_E > P_S +
-delta|x,xS,Y=i,Z=j)>=thetaT}
-where Z is the future number of responses in the SOC group, and xS is the
+\verb{pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I\{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT\}}
+where \code{Z} is the future number of responses in the SOC group, and \code{xS} is the
 current number of responses in the SOC group.
 
+In the case where \code{NmaxControl = 0}, a table with the following contents will be included in the return output :
+\itemize{
+\item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
+\item \code{posterior}: \code{Pr(P_E > P_S + delta | x, Y = i)} using beta posterior.
+\item \code{success}: indicator \code{I(b>thetaT)}.
+}
+
 A table with the following contents will be
-included in the \code{tables} attribute of the return value
+included in the  return value
 (in the case that NmaxControl is zero):
 i: Y=i (number of future successes in Nmax-n subjects)
 py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
 b: Pr(P_E > P_S + delta | x, Y=i)
 bgttheta: indicator I(b>thetaT)
 
-If NmaxControl is not zero, i.e., when data on the control treatment
+If \code{NmaxControl} is not zero, i.e., when data on the control treatment
 is available in this trial, then a list with will be included with the
 following elements:
 pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
 b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
 bgttheta: matrix of indicators I(b>thetaT)
+}
+\note{
+Delta from postprobDist :
+
+The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
+The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+\enumerate{
+\item The absolute case is when we define an absolute delta, greater than \code{P_S},
+the response rate of the \code{SOC} group such that
+the posterior is \code{Pr(P_E > P_S + delta | data)}.
+\item In the relative case, we suppose that the treatment group's
+response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+}
 }
 \examples{
 ## The original Lee and Liu (Table 1) example:
