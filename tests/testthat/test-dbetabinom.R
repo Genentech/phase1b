@@ -129,6 +129,22 @@ test_that("qbetaMix gives a number result with beta-mixture", {
   expect_numeric(result)
 })
 
+test_that("qbetaMix works as expected for edge cases", {
+  result <- qbetaMix(
+    p = 0,
+    par = rbind(c(0.2, 0.4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_identical(result, 0)
+
+  result <- qbetaMix(
+    p = 1,
+    par = rbind(c(0.2, 0.4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_identical(result, 1)
+})
+
 # dbetaMix ----
 
 test_that("dbetaMix gives the correct result with a 1 mixture component", {
