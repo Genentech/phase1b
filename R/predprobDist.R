@@ -61,27 +61,41 @@ NULL
 #' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
 #' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
 #'
-#' @typed x number of successes (in the treatment group)
-#' @typed n number of patients (in the treatment group)
-#' @typed xS number of successes in the SOC group (default: 0)
-#' @typed nS number of patients in the SOC group (default: 0)
-#' @typed Nmax maximum number of patients at the end of the trial (in the
-#' treatment group)
-#' @typed NmaxControl maximum number of patients at the end of the trial in the
-#' SOC group (default: 0)
-#' @typed delta margin by which the response rate in the treatment group should
-#' be better than in the SOC group (default: 0)
-#' @typed relativeDelta see \code{\link{postprobDist}}
-#' @typed parE the beta parameters matrix, with K rows and 2 columns,
+#' @typed x : number
+#' number of successes in the treatment group at interm
+#' @typed n : number
+#' number of patients in the treatment group at interim
+#' @typed xS : number
+#' number of successes in the SOC group at interim
+#' @typed nS : number
+#' number of patients in the SOC group
+#' @typed Nmax : number
+#' maximum number of patients in the treatment group at the end of the trial
+#' @typed NmaxControl : number
+#' maximum number of patients at the end of the trial in the
+#' SOC group
+#' @typed delta :
+#' margin by which the response rate in the treatment group should
+#' be better than in the SOC group
+#' @typed relativeDelta :
+#' see `[postprobDist()]`
+#' @typed parE :
+#' the beta parameters matrix, with K rows and 2 columns,
 #' corresponding to the beta parameters of the K components. default is a
 #' uniform prior.
-#' @typed weights the mixture weights of the beta mixture prior. Default are
+#' @typed weights :
+#' the mixture weights of the beta mixture prior. Default are
 #' uniform weights across mixture components.
-#' @typed parS beta prior parameters in the SOC group (default: uniform)
-#' @typed weightsS weights for the SOC group (default: uniform)
-#' @typed thetaT threshold on the probability to be used
-#' @return The predictive probability, a numeric value. In addition, a
-#' list called \code{tables} is returned as attribute of the returned number.
+#' @typed parS :
+#' beta prior parameters in the SOC group
+#' @typed weightsS :
+#' weights for the SOC group
+#' @typed thetaT :
+#' threshold on the probability to be used
+#' @return A `list` is returned with names `result` for predictive probability and
+#'  `table` of numeric values with counts of responses in the remaining patients,
+#'  probabilities of these counts, corresponding probabilities to be above threshold,
+#'  and trial success indicators.
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #' design for phase II cancer clinical trials. Clinical Trials, 5(2),
@@ -90,8 +104,10 @@ NULL
 #' @example examples/predprobDist.R
 #' @export
 predprobDist <- function(x, n,
-                         xS = 0, nS = 0,
-                         Nmax, NmaxControl = 0,
+                         xS = 0,
+                         nS = 0,
+                         Nmax,
+                         NmaxControl = 0,
                          delta = 0,
                          relativeDelta = FALSE,
                          parE = c(a = 1, b = 1),
@@ -106,30 +122,24 @@ predprobDist <- function(x, n,
     x <= n,
     xS <= nS
   )
-
   # remaining active patients to be seen:
   mE <- Nmax - n
-
   # if par is a vector => situation where there is only one component
   if (is.vector(parE)) {
     # check that it has exactly two entries
     stopifnot(identical(length(parE), 2L))
-
     # and transpose to matrix with one row
     parE <- t(parE)
   }
-
   # if prior weights of the beta mixture are not supplied
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
     # (don't need to be normalized, this is done in h_getBetamixPost)
   }
-
   # if parS is a vector => situation where there is only one component
   if (is.vector(parS)) {
     # check that it has exactly two entries
     stopifnot(identical(length(parS), 2L))
-
     # and transpose to matrix with one row
     parS <- t(parS)
   }
@@ -141,15 +151,14 @@ predprobDist <- function(x, n,
   # treatment proportion
   activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
   # now with the beta binomial mixture:
-  density <- with(
+  py <- with(
     activeBetamixPost,
     dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
   )
-
   if (NmaxControl == 0) {
     # here is the only difference to predprob.R:
     # how to compute the posterior probabilities
-    posterior <- postprobDist(
+    b <- postprobDist(
       x = x + c(0:mE),
       n = Nmax,
       delta = delta,
@@ -160,13 +169,13 @@ predprobDist <- function(x, n,
       weightsS = weightsS
     )
     ret <- list(
-      result = sum(density * (posterior > thetaT)),
+      result = sum(py * (b > thetaT)),
       table = data.frame(
-        counts = c(0:m),
-        cumul_counts = n + (0:m),
-        density = round(density, 4),
-        posterior = posterior,
-        success = (posterior > thetaT)
+        counts = c(0:mE),
+        # cumul_counts = xS + (0:NmaxControl),
+        density = py,
+        posterior = b,
+        success = (b > thetaT)
       )
     )
   } else {
@@ -174,21 +183,14 @@ predprobDist <- function(x, n,
     # determine remaining sample size and probabilities of response
     # counts in future SOC patients:
     mS <- NmaxControl - nS
-
-    controlBetamixPost <- h_getBetamixPost(
-      x = xS, n = nS, par = parS,
-      weights = weightsS
-    )
-
+    controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
     pz <- with(
       controlBetamixPost,
       dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
     )
-
     # determine resulting posterior probabilities:
     outcomesY <- x + c(0:mE)
-    outcomesZ <- xS + c(0:mS)
-
+    outcomesZ <- xS + c(0:mS) # 15 more chances to get success counts
     pyz <- b <- matrix(
       nrow = 1 + mE,
       ncol = 1 + mS,
@@ -198,8 +200,7 @@ predprobDist <- function(x, n,
           0:mS
         )
     )
-
-    for (i in seq_along(outcomesY)) {
+    for (i in seq_along(outcomesY)) { # outside?
       for (j in seq_along(outcomesZ)) {
         # calculate the posterior probability for this combination
         # of counts
@@ -216,24 +217,21 @@ predprobDist <- function(x, n,
             parS = parS,
             weightsS = weightsS
           )
-
         # what are the joint probabilities of active and control counts?
         # => because they are independent, just multiply them
-        pyz[i, j] <- py[i] * pz[j]
+        pyz[i, j] <- py[i] * pz[j] # this is the matrix that Daniel was talking about
       }
     }
-
-    # should we print something?
+    # should we print something? predprob part
     ret <- structure(sum(pyz * (b > thetaT)),
       tables =
         list(
           pyz = pyz,
           b = b,
-          bgttheta = (b > thetaT)
+          success = (b > thetaT)
         )
     )
   }
-
   ret
 }
 

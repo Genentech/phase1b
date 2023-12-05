@@ -1,0 +1,238 @@
+---
+title: "Design Document"
+output: html_document
+date: "2023-12-04"
+---
+
+## Example inputs / Sanity check
+
+```{r setup, include=FALSE}
+x <- 16
+n <- 23
+xS <- 5
+nS <- 10
+Nmax <- 40
+NmaxControl <- 20
+delta <- 0
+thetaT <- 0.6
+parE <- rbind(c(1, 1), c(50, 10))
+parS <- rbind(c(1, 1), c(20, 40))
+weight <- c(2, 1)
+weightS <- c(2, 1)
+relativeDelta <- FALSE
+
+# predprobDist(
+#   x = x,
+#   n = n,
+#   xS = xS,
+#   nS = nS,
+#   Nmax = Nmax,
+#   NmaxControl = NmaxControl,
+#   delta = delta,
+#   thetaT = thetaT,
+#   parE = parE,
+#   parS = parS
+# )
+
+# predprobDist(
+#   x = 16, n = 23, Nmax = 40, delta = 0, thetaT = 0.9,
+#   parE = c(0.6, 0.4), parS = c(7, 11)
+# )
+```
+
+```{r}
+predprobDist(
+  x = 16, n = 23, Nmax = 40, delta = 0, thetaT = 0.9,
+  parE = c(0.6, 0.4), parS = c(7, 11)
+)
+```
+## R Markdown
+
+# helper if NmaxControl == 0, or when there is no control
+```{r}
+h_get_predproblist_control <- function(x,
+                                       n,
+                                       delta,
+                                       relativeDelta,
+                                       parE,
+                                       weights,
+                                       parS,
+                                       weightsS,
+                                       thetaT,
+                                       density,
+                                       mE) {
+  posterior <- postprobDist(
+    x = x + c(0:mE),
+    n = Nmax,
+    delta = delta,
+    relativeDelta = relativeDelta,
+    parE = parE,
+    weights = weights,
+    parS = parS,
+    weightsS = weightsS
+  )
+  list(
+    result = sum(density * (posterior > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = n + (0:mE),
+      density = round(density, 4),
+      posterior = posterior,
+      success = (posterior > thetaT)
+    )
+  )
+}
+```
+
+
+```{r cars}
+predprobDist <- function(x, n,
+                         xS = 0,
+                         nS = 0,
+                         Nmax,
+                         NmaxControl = 0,
+                         delta = 0,
+                         relativeDelta = FALSE,
+                         parE = c(a = 1, b = 1),
+                         weights,
+                         parS = c(a = 1, b = 1),
+                         weightsS,
+                         thetaT) {
+  # ensure reasonable numbers
+  stopifnot(
+    n <= Nmax,
+    nS <= NmaxControl,
+    x <= n,
+    xS <= nS
+  )
+  # remaining active patients to be seen:
+  mE <- Nmax - n
+  # if par is a vector => situation where there is only one component
+  if (is.vector(parE)) {
+    # check that it has exactly two entries
+    stopifnot(identical(length(parE), 2L))
+    # and transpose to matrix with one row
+    parE <- t(parE)
+  }
+  # if prior weights of the beta mixture are not supplied
+  if (missing(weights)) {
+    weights <- rep(1, nrow(parE))
+    # (don't need to be normalized, this is done in h_getBetamixPost)
+  }
+  # if parS is a vector => situation where there is only one component
+  if (is.vector(parS)) {
+    # check that it has exactly two entries
+    stopifnot(identical(length(parS), 2L))
+    # and transpose to matrix with one row
+    parS <- t(parS)
+  }
+  # if prior weights of the beta mixture are not supplied
+  if (missing(weightsS)) {
+    weightsS <- rep(1, nrow(parS))
+  }
+  # now compute updated parameters for beta mixture distribution on the
+  # treatment proportion
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  # now with the beta binomial mixture:
+  py <- with(
+    activeBetamixPost,
+    dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
+  )
+  if (NmaxControl == 0) {
+    # here is the only difference to predprob.R:
+    # how to compute the posterior probabilities
+    # posterior <- postprobDist(
+    #   x = x + c(0:mE),
+    #   n = Nmax,
+    #   delta = delta,
+    #   relativeDelta = relativeDelta,
+    #   parE = parE,
+    #   weights = weights,
+    #   parS = parS,
+    #   weightsS = weightsS
+    # )
+    # ret <- list(
+    #   result = sum(py * (posterior > thetaT)),
+    #   table = data.frame(
+    #     counts = c(0:mE),
+    #     cumul_counts = n + (0:mE),
+    #     density = py,
+    #     posterior = posterior,
+    #     success = (posterior > thetaT)
+    #   )
+    # )
+    h_get_predproblist_control(
+      x = x,
+      n = n,
+      delta = delta,
+      relativeDelta = relativeDelta,
+      parE = parE,
+      weights = weights,
+      parS = parS,
+      weightsS = weightsS,
+      thetaT = thetaT,
+      density = py,
+      mE = mE
+    )
+  } else {
+    # in this case also data on the SOC is available!
+    # determine remaining sample size and probabilities of response
+    # counts in future SOC patients:
+    mS <- NmaxControl - nS
+    controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
+    pz <- with(
+      controlBetamixPost,
+      dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
+    )
+    # determine resulting posterior probabilities:
+    outcomesY <- x + c(0:mE)
+    outcomesZ <- xS + c(0:mS)
+    pyz <- b <- matrix(
+      nrow = 1 + mE,
+      ncol = 1 + mS,
+      dimnames =
+        list(
+          0:mE,
+          0:mS
+        )
+    )
+    for (i in seq_along(outcomesY)) { # outside?
+      for (j in seq_along(outcomesZ)) {
+        # calculate the posterior probability for this combination
+        # of counts
+        b[i, j] <- # postprobDist part
+          postprobDist(
+            x = outcomesY[i],
+            n = Nmax,
+            xS = outcomesZ[j],
+            nS = NmaxControl,
+            delta = delta,
+            relativeDelta = relativeDelta,
+            parE = parE,
+            weights = weights,
+            parS = parS,
+            weightsS = weightsS
+          )
+        # what are the joint probabilities of active and control counts?
+        # => because they are independent, just multiply them
+        pyz[i, j] <- py[i] * pz[j]
+      }
+    }
+    # should we print something? predprob part
+    ret <- structure(sum(pyz * (b > thetaT)),
+      tables =
+        list(
+          pyz = pyz,
+          b = b,
+          success = (b > thetaT)
+        )
+    )
+  }
+  ret
+}
+```
+
+
+
+```{r pressure, echo=FALSE}
+```
