@@ -38,12 +38,6 @@ Calculates the quantile of the Beta-Mixture distribution for a given probability
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -109,14 +103,14 @@ corresponding to the beta parameters of the K components.</p></dd>
 <span class="r-in"><span>  par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3112068</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (p, par, weights, lower.tail = TRUE) {    f &lt;- function(pi) {        pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) -             p    }    unirootResult &lt;- uniroot(f, lower = 0, upper = 1, f.lower = -p,         f.upper = 1 - p)    if (unirootResult$iter &lt; 0) {        NA    }    else {        assert_number(unirootResult$root)        assert_true(all.equal(f(unirootResult$root), 0))        unirootResult$root    }})(p = dots[[1L]][[1L]], par = structure(c(0.2, 0.4), dim = 1:2),     weights = 1):</span> Assertion on 'all.equal(f(unirootResult$root), 0)' failed: Must be TRUE.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With 2 mixture components</span></span></span>
 <span class="r-in"><span><span class="fu">qbetaMix</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  p <span class="op">=</span> <span class="fl">0.6</span>, par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.488759</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (p, par, weights, lower.tail = TRUE) {    f &lt;- function(pi) {        pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) -             p    }    unirootResult &lt;- uniroot(f, lower = 0, upper = 1, f.lower = -p,         f.upper = 1 - p)    if (unirootResult$iter &lt; 0) {        NA    }    else {        assert_number(unirootResult$root)        assert_true(all.equal(f(unirootResult$root), 0))        unirootResult$root    }})(p = dots[[1L]][[1L]], par = structure(c(0.2, 1, 0.4, 1), dim = c(2L, 2L)), weights = c(0.6, 0.4)):</span> Assertion on 'all.equal(f(unirootResult$root), 0)' failed: Must be TRUE.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Can also specify q as a vector</span></span></span>
 <span class="r-in"><span><span class="fu">qbetaMix</span><span class="op">(</span></span></span>
@@ -124,27 +118,7 @@ corresponding to the beta parameters of the K components.</p></dd>
 <span class="r-in"><span>  par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.062599e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] 1.195146e-04 1.155159e-04 8.443751e-05 1.848755e-04 3.796376e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [11] 6.207540e-04 9.948499e-04 1.512693e-03 2.212278e-03 3.161665e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [16] 4.396418e-03 5.976652e-03 7.922461e-03 1.032535e-02 1.315398e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [21] 1.651358e-02 2.040127e-02 2.487029e-02 2.987466e-02 3.548362e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] 4.166591e-02 4.842761e-02 5.573528e-02 6.364744e-02 7.204244e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31] 8.098204e-02 9.040336e-02 1.002934e-01 1.106289e-01 1.213959e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 1.325708e-01 1.440653e-01 1.559580e-01 1.681759e-01 1.807060e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [41] 1.935289e-01 2.066262e-01 2.199802e-01 2.335744e-01 2.473929e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [46] 2.614459e-01 2.756684e-01 2.900724e-01 3.046450e-01 3.193743e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51] 3.342283e-01 3.492379e-01 3.643711e-01 3.796162e-01 3.949599e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [56] 4.103981e-01 4.259220e-01 4.415224e-01 4.571909e-01 4.729799e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] 4.887590e-01 5.045812e-01 5.204381e-01 5.363217e-01 5.522238e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [66] 5.681361e-01 5.840505e-01 5.999584e-01 6.158512e-01 6.317201e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 6.475557e-01 6.633485e-01 6.790885e-01 6.947652e-01 7.103673e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76] 7.258831e-01 7.412998e-01 7.565763e-01 7.717931e-01 7.868140e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [81] 8.016817e-01 8.163618e-01 8.308578e-01 8.451166e-01 8.591210e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [86] 8.728399e-01 8.862383e-01 8.992760e-01 9.119066e-01 9.240762e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91] 9.357219e-01 9.467694e-01 9.571314e-01 9.667238e-01 9.753373e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [96] 9.829571e-01 9.893392e-01 9.943267e-01 9.977525e-01 9.995464e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101] 1.000000e+00</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (p, par, weights, lower.tail = TRUE) {    f &lt;- function(pi) {        pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) -             p    }    unirootResult &lt;- uniroot(f, lower = 0, upper = 1, f.lower = -p,         f.upper = 1 - p)    if (unirootResult$iter &lt; 0) {        NA    }    else {        assert_number(unirootResult$root)        assert_true(all.equal(f(unirootResult$root), 0))        unirootResult$root    }})(p = dots[[1L]][[2L]], par = structure(c(0.2, 1, 0.4, 1), dim = c(2L, 2L)), weights = c(0.6, 0.4)):</span> Assertion on 'all.equal(f(unirootResult$root), 0)' failed: Must be TRUE.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
