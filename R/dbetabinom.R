@@ -192,11 +192,14 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   f <- function(pi) {
     pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - p
   }
-  unirootResult <- uniroot(f, lower = 0, upper = 1)
+  # Note: we give the lower and upper function values here in order to avoid problems for
+  # p = 0 or p = 1.
+  unirootResult <- uniroot(f, lower = 0, upper = 1, f.lower = -p, f.upper = 1 - p)
   if (unirootResult$iter < 0) {
     NA
   } else {
     assert_number(unirootResult$root)
+    assert_true(all.equal(f(unirootResult$root), 0))
     unirootResult$root
   }
 }
