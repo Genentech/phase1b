@@ -43,7 +43,7 @@ predprobDist(
 
 # Helper function if NmaxControl == 0, or when there is no control
 ```{r}
-h_get_predproblist_nocontrol <- function(x,
+h_predprobdist_single_arm <- function(x,
                                          n,
                                          delta,
                                          relativeDelta,
