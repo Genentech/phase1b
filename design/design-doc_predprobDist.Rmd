@@ -33,15 +33,15 @@ activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weight
 density_y <- with(activeBetamixPost, dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights))
 ```
 
+# Sanity Check
 ```{r}
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0, thetaT = 0.9,
   parE = c(0.6, 0.4), parS = c(7, 11)
 )
 ```
-## R Markdown
 
-# helper function if NmaxControl == 0, or when there is no control
+# Helper function if NmaxControl == 0, or when there is no control
 ```{r}
 h_get_predproblist_nocontrol <- function(x,
                                          n,
@@ -94,7 +94,8 @@ h_get_predproblist_nocontrol(
   mE = 17
 )
 ```
-# helper function 1 if NmaxControl != 0
+
+# Helper function 1 if NmaxControl != 0
 ```{r}
 h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, density_y) {
   mS <- NmaxControl - nS
@@ -151,6 +152,7 @@ h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, den
   ret
 }
 ```
+
 # Testing helper function if NmaxControl != 0
 ```{r}
 h_getlistpredprob(
@@ -164,6 +166,7 @@ h_getlistpredprob(
   density_y = density_y
 )
 ```
+
 # Main function
 ```{r cars}
 predprobDist <- function(x, n,
