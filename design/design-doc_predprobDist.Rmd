@@ -96,9 +96,6 @@ h_get_predproblist_nocontrol(
 ```
 # helper function 1 if NmaxControl != 0
 ```{r}
-activeBetamixPost <- h_getBetamixPost(x = 16, n = 23, par = t(c(1, 1)), weights = 1)
-density_y <- with(activeBetamixPost, dbetabinomMix(x = 0:17, m = 17, par = t(c(1, 1)), weights = 1))
-
 h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, density_y) {
   mS <- NmaxControl - nS
   controlBetamixPost <- h_getBetamixPost(
