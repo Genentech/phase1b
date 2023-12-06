@@ -68,7 +68,7 @@ h_get_predproblist_nocontrol <- function(x,
     result = sum(density * (posterior_x > thetaT)),
     table = data.frame(
       counts = c(0:mE),
-      cumul_counts = n + (0:mE),
+      cumul_counts = x + (0:mE),
       density = density_y,
       posterior = posterior_x,
       success = (posterior_x > thetaT)
@@ -143,7 +143,7 @@ h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, den
     result = sum(density_yz * (posterior_yz > thetaT)),
     table = data.frame(
       counts = c(0:mE),
-      cumul_counts = n + (0:mE),
+      cumul_counts = x + (0:mE),
       density = density_yz,
       posterior = posterior_yz,
       success = (posterior_yz > thetaT)
