@@ -30,7 +30,7 @@ weightsS <- rep(1, nrow(parS))
 
 activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
 # now with the beta binomial mixture:
-py <- with(activeBetamixPost, dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
+density_y <- with(activeBetamixPost, dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights))
 ```
 
 ```{r}
@@ -41,23 +41,20 @@ predprobDist(
 ```
 ## R Markdown
 
-# helper if NmaxControl == 0, or when there is no control
+# helper function if NmaxControl == 0, or when there is no control
 ```{r}
-h_get_table_singlearm <- function(
-    n,
-    x,
-    mE,
-    delta,
-    relativeDelta,
-    parE,
-    weights ,
-    parS,
-    weightsS ,
-    thetaT ,
-    b,
-    py,
-    Nmax) {
-  b <- postprobDist(
+h_get_predproblist_nocontrol <- function(x,
+                                         n,
+                                         delta,
+                                         relativeDelta,
+                                         parE,
+                                         weights,
+                                         parS,
+                                         weightsS,
+                                         thetaT,
+                                         density,
+                                         mE) {
+  posterior_x <- postprobDist(
     x = x + c(0:mE),
     n = Nmax,
     delta = delta,
@@ -67,40 +64,111 @@ h_get_table_singlearm <- function(
     parS = parS,
     weightsS = weightsS
   )
-
-  ret <- structure(sum(py * (b > thetaT)),
-                   tables =
-                     round(
-                       cbind(
-                         i = c(0:mE),
-                         py,
-                         b,
-                         bgttheta = (b > thetaT)
-                       ),
-                       4
-                     )
+  list(
+    result = sum(density * (posterior_x > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = n + (0:mE),
+      density = round(density, 4),
+      posterior = posterior_x,
+      success = (posterior_x > thetaT)
+    )
   )
-
 }
-
 ```
 
+# Testing helper function if NmaxControl == 0, or when there is no control
 ```{r}
-h_get_predproblist_control(x = x,
-                           Nmax = Nmax,
-                           delta = delta,
-                           relativeDelta = relativeDelta,
-                           parE = parE,
-                           weights = weights,
-                           parS = parS,
-                           weightsS = weightsS,
-                           thetaT = thetaT,
-                           density = 0.77,
-                           mE = 17)
+# testing
+h_get_predproblist_nocontrol(
+  x = x,
+  n = Nmax,
+  delta = delta,
+  relativeDelta = relativeDelta,
+  parE = parE,
+  weights = weights,
+  parS = parS,
+  weightsS = weightsS,
+  thetaT = thetaT,
+  density = 0.77,
+  mE = 17
+)
 ```
+# helper function 1 if NmaxControl != 0
+```{r}
+activeBetamixPost <- h_getBetamixPost(x = 16, n = 23, par = t(c(1, 1)), weights = 1)
+density_y <- with(activeBetamixPost, dbetabinomMix(x = 0:17, m = 17, par = t(c(1, 1)), weights = 1))
 
-
-
+h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, density_y) {
+  mS <- NmaxControl - nS
+  controlBetamixPost <- h_getBetamixPost(
+    x = xS,
+    n = nS,
+    par = parS,
+    weights = weightsS
+  )
+  pz <- with(
+    controlBetamixPost,
+    dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
+  )
+  ## determine resulting posterior probabilities:
+  outcomesY <- x + c(0:mE)
+  outcomesZ <- xS + c(0:mS)
+  pyz <- b <- matrix(
+    nrow = 1 + mE,
+    ncol = 1 + mS,
+    dimnames =
+      list(
+        0:mE,
+        0:mS
+      )
+  )
+  for (i in seq_along(outcomesY)) {
+    for (j in seq_along(outcomesZ)) {
+      b[i, j] <-
+        postprobDist(
+          x = outcomesY[i],
+          n = Nmax,
+          xS = outcomesZ[j],
+          nS = NmaxControl,
+          delta = delta,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          weights = weights,
+          parS = parS,
+          weightsS = weightsS
+        )
+      pyz[i, j] <- density_y[i] * pz[j]
+    }
+  }
+  pyz
+  ret <- list(
+    result = sum(pyz * (b > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = n + (0:mE),
+      density = pyz,
+      posterior = b,
+      success = (b > thetaT)
+    )
+  )
+  ret
+}
+```
+# Testing helper function if NmaxControl != 0
+```{r}
+h_getlistpredprob(
+  NmaxControl = 20,
+  nS = 10,
+  xS = 5,
+  weightsS = 1,
+  par = c(1, 1),
+  x = 10,
+  mE = 17,
+  density_y = density_y
+)
+```
+# Main function
 ```{r cars}
 predprobDist <- function(x, n,
                          xS = 0, nS = 0,
@@ -135,15 +203,14 @@ predprobDist <- function(x, n,
     weightsS <- rep(1, nrow(parS))
   }
   activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  py <- with(
+  density_y <- with(
     activeBetamixPost,
     dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
   )
   if (NmaxControl == 0) {
-    h_get_table_singlearm(
+    ret <- h_get_predproblist_nocontrol(
       x = x,
       n = Nmax,
-      mE = mE,
       delta = delta,
       relativeDelta = relativeDelta,
       parE = parE,
@@ -151,88 +218,21 @@ predprobDist <- function(x, n,
       parS = parS,
       weightsS = weightsS,
       thetaT = thetaT,
-      b = b,
-      py = py,
-      Nmax)
-    # b <- postprobDist(
-    #   x = x + c(0:mE),
-    #   n = Nmax,
-    #   delta = delta,
-    #   relativeDelta = relativeDelta,
-    #   parE = parE,
-    #   weights = weights,
-    #   parS = parS,
-    #   weightsS = weightsS
-    # )
-    #
-    # ret <- structure(sum(py * (b > thetaT)),
-    #                  tables =
-    #                    round(
-    #                      cbind(
-    #                        i = c(0:mE),
-    #                        py,
-    #                        b,
-    #                        bgttheta = (b > thetaT)
-    #                      ),
-    #                      4
-    #                    )
-    # )
+      density = density_y,
+      mE = mE
+    )
   } else {
-    mS <- NmaxControl - nS
-    controlBetamixPost <- h_getBetamixPost(
-      x = xS, n = nS, par = parS,
-      weights = weightsS
-    )
-    pz <- with(
-      controlBetamixPost,
-      dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
-    )
-    ## determine resulting posterior probabilities:
-    outcomesY <- x + c(0:mE)
-    outcomesZ <- xS + c(0:mS)
-    pyz <- b <- matrix(
-      nrow = 1 + mE,
-      ncol = 1 + mS,
-      dimnames =
-        list(
-          0:mE,
-          0:mS
-        )
-    )
-    for (i in seq_along(outcomesY)) {
-      for (j in seq_along(outcomesZ)) {
-        b[i, j] <-
-          postprobDist(
-            x = outcomesY[i],
-            n = Nmax,
-            xS = outcomesZ[j],
-            nS = NmaxControl,
-            delta = delta,
-            relativeDelta = relativeDelta,
-            parE = parE,
-            weights = weights,
-            parS = parS,
-            weightsS = weightsS
-          )
-        pyz[i, j] <- py[i] * pz[j]
-      }
-    }
-    ret <- structure(sum(pyz * (b > thetaT)),
-                     tables =
-                       list(
-                         pyz = pyz,
-                         b = b,
-                         bgttheta = (b > thetaT)
-                       )
+    ret <- h_getlistpredprob(
+      NmaxControl = nS,
+      nS = nS, xS = xS, par = parS, weightsS = weightsS,
+      mS = mS, x = x, mE = mE, density_y = density_y
     )
   }
   ret
 }
-
 ```
 
-
-
+# An example
 ```{r pressure, echo=FALSE}
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0.1, thetaT = 0.9,
