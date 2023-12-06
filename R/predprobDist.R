@@ -62,7 +62,7 @@ NULL
 #' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
 #'
 #' @typed x : number
-#' number of successes in the treatment group at interm
+#' number of successes in the treatment group at interim
 #' @typed n : number
 #' number of patients in the treatment group at interim
 #' @typed xS : number
