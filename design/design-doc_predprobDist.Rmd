@@ -69,7 +69,7 @@ h_get_predproblist_nocontrol <- function(x,
     table = data.frame(
       counts = c(0:mE),
       cumul_counts = n + (0:mE),
-      density = round(density, 4),
+      density = density_y,
       posterior = posterior_x,
       success = (posterior_x > thetaT)
     )
@@ -90,7 +90,7 @@ h_get_predproblist_nocontrol(
   parS = parS,
   weightsS = weightsS,
   thetaT = thetaT,
-  density = 0.77,
+  density = density_y,
   mE = 17
 )
 ```
@@ -104,14 +104,14 @@ h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, den
     par = parS,
     weights = weightsS
   )
-  pz <- with(
+  density_z <- with(
     controlBetamixPost,
     dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
   )
   ## determine resulting posterior probabilities:
   outcomesY <- x + c(0:mE)
   outcomesZ <- xS + c(0:mS)
-  pyz <- b <- matrix(
+  density_yz <- posterior_yz <- matrix(
     nrow = 1 + mE,
     ncol = 1 + mS,
     dimnames =
@@ -122,7 +122,7 @@ h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, den
   )
   for (i in seq_along(outcomesY)) {
     for (j in seq_along(outcomesZ)) {
-      b[i, j] <-
+      posterior_yz[i, j] <-
         postprobDist(
           x = outcomesY[i],
           n = Nmax,
@@ -135,18 +135,17 @@ h_getlistpredprob <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, den
           parS = parS,
           weightsS = weightsS
         )
-      pyz[i, j] <- density_y[i] * pz[j]
+      density_yz[i, j] <- density_y[i] * density_z[j]
     }
   }
-  pyz
   ret <- list(
-    result = sum(pyz * (b > thetaT)),
+    result = sum(density_yz * (posterior_yz > thetaT)),
     table = data.frame(
       counts = c(0:mE),
       cumul_counts = n + (0:mE),
-      density = pyz,
-      posterior = b,
-      success = (b > thetaT)
+      density = density_yz,
+      posterior = posterior_yz,
+      success = (posterior_yz > thetaT)
     )
   )
   ret
