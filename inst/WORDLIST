@@ -125,6 +125,7 @@ PointMass
 pointmass
 postL
 postprob
+postprobDist
 postU
 ppL
 PProbust
