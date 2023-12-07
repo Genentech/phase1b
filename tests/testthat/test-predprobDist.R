@@ -1,63 +1,67 @@
-x <- 16
-n <- 23
-xS <- 5
-nS <- 10
-Nmax <- 40
-NmaxControl <- 20
-delta <- 0
-thetaT <- 0.6
-parE <- c(1, 1)
-parS <- c(1, 1)
-weights <- c(2, 1)
-weightsS <- c(2, 1)
-relativeDelta <- FALSE
-mE <- Nmax - n
-parE <- t(parE)
-weights <- rep(1, nrow(parE))
-parS <- t(parS)
-weightsS <- rep(1, nrow(parS))
-h_get_predproblist_control <- function(x,
-                                       n,
-                                       delta,
-                                       relativeDelta,
-                                       parE,
-                                       weights,
-                                       parS,
-                                       weightsS,
-                                       thetaT,
-                                       density,
-                                       mE) {
-  posterior <- postprobDist(
-    x = x + c(0:mE),
-    n = Nmax,
-    delta = delta,
-    relativeDelta = relativeDelta,
-    parE = parE,
-    weights = weights,
-    parS = parS,
-    weightsS = weightsS
+# h_predprobdist_single_arm ----
+test_that("predprobdist gives correct predictive probability", {
+  result <- h_predprobdist_single_arm(
+    x = 16,
+    Nmax = 40,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(0.6, 0.4),
+    weights = 1,
+    parS = c(7, 11),
+    weightsS = 1,
+    thetaT = 0.5,
+    density = seq(0, 1, length.out = 18),
+    mE = 17
   )
-  list(
-    result = sum(density * (posterior > thetaT)),
-    table = data.frame(
-      counts = c(0:mE),
-      cumul_counts = n + (0:mE),
-      density = round(density, 4),
-      posterior = posterior,
-      success = (posterior > thetaT)
-    )
+  expect_equal(result, expected, tolerance = 1e-4)
+})
+
+test_that("predictive probability is lower when control group has higher response rate at interim", {
+  is_lower <- h_predprobdist_single_arm(
+    x = 16,
+    n = 23,
+    xS = 20,
+    nS = 20,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(1, 1),
+    weights = 1,
+    parS = c(1, 1),
+    weightsS = 1,
+    thetaT = 0.9,
+    density,
+    mE
   )
-}
-h_get_predproblist_control(
-  x = x,
-  n = Nmax,
-  delta = delta,
-  relativeDelta = relativeDelta,
-  parE = parE,
-  weights = weights,
-  parS = parS,
-  weightsS = weightsS,
-  thetaT = thetaT,
-  density = 0.77,
-  mE = 17
-)
+  is_higher <- h_predprobdist_single_arm(
+    x = 16,
+    n = 23,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(1, 1),
+    weights = 1,
+    parS = c(1, 1),
+    weightsS = 1,
+    thetaT = 0.9,
+    density,
+    mE
+  )
+  expect_true(is_higher$result > is_lower$result, )
+})
+
+test_that("predprobdist gives correct list", {
+  result <- h_predprobdist_single_arm(
+    x = 16,
+    n = 23,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(1, 1),
+    weights = 1,
+    parS = c(1, 1),
+    weightsS = 1,
+    thetaT = 0.9,
+    density,
+    mE
+  )
+  expected <- list()
+  expect_identical(result, expected)
+})

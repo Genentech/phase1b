@@ -91,20 +91,6 @@ h_predprobdist_single_arm(
   density = density_y,
   mE = 17
 )
-
-h_predprobdist_single_arm(
-  x = x,
-  n = Nmax,
-  delta = delta,
-  relativeDelta = relativeDelta,
-  parE = parE,
-  weights = weights,
-  parS = parS,
-  weightsS = weightsS,
-  thetaT = thetaT,
-  density = density_y,
-  mE = 17
-)
 ```
 
 # Helper function 1 if NmaxControl != 0
