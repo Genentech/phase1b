@@ -22,7 +22,7 @@ predprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes in the treatment group at interm}
+\item{x}{(\code{number}):\cr number of successes in the treatment group at interim}
 
 \item{n}{(\code{number}):\cr number of patients in the treatment group at interim}
 

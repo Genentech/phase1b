@@ -2,6 +2,152 @@
 #' @include postprobDist.R
 NULL
 
+#' The predictive probability of success in single arm studies.
+#'
+#' The helper function to generate The predictive probability of success when `NmaxControl == 0`.
+#'
+#' @typed x : number
+#'  number of successes in the treatment group at interim.
+#' @typed n : number
+#'   number of patients in the treatment group at interim.
+#' @typed delta : number
+#' @typed relativeDelta : flag
+#'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
+#'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
+#' @typed parE : numeric
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution
+#'  for the treatment group. See details.
+#' @typed weights : numeric
+#' the mixture weights of the beta mixture prior. Default are
+#' uniform weights across mixture components.
+#' @typed parS : numeric
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution for the control group.
+#' @typed weightsS : numeric
+#'  weights for the SOC group.
+#' @typed thetaT : number
+#'  threshold on the probability to be used.
+#' @typed density : numeric
+#'  the beta binomial density for future success in `Nmax-n` patients in the treatment group.
+#' @typed mE : number
+#'  number of successes in the remaining `Nmax-n` number of patients in the treatment group.
+h_predprobdist_single_arm <- function(x,
+                                      n,
+                                      delta,
+                                      relativeDelta,
+                                      parE,
+                                      weights,
+                                      parS,
+                                      weightsS,
+                                      thetaT,
+                                      density,
+                                      mE) {
+  assert_number(x, lower = 0, upper = Nmax, finite = TRUE) # even though Nmax comes later ?
+  assert_number(mE, lower = n, upper = Nmax, finite = TRUE)
+  assert_number(Nmax, lower = n, finite = TRUE)
+  assert_number(delta, lower = 0, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_numeric(weights, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(weightsS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(thetaT, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  posterior_y <- postprobDist(
+    x = x + c(0:mE),
+    n = Nmax,
+    delta = delta,
+    relativeDelta = relativeDelta,
+    parE = parE,
+    weights = weights,
+    parS = parS,
+    weightsS = weightsS
+  )
+  assert_numeric(posterior_y, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_numeric(density_y, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  list(
+    result = sum(density_y * (posterior_y > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = x + (0:mE),
+      density = density_y,
+      posterior = posterior_y,
+      success = (posterior_y > thetaT)
+    )
+  )
+}
+
+#' Title
+#'
+#' @param NmaxControl
+#' @param nS
+#' @param xS
+#' @param par
+#' @param weightsS
+#' @param mS
+#' @param x
+#' @param mE
+#' @param density_y
+#'
+#' @return
+#' @export
+#'
+#' @examples
+h_predprobdist <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, density_y) {
+  mS <- NmaxControl - nS
+  controlBetamixPost <- h_getBetamixPost(
+    x = xS,
+    n = nS,
+    par = parS,
+    weights = weightsS
+  )
+  density_z <- with(
+    controlBetamixPost,
+    dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
+  )
+  # determine resulting posterior probabilities:
+  outcomesY <- x + c(0:mE)
+  outcomesZ <- xS + c(0:mS)
+  density_yz <- posterior_yz <- matrix(
+    nrow = 1 + mE,
+    ncol = 1 + mS,
+    dimnames =
+      list(
+        0:mE,
+        0:mS
+      )
+  )
+  for (i in seq_along(outcomesY)) {
+    for (j in seq_along(outcomesZ)) {
+      posterior_yz[i, j] <-
+        postprobDist(
+          x = outcomesY[i],
+          n = Nmax,
+          xS = outcomesZ[j],
+          nS = NmaxControl,
+          delta = delta,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          weights = weights,
+          parS = parS,
+          weightsS = weightsS
+        )
+      density_yz[i, j] <- density_y[i] * density_z[j]
+    }
+  }
+  ret <- list(
+    result = sum(density_yz * (posterior_yz > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = x + (0:mE),
+      density = density_yz,
+      posterior = posterior_yz,
+      success = (posterior_yz > thetaT)
+    )
+  )
+  ret
+}
+#'
 #' Compute the predictive probability that the trial will be
 #' successful, with a prior distribution on the SOC
 #'
@@ -115,124 +261,53 @@ predprobDist <- function(x, n,
                          parS = c(a = 1, b = 1),
                          weightsS,
                          thetaT) {
-  # ensure reasonable numbers
   stopifnot(
     n <= Nmax,
     nS <= NmaxControl,
     x <= n,
     xS <= nS
   )
-  # remaining active patients to be seen:
   mE <- Nmax - n
-  # if par is a vector => situation where there is only one component
   if (is.vector(parE)) {
-    # check that it has exactly two entries
     stopifnot(identical(length(parE), 2L))
-    # and transpose to matrix with one row
     parE <- t(parE)
   }
-  # if prior weights of the beta mixture are not supplied
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
-    # (don't need to be normalized, this is done in h_getBetamixPost)
   }
-  # if parS is a vector => situation where there is only one component
   if (is.vector(parS)) {
-    # check that it has exactly two entries
     stopifnot(identical(length(parS), 2L))
-    # and transpose to matrix with one row
     parS <- t(parS)
   }
-  # if prior weights of the beta mixture are not supplied
   if (missing(weightsS)) {
     weightsS <- rep(1, nrow(parS))
   }
-  # now compute updated parameters for beta mixture distribution on the
-  # treatment proportion
   activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
-  # now with the beta binomial mixture:
-  py <- with(
+  density_y <- with(
     activeBetamixPost,
     dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
   )
   if (NmaxControl == 0) {
-    # here is the only difference to predprob.R:
-    # how to compute the posterior probabilities
-    b <- postprobDist(
-      x = x + c(0:mE),
+    ret <- h_predprobdist_single_arm(
+      x = x,
       n = Nmax,
       delta = delta,
       relativeDelta = relativeDelta,
       parE = parE,
       weights = weights,
       parS = parS,
-      weightsS = weightsS
-    )
-    ret <- list(
-      result = sum(py * (b > thetaT)),
-      table = data.frame(
-        counts = c(0:mE),
-        # cumul_counts = xS + (0:NmaxControl),
-        density = py,
-        posterior = b,
-        success = (b > thetaT)
-      )
+      weightsS = weightsS,
+      thetaT = thetaT,
+      density = density_y,
+      mE = mE
     )
   } else {
-    # in this case also data on the SOC is available!
-    # determine remaining sample size and probabilities of response
-    # counts in future SOC patients:
-    mS <- NmaxControl - nS
-    controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
-    pz <- with(
-      controlBetamixPost,
-      dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
-    )
-    # determine resulting posterior probabilities:
-    outcomesY <- x + c(0:mE)
-    outcomesZ <- xS + c(0:mS) # 15 more chances to get success counts
-    pyz <- b <- matrix(
-      nrow = 1 + mE,
-      ncol = 1 + mS,
-      dimnames =
-        list(
-          0:mE,
-          0:mS
-        )
-    )
-    for (i in seq_along(outcomesY)) { # outside?
-      for (j in seq_along(outcomesZ)) {
-        # calculate the posterior probability for this combination
-        # of counts
-        b[i, j] <-
-          postprobDist(
-            x = outcomesY[i],
-            n = Nmax,
-            xS = outcomesZ[j],
-            nS = NmaxControl,
-            delta = delta,
-            relativeDelta = relativeDelta,
-            parE = parE,
-            weights = weights,
-            parS = parS,
-            weightsS = weightsS
-          )
-        # what are the joint probabilities of active and control counts?
-        # => because they are independent, just multiply them
-        pyz[i, j] <- py[i] * pz[j] # this is the matrix that Daniel was talking about
-      }
-    }
-    # should we print something? predprob part
-    ret <- structure(sum(pyz * (b > thetaT)),
-      tables =
-        list(
-          pyz = pyz,
-          b = b,
-          success = (b > thetaT)
-        )
+    ret <- h_predprobdist(
+      NmaxControl = nS,
+      nS = nS, xS = xS, par = parS, weightsS = weightsS,
+      mS = mS, x = x, mE = mE, density_y = density_y
     )
   }
   ret
 }
-
 # todo: predprobDistFail
