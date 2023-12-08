@@ -11,7 +11,7 @@ predProbEx
 predProbDistEx <- predprobDist(
   x = 16, n = 23, Nmax = 40,
   parE = c(0.6, 0.4), parS = c(60, 40), thetaT = 0.90
-)
+)$result
 as.numeric(predProbDistEx)
 ## this must be lower
 
@@ -36,7 +36,7 @@ predProbDistRctEx <- predprobDist(
   ## xS=1, nS=3, NmaxControl=10,
   xS = 10, nS = 20, NmaxControl = 50,
   parE = c(0.6, 0.4), parS = c(60, 40), thetaT = 0.90
-)
+)$result
 
 ## use as.numeric to suppress printing of the attribute
 as.numeric(predProbDistRctEx)

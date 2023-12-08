@@ -2,6 +2,79 @@
 #' @include postprobDist.R
 NULL
 
+#' The predictive probability of success in single arm studies.
+#'
+#' The helper function to generate the predictive probability of success based only on treatment group (`E`)
+#' as there is no control or standard of care (`SOC`) group, indicated by `NmaxControl == 0`.
+#'
+#' @typed x : number
+#'  number of successes in the `E` group at interim.
+#' @typed Nmax : number
+#'   maximum number of patients at final analysis.
+#' @typed delta : number
+#'   difference between response rates to be met.
+#' @typed relativeDelta : flag
+#'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
+#'  response rate in magnitude of `delta` of the `SOC` non-responding patients. See note.
+#' @typed parE : numeric
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution
+#'  for the `E` group. See details.
+#' @typed weights : numeric
+#' the mixture weights of the beta mixture prior. Default are
+#' uniform weights across mixture components.
+#' @typed parS : numeric
+#'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+#'  and each row corresponds to each component of a beta-mixture distribution for the `SOC` group.
+#' @typed weightsS : numeric
+#'  weights for the `SOC` group.
+#' @typed thetaT : number
+#'  threshold on the probability to be used.
+#' @typed density : numeric
+#'  the beta binomial density for future success in `Nmax-n` patients in the `E` group.
+#' @typed mE : number
+#'  number of successes in the remaining `Nmax-n` number of patients in the treatment `E` group.
+
+h_predprobdist_single_arm <- function(x,
+                                      Nmax,
+                                      delta,
+                                      relativeDelta,
+                                      parE,
+                                      weights,
+                                      parS,
+                                      weightsS,
+                                      thetaT,
+                                      density,
+                                      mE) {
+  assert_number(x, lower = 0, upper = Nmax)
+  assert_number(mE, lower = 0)
+  assert_number(x + mE, upper = Nmax)
+  assert_number(thetaT, lower = 0, upper = 1)
+  posterior_y <- postprobDist(
+    x = x + c(0:mE),
+    n = Nmax,
+    delta = delta,
+    relativeDelta = relativeDelta,
+    parE = parE,
+    weights = weights,
+    parS = parS,
+    weightsS = weightsS
+  )
+  assert_numeric(posterior_y, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_numeric(density, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  list(
+    result = sum(density * (posterior_y > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = x + (0:mE),
+      density = density,
+      posterior = posterior_y,
+      success = (posterior_y > thetaT)
+    )
+  )
+}
+
+#'
 #' Compute the predictive probability that the trial will be
 #' successful, with a prior distribution on the SOC
 #'
@@ -46,7 +119,7 @@ NULL
 #' b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
 #' bgttheta: matrix of indicators I(b>thetaT)
 #'
-#' @note
+#' @details
 #'
 #' # Delta from postprobDist :
 #'
@@ -93,9 +166,7 @@ NULL
 #' @typed thetaT :
 #' threshold on the probability to be used
 #' @return A `list` is returned with names `result` for predictive probability and
-#'  `table` of numeric values with counts of responses in the remaining patients,
-#'  probabilities of these counts, corresponding probabilities to be above threshold,
-#'  and trial success indicators.
+#'  `table` (single arm case)  or list `tables` with ... (to be completed)
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #' design for phase II cancer clinical trials. Clinical Trials, 5(2),
@@ -172,7 +243,6 @@ predprobDist <- function(x, n,
       result = sum(py * (b > thetaT)),
       table = data.frame(
         counts = c(0:mE),
-        # cumul_counts = xS + (0:NmaxControl),
         density = py,
         posterior = b,
         success = (b > thetaT)
@@ -217,22 +287,20 @@ predprobDist <- function(x, n,
             parS = parS,
             weightsS = weightsS
           )
-        # what are the joint probabilities of active and control counts?
+        # what are the joint probabilitiesD of active and control counts?
         # => because they are independent, just multiply them
         pyz[i, j] <- py[i] * pz[j] # this is the matrix that Daniel was talking about
       }
     }
     # should we print something? predprob part
-    ret <- structure(sum(pyz * (b > thetaT)),
-      tables =
-        list(
-          pyz = pyz,
-          b = b,
-          success = (b > thetaT)
-        )
+    ret <- list(
+      result = sum(pyz * (b > thetaT)),
+      tables = list(
+        pyz = pyz,
+        b = b,
+        success = (b > thetaT)
+      )
     )
   }
   ret
 }
-
-# todo: predprobDistFail

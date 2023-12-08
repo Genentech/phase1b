@@ -275,7 +275,7 @@ oc2 <- function(method =
           x = sum(x[1:i]),
           n = i, Nmax = Nmax, p = p1,
           thetaT = tT, parE = parE, weights = weights
-        )
+        )$result
       } else if (method %in% c(
         "Prior.PP",
         "RCT.PP",
@@ -296,7 +296,7 @@ oc2 <- function(method =
           parE = parE,
           weights = weights,
           parS = parS
-        )
+        )$result
 
         ## sample sizes: in both arms
         nActive[k] <- length(xActive)

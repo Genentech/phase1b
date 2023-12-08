@@ -178,11 +178,11 @@ res6 <- ocPredprobDist(c(10, 20, 30), 0.4,
 res6$oc
 
 # If both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu.
-# See warning message.
+# See warning message (which we suppress here to let checks pass).
 set.seed(20)
-res7 <- ocPredprobDist(c(10, 20, 30), 0.4,
+res7 <- suppressWarnings(ocPredprobDist(c(10, 20, 30), 0.4,
   delta = 0.1, tT = 0.6, tFu = 0.4, phiL = 0.1, phiFu = 0.8, phiU = 0.8,
   parE = c(1, 1), parS = c(5, 25), ns = 10
-)
+))
 res7$oc
 }

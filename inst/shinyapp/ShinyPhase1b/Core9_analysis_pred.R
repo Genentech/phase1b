@@ -29,7 +29,7 @@ pp_1case <- reactive({
     delta = input$cut_B_pred / 100, thetaT = input$pred_tU / 100,
     parE = c(a = input$alpha_trial1, b = input$beta_trial1),
     parS = c(a = input$alpha_con1, b = input$beta_con1)
-  )
+  )$result
 
   ppU <- as.data.frame(attr(ppU, "tables"))
 
@@ -38,7 +38,7 @@ pp_1case <- reactive({
     delta = input$cut_W_pred / 100, thetaT = 1 - input$pred_tL / 100,
     parE = c(a = input$alpha_trial1, b = input$beta_trial1),
     parS = c(a = input$alpha_con1, b = input$beta_con1)
-  )
+  )$result
   ppL <- as.data.frame(attr(ppL, "tables"))
 
   ppRes <- data.frame(

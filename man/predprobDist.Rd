@@ -22,7 +22,7 @@ predprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes in the treatment group at interm}
+\item{x}{(\code{number}):\cr number of successes in the treatment group at interim}
 
 \item{n}{(\code{number}):\cr number of patients in the treatment group at interim}
 
@@ -55,9 +55,7 @@ uniform weights across mixture components.}
 }
 \value{
 A \code{list} is returned with names \code{result} for predictive probability and
-\code{table} of numeric values with counts of responses in the remaining patients,
-probabilities of these counts, corresponding probabilities to be above threshold,
-and trial success indicators.
+\code{table} (single arm case)  or list \code{tables} with ... (to be completed)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -103,9 +101,7 @@ pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
 b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
 bgttheta: matrix of indicators I(b>thetaT)
 }
-\note{
-Delta from postprobDist :
-
+\section{Delta from postprobDist :}{
 The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
 The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
 \enumerate{
@@ -117,6 +113,7 @@ response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such th
 the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
 }
 }
+
 \examples{
 # The original Lee and Liu (Table 1) example:
 # Nmax=40, x=16, n=23, beta(0.6,0.4) prior distribution,

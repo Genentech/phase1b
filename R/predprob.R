@@ -67,7 +67,6 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
   )
   assert_numeric(density, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
-  assert_numeric(posterior, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
   assert_number(thetaT, lower = 0, upper = 1, finite = TRUE)
   # posterior probabilities to be above threshold p
   posterior <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)

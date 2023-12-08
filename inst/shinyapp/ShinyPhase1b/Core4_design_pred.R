@@ -80,7 +80,7 @@ predprobT <- eventReactive(input$pred_selectlook, {
       delta = input$cut_B_pred / 100, thetaT = input$pred_tU / 100,
       parE = c(input$alpha_trial1, input$beta_trial1),
       parS = c(input$alpha_con1, input$beta_con1)
-    ))
+    )$result)
   })
 
 
@@ -91,7 +91,7 @@ predprobT <- eventReactive(input$pred_selectlook, {
       delta = input$cut_W_pred / 100, thetaT = 1 - input$pred_tL / 100,
       parE = c(input$alpha_trial1, input$beta_trial1),
       parS = c(input$alpha_con1, input$beta_con1)
-    ))
+    )$result)
   })
 
 

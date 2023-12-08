@@ -169,7 +169,7 @@ ocRctPredprobDist <- function(nn, pE, pS, delta = 0, deltaFu = delta, relativeDe
           relativeDelta = relativeDelta,
           thetaT = 1 - tFu,
           parE = parE, parS = parS
-        )
+        )$result
 
         s[k] <- ifelse(qL >= phiFu, FALSE, NA)
       }
@@ -182,7 +182,7 @@ ocRctPredprobDist <- function(nn, pE, pS, delta = 0, deltaFu = delta, relativeDe
           relativeDelta = relativeDelta,
           thetaT = tT,
           parE = parE, parS = parS
-        )
+        )$result
 
         ## make the decision
         s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), ## (1)

@@ -50,7 +50,7 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b) {
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      pp <- predprob(x, n, Nmax, p, tT, parE = c(a, b))
+      pp <- predprob(x, n, Nmax, p, tT, parE = c(a, b))$result
       if (pp <= phiL) {
         xL <- x
       }
@@ -65,8 +65,8 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b) {
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries
-    ppL <- predprob(xL, n, Nmax, p, tT, parE = c(a, b))
-    ppU <- predprob(xU, n, Nmax, p, tT, parE = c(a, b))
+    ppL <- predprob(xL, n, Nmax, p, tT, parE = c(a, b))$result
+    ppU <- predprob(xU, n, Nmax, p, tT, parE = c(a, b))$result
     postL <- postprob(xL, n, p, parE = c(a, b))
     postU <- postprob(xU, n, p, parE = c(a, b))
     # calculate lower CI at boundaries

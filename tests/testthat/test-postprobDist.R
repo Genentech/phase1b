@@ -93,7 +93,9 @@ test_that("postprobDist gives an error when n is not a number.", {
       parS = c(0.6, 0.4),
       delta = 0.1,
       relativeDelta = FALSE
-    ), "number of items to replace is not a multiple of replacement length"
+    ),
+    "Assertion on 'n' failed: Must have length 1",
+    fixed = TRUE
   )
 })
 
