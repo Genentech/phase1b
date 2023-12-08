@@ -99,16 +99,20 @@ test_that("predprobdist gives correct list", {
 test_that("predprobdist gives correct predictive probability", {
   mE <- 17
   parE <- rbind(c(1, 1), c(50, 10))
+  thetaT <- 0.9
   result <- h_predprobdist(
     NmaxControl = 20,
     Nmax = 40,
     nS = 10,
     xS = 5,
+    parE = rbind(c(1, 1), c(50, 10)),
     parS = rbind(c(1, 1), c(20, 40)),
+    weights = c(2, 1),
     weightsS = c(2, 1),
     x = 16,
+    mE = 17,
     density_y = dbetabinomMix(x = 0:17, m = 23, par = rbind(c(1, 1), c(50, 10)), weights = c(0.5, 0.5)),
-    delta = 0.1, relativeDelta = FALSE, mE = mE
+    delta = 0.1, relativeDelta = FALSE
   )
   expect_equal(result$result, 0.5426927, tolerance = 1e-4)
 })

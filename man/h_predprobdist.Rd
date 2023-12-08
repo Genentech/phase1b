@@ -10,6 +10,8 @@ h_predprobdist(
   nS,
   xS,
   parS,
+  parE,
+  weights,
   weightsS,
   x,
   mE,
