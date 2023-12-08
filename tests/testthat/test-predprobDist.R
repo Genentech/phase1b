@@ -94,3 +94,52 @@ test_that("predprobdist gives correct list", {
   )
   expect_equal(result, expected)
 })
+
+# h_predprobdist ----
+test_that("predprobdist gives correct predictive probability", {
+  mE <- 17
+  parE <- rbind(c(1, 1), c(50, 10))
+  result <- h_predprobdist(
+    NmaxControl = 20,
+    Nmax = 40,
+    nS = 10,
+    xS = 5,
+    parS = rbind(c(1, 1), c(20, 40)),
+    weightsS = c(2, 1),
+    x = 16,
+    density_y = dbetabinomMix(x = 0:17, m = 23, par = rbind(c(1, 1), c(50, 10)), weights = c(0.5, 0.5)),
+    delta = 0.1, relativeDelta = FALSE, mE = mE
+  )
+  expect_equal(result$result, 0.5426927, tolerance = 1e-4)
+})
+
+
+test_that("predictive probability is higher when thetaT is lower", {
+  is_lower <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
+    x = 16,
+    Nmax = 40,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(0.6, 0.4),
+    weights = 1,
+    parS = c(7, 11),
+    weightsS = 1,
+    thetaT = 0.9,
+    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
+    mE = 17
+  )
+  is_higher <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
+    x = 16,
+    Nmax = 40,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    parE = c(0.6, 0.4),
+    weights = 1,
+    parS = c(7, 11),
+    weightsS = 1,
+    thetaT = 0.5,
+    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
+    mE = 17
+  )
+  expect_true(is_higher$result > is_lower$result, )
+})

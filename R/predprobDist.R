@@ -34,7 +34,11 @@ NULL
 #'  the beta binomial density for future success in `Nmax-n` patients in the `E` group.
 #' @typed mE : number
 #'  number of successes in the remaining `Nmax-n` number of patients in the treatment `E` group.
-
+#'
+#' @keywords internal
+#'
+#' @return
+#'
 h_predprobdist_single_arm <- function(x,
                                       Nmax,
                                       delta,
@@ -74,7 +78,87 @@ h_predprobdist_single_arm <- function(x,
   )
 }
 
+
+#' The predictive probability of success in two-arm studies.
 #'
+#' The helper function to generate the predictive probability of success
+#' based on the difference in treatment group (`E`) and control or
+#' standard of care (`SOC`) group.
+#'
+#'
+#' @inheritParams h_predprobdist_single_arm.R
+#'
+#' @keywords internal
+#'
+#' @return A list with predictive probability of success
+#'
+h_predprobdist <- function(NmaxControl,
+                           Nmax,
+                           nS,
+                           xS,
+                           parS,
+                           weightsS,
+                           x,
+                           mE,
+                           density_y,
+                           delta,
+                           relativeDelta) {
+  mS <- NmaxControl - nS
+  controlBetamixPost <- h_getBetamixPost(
+    x = xS,
+    n = nS,
+    par = parS,
+    weights = weightsS
+  )
+  density_z <- with(
+    controlBetamixPost,
+    dbetabinomMix(x = 0:mS, m = mS, par = parS, weights = weights)
+  )
+  # determine resulting posterior probabilities:
+  outcomesY <- x + c(0:mE)
+  outcomesZ <- xS + c(0:mS)
+  density_yz <- posterior_yz <- matrix(
+    nrow = 1 + mE,
+    ncol = 1 + mS,
+    dimnames =
+      list(
+        0:mE,
+        0:mS
+      )
+  )
+  for (i in seq_along(outcomesY)) {
+    for (j in seq_along(outcomesZ)) {
+      posterior_yz[i, j] <-
+        postprobDist(
+          x = outcomesY[i],
+          n = Nmax,
+          xS = outcomesZ[j],
+          nS = NmaxControl,
+          delta = delta,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          weights = weights,
+          parS = parS,
+          weightsS = weightsS
+        )
+      density_yz[i, j] <- density_y[i] * density_z[j]
+    }
+  }
+  ret <- list(
+    result = sum(density_yz * (posterior_yz > thetaT)),
+    table = data.frame(
+      counts = c(0:mE),
+      cumul_counts = x + (0:mE),
+      density = density_yz,
+      posterior = posterior_yz,
+      success = (posterior_yz > thetaT)
+    )
+  )
+  ret
+}
+
+
+
 #' Compute the predictive probability that the trial will be
 #' successful, with a prior distribution on the SOC
 #'

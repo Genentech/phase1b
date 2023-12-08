@@ -50,3 +50,4 @@ and each row corresponds to each component of a beta-mixture distribution for th
 The helper function to generate the predictive probability of success based only on treatment group (\code{E})
 as there is no control or standard of care (\code{SOC}) group, indicated by \code{NmaxControl == 0}.
 }
+\keyword{internal}

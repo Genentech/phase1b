@@ -95,7 +95,8 @@ h_predprobdist_single_arm(
 
 # Helper function 1 if NmaxControl != 0
 ```{r}
-h_predprobdist <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, density_y) {
+h_predprobdist <- function(NmaxControl, Nmax,
+                           nS, xS, parS, weightsS, x, mS, density_y, delta, relativeDelta) {
   mS <- NmaxControl - nS
   controlBetamixPost <- h_getBetamixPost(
     x = xS,
@@ -107,7 +108,7 @@ h_predprobdist <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, densit
     controlBetamixPost,
     dbetabinomMix(x = 0:mS, m = mS, par = par, weights = weights)
   )
-  ## determine resulting posterior probabilities:
+  # determine resulting posterior probabilities:
   outcomesY <- x + c(0:mE)
   outcomesZ <- xS + c(0:mS)
   density_yz <- posterior_yz <- matrix(
@@ -121,7 +122,7 @@ h_predprobdist <- function(NmaxControl, nS, xS, par, weightsS, mS, x, mE, densit
   )
   for (i in seq_along(outcomesY)) {
     for (j in seq_along(outcomesZ)) {
-      posterior_yz[i, j] <-
+      posterior_yz[i, j] <- # making the posterior for testing it's threshold
         postprobDist(
           x = outcomesY[i],
           n = Nmax,
