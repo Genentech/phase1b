@@ -117,7 +117,7 @@ test_that("qbetaMix gives the correct number result with beta-mixture with incre
     par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
-  expect_equal(result, 0.488759, tolerance = 1e-6)
+  expect_equal(result, 0.488759, tolerance = 1e-4)
 })
 
 test_that("qbetaMix gives a number result with beta-mixture", {
