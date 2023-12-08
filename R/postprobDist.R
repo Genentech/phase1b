@@ -8,7 +8,8 @@ NULL
 #'
 #' @typed delta : number
 #'  margin by which the response rate in the treatment group should
-#'  be better than in the SOC group. Must be >= `0`. See note.
+#'  be better than in the SOC group. Note that this can also be negative, e.g.
+#'  when non-inferiority is being assessed.
 #' @typed p_s : number
 #'  probability of success or response rate of standard of care or `SOC` group.
 #' @typed activeBetamixPost : list
@@ -113,9 +114,6 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  for the `S` group. See details.
 #' @typed weightsS : numeric
 #'  the non-negative mixture weights of the beta mixture prior for group `S`. See details.
-#' @typed epsilon : number
-#'  the smallest non-negative floating number to represent the lower bound for
-#'  the interval of integration.
 #' @return The posterior probability
 #'
 #' @note
@@ -170,9 +168,9 @@ postprobDist <- function(x,
   }
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_number(n, lower = x, finite = TRUE)
-  assert_number(xS, lower = 0, upper = n, finite = TRUE)
+  assert_number(xS, lower = 0, upper = nS, finite = TRUE)
   assert_numeric(nS, lower = 0, finite = TRUE)
-  assert_number(delta, lower = 0, finite = TRUE)
+  assert_number(delta, finite = TRUE)
   assert_flag(relativeDelta)
   assert_numeric(weights, lower = 0, finite = TRUE)
   assert_numeric(weightsS, lower = 0, finite = TRUE)

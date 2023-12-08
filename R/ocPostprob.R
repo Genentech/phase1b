@@ -64,8 +64,6 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @inheritParams h_get_looks
 #' @typed nnr : numeric
 #'  union of `nnE`and `nnF`.
-#' @typed response : numeric
-#'  a numeric of Bernoulli successes based on `size_look`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
@@ -87,7 +85,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'
 #' @keywords internal
 #'
-h_get_decision <- function(nnr, response, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -239,7 +237,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     }
     nnr <- unique(c(nnrE, nnrF))
     tmp <- h_get_decision(
-      nnr = nnr, response = response,
+      nnr = nnr,
       truep = truep, p0 = p0, p1 = p1,
       parE = c(1, 1), nnE = nnrE,
       nnF = nnrF, tL = tL, tU = tU

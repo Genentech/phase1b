@@ -10,7 +10,8 @@ h_integrand(p_s, delta, activeBetamixPost, controlBetamixPost)
 \item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group. Must be >= \code{0}. See note.}
+be better than in the SOC group. Note that this can also be negative, e.g.
+when non-inferiority is being assessed.}
 
 \item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
 \code{par} and \code{weights}. See \verb{[getBetaMix()]}.}

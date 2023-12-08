@@ -1097,7 +1097,7 @@ predprobDist(
   thetaT = 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)[1]
+)$result
 
 
 ## PP(event B)
@@ -1107,7 +1107,7 @@ predprobDist(
   thetaT = 1 - 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)[1]
+)$result
 ```
 
 According to the result, study will continue since neither PP(event A),

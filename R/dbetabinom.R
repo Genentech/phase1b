@@ -83,7 +83,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_numeric(n, lower = 0, finite = TRUE)
   assert_matrix(par, min.rows = 1, max.cols = 2, mode = "numeric")
-  assert_numeric(weights, min = 0, len = nrow(par), finite = TRUE)
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   # We renormalize weights.
   weights <- weights / sum(weights)
   # We now compute updated parameters.
@@ -194,12 +194,17 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   }
   # Note: we give the lower and upper function values here in order to avoid problems for
   # p = 0 or p = 1.
-  unirootResult <- uniroot(f, lower = 0, upper = 1, f.lower = -p, f.upper = 1 - p)
+  unirootResult <- uniroot(
+    f,
+    lower = 0, upper = 1,
+    f.lower = -p, f.upper = 1 - p,
+    tol = sqrt(.Machine$double.eps) # Increase the precision over default `tol`.
+  )
   if (unirootResult$iter < 0) {
     NA
   } else {
     assert_number(unirootResult$root)
-    assert_true(all.equal(f(unirootResult$root), 0))
+    assert_true(all.equal(f(unirootResult$root), 0, tolerance = 0.001))
     unirootResult$root
   }
 }

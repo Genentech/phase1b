@@ -111,7 +111,7 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
           relativeDelta = relativeDelta,
           thetaT = 1 - tFu,
           parE = parE, parS = parS
-        )
+        )$result
 
         s[k] <- ifelse(qL >= phiFu, FALSE, NA)
       }
@@ -122,7 +122,7 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
           relativeDelta = relativeDelta,
           thetaT = tT,
           parE = parE, parS = parS
-        )
+        )$result
         s[k] <- ifelse(qU < phiU, s[k], TRUE)
       }
 

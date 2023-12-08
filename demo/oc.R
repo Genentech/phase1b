@@ -28,7 +28,7 @@ predprob(x = 12, n = 15, Nmax = 40, p = 0.50, theta = 0.80, parE = c(1, 1))
 ## if we have a prior distribution on the SOC (not just point 0.5):
 as.numeric(predprobDist(
   x = 12, n = 15, Nmax = 40, theta = 0.80, parE = c(1, 1),
-  parS = c(11, 11)
+  parS = c(11, 11)$result
 )) ## 10/10 responded in SOC + 1/1 from uniform prior
 ## result is slightly lower than before
 

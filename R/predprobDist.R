@@ -8,9 +8,10 @@ NULL
 #'
 #' @typed x : number
 #'  number of successes in the treatment group at interim.
-#' @typed n : number
-#'   number of patients in the treatment group at interim.
+#' @typed Nmax : number
+#'   maximum number of patients at final analysis.
 #' @typed delta : number
+#'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
 #'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
@@ -117,7 +118,7 @@ h_predprobdist_single_arm <- function(x,
 #' b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
 #' bgttheta: matrix of indicators I(b>thetaT)
 #'
-#' @note
+#' @details
 #'
 #' # Delta from postprobDist :
 #'
@@ -164,9 +165,7 @@ h_predprobdist_single_arm <- function(x,
 #' @typed thetaT :
 #' threshold on the probability to be used
 #' @return A `list` is returned with names `result` for predictive probability and
-#'  `table` of numeric values with counts of responses in the remaining patients,
-#'  probabilities of these counts, corresponding probabilities to be above threshold,
-#'  and trial success indicators.
+#'  `table` (single arm case)  or list `tables` with ... (to be completed)
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #' design for phase II cancer clinical trials. Clinical Trials, 5(2),
@@ -287,21 +286,20 @@ predprobDist <- function(x, n,
             parS = parS,
             weightsS = weightsS
           )
-        # what are the joint probabilities of active and control counts?
+        # what are the joint probabilitiesD of active and control counts?
         # => because they are independent, just multiply them
         pyz[i, j] <- py[i] * pz[j] # this is the matrix that Daniel was talking about
       }
     }
     # should we print something? predprob part
-    ret <- structure(sum(pyz * (b > thetaT)),
-      tables =
-        list(
-          pyz = pyz,
-          b = b,
-          success = (b > thetaT)
-        )
+    ret <- list(
+      result = sum(pyz * (b > thetaT)),
+      tables = list(
+        pyz = pyz,
+        b = b,
+        success = (b > thetaT)
+      )
     )
   }
   ret
 }
-# todo: predprobDistFail

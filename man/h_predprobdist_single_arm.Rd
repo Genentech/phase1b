@@ -21,6 +21,10 @@ h_predprobdist_single_arm(
 \arguments{
 \item{x}{(\code{number}):\cr number of successes in the treatment group at interim.}
 
+\item{Nmax}{(\code{number}):\cr maximum number of patients at final analysis.}
+
+\item{delta}{(\code{number}):\cr difference between response rates to be met.}
+
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
 
@@ -41,10 +45,6 @@ and each row corresponds to each component of a beta-mixture distribution for th
 \item{density}{(\code{numeric}):\cr the beta binomial density for future success in \code{Nmax-n} patients in the treatment group.}
 
 \item{mE}{(\code{number}):\cr number of successes in the remaining \code{Nmax-n} number of patients in the treatment group.}
-
-\item{n}{(\code{number}):\cr number of patients in the treatment group at interim.}
-
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \description{
 The helper function to generate The predictive probability of success when \code{NmaxControl == 0}.
