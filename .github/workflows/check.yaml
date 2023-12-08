@@ -1,6 +1,7 @@
 ---
 name: Check 🛠
 
+# Definte events
 on:
   pull_request:
     types:
@@ -14,6 +15,7 @@ on:
       - main
   workflow_dispatch:
 
+# Define jobs
 jobs:
   audit:
     name: Audit Dependencies 🕵️‍♂️
