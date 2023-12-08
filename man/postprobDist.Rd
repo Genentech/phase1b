@@ -27,7 +27,8 @@ postprobDist(
 \item{nS}{(\code{number}):\cr number of patients in the SOC group.}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group. Must be >= \code{0}. See note.}
+be better than in the SOC group. Note that this can also be negative, e.g.
+when non-inferiority is being assessed.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
@@ -43,9 +44,6 @@ and each row corresponds to each component of a beta-mixture distribution
 for the \code{S} group. See details.}
 
 \item{weightsS}{(\code{numeric}):\cr the non-negative mixture weights of the beta mixture prior for group \code{S}. See details.}
-
-\item{epsilon}{(\code{number}):\cr the smallest non-negative floating number to represent the lower bound for
-the interval of integration.}
 }
 \value{
 The posterior probability

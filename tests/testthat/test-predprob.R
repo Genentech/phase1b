@@ -38,26 +38,34 @@ test_that("predprob gives an error when x is a numeric", {
 })
 
 test_that("predprob gives an error when K columns of weights exceed rows parE", {
-  expect_error(predprob(
-    x = 16,
-    n = 23,
-    Nmax = 40,
-    p = 0.6,
-    thetaT = 0.9,
-    parE = c(0.6, 0.4),
-    weights = c(3, 1, 4)
-  ), "is not TRUE")
+  expect_error(
+    predprob(
+      x = 16,
+      n = 23,
+      Nmax = 40,
+      p = 0.6,
+      thetaT = 0.9,
+      parE = c(0.6, 0.4),
+      weights = c(3, 1, 4)
+    ),
+    "Assertion on 'weights' failed: Must have length 1",
+    fixed = TRUE
+  )
 })
 
 test_that("predprob gives an error when K columns of weights is less than rows parE", {
-  expect_error(predprob(
-    x = 16,
-    n = 23,
-    Nmax = 40,
-    p = 0.6,
-    thetaT = 0.9,
-    parE = rbind(c(0.6, 0.4), c(0.5, 0.5)), weights = 1
-  ), "is not TRUE")
+  expect_error(
+    predprob(
+      x = 16,
+      n = 23,
+      Nmax = 40,
+      p = 0.6,
+      thetaT = 0.9,
+      parE = rbind(c(0.6, 0.4), c(0.5, 0.5)), weights = 1
+    ),
+    "Assertion on 'weights' failed: Must have length 2",
+    fixed = TRUE
+  )
 })
 
 test_that("predprob gives an error when thetaT exceeds 1", {
@@ -137,9 +145,9 @@ test_that("predprob gives correct list", {
         0.9327, 0.9634, 0.9821, 0.9923, 0.9972, 0.9991, 0.9998, 1,
         1
       ),
-      result_theta = c(
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-        1, 1, 1, 1, 1, 1
+      success = c(
+        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+        TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
       )
     )
   )
