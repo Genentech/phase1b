@@ -40,12 +40,6 @@ and boundsPostprob"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -155,12 +149,11 @@ applies when <code>grid==TRUE</code></p></dd>
 <span class="r-in"><span>  nvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.20</span>, tT <span class="op">=</span> <span class="fl">0.80</span>,</span></span>
 <span class="r-in"><span>  phiL <span class="op">=</span> <span class="fl">0.10</span>, phiU <span class="op">=</span> <span class="fl">0.90</span>, a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span>, yt <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x, n, Nmax, p, tT, parE = c(a, b)):</span> object 'posterior' not found</span>
+<span class="r-plt img"><img src="plotBounds-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plotBounds</span><span class="op">(</span><span class="fu"><a href="boundsPredprob.html">boundsPredprob</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.20</span>, tT <span class="op">=</span> <span class="fl">0.80</span>,</span></span>
 <span class="r-in"><span>  phiL <span class="op">=</span> <span class="fl">0.10</span>, phiU <span class="op">=</span> <span class="fl">0.90</span>, a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span>, yt <span class="op">=</span> <span class="st">"p"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x, n, Nmax, p, tT, parE = c(a, b)):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="fu">plotBounds</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="boundsPostprob.html">boundsPostprob</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    nvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
@@ -168,7 +161,7 @@ applies when <code>grid==TRUE</code></p></dd>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  yt <span class="op">=</span> <span class="st">"p"</span>, add <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot.xy(xy.coords(x, y), type = type, ...):</span> plot.new has not been called yet</span>
+<span class="r-plt img"><img src="plotBounds-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

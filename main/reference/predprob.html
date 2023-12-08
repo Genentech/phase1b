@@ -68,12 +68,6 @@ success: indicator I(b&amp;gt;thetaT).
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -173,7 +167,30 @@ design for phase II cancer clinical trials. Clinical Trials, 5(2),
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fl">16</span>, n <span class="op">=</span> <span class="fl">23</span>, Nmax <span class="op">=</span> <span class="fl">40</span>, p <span class="op">=</span> <span class="fl">0.6</span>, thetaT <span class="op">=</span> <span class="fl">0.9</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9, parE = c(0.6,     0.4)):</span> object 'posterior' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5655589</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    counts cumul_counts density   posterior success</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0           23  0.0000 0.005858397   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1           24  0.0000 0.013782046   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2           25  0.0001 0.029584325   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       3           26  0.0006 0.058130376   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       4           27  0.0021 0.104881818   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       5           28  0.0058 0.174328134   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       6           29  0.0135 0.267887754   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       7           30  0.0276 0.382146405   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       8           31  0.0497 0.508508727   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      9           32  0.0794 0.634871049   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     10           33  0.1129 0.748893301   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     11           34  0.1426 0.841482798   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     12           35  0.1587 0.908912106    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     13           36  0.1532 0.952764733    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     14           37  0.1246 0.978098514    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     15           38  0.0811 0.991013775    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     16           39  0.0381 0.996776597    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     17           40  0.0099 0.999003945    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Lowering/Increasing the probability threshold thetaT of course increases</span></span></span>
 <span class="r-in"><span><span class="co"># /decreases the predictive probability of success, respectively:</span></span></span>
@@ -181,13 +198,59 @@ design for phase II cancer clinical trials. Clinical Trials, 5(2),
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fl">16</span>, n <span class="op">=</span> <span class="fl">23</span>, Nmax <span class="op">=</span> <span class="fl">40</span>, p <span class="op">=</span> <span class="fl">0.6</span>, thetaT <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.8, parE = c(0.6,     0.4)):</span> object 'posterior' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7081907</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    counts cumul_counts density   posterior success</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0           23  0.0000 0.005858397   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1           24  0.0000 0.013782046   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2           25  0.0001 0.029584325   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       3           26  0.0006 0.058130376   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       4           27  0.0021 0.104881818   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       5           28  0.0058 0.174328134   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       6           29  0.0135 0.267887754   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       7           30  0.0276 0.382146405   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       8           31  0.0497 0.508508727   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      9           32  0.0794 0.634871049   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     10           33  0.1129 0.748893301   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     11           34  0.1426 0.841482798    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     12           35  0.1587 0.908912106    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     13           36  0.1532 0.952764733    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     14           37  0.1246 0.978098514    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     15           38  0.0811 0.991013775    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     16           39  0.0381 0.996776597    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     17           40  0.0099 0.999003945    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">predprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fl">16</span>, n <span class="op">=</span> <span class="fl">23</span>, Nmax <span class="op">=</span> <span class="fl">40</span>, p <span class="op">=</span> <span class="fl">0.6</span>, thetaT <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.95, parE = c(0.6,     0.4)):</span> object 'posterior' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4068235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    counts cumul_counts density   posterior success</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0           23  0.0000 0.005858397   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1           24  0.0000 0.013782046   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2           25  0.0001 0.029584325   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       3           26  0.0006 0.058130376   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       4           27  0.0021 0.104881818   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       5           28  0.0058 0.174328134   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       6           29  0.0135 0.267887754   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       7           30  0.0276 0.382146405   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       8           31  0.0497 0.508508727   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      9           32  0.0794 0.634871049   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     10           33  0.1129 0.748893301   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     11           34  0.1426 0.841482798   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     12           35  0.1587 0.908912106   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     13           36  0.1532 0.952764733    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     14           37  0.1246 0.978098514    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     15           38  0.0811 0.991013775    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     16           39  0.0381 0.996776597    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     17           40  0.0099 0.999003945    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Mixed beta prior</span></span></span>
 <span class="r-in"><span><span class="fu">predprob</span><span class="op">(</span></span></span>
@@ -195,7 +258,30 @@ design for phase II cancer clinical trials. Clinical Trials, 5(2),
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = 20, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9, parE = rbind(c(1,     1), c(25, 15)), weights = c(3, 1)):</span> object 'posterior' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9874431</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    counts cumul_counts density posterior success</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0           23  0.0000 0.1560061   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1           24  0.0000 0.2352310   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2           25  0.0000 0.3303366   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       3           26  0.0000 0.4359140   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       4           27  0.0001 0.5449206   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       5           28  0.0003 0.6499804   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       6           29  0.0011 0.7446568   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       7           30  0.0031 0.8244101   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       8           31  0.0080 0.8870640   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      9           32  0.0177 0.9327462    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     10           33  0.0348 0.9634096    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     11           34  0.0613 0.9821219    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     12           35  0.0973 0.9923193    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     13           36  0.1394 0.9971675    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     14           37  0.1783 0.9991255    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     15           38  0.1964 0.9997794    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     16           39  0.1708 0.9999557    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     17           40  0.0913 0.9999932    TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

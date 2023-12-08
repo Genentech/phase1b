@@ -53,12 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -976,6 +970,7 @@ entered to the <code>parS</code> argument.</p>
 <span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
 <span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="co">#&gt; $result</span></span>
 <span><span class="co">#&gt; [1] 0.5755374</span></span></code></pre></div>
 <p>In this case, study will continue since PP, 57.5%, does neither
 exceed 80% nor fall below 20%.</p>
@@ -1130,7 +1125,7 @@ there are 18 PET-CR at the first interim analysis:</p>
 <span>  thetaT <span class="op">=</span> <span class="fl">0.6</span>,</span>
 <span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
 <span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span><span class="co">#&gt; [1] 0.5755374</span></span>
 <span></span>
 <span></span>
@@ -1141,7 +1136,7 @@ there are 18 PET-CR at the first interim analysis:</p>
 <span>  thetaT <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">0.6</span>,</span>
 <span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
 <span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span><span class="co">#&gt; [1] 0.01368629</span></span></code></pre></div>
 <p>According to the result, study will continue since neither PP(event
 A), 57.6%, nor PP(event B), 1.4% exceed <span class="math inline">\(\phi_U=\phi_F=80\%\)</span>.</p>

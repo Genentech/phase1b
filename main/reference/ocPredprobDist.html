@@ -48,12 +48,6 @@ gray zone.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -315,13 +309,12 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu.</span></span></span>
-<span class="r-in"><span><span class="co"># See warning message.</span></span></span>
+<span class="r-in"><span><span class="co"># See warning message (which we suppress here to let checks pass).</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res7</span> <span class="op">&lt;-</span> <span class="fu">ocPredprobDist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fl">0.4</span>,</span></span>
+<span class="r-in"><span><span class="va">res7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu">ocPredprobDist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fl">0.4</span>,</span></span>
 <span class="r-in"><span>  delta <span class="op">=</span> <span class="fl">0.1</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, tFu <span class="op">=</span> <span class="fl">0.4</span>, phiL <span class="op">=</span> <span class="fl">0.1</span>, phiFu <span class="op">=</span> <span class="fl">0.8</span>, phiU <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">10</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu</span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res7</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        17         0.7        0.7          0        0.9        0.1</span>

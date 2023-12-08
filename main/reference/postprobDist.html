@@ -42,12 +42,6 @@ See note below for two formulations of the difference in response rates."><!-- m
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -112,7 +106,8 @@ See note below for two formulations of the difference in response rates.</p>
 
 <dt>delta</dt>
 <dd><p>(<code>number</code>):<br> margin by which the response rate in the treatment group should
-be better than in the SOC group. Must be &gt;= <code>0</code>. See note.</p></dd>
+be better than in the SOC group. Note that this can also be negative, e.g.
+when non-inferiority is being assessed.</p></dd>
 
 
 <dt>relativeDelta</dt>
@@ -138,11 +133,6 @@ for the <code>S</code> group. See details.</p></dd>
 
 <dt>weightsS</dt>
 <dd><p>(<code>numeric</code>):<br> the non-negative mixture weights of the beta mixture prior for group <code>S</code>. See details.</p></dd>
-
-
-<dt>epsilon</dt>
-<dd><p>(<code>number</code>):<br> the smallest non-negative floating number to represent the lower bound for
-the interval of integration.</p></dd>
 
 </dl></div>
     <div class="section level2">

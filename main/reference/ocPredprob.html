@@ -46,12 +46,6 @@ above tT. Otherwise the decision is "failure". In this case, there is no gray zo
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -214,9 +208,11 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span>  p <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
 <span class="r-in"><span>  phiU <span class="op">=</span> <span class="fl">0.8</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 -     tFu, parE = parE):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res1' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      14.9        0.91       0.82       0.09        0.9        0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># this call will generate d (distance for random looks around the look locations)</span></span></span>
@@ -226,18 +222,22 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span>  p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>, phiU <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">100</span>, nr <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 -     tFu, parE = parE):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="va">res2</span><span class="op">$</span><span class="va">oc</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res2' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        14         0.9       0.86       0.04       0.96       0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># now d is specified. note that d has to be a positive value;</span></span></span>
 <span class="r-in"><span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu">ocPredprob</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fl">0.4</span>,</span></span>
 <span class="r-in"><span>  p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>, phiU <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">100</span>, nr <span class="op">=</span> <span class="cn">TRUE</span>, d <span class="op">=</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 -     tFu, parE = parE):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="va">res3</span><span class="op">$</span><span class="va">oc</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res3' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     13.81        0.93       0.87       0.06       0.94       0.06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># finally, we can also have separate specification of efficacy and futility analyses. E.g.</span></span></span>
@@ -248,9 +248,11 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span>  p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>, phiU <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">100</span>, nr <span class="op">=</span> <span class="cn">TRUE</span>, d <span class="op">=</span> <span class="fl">5</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT,     parE = parE):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="va">res4</span><span class="op">$</span><span class="va">oc</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res4' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     15.65        0.84       0.84          0       0.94       0.06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span><span class="co"># compared to res3, we see that there is no early futility stopping anymore,</span></span></span>
 <span class="r-in"><span><span class="co"># and the overall probability for stopping for futility (which is the type II error here)</span></span></span>
 <span class="r-in"><span><span class="co"># is much lower.</span></span></span>
@@ -270,9 +272,11 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span>  p <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, tFu <span class="op">=</span> <span class="fl">0.4</span>, phiFu <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  phiU <span class="op">=</span> <span class="fl">0.8</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 -     tFu, parE = parE):</span> object 'posterior' not found</span>
 <span class="r-in"><span><span class="va">res5</span><span class="op">$</span><span class="va">oc</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res5' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      14.9        0.91       0.82       0.09        0.9        0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
