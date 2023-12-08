@@ -4,35 +4,36 @@ NULL
 
 #' The predictive probability of success in single arm studies.
 #'
-#' The helper function to generate The predictive probability of success when `NmaxControl == 0`.
+#' The helper function to generate the predictive probability of success based only on treatment group (`E`)
+#' as there is no control or standard of care (`SOC`) group, indicated by `NmaxControl == 0`.
 #'
 #' @typed x : number
-#'  number of successes in the treatment group at interim.
+#'  number of successes in the `E` group at interim.
 #' @typed Nmax : number
 #'   maximum number of patients at final analysis.
 #' @typed delta : number
 #'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
+#'  response rate in magnitude of `delta` of the `SOC` non-responding patients. See note.
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
-#'  for the treatment group. See details.
+#'  for the `E` group. See details.
 #' @typed weights : numeric
 #' the mixture weights of the beta mixture prior. Default are
 #' uniform weights across mixture components.
 #' @typed parS : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
-#'  and each row corresponds to each component of a beta-mixture distribution for the control group.
+#'  and each row corresponds to each component of a beta-mixture distribution for the `SOC` group.
 #' @typed weightsS : numeric
-#'  weights for the SOC group.
+#'  weights for the `SOC` group.
 #' @typed thetaT : number
 #'  threshold on the probability to be used.
 #' @typed density : numeric
-#'  the beta binomial density for future success in `Nmax-n` patients in the treatment group.
+#'  the beta binomial density for future success in `Nmax-n` patients in the `E` group.
 #' @typed mE : number
-#'  number of successes in the remaining `Nmax-n` number of patients in the treatment group.
+#'  number of successes in the remaining `Nmax-n` number of patients in the treatment `E` group.
 
 h_predprobdist_single_arm <- function(x,
                                       Nmax,
@@ -45,7 +46,7 @@ h_predprobdist_single_arm <- function(x,
                                       thetaT,
                                       density,
                                       mE) {
-  assert_number(x, lower = 0, upper = Nmax) # even though Nmax comes later ?
+  assert_number(x, lower = 0, upper = Nmax)
   assert_number(mE, lower = 0)
   assert_number(x + mE, upper = Nmax)
   assert_number(thetaT, lower = 0, upper = 1)

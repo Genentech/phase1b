@@ -19,33 +19,34 @@ h_predprobdist_single_arm(
 )
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes in the treatment group at interim.}
+\item{x}{(\code{number}):\cr number of successes in the \code{E} group at interim.}
 
 \item{Nmax}{(\code{number}):\cr maximum number of patients at final analysis.}
 
 \item{delta}{(\code{number}):\cr difference between response rates to be met.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
+response rate in magnitude of \code{delta} of the \code{SOC} non-responding patients. See note.}
 
 \item{parE}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
-for the treatment group. See details.}
+for the \code{E} group. See details.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior. Default are
 uniform weights across mixture components.}
 
 \item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
-and each row corresponds to each component of a beta-mixture distribution for the control group.}
+and each row corresponds to each component of a beta-mixture distribution for the \code{SOC} group.}
 
-\item{weightsS}{(\code{numeric}):\cr weights for the SOC group.}
+\item{weightsS}{(\code{numeric}):\cr weights for the \code{SOC} group.}
 
 \item{thetaT}{(\code{number}):\cr threshold on the probability to be used.}
 
-\item{density}{(\code{numeric}):\cr the beta binomial density for future success in \code{Nmax-n} patients in the treatment group.}
+\item{density}{(\code{numeric}):\cr the beta binomial density for future success in \code{Nmax-n} patients in the \code{E} group.}
 
-\item{mE}{(\code{number}):\cr number of successes in the remaining \code{Nmax-n} number of patients in the treatment group.}
+\item{mE}{(\code{number}):\cr number of successes in the remaining \code{Nmax-n} number of patients in the treatment \code{E} group.}
 }
 \description{
-The helper function to generate The predictive probability of success when \code{NmaxControl == 0}.
+The helper function to generate the predictive probability of success based only on treatment group (\code{E})
+as there is no control or standard of care (\code{SOC}) group, indicated by \code{NmaxControl == 0}.
 }

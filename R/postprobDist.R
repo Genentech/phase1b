@@ -37,7 +37,6 @@ h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPo
 }
 
 #' The Posterior Beta Mixture Integrand when Delta is absolute
-#'
 #' The helper function to generate Integrand function when `relative Delta = FALSE`,
 #' a default setting.
 #'

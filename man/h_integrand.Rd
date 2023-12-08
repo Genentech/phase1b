@@ -2,7 +2,9 @@
 % Please edit documentation in R/postprobDist.R
 \name{h_integrand}
 \alias{h_integrand}
-\title{The Posterior Beta Mixture Integrand when Delta is absolute}
+\title{The Posterior Beta Mixture Integrand when Delta is absolute
+The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+a default setting.}
 \usage{
 h_integrand(p_s, delta, activeBetamixPost, controlBetamixPost)
 }
@@ -23,6 +25,7 @@ when non-inferiority is being assessed.}
 Function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
+The Posterior Beta Mixture Integrand when Delta is absolute
 The helper function to generate Integrand function when \verb{relative Delta = FALSE},
 a default setting.
 }
