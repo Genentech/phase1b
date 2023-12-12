@@ -4,7 +4,7 @@ NULL
 
 #' The Posterior Beta Mixture Integrand when `delta` is relative
 #'
-#' The helper function to generate Integrand function when `relative Delta = TRUE`.
+#' The helper function to generate Integrand function when `relativeDelta = TRUE`.
 #'
 #' @typed delta : number
 #'  margin by which the response rate in the treatment group should
@@ -37,7 +37,7 @@ h_integrand_relDelta <- function(p_s, delta, activeBetamixPost, controlBetamixPo
 }
 
 #' The Posterior Beta Mixture Integrand when Delta is absolute
-#' The helper function to generate Integrand function when `relative Delta = FALSE`,
+#' The helper function to generate Integrand function when `relativeDelta = FALSE`,
 #' a default setting.
 #'
 #' @inheritParams h_integrand_relDelta

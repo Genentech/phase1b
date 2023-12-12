@@ -9,47 +9,49 @@ NULL
 #'
 #' @typed x : number
 #'  number of successes in the `E` group at interim.
+#' @typed mE : number
+#'  number of successes in the remaining `Nmax-n` number of patients in the treatment `E` group.
 #' @typed Nmax : number
-#'   maximum number of patients at final analysis.
+#'   maximum number of patients in the `E` group at final analysis.
 #' @typed delta : number
 #'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `SOC` non-responding patients. See note.
+#'  response rate in magnitude of `delta` of the `SOC` non-responding patients. See `[(postprobDist)]`.
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
 #'  for the `E` group. See details.
-#' @typed weights : numeric
-#' the mixture weights of the beta mixture prior. Default are
-#' uniform weights across mixture components.
 #' @typed parS : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution for the `SOC` group.
+#' @typed weights : numeric
+#'  the mixture weights of the beta mixture prior.
 #' @typed weightsS : numeric
 #'  weights for the `SOC` group.
 #' @typed thetaT : number
 #'  threshold on the probability to be used.
 #' @typed density : numeric
-#'  the beta binomial density for future success in `Nmax-n` patients in the `E` group.
-#' @typed mE : number
-#'  number of successes in the remaining `Nmax-n` number of patients in the treatment `E` group.
+#'  the beta binomial mixed density for future success in `Nmax-n` patients in the `E` group.
 #'
 #' @keywords internal
 #'
-#' @return
+#' @return A `list` is returned with names `result` for predictive probability and
+#'  `table` of numeric values with counts of responses in the remaining patients,
+#'  probabilities of these counts, corresponding probabilities to be above threshold,
+#'  and trial success indicators.
 #'
 h_predprobdist_single_arm <- function(x,
+                                      mE,
                                       Nmax,
                                       delta,
                                       relativeDelta,
                                       parE,
-                                      weights,
                                       parS,
+                                      weights,
                                       weightsS,
                                       thetaT,
-                                      density,
-                                      mE) {
+                                      density) {
   assert_number(x, lower = 0, upper = Nmax)
   assert_number(mE, lower = 0)
   assert_number(x + mE, upper = Nmax)
@@ -85,27 +87,48 @@ h_predprobdist_single_arm <- function(x,
 #' based on the difference in treatment group (`E`) and control or
 #' standard of care (`SOC`) group.
 #'
-#'
+#' @typed n : number
+#'  number of patients in the `E` group at interim.
+#' @typed x : number
+#'  number of successes in the `E` group at interim.
+#' @typed xS : number
+#'  number of successes in the `E` group at interim.
+#' @typed Nmax : number
+#'   maximum number of patients in the `E` group at final analysis.
+#' @typed NmaxControl : number
+#'   maximum number of patients in the `E` group at final analysis.
 #' @inheritParams h_predprobdist_single_arm.R
 #'
 #' @keywords internal
 #'
-#' @return A list with predictive probability of success
+#' @return A `list` is returned with names `result` for predictive probability and
+#'  `table` of numeric values with counts of responses in the remaining patients, `density` for
+#'  probabilities of these counts, `posterior` for corresponding probabilities to be above threshold,
+#'  and `success`for trial success indicators.
 #'
-h_predprobdist <- function(NmaxControl,
-                           Nmax,
-                           nS,
+h_predprobdist <- function(x,
+                           n,
                            xS,
-                           parS,
+                           nS,
+                           Nmax,
+                           NmaxControl,
+                           delta,
+                           relativeDelta,
                            parE,
+                           parS,
                            weights,
                            weightsS,
-                           x,
-                           mE,
-                           density_y,
-                           delta,
-                           relativeDelta) {
+                           thetaT) {
+  assert_number(x, lower = 0, upper = Nmax)
+  assert_number(x + mE, upper = Nmax)
+  assert_number(n, lower = 0, upper = Nmax)
+  assert_number(xS, lower = 0, upper = NmaxControl)
+  assert_number(nS, lower = 0, upper = NmaxControl)
+  assert_number(Nmax, lower = x)
+  assert_number(NmaxControl, lower = xS)
+  assert_number(thetaT, lower = 0, upper = 1)
   mS <- NmaxControl - nS
+  mE <- Nmax - n
   controlBetamixPost <- h_getBetamixPost(
     x = xS,
     n = nS,
@@ -115,6 +138,11 @@ h_predprobdist <- function(NmaxControl,
   density_z <- with(
     controlBetamixPost,
     dbetabinomMix(x = 0:mS, m = mS, par = parS, weights = weights)
+  )
+  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+  density_y <- with(
+    activeBetamixPost,
+    dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
   )
   # determine resulting posterior probabilities:
   outcomesY <- x + c(0:mE)
@@ -128,6 +156,8 @@ h_predprobdist <- function(NmaxControl,
         0:mS
       )
   )
+  assert_numeric(density_y, lower = 0, upper = 1, min.len = length(0:mE), any.missing = FALSE)
+  assert_numeric(density_z, lower = 0, upper = 1, min.len = length(0:mS), any.missing = FALSE)
   for (i in seq_along(outcomesY)) {
     for (j in seq_along(outcomesZ)) {
       posterior_yz[i, j] <-
@@ -143,22 +173,25 @@ h_predprobdist <- function(NmaxControl,
           parS = parS,
           weightsS = weightsS
         )
-      density_yz[i, j] <- density_y[i] * density_z[j]
+      density_yz[i, j] <- density_y[i] * density_z[j] # check each
     }
   }
+  assert_matrix(density_yz, min.rows = length(outcomesY), min.cols = length(outcomesZ), any.missing = FALSE)
+  assert_matrix(posterior_yz, min.rows = length(outcomesY), min.cols = length(outcomesZ), any.missing = FALSE)
+  assert_true(all(density_yz < 1))
+  assert_true(all(posterior_yz < 1))
   ret <- list(
     result = sum(density_yz * (posterior_yz > thetaT)),
     table = data.frame(
       counts = c(0:mE),
-      cumul_counts = x + (0:mE),
-      density = density_yz,
-      posterior = posterior_yz,
-      success = (posterior_yz > thetaT)
-    )
+      cumul_counts = x + (0:mE)
+    ),
+    density = density_yz,
+    posterior = posterior_yz,
+    success = (posterior_yz > thetaT)
   )
   ret
 }
-
 
 
 #' Compute the predictive probability that the trial will be

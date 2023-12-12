@@ -5,23 +5,37 @@
 \title{The predictive probability of success in two-arm studies.}
 \usage{
 h_predprobdist(
-  NmaxControl,
-  Nmax,
-  nS,
+  x,
+  n,
   xS,
-  parS,
+  nS,
+  Nmax,
+  NmaxControl,
+  delta,
+  relativeDelta,
   parE,
+  parS,
   weights,
   weightsS,
-  x,
-  mE,
-  density_y,
-  delta,
-  relativeDelta
+  thetaT
 )
 }
+\arguments{
+\item{x}{(\code{number}):\cr number of successes in the \code{E} group at interim.}
+
+\item{n}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
+
+\item{xS}{(\code{number}):\cr number of successes in the \code{E} group at interim.}
+
+\item{Nmax}{(\code{number}):\cr maximum number of patients in the \code{E} group at final analysis.}
+
+\item{NmaxControl}{(\code{number}):\cr maximum number of patients in the \code{E} group at final analysis.}
+}
 \value{
-A list with predictive probability of success
+A \code{list} is returned with names \code{result} for predictive probability and
+\code{table} of numeric values with counts of responses in the remaining patients, \code{density} for
+probabilities of these counts, \code{posterior} for corresponding probabilities to be above threshold,
+and \code{success}for trial success indicators.
 }
 \description{
 The helper function to generate the predictive probability of success

@@ -23,6 +23,6 @@ when non-inferiority is being assessed.}
 Function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
-The helper function to generate Integrand function when \verb{relative Delta = TRUE}.
+The helper function to generate Integrand function when \code{relativeDelta = TRUE}.
 }
 \keyword{internal}

@@ -3,7 +3,7 @@
 \name{h_integrand}
 \alias{h_integrand}
 \title{The Posterior Beta Mixture Integrand when Delta is absolute
-The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+The helper function to generate Integrand function when \code{relativeDelta = FALSE},
 a default setting.}
 \usage{
 h_integrand(p_s, delta, activeBetamixPost, controlBetamixPost)
@@ -26,7 +26,7 @@ Function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
 The Posterior Beta Mixture Integrand when Delta is absolute
-The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+The helper function to generate Integrand function when \code{relativeDelta = FALSE},
 a default setting.
 }
 \keyword{internal}
