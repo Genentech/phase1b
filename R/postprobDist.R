@@ -8,10 +8,10 @@ NULL
 #'
 #' @typed delta : number
 #'  margin by which the response rate in the treatment group should
-#'  be better than in the SOC group. Note that this can also be negative, e.g.
-#'  when non-inferiority is being assessed.
+#'  be better than in the standard of care or control or `S` group.
+#'  Note that this can also be negative, e.g. when non-inferiority is being assessed.
 #' @typed p_s : number
-#'  probability of success or response rate of standard of care or `SOC` group.
+#'  probability of success or response rate of standard of care or control or `S` group.
 #' @typed activeBetamixPost : list
 #'  a list of posterior parameters of a beta-mixture-binomial distribution with generic names
 #'  `par` and `weights`. See `[getBetaMix()]`.
@@ -61,7 +61,7 @@ h_integrand <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
 
 #' Generating bounds for the Integration of Beta Mixture Posterior
 #'
-#' Using the quantile of the Beta Mixture Distribution from parameters given by standard of care `SOC` or
+#' Using the quantile of the Beta Mixture Distribution from parameters given by standard of care `S` or
 #' experimental group `E` to determine bounds as inputs to `[stats::integrate()]`.
 #'
 #' @inheritParams h_integrand_relDelta
@@ -81,26 +81,26 @@ h_get_bounds <- function(controlBetamixPost) {
   )
 }
 
-#' Compute the Posterior Probability with Beta Prior on `SOC`
+#' Compute the Posterior Probability with Beta Prior on standard of care `S`
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-#' posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC).
-#' See note below for two formulations of the difference in response rates.
+#' posterior probability of achieving superior response rate in the treatment group `E`
+#' compared to standard of care `S`. `E`See note below for two formulations of the difference in response rates.
 #'
 #' @inheritParams h_integrand_relDelta
 #' @typed x : numeric
-#'  number of success counts in the treatment group.
+#'  number of success counts in the `E` group.
 #' @typed n : number
-#'  number of patients in the treatment group.
+#'  number of patients in the `E` group.
 #' @typed xS : number
-#'  number of success counts in the SOC group.
+#'  number of success counts in the `S` group.
 #' @typed nS : number
-#'  number of patients in the SOC group.
+#'  number of patients in the `S` group.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the SOC non-responding patients. See note.
+#'  response rate in magnitude of `delta` of the `S` non-responding patients. See note.
 #' @typed parE : "`numeric` or `matrix`"
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
@@ -123,7 +123,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
 #'
 #' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
-#' the response rate of the `SOC` group such that
+#' the response rate of the standard of care or control or `S` group such that
 #' the posterior is `Pr(P_E > P_S + delta | data)`.
 #'
 #' 2. In the relative case, we suppose that the treatment group's

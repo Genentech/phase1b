@@ -24,8 +24,9 @@ The posterior probability that the response rate P_E is above a threshold p.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Compute the posterior probability to be above threshold assuming a beta prior
-on the response rate such that  \code{Pr(P_E > p | data)}. Prior is \code{P_E ~ beta(a, b)},
-with default set to be a uniform or beta(1,1).
+on the response rate such that the response rate in the experimental or treatment \code{E} exceeds
+the threshold set to compute the posterior probability \code{p} :  \code{Pr(P_E > p | data)}.
+Prior is \code{P_E ~ beta(a, b)}, with default set to be a uniform or beta(1,1).
 
 We observed \code{x} successes in n trials and so the posterior is
 \code{P_E | data  ~ beta(a + x, b + n - x)}.

@@ -5,7 +5,7 @@ NULL
 #' The predictive probability of success in single arm studies.
 #'
 #' The helper function to generate the predictive probability of success based only on treatment group (`E`)
-#' as there is no control or standard of care (`SOC`) group, indicated by `NmaxControl == 0`.
+#' as there is no control or standard of care (`S`)., indicated by `NmaxControl == 0`.
 #'
 #' @typed x : number
 #'  number of successes in the `E` group at interim.
@@ -17,18 +17,18 @@ NULL
 #'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `SOC` non-responding patients. See `[(postprobDist)]`.
+#'  response rate in magnitude of `delta` of the `S` non-responding patients. See `[(postprobDist)]`.
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
 #'  for the `E` group. See details.
 #' @typed parS : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
-#'  and each row corresponds to each component of a beta-mixture distribution for the `SOC` group.
+#'  and each row corresponds to each component of a beta-mixture distribution for the `S` group.
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior.
 #' @typed weightsS : numeric
-#'  weights for the `SOC` group.
+#'  weights for the `S` group.
 #' @typed thetaT : number
 #'  threshold on the probability to be used.
 #' @typed density : numeric
@@ -85,19 +85,19 @@ h_predprobdist_single_arm <- function(x,
 #'
 #' The helper function to generate the predictive probability of success
 #' based on the difference in treatment group (`E`) and control or
-#' standard of care (`SOC`) group.
+#' standard of care (`S`) group.
 #'
 #' @typed n : number
 #'  number of patients in the `E` group at interim.
 #' @typed x : number
 #'  number of successes in the `E` group at interim.
 #' @typed xS : number
-#'  number of successes in the `E` group at interim.
+#'  number of successes in the `S` group at interim.
 #' @typed Nmax : number
 #'   maximum number of patients in the `E` group at final analysis.
 #' @typed NmaxControl : number
-#'   maximum number of patients in the `E` group at final analysis.
-#' @inheritParams h_predprobdist_single_arm.R
+#'   maximum number of patients in the `S` group at final analysis.
+#' @inheritParams h_predprobdist_single_arm
 #'
 #' @keywords internal
 #'
@@ -157,8 +157,6 @@ h_predprobdist <- function(x,
         0:mS
       )
   )
-  assert_numeric(density_y, lower = 0, upper = 1, min.len = length(0:mE), any.missing = FALSE)
-  assert_numeric(density_z, lower = 0, upper = 1, min.len = length(0:mS), any.missing = FALSE)
   for (i in seq_along(outcomesY)) {
     for (j in seq_along(outcomesZ)) {
       posterior_yz[i, j] <-
@@ -177,10 +175,6 @@ h_predprobdist <- function(x,
       density_yz[i, j] <- density_y[i] * density_z[j] # check each
     }
   }
-  assert_matrix(density_yz, min.rows = length(outcomesY), min.cols = length(outcomesZ), any.missing = FALSE)
-  assert_matrix(posterior_yz, min.rows = length(outcomesY), min.cols = length(outcomesZ), any.missing = FALSE)
-  assert_true(all(density_yz < 1))
-  assert_true(all(posterior_yz < 1))
   ret <- list(
     result = sum(density_yz * (posterior_yz > thetaT)),
     table = data.frame(

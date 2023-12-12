@@ -14,7 +14,7 @@ h_get_bounds(controlBetamixPost)
 Integrand function
 }
 \description{
-Using the quantile of the Beta Mixture Distribution from parameters given by standard of care \code{SOC} or
+Using the quantile of the Beta Mixture Distribution from parameters given by standard of care \code{S} or
 experimental group \code{E} to determine bounds as inputs to \verb{[stats::integrate()]}.
 }
 \keyword{internal}

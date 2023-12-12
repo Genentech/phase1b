@@ -6,8 +6,9 @@ NULL
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Compute the posterior probability to be above threshold assuming a beta prior
-#' on the response rate such that  `Pr(P_E > p | data)`. Prior is `P_E ~ beta(a, b)`,
-#' with default set to be a uniform or beta(1,1).
+#' on the response rate such that the response rate in the experimental or treatment `E` exceeds
+#' the threshold set to compute the posterior probability `p` :  `Pr(P_E > p | data)`.
+#' Prior is `P_E ~ beta(a, b)`, with default set to be a uniform or beta(1,1).
 #'
 #' We observed `x` successes in n trials and so the posterior is
 #' `P_E | data  ~ beta(a + x, b + n - x)`.
@@ -39,7 +40,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Compute the posterior probability that the response probability `P_E`is above a threshold.
+#' Compute the posterior probability that the response probability `P_E` is above a threshold.
 #' such that this posterior probability can be expressed as `Pr(P_E > p | data)`. Prior is
 #' `P_E ~ sum(weights * beta(parE[, 1], parE[, 2]))`, i.e., a mixture of beta priors.
 #' Default is one component only with uniform or `beta(1,1)`.
@@ -58,10 +59,8 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #' @typed parE : matrix
 #'  the beta parameters matrix, with `K` rows and 2 columns,
 #'  corresponding to the beta parameters of the `K` components.
-#'  Default is a uniform prior.
 #' @typed weights : vector
-#'  The mixture weights of the beta mixture prior. Default are
-#'  uniform weights across mixture components.
+#'  The mixture weights of the beta mixture prior.
 #' @typed betamixPost : matrix
 #'  optional result of `[h_getBetamixPost()]` in order
 #'  to speed up the computations. If supplied, this is directly used, bypassing
