@@ -128,8 +128,8 @@ h_predprobdist <- function(x,
   assert_number(thetaT, lower = 0, upper = 1)
   mS <- NmaxControl - nS
   mE <- Nmax - n
-  assert_number(x + mS, lower = 0, upper = NmaxControl)
-  assert_number(xS + mE, lower = 0, upper = Nmax)
+  assert_number(xS + mS, lower = 0, upper = NmaxControl)
+  assert_number(x + mE, lower = 0, upper = Nmax)
   controlBetamixPost <- h_getBetamixPost(
     x = xS,
     n = nS,
