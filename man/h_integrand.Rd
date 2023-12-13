@@ -3,17 +3,17 @@
 \name{h_integrand}
 \alias{h_integrand}
 \title{The Posterior Beta Mixture Integrand when Delta is absolute
-The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+The helper function to generate Integrand function when \code{relativeDelta = FALSE},
 a default setting.}
 \usage{
 h_integrand(p_s, delta, activeBetamixPost, controlBetamixPost)
 }
 \arguments{
-\item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or \code{SOC} group.}
+\item{p_s}{(\code{number}):\cr probability of success or response rate of standard of care or control or \code{S} group.}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group. Note that this can also be negative, e.g.
-when non-inferiority is being assessed.}
+be better than in the standard of care or control or \code{S} group.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
 \item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
 \code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
@@ -26,7 +26,7 @@ Function that is an argument for \verb{[stats::integrate()]}.
 }
 \description{
 The Posterior Beta Mixture Integrand when Delta is absolute
-The helper function to generate Integrand function when \verb{relative Delta = FALSE},
+The helper function to generate Integrand function when \code{relativeDelta = FALSE},
 a default setting.
 }
 \keyword{internal}

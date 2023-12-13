@@ -2,7 +2,7 @@
 % Please edit documentation in R/postprobDist.R
 \name{postprobDist}
 \alias{postprobDist}
-\title{Compute the Posterior Probability with Beta Prior on \code{SOC}}
+\title{Compute the Posterior Probability with Beta Prior on standard of care \code{S}}
 \usage{
 postprobDist(
   x,
@@ -18,20 +18,20 @@ postprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{numeric}):\cr number of success counts in the treatment group.}
+\item{x}{(\code{numeric}):\cr number of success counts in the \code{E} group.}
 
-\item{n}{(\code{number}):\cr number of patients in the treatment group.}
+\item{n}{(\code{number}):\cr number of patients in the \code{E} group.}
 
-\item{xS}{(\code{number}):\cr number of success counts in the SOC group.}
+\item{xS}{(\code{number}):\cr number of success counts in the \code{S} group.}
 
-\item{nS}{(\code{number}):\cr number of patients in the SOC group.}
+\item{nS}{(\code{number}):\cr number of patients in the \code{S} group.}
 
 \item{delta}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group. Note that this can also be negative, e.g.
-when non-inferiority is being assessed.}
+be better than in the standard of care or control or \code{S} group.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the SOC non-responding patients. See note.}
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See note.}
 
 \item{parE}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
@@ -52,8 +52,8 @@ The posterior probability
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
-posterior probability of achieving superior response rate in the treatment group compared to standard of care (SOC).
-See note below for two formulations of the difference in response rates.
+posterior probability of achieving superior response rate in the treatment group \code{E}
+compared to standard of care \code{S}. \code{E}See note below for two formulations of the difference in response rates.
 }
 \details{
 The beta mixture prior for the \code{E} arm requires argument \code{parE} and \code{weights}.
@@ -70,7 +70,7 @@ The desired improvement is denoted as \code{delta}. There are two options in usi
 The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
 \enumerate{
 \item The absolute case is when we define an absolute delta, greater than \code{P_S},
-the response rate of the \code{SOC} group such that
+the response rate of the standard of care or control or \code{S} group such that
 the posterior is \code{Pr(P_E > P_S + delta | data)}.
 \item In the relative case, we suppose that the treatment group's
 response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that

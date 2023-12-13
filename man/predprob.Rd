@@ -11,7 +11,7 @@ predprob(x, n, Nmax, p, thetaT, parE = c(1, 1), weights)
 
 \item{n}{(\code{number}):\cr number of patients.}
 
-\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial.}
+\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
 
 \item{p}{(\code{number}):\cr threshold on the response rate.}
 
@@ -34,7 +34,8 @@ and trial success indicators.
 Compute the predictive probability of trial success given current data.
 Success means that at the end of the trial the posterior probability is
 \code{Pr(P_E > p) >= thetaT},
-where p is the fixed response rate threshold.
+where \code{p} is the fixed response rate threshold and \code{P_E} is the response rate in the
+treatment group or \code{E} group.
 Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y=i|x,n)*I\{Pr(P_E > p|x,Y=i)>=thetaT\}}
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
@@ -46,7 +47,7 @@ A table with the following contents will be included in the return output :
 \item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
 \item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
 \item \code{posterior}: \code{Pr(P_E > p | x, Y=i)} using beta posterior.
-\item \code{success}: indicator \code{I(b>thetaT)}.
+\item \code{success}: indicator \code{I(b > thetaT)}.
 }
 }
 \examples{
