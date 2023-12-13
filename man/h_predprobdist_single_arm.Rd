@@ -28,7 +28,9 @@ h_predprobdist_single_arm(
 \item{delta}{(\code{number}):\cr difference between response rates to be met.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \verb{[(postprobDist)]}.}
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \verb{[postprobDist())]}.
+
+[postprobDist())]: R:postprobDist())}
 
 \item{parE}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution

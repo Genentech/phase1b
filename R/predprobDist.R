@@ -17,7 +17,7 @@ NULL
 #'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `S` non-responding patients. See `[(postprobDist)]`.
+#'  response rate in magnitude of `delta` of the `S` non-responding patients. See `[postprobDist())]`.
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
@@ -34,13 +34,13 @@ NULL
 #' @typed density : numeric
 #'  the beta binomial mixed density for future success in `Nmax-n` patients in the `E` group.
 #'
-#' @keywords internal
-#'
 #' @return A `list` is returned with names `result` for predictive probability and
 #'  `table` of numeric values with counts of responses in the remaining patients,
 #'  probabilities of these counts, corresponding probabilities to be above threshold,
 #'  and trial success indicators.
 #'
+#' @keywords internal
+
 h_predprobdist_single_arm <- function(x,
                                       mE,
                                       Nmax,
@@ -99,13 +99,13 @@ h_predprobdist_single_arm <- function(x,
 #'   maximum number of patients in the `S` group at final analysis.
 #' @inheritParams h_predprobdist_single_arm
 #'
-#' @keywords internal
-#'
 #' @return A `list` is returned with names `result` for predictive probability and
 #'  `table` of numeric values with counts of responses in the remaining patients, `density` for
 #'  probabilities of these counts, `posterior` for corresponding probabilities to be above threshold,
 #'  and `success`for trial success indicators.
 #'
+#' @keywords internal
+
 h_predprobdist <- function(x,
                            n,
                            xS,

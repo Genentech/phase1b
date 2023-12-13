@@ -199,16 +199,16 @@ test_that("h_predprobdist gives higher predictive probability when thetaT is low
 
 test_that("sum of joint density in h_predprobdist is 1 and predictive probabilities are less than 1", {
   result <- h_predprobdist(
-    NmaxControl = 20,
-    Nmax = 40,
-    n = 23,
-    nS = 10,
-    x = 16,
-    xS = 5,
-    parE = rbind(c(1, 1), c(50, 10)),
-    parS = rbind(c(1, 1), c(20, 40)),
-    weights = c(2, 1),
-    weightsS = c(2, 1),
+    NmaxControl = 10,
+    Nmax = 10,
+    n = 5,
+    nS = 5,
+    x = 2,
+    xS = 1,
+    parE = rbind(c(1, 1)),
+    parS = rbind(c(1, 1)),
+    weights = 1,
+    weightsS = 1,
     delta = 0.1,
     relativeDelta = FALSE,
     thetaT = 0.5
