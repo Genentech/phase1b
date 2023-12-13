@@ -3,7 +3,7 @@
 \name{predprobDist}
 \alias{predprobDist}
 \title{Compute the predictive probability that the trial will be
-successful, with a prior distribution on the SOC}
+successful, with a prior distribution on the standard of care or \code{S}}
 \usage{
 predprobDist(
   x,
@@ -21,62 +21,37 @@ predprobDist(
   thetaT
 )
 }
-\arguments{
-\item{x}{(\code{number}):\cr number of successes in the treatment group at interim}
-
-\item{n}{(\code{number}):\cr number of patients in the treatment group at interim}
-
-\item{xS}{(\code{number}):\cr number of successes in the SOC group at interim}
-
-\item{nS}{(\code{number}):\cr number of patients in the SOC group}
-
-\item{Nmax}{(\code{number}):\cr maximum number of patients in the treatment group at the end of the trial}
-
-\item{NmaxControl}{(\code{number}):\cr maximum number of patients at the end of the trial in the
-SOC group}
-
-\item{delta}{(``):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group}
-
-\item{relativeDelta}{(``):\cr see \verb{[postprobDist()]}}
-
-\item{parE}{(``):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
-uniform prior.}
-
-\item{weights}{(``):\cr the mixture weights of the beta mixture prior. Default are
-uniform weights across mixture components.}
-
-\item{parS}{(``):\cr beta prior parameters in the SOC group}
-
-\item{weightsS}{(``):\cr weights for the SOC group}
-
-\item{thetaT}{(``):\cr threshold on the probability to be used}
-}
 \value{
-A \code{list} is returned with names \code{result} for predictive probability and
-\code{table} (single arm case)  or list \code{tables} with ... (to be completed)
+A \code{list} is returned with names \code{result} for predictive probability including or separately a
+\code{table} of numeric values with counts of responses in the remaining patients, \code{density} for
+probabilities of these counts, \code{posterior} for corresponding probabilities to be above threshold,
+and \code{success}for trial success indicators.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Compute the predictive probability of trial success given current data.
-Success means that at the end of the trial the posterior probability
-\code{Pr(P_E > P_S + delta_0 | data) >= thetaT}. Then the
-predictive probability for success is:
+
+Success means that at the end of the trial the posterior probability is:
+\code{Pr(P_E > P_S + delta_0 | data) >= thetaT}.
+
+Where \code{P_E} is the response rate of the treatment or \code{E}group and
+\code{P_S} is the response rate of the standard of care of \code{S} group.
+
+Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y = i | x , n)*I\{Pr(P_E > P_S + delta | x,Y=i) >= thetaT\}},
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of \code{n}.
-Prior is \code{P_E ~ beta(a, b)} and uniform which is a beta(1,1).
-However, also a beta mixture prior can be specified. Analogously
+Prior is \code{P_E ~ beta(a, b)} and uniform which is a \code{beta(1,1)}.
+However, a beta mixture prior can also be specified. Analogously
 for \code{P_S} either a classic beta prior or a beta mixture prior can be
 specified.
 
-Also data on the SOC might be available. Then the predictive probability is
+Also data on the \code{S} might be available. Then the predictive probability is
 more generally defined as
 \verb{pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I\{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT\}}
-where \code{Z} is the future number of responses in the SOC group, and \code{xS} is the
-current number of responses in the SOC group.
+where \code{Z} is the future number of responses in the S group, and \code{xS} is the
+current number of responses in the \code{S} group.
 
 In the case where \code{NmaxControl = 0}, a table with the following contents will be included in the return output :
 \itemize{
@@ -106,7 +81,7 @@ The desired improvement is denoted as \code{delta}. There are two options in usi
 The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
 \enumerate{
 \item The absolute case is when we define an absolute delta, greater than \code{P_S},
-the response rate of the \code{SOC} group such that
+the response rate of the \code{S} group such that
 the posterior is \code{Pr(P_E > P_S + delta | data)}.
 \item In the relative case, we suppose that the treatment group's
 response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that

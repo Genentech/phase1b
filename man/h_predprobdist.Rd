@@ -25,8 +25,6 @@ h_predprobdist(
 
 \item{n}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
 
-\item{xS}{(\code{number}):\cr number of successes in the \code{S} group at interim.}
-
 \item{Nmax}{(\code{number}):\cr maximum number of patients in the \code{E} group at final analysis.}
 
 \item{NmaxControl}{(\code{number}):\cr maximum number of patients in the \code{S} group at final analysis.}
