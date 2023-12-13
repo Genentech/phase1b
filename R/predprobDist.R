@@ -87,17 +87,13 @@ h_predprobdist_single_arm <- function(x,
 #' based on the difference in treatment group (`E`) and control or
 #' standard of care (`S`) group.
 #'
+#' @inheritParams h_predprobdist_single_arm
+#'
 #' @typed n : number
 #'  number of patients in the `E` group at interim.
-#' @typed x : number
-#'  number of successes in the `E` group at interim.
-#' @typed xS : number
-#'  number of successes in the `S` group at interim.
-#' @typed Nmax : number
-#'   maximum number of patients in the `E` group at final analysis.
 #' @typed NmaxControl : number
 #'   maximum number of patients in the `S` group at final analysis.
-#' @inheritParams h_predprobdist_single_arm
+#'
 #'
 #' @return A `list` is returned with names `result` for predictive probability and
 #'  `table` of numeric values with counts of responses in the remaining patients, `density` for
@@ -190,27 +186,32 @@ h_predprobdist <- function(x,
 
 
 #' Compute the predictive probability that the trial will be
-#' successful, with a prior distribution on the SOC
+#' successful, with a prior distribution on the standard of care or `S`
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Compute the predictive probability of trial success given current data.
-#' Success means that at the end of the trial the posterior probability
-#' `Pr(P_E > P_S + delta_0 | data) >= thetaT`. Then the
-#' predictive probability for success is:
+#'
+#' Success means that at the end of the trial the posterior probability is:
+#' `Pr(P_E > P_S + delta_0 | data) >= thetaT`.
+#'
+#' Where `P_E` is the response rate of the treatment or `E`group and
+#' `P_S` is the response rate of the standard of care of `S` group.
+#'
+#' Then the predictive probability for success is:
 #' `pp = sum over i: Pr(Y = i | x , n)*I{Pr(P_E > P_S + delta | x,Y=i) >= thetaT}`,
 #' where `Y` is the number of future responses in the treatment group and `x` is
 #' the current number of responses in the treatment group out of `n`.
-#' Prior is `P_E ~ beta(a, b)` and uniform which is a beta(1,1).
-#' However, also a beta mixture prior can be specified. Analogously
+#' Prior is `P_E ~ beta(a, b)` and uniform which is a `beta(1,1)`.
+#' However, a beta mixture prior can also be specified. Analogously
 #' for `P_S` either a classic beta prior or a beta mixture prior can be
 #' specified.
 #'
-#' Also data on the SOC might be available. Then the predictive probability is
+#' Also data on the `S` might be available. Then the predictive probability is
 #' more generally defined as
 #' `pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT}`
-#' where `Z` is the future number of responses in the SOC group, and `xS` is the
-#' current number of responses in the SOC group.
+#' where `Z` is the future number of responses in the S group, and `xS` is the
+#' current number of responses in the `S` group.
 #'
 #' In the case where `NmaxControl = 0`, a table with the following contents will be included in the return output :
 #' - `i`: `Y = i`, number of future successes in `Nmax-n` subjects.
@@ -241,52 +242,26 @@ h_predprobdist <- function(x,
 #' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
 #'
 #' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
-#' the response rate of the `SOC` group such that
+#' the response rate of the ``S`` group such that
 #' the posterior is `Pr(P_E > P_S + delta | data)`.
 #'
 #' 2. In the relative case, we suppose that the treatment group's
 #' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
 #' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
 #'
-#' @typed x : number
-#' number of successes in the treatment group at interim
-#' @typed n : number
-#' number of patients in the treatment group at interim
-#' @typed xS : number
-#' number of successes in the SOC group at interim
-#' @typed nS : number
-#' number of patients in the SOC group
-#' @typed Nmax : number
-#' maximum number of patients in the treatment group at the end of the trial
-#' @typed NmaxControl : number
-#' maximum number of patients at the end of the trial in the
-#' SOC group
-#' @typed delta :
-#' margin by which the response rate in the treatment group should
-#' be better than in the SOC group
-#' @typed relativeDelta :
-#' see `[postprobDist()]`
-#' @typed parE :
-#' the beta parameters matrix, with K rows and 2 columns,
-#' corresponding to the beta parameters of the K components. default is a
-#' uniform prior.
-#' @typed weights :
-#' the mixture weights of the beta mixture prior. Default are
-#' uniform weights across mixture components.
-#' @typed parS :
-#' beta prior parameters in the SOC group
-#' @typed weightsS :
-#' weights for the SOC group
-#' @typed thetaT :
-#' threshold on the probability to be used
-#' @return A `list` is returned with names `result` for predictive probability and
-#'  `table` (single arm case)  or list `tables` with ... (to be completed)
+#' @inheritParams h_predprobDist
+#'
+#' @return A `list` is returned with names `result` for predictive probability including or separately a
+#'  `table` of numeric values with counts of responses in the remaining patients, `density` for
+#'  probabilities of these counts, `posterior` for corresponding probabilities to be above threshold,
+#'  and `success`for trial success indicators.
 #'
 #' @references Lee, J. J., & Liu, D. D. (2008). A predictive probability
 #' design for phase II cancer clinical trials. Clinical Trials, 5(2),
 #' 93-106. doi:10.1177/1740774508089279
 #'
 #' @example examples/predprobDist.R
+#'
 #' @export
 predprobDist <- function(x, n,
                          xS = 0,
@@ -363,9 +338,9 @@ predprobDist <- function(x, n,
       )
     )
   } else {
-    # in this case also data on the SOC is available!
+    # in this case also data on the S is available!
     # determine remaining sample size and probabilities of response
-    # counts in future SOC patients:
+    # counts in future S patients:
     mS <- NmaxControl - nS
     controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
     pz <- with(
