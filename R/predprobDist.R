@@ -17,7 +17,7 @@ NULL
 #'   difference between response rates to be met.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `S` non-responding patients. See `[postprobDist()]`.
+#'  response rate in magnitude of `delta` of the `S` non-responding patients. See [postprobDist()].
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
@@ -290,7 +290,6 @@ predprobDist <- function(x, n,
   mE <- Nmax - n # remaining active patients
   # if par is a vector => situation where there is only one component
   if (is.vector(parE)) {
-    # check that it has exactly two entries
     stopifnot(identical(length(parE), 2L))
     parE <- t(parE)
   }
@@ -332,7 +331,7 @@ predprobDist <- function(x, n,
       parE = parE,
       parS = parS,
       weights = weights,
-      weightsS = weightS,
+      weightsS = weightsS,
       thetaT = thetaT
     )
   }

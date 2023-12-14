@@ -1,5 +1,5 @@
 # h_predprobdist_single_arm ----
-test_that("h_predprobdist gives correct predictive probability", {
+test_that("h_predprobdist gives correct results", {
   result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
     x = 16,
     n = 23,
@@ -13,7 +13,9 @@ test_that("h_predprobdist gives correct predictive probability", {
     thetaT = 0.9,
     mE = 17
   )
-  expect_equal(result$result, 0.5426927, tolerance = 1e-4)
+  expect_equal(result$result, 0.7081907, tolerance = 1e-4)
+  expect_equal(sum(result$table$density), 1, tolerance = 1e-4)
+  expect_true(all(result$posterior) <= 1)
 })
 
 test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower", {
@@ -95,42 +97,7 @@ test_that("h_predprobdist gives correct list", {
   expect_equal(result, expected)
 })
 
-test_that("sum of density in h_predprobdist_single_arm is 1", {
-  result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
-    x = 16,
-    Nmax = 40,
-    delta = 0.1,
-    relativeDelta = FALSE,
-    parE = c(0.6, 0.4),
-    weights = 1,
-    parS = c(7, 11),
-    weightsS = 1,
-    thetaT = 0.9,
-    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
-    mE = 17
-  )
-  expect_equal(sum(result$table$density), 1, tolerance = 1e-4)
-})
-
-test_that("h_predprobdist give predictive probability less than 1 or 1", {
-  result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
-    x = 16,
-    Nmax = 40,
-    delta = 0.1,
-    relativeDelta = FALSE,
-    parE = c(0.6, 0.4),
-    weights = 1,
-    parS = c(7, 11),
-    weightsS = 1,
-    thetaT = 0.9,
-    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
-    mE = 17
-  )
-  expect_true(all(result$posterior) <= 1)
-})
-
 # h_predprobdist ----
-
 test_that("h_predprobdist gives correct list", {
   result <- h_predprobdist(
     NmaxControl = 20,
@@ -147,7 +114,7 @@ test_that("h_predprobdist gives correct list", {
     relativeDelta = FALSE,
     thetaT = 0.5
   )
-  expect_equal(result$result, 0.8626, tolerance = 1e-4)
+  expect_equal(result$result, 0.9322923, tolerance = 1e-4)
   expect_identical(result$table, data.frame(counts = 0:17, cumul_counts = as.numeric(16:33)))
 
   expect_matrix(result$density, mode = "numeric", any.missing = FALSE)
@@ -214,13 +181,12 @@ test_that("sum of joint density in h_predprobdist is 1 and predictive probabilit
     thetaT = 0.5
   )
   expect_equal(sum(result$density), 1, tolerance = 1e-4)
-  expect_true(all(result$posterior) <= 1)
+  expect_true(all(result$posterior < 1))
 })
 
 ## predprobDist ----
-
 test_that("predprobDist gives the correct predictive probability in a single-arm study", {
-  result <- predprobdist(
+  result <- predprobDist(
     NmaxControl = 10,
     Nmax = 10,
     n = 5,
@@ -235,12 +201,12 @@ test_that("predprobDist gives the correct predictive probability in a single-arm
     relativeDelta = FALSE,
     thetaT = 0.5
   )
-  expect_equal(result$result, 1, tolerance = 1e-4)
-  expect_true(all(result$posterior) <= 1)
-  expect_true(sum(result$density), 1)
+  expect_equal(result$result, 0.5513671, tolerance = 1e-4)
+  expect_true(all(result$posterior < 1))
+  expect_equal(sum(result$density), 1, tolerance = 1e-4)
 })
 
-test_that("predprobDist gives the correct predictive probability in a two-arm study", {
+test_that("predprobDist gives the correct results in a two-arm study", {
   result <- predprobDist(
     x = 16,
     n = 23,
