@@ -97,6 +97,7 @@ predprob(
   x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9,
   parE = c(0.6, 0.4)
 )
+
 # So the predictive probability is 56.6\%. 12 responses
 # in the remaining 17 patients are required for success.
 
@@ -127,7 +128,7 @@ predprobDist(
 # informative beta(50, 10) prior, on the experimental response rate:
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0.1, thetaT = 0.9,
-  parE = rbind(c(1, 1), c(50, 10)),
+  parE = rbind(c(1, 1), c(2, 6)),
   weights = c(2, 1), parS = c(6, 11)
 )
 # Now still 10 future responses are required for success, but the predictive
@@ -141,12 +142,17 @@ predprobDist(
 # rate over time, we will again use a beta mixture, putting only 1/3 of weight
 # on the historical controls:
 predprobDist(
-  x = 16, n = 23, xS = 5, nS = 10,
-  Nmax = 40, NmaxControl = 20,
-  delta = 0.1, thetaT = 0.9,
-  parE = rbind(c(1, 1), c(50, 10)),
+  x = 16,
+  n = 23,
+  xS = 5,
+  nS = 10,
+  Nmax = 40,
+  NmaxControl = 20,
+  delta = 0.1,
+  thetaT = 0.9,
+  parE = rbind(c(1, 1), c(3, 5)),
   weights = c(2, 1),
-  parS = rbind(c(1, 1), c(20, 40)),
+  parS = rbind(c(1, 1), c(2, 6)),
   weightsS = c(2, 1)
 )
 # Now we only have 59.9\% predictive probability of success. The bgttheta matrix

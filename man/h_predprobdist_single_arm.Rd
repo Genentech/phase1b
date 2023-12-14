@@ -7,6 +7,7 @@
 h_predprobdist_single_arm(
   x,
   mE,
+  n,
   Nmax,
   delta,
   relativeDelta,
@@ -14,8 +15,7 @@ h_predprobdist_single_arm(
   parS,
   weights,
   weightsS,
-  thetaT,
-  density
+  thetaT
 )
 }
 \arguments{
@@ -53,6 +53,6 @@ and trial success indicators.
 }
 \description{
 The helper function to generate the predictive probability of success based only on treatment group (\code{E})
-as there is no control or standard of care (\code{S})., indicated by \code{NmaxControl == 0}.
+as there is no control or standard of care (\code{S}), indicated by \code{NmaxControl == 0}.
 }
 \keyword{internal}

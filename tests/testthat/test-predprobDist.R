@@ -2,15 +2,15 @@
 test_that("h_predprobdist gives correct predictive probability", {
   result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
     x = 16,
+    n = 23,
     Nmax = 40,
     delta = 0.1,
     relativeDelta = FALSE,
-    parE = c(0.6, 0.4),
+    parE = t(c(0.6, 0.4)),
     weights = 1,
-    parS = c(7, 11),
+    parS = t(c(7, 11)),
     weightsS = 1,
     thetaT = 0.9,
-    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
     mE = 17
   )
   expect_equal(result$result, 0.5426927, tolerance = 1e-4)
@@ -19,15 +19,15 @@ test_that("h_predprobdist gives correct predictive probability", {
 test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower", {
   is_lower <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
     x = 16,
+    n = 23,
     Nmax = 40,
     delta = 0.1,
     relativeDelta = FALSE,
-    parE = c(0.6, 0.4),
+    parE = t(c(0.6, 0.4)),
     weights = 1,
     parS = c(7, 11),
     weightsS = 1,
     thetaT = 0.9,
-    density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
     mE = 17
   )
   is_higher <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
@@ -43,7 +43,7 @@ test_that("h_predprobdist_single_arm gives higher predictive probability when th
     density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
     mE = 17
   )
-  expect_true(is_higher$result > is_lower$result, )
+  expect_true(is_higher$result > is_lower$result)
 })
 
 test_that("h_predprobdist gives correct list", {
@@ -126,7 +126,7 @@ test_that("h_predprobdist give predictive probability less than 1 or 1", {
     density = dbetabinomMix(x = 0:17, m = 17, par = t(c(0.6, 0.4)), weights = 1),
     mE = 17
   )
-  expect_true(all(result$posterior <= 1))
+  expect_true(all(result$posterior) <= 1)
 })
 
 # h_predprobdist ----
@@ -214,5 +214,102 @@ test_that("sum of joint density in h_predprobdist is 1 and predictive probabilit
     thetaT = 0.5
   )
   expect_equal(sum(result$density), 1, tolerance = 1e-4)
-  expect_true(all(result$posterior <= 1))
+  expect_true(all(result$posterior) <= 1)
+})
+
+## predprobDist ----
+
+test_that("predprobDist gives the correct predictive probability in a single-arm study", {
+  result <- predprobdist(
+    NmaxControl = 10,
+    Nmax = 10,
+    n = 5,
+    nS = 5,
+    x = 2,
+    xS = 1,
+    parE = rbind(c(1, 1)),
+    parS = rbind(c(1, 1)),
+    weights = 1,
+    weightsS = 1,
+    delta = 0.1,
+    relativeDelta = FALSE,
+    thetaT = 0.5
+  )
+  expect_equal(result$result, 1, tolerance = 1e-4)
+  expect_true(all(result$posterior) <= 1)
+  expect_true(sum(result$density), 1)
+})
+
+test_that("predprobDist gives the correct predictive probability in a two-arm study", {
+  result <- predprobDist(
+    x = 16,
+    n = 23,
+    xS = 5,
+    nS = 10,
+    Nmax = 40,
+    NmaxControl = 20,
+    delta = 0.1,
+    thetaT = 0.9,
+    parE = rbind(c(1, 1), c(50, 10)),
+    weights = c(2, 1),
+    parS = rbind(c(1, 1), c(20, 40)),
+    weightsS = c(2, 1)
+  )
+  expect_equal(result$result, 1, tolerance = 1e-4)
+  expect_true(all(result$posterior) <= 1)
+  expect_true(sum(result$density), 1)
+})
+
+test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower in a single-arm trial", {
+  is_lower <- predprobDist(
+    x = 16,
+    n = 23,
+    xS = 5,
+    nS = 10,
+    Nmax = 40,
+    NmaxControl = 20,
+    delta = 0.1,
+    thetaT = 0.9,
+    parE = rbind(c(1, 1), c(50, 10)),
+    weights = c(2, 1),
+    parS = rbind(c(1, 1), c(20, 40)),
+    weightsS = c(2, 1)
+  )
+  is_higher <- predprobDist(
+    x = 16,
+    n = 23,
+    xS = 5,
+    nS = 10,
+    Nmax = 40,
+    NmaxControl = 20,
+    delta = 0.1,
+    thetaT = 0.5,
+    parE = rbind(c(1, 1), c(50, 10)),
+    weights = c(2, 1),
+    parS = rbind(c(1, 1), c(20, 40)),
+    weightsS = c(2, 1)
+  )
+  expect_true(is_higher$result > is_lower$result)
+})
+
+test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower in a two-arm trial", {
+  is_lower <- predprobDist(
+    x = 16,
+    n = 23,
+    Nmax = 40,
+    delta = 0.1,
+    thetaT = 0.9,
+    parE = rbind(c(1, 1), c(50, 10)),
+    weights = c(2, 1),
+  )
+  is_higher <- predprobDist(
+    x = 16,
+    n = 23,
+    Nmax = 40,
+    delta = 0.1,
+    thetaT = 0.5,
+    parE = rbind(c(1, 1), c(50, 10)),
+    weights = c(2, 1),
+  )
+  expect_true(is_higher$result > is_lower$result)
 })
