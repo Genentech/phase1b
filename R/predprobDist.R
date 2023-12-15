@@ -94,11 +94,14 @@ h_predprobdist_single_arm <- function(x,
 #'
 #' @inheritParams h_predprobdist_single_arm
 #'
+#' @typed xS : number
+#'  number of successes in the `S` group at interim.
 #' @typed n : number
+#'  number of patients in the `E` group at interim.
+#' @typed nS : number
 #'  number of patients in the `E` group at interim.
 #' @typed NmaxControl : number
 #'   maximum number of patients in the `S` group at final analysis.
-#'
 #'
 #' @return A `list` is returned with names `result` for predictive probability and
 #'  `table` of numeric values with counts of responses in the remaining patients, `density` for
@@ -235,7 +238,7 @@ h_predprobdist <- function(x,
 #' - `posterior`: `Pr(P_E > P_S + delta | x, Y = i)` using beta posterior.
 #' - `success`: indicator `I( b > thetaT )`.
 #'
-#' @inheritParams h_predprobDist
+#' @inheritParams h_predprobdist
 #'
 #' @return A `list` is returned with names `result` for predictive probability including or separately a
 #'  `table` of numeric values with counts of responses in the remaining patients, `density` for

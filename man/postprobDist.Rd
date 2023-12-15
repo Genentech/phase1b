@@ -58,7 +58,7 @@ compared to standard of care \code{S}. \code{E}See note below for two formulatio
 \details{
 The beta mixture prior for the \code{E} arm requires argument \code{parE} and \code{weights}.
 The beta mixture prior for the \code{S} arm requires argument \code{parS} and \code{weightsS}.
-See \verb{[postprob()]} for details.
+See \code{\link[=postprob]{postprob()}} for details.
 
 If a beta-mixture is used, by default, the weights are uniform across the components.
 Weights can exceed 1, to which the algorithm will normalize the weights such that all weights sum to 1.
