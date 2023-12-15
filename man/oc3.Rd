@@ -102,6 +102,19 @@ Interim looks are done three times total including the last one, with
 approximately equal distance between the looks.
 }
 \examples{
+## this looks OK now:
+oc3(
+  method = "Prior.PP",
+  histSize = 1e5L,
+  trialSize = 100,
+  controlRateDist = function() {
+    rbeta(n = 1, 10, 10)
+  },
+  nmeRate = 0.70,
+  nSim = 20,
+  delta = 0.15
+)
+
 ## this one as well:
 oc3(
   method = "Prior.Bayes",

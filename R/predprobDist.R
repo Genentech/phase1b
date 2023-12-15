@@ -40,7 +40,6 @@ NULL
 #'  and trial success indicators.
 #'
 #' @keywords internal
-
 h_predprobdist_single_arm <- function(x,
                                       mE,
                                       n,
@@ -71,8 +70,6 @@ h_predprobdist_single_arm <- function(x,
     activeBetamixPost,
     dbetabinomMix(x = 0:mE, m = mE, par = par, weights = weights)
   )
-  assert_numeric(posterior_y, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
-  assert_numeric(density_y, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
   list(
     result = sum(density_y * (posterior_y > thetaT)),
     table = data.frame(
@@ -84,7 +81,6 @@ h_predprobdist_single_arm <- function(x,
     )
   )
 }
-
 
 #' The predictive probability of success in two-arm studies.
 #'
@@ -109,7 +105,6 @@ h_predprobdist_single_arm <- function(x,
 #'  and `success`for trial success indicators.
 #'
 #' @keywords internal
-
 h_predprobdist <- function(x,
                            n,
                            xS,

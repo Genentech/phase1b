@@ -105,17 +105,17 @@ Interim looks are done three times total including the last one, with
 approximately equal distance between the looks.
 }
 \examples{
-## this looks OK now:
-# oc2(
-#   method = "Prior.PP",
-#   histSize = 1e5L,
-#   trialSize = 100,
-#   drift = 0,
-#   controlRate = 0.5,
-#   nmeRate = 0.70,
-#   nSim = 20,
-#   delta = 0.15
-# )
+# this looks OK now:
+oc2(
+  method = "Prior.PP",
+  histSize = 1e5L,
+  trialSize = 100,
+  drift = 0,
+  controlRate = 0.5,
+  nmeRate = 0.70,
+  nSim = 20,
+  delta = 0.15
+)
 
 ## this one as well:
 oc2(
