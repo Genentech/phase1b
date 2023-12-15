@@ -42,53 +42,38 @@ Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y = i | x , n)*I\{Pr(P_E > P_S + delta | x,Y=i) >= thetaT\}},
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of \code{n}.
+Please see note in \code{\link[=postprobDist]{postprobDist()}} for definition of \code{delta} and \code{relativeDelta}.
 Prior is \code{P_E ~ beta(a, b)} and uniform which is a \code{beta(1,1)}.
 However, a beta mixture prior can also be specified. Analogously
 for \code{P_S} either a classic beta prior or a beta mixture prior can be
 specified.
 
 Also data on the \code{S} might be available. Then the predictive probability is
-more generally defined as
+more generally defined as :
 \verb{pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I\{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT\}}
-where \code{Z} is the future number of responses in the S group, and \code{xS} is the
+where \code{Z} is the future number of responses in the \code{S} group, and \code{xS} is the
 current number of responses in the \code{S} group.
 
 In the case where \code{NmaxControl = 0}, a table with the following contents will be included in the return output :
 \itemize{
-\item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects in ascending order.
+\item \code{cumul_counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
 \item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
 \item \code{posterior}: \code{Pr(P_E > P_S + delta | x, Y = i)} using beta posterior.
-\item \code{success}: indicator \code{I(b>thetaT)}.
+\item \code{success}: indicator \code{I( b > thetaT )}.
 }
-
-A table with the following contents will be
-included in the  return value
-(in the case that NmaxControl is zero):
-i: Y=i (number of future successes in Nmax-n subjects)
-py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
-b: Pr(P_E > P_S + delta | x, Y=i)
-bgttheta: indicator I(b>thetaT)
 
 If \code{NmaxControl} is not zero, i.e., when data on the control treatment
 is available in this trial, then a list with will be included with the
 following elements:
-pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
-b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
-bgttheta: matrix of indicators I(b>thetaT)
-}
-\section{Delta from postprobDist :}{
-The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
-The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
-\enumerate{
-\item The absolute case is when we define an absolute delta, greater than \code{P_S},
-the response rate of the \code{S} group such that
-the posterior is \code{Pr(P_E > P_S + delta | data)}.
-\item In the relative case, we suppose that the treatment group's
-response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
-the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+\itemize{
+\item \code{counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects in ascending order.
+\item \code{cumul_counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
+\item \code{posterior}: \code{Pr(P_E > P_S + delta | x, Y = i)} using beta posterior.
+\item \code{success}: indicator \code{I( b > thetaT )}.
 }
 }
-
 \examples{
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0, thetaT = 0.9,

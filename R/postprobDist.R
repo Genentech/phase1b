@@ -14,12 +14,12 @@ NULL
 #'  probability of success or response rate of standard of care or control or `S` group.
 #' @typed activeBetamixPost : list
 #'  a list of posterior parameters of a beta-mixture-binomial distribution with generic names
-#'  `par` and `weights`. See `[getBetaMix()]`.
+#'  `par` and `weights`. See [getBetaMix()].
 #' @typed controlBetamixPost : list
 #'  a list of posterior parameters of a beta-mixture-binomial distribution with generic names
-#'  `par` and `weights`. See `[getBetaMix()]`.
+#'  `par` and `weights`. See [getBetaMix()].
 #'
-#' @return Function that is an argument for `[stats::integrate()]`.
+#' @return Function that is an argument for [stats::integrate()].
 #'
 #' @keywords internal
 #'
@@ -62,7 +62,7 @@ h_integrand <- function(p_s, delta, activeBetamixPost, controlBetamixPost) {
 #' Generating bounds for the Integration of Beta Mixture Posterior
 #'
 #' Using the quantile of the Beta Mixture Distribution from parameters given by standard of care `S` or
-#' experimental group `E` to determine bounds as inputs to `[stats::integrate()]`.
+#' experimental group `E` to determine bounds as inputs to [stats::integrate()].
 #'
 #' @inheritParams h_integrand_relDelta
 #' @return Integrand function

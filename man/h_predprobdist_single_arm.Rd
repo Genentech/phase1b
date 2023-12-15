@@ -32,7 +32,7 @@ response rate in magnitude of \code{delta} of the \code{S} non-responding patien
 
 \item{parE}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
-for the \code{E} group. See details.}
+for the \code{E} group.}
 
 \item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution for the \code{S} group.}

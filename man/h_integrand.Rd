@@ -16,10 +16,10 @@ be better than in the standard of care or control or \code{S} group.
 Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
 \item{activeBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
-\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
+\code{par} and \code{weights}. See \code{\link[=getBetaMix]{getBetaMix()}}.}
 
 \item{controlBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
-\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
+\code{par} and \code{weights}. See \code{\link[=getBetaMix]{getBetaMix()}}.}
 }
 \value{
 Function that is an argument for \verb{[stats::integrate()]}.

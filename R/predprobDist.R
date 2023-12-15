@@ -21,7 +21,7 @@ NULL
 #' @typed parE : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution
-#'  for the `E` group. See details.
+#'  for the `E` group.
 #' @typed parS : numeric
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution for the `S` group.
@@ -207,52 +207,33 @@ h_predprobdist <- function(x,
 #' `pp = sum over i: Pr(Y = i | x , n)*I{Pr(P_E > P_S + delta | x,Y=i) >= thetaT}`,
 #' where `Y` is the number of future responses in the treatment group and `x` is
 #' the current number of responses in the treatment group out of `n`.
+#' Please see note in [postprobDist()] for definition of `delta` and `relativeDelta`.
 #' Prior is `P_E ~ beta(a, b)` and uniform which is a `beta(1,1)`.
 #' However, a beta mixture prior can also be specified. Analogously
 #' for `P_S` either a classic beta prior or a beta mixture prior can be
 #' specified.
 #'
 #' Also data on the `S` might be available. Then the predictive probability is
-#' more generally defined as
+#' more generally defined as :
 #' `pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT}`
-#' where `Z` is the future number of responses in the S group, and `xS` is the
+#' where `Z` is the future number of responses in the `S` group, and `xS` is the
 #' current number of responses in the `S` group.
 #'
 #' In the case where `NmaxControl = 0`, a table with the following contents will be included in the return output :
-#' - `i`: `Y = i`, number of future successes in `Nmax-n` subjects.
+#' - `counts`: `Y = i`, number of future successes in `Nmax-n` subjects in ascending order.
+#' - `cumul_counts`: `Y = i`, number of future successes in `Nmax-n` subjects.
 #' - `density`: `Pr(Y = i|x)` using beta-(mixture)-binomial distribution.
 #' - `posterior`: `Pr(P_E > P_S + delta | x, Y = i)` using beta posterior.
-#' - `success`: indicator `I(b>thetaT)`.
-#'
-#' A table with the following contents will be
-#' included in the  return value
-#' (in the case that NmaxControl is zero):
-#' i: Y=i (number of future successes in Nmax-n subjects)
-#' py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
-#' b: Pr(P_E > P_S + delta | x, Y=i)
-#' bgttheta: indicator I(b>thetaT)
+#' - `success`: indicator `I( b > thetaT )`.
 #'
 #' If `NmaxControl` is not zero, i.e., when data on the control treatment
 #' is available in this trial, then a list with will be included with the
 #' following elements:
-#' pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
-#' b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
-#' bgttheta: matrix of indicators I(b>thetaT)
-#'
-#' @details
-#'
-#' # Delta from postprobDist :
-#'
-#' The desired improvement is denoted as `delta`. There are two options in using `delta`.
-#' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
-#'
-#' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
-#' the response rate of the ``S`` group such that
-#' the posterior is `Pr(P_E > P_S + delta | data)`.
-#'
-#' 2. In the relative case, we suppose that the treatment group's
-#' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
-#' the posterior is `Pr(P_E > P_S + (1 - P_S) * delta | data)`.
+#' - `counts`: `Y = i`, number of future successes in `Nmax-n` subjects in ascending order.
+#' - `cumul_counts`: `Y = i`, number of future successes in `Nmax-n` subjects.
+#' - `density`: `Pr(Y = i|x)` using beta-(mixture)-binomial distribution.
+#' - `posterior`: `Pr(P_E > P_S + delta | x, Y = i)` using beta posterior.
+#' - `success`: indicator `I( b > thetaT )`.
 #'
 #' @inheritParams h_predprobDist
 #'

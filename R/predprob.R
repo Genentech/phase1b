@@ -18,7 +18,7 @@ NULL
 #' The prior for the response rate in the experimental arm is `P_E ~ beta(a, b)`.
 #'
 #' A table with the following contents will be included in the return output :
-#' - `i`: `Y = i`, number of future successes in `Nmax-n` subjects.
+#' - `counts`: `Y = i`, number of future successes in `Nmax-n` subjects.
 #' - `density`: `Pr(Y = i|x)` using beta-(mixture)-binomial distribution.
 #' - `posterior`: `Pr(P_E > p | x, Y=i)` using beta posterior.
 #' - `success`: indicator `I(b > thetaT)`.
