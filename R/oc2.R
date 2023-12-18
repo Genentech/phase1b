@@ -110,7 +110,6 @@ oc2 <- function(method =
   if (is.vector(parE)) {
     ## check that it has exactly two entries
     stopifnot(identical(length(parE), 2L))
-
     ## and transpose to matrix with one row
     parE <- t(parE)
   }
@@ -249,7 +248,6 @@ oc2 <- function(method =
         ## current data in both arms:
         xActive <- x[which(isActive[1:i])]
         xControl <- x[which(!isActive[1:i])]
-
         ## compute the two probabilities
         qL <- postprobDist(
           x = sum(xControl), n = length(xControl),
@@ -259,13 +257,12 @@ oc2 <- function(method =
           parS = parE, weightsS = weights
         )
         qU <- postprobDist(
-          x = sum(xActive), n = length(xActive),
-          xS = sum(xControl), nS = length(xControl),
+          x = sum(xControl), n = length(xControl),
+          xS = sum(xActive), nS = length(xActive),
           delta = deltaE,
           parE = parE, weights = weights,
           parS = parS
         )
-
         ## sample sizes: in both arms
         nActive[k] <- length(xActive)
         nControl[k] <- length(xControl)
@@ -285,7 +282,6 @@ oc2 <- function(method =
         ## current data in both arms:
         xActive <- x[which(isActive[1:i])]
         xControl <- x[which(!isActive[1:i])]
-
         ## compute predictive probability
         q <- predprobDist(
           x = sum(xActive), n = length(xActive),

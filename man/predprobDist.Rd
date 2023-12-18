@@ -3,7 +3,7 @@
 \name{predprobDist}
 \alias{predprobDist}
 \title{Compute the predictive probability that the trial will be
-successful, with a prior distribution on the SOC}
+successful, with a prior distribution on the standard of care or \code{S}}
 \usage{
 predprobDist(
   x,
@@ -22,163 +22,132 @@ predprobDist(
 )
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of successes in the treatment group at interim}
+\item{x}{(\code{number}):\cr number of successes in the \code{E} group at interim.}
 
-\item{n}{(\code{number}):\cr number of patients in the treatment group at interim}
+\item{n}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
 
-\item{xS}{(\code{number}):\cr number of successes in the SOC group at interim}
+\item{xS}{(\code{number}):\cr number of successes in the \code{S} group at interim.}
 
-\item{nS}{(\code{number}):\cr number of patients in the SOC group}
+\item{nS}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
 
-\item{Nmax}{(\code{number}):\cr maximum number of patients in the treatment group at the end of the trial}
+\item{Nmax}{(\code{number}):\cr maximum number of patients in the \code{E} group at final analysis.}
 
-\item{NmaxControl}{(\code{number}):\cr maximum number of patients at the end of the trial in the
-SOC group}
+\item{NmaxControl}{(\code{number}):\cr maximum number of patients in the \code{S} group at final analysis.}
 
-\item{delta}{(``):\cr margin by which the response rate in the treatment group should
-be better than in the SOC group}
+\item{delta}{(\code{number}):\cr difference between response rates to be met.}
 
-\item{relativeDelta}{(``):\cr see \verb{[postprobDist()]}}
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \code{\link[=postprobDist]{postprobDist()}}.}
 
-\item{parE}{(``):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components. default is a
-uniform prior.}
+\item{parE}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{E} group.}
 
-\item{weights}{(``):\cr the mixture weights of the beta mixture prior. Default are
-uniform weights across mixture components.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 
-\item{parS}{(``):\cr beta prior parameters in the SOC group}
+\item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution for the \code{S} group.}
 
-\item{weightsS}{(``):\cr weights for the SOC group}
+\item{weightsS}{(\code{numeric}):\cr weights for the \code{S} group.}
 
-\item{thetaT}{(``):\cr threshold on the probability to be used}
+\item{thetaT}{(\code{number}):\cr threshold on the probability to be used.}
 }
 \value{
-A \code{list} is returned with names \code{result} for predictive probability and
-\code{table} (single arm case)  or list \code{tables} with ... (to be completed)
+A \code{list} is returned with names \code{result} for predictive probability including or separately a
+\code{table} of numeric values with counts of responses in the remaining patients, \code{density} for
+probabilities of these counts, \code{posterior} for corresponding probabilities to be above threshold,
+and \code{success}for trial success indicators.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Compute the predictive probability of trial success given current data.
-Success means that at the end of the trial the posterior probability
-\code{Pr(P_E > P_S + delta_0 | data) >= thetaT}. Then the
-predictive probability for success is:
+
+Success means that at the end of the trial the posterior probability is:
+\code{Pr(P_E > P_S + delta_0 | data) >= thetaT}.
+
+Where \code{P_E} is the response rate of the treatment or \code{E}group and
+\code{P_S} is the response rate of the standard of care of \code{S} group.
+
+Then the predictive probability for success is:
 \verb{pp = sum over i: Pr(Y = i | x , n)*I\{Pr(P_E > P_S + delta | x,Y=i) >= thetaT\}},
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of \code{n}.
-Prior is \code{P_E ~ beta(a, b)} and uniform which is a beta(1,1).
-However, also a beta mixture prior can be specified. Analogously
-for \code{P_S} either a classic beta prior or a beta mixture prior can be
+Please see note in \code{\link[=postprobDist]{postprobDist()}} for definition of \code{delta} and \code{relativeDelta}.
+Prior is \code{P_E ~ beta(a, b)} and uniform is a \code{beta(1,1)}.
+However, a beta mixture prior can also be specified. Analogously
+for \code{P_S} either a uniform beta prior or a beta mixture prior can be
 specified.
 
-Also data on the SOC might be available. Then the predictive probability is
-more generally defined as
+Also data on the \code{S} might be available. Then the predictive probability is
+more generally defined as :
 \verb{pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I\{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT\}}
-where \code{Z} is the future number of responses in the SOC group, and \code{xS} is the
-current number of responses in the SOC group.
+where \code{Z} is the future number of responses in the \code{S} group, and \code{xS} is the
+current number of responses in the \code{S} group.
 
 In the case where \code{NmaxControl = 0}, a table with the following contents will be included in the return output :
 \itemize{
-\item \code{i}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects in ascending order.
+\item \code{cumul_counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
 \item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
 \item \code{posterior}: \code{Pr(P_E > P_S + delta | x, Y = i)} using beta posterior.
-\item \code{success}: indicator \code{I(b>thetaT)}.
+\item \code{success}: indicator \code{I( b > thetaT )}.
 }
-
-A table with the following contents will be
-included in the  return value
-(in the case that NmaxControl is zero):
-i: Y=i (number of future successes in Nmax-n subjects)
-py: Pr(Y=i|x) using beta-(mixture)-binomial distribution
-b: Pr(P_E > P_S + delta | x, Y=i)
-bgttheta: indicator I(b>thetaT)
 
 If \code{NmaxControl} is not zero, i.e., when data on the control treatment
-is available in this trial, then a list with will be included with the
-following elements:
-pyz: matrix with the probabilities Pr(Y=i, Z=j | x, xS)
-b: matrix with Pr(P_E > P_S + delta | x, xS, Y=i, Z=j)
-bgttheta: matrix of indicators I(b>thetaT)
-}
-\section{Delta from postprobDist :}{
-The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
-The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
-\enumerate{
-\item The absolute case is when we define an absolute delta, greater than \code{P_S},
-the response rate of the \code{SOC} group such that
-the posterior is \code{Pr(P_E > P_S + delta | data)}.
-\item In the relative case, we suppose that the treatment group's
-response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
-the posterior is \code{Pr(P_E > P_S + (1 - P_S) * delta | data)}.
+is available in this trial, then a list with the following contents will be included in the return output :
+\itemize{
+\item \code{counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects in ascending order.
+\item \code{cumul_counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
+\item \code{density}: \code{Pr(Y = i|x)} using beta-(mixture)-binomial distribution.
+\item \code{posterior}: \code{Pr(P_E > P_S + delta | x, Y = i)} using beta posterior.
+\item \code{success}: indicator \code{I( b > thetaT )}.
 }
 }
-
 \examples{
-# The original Lee and Liu (Table 1) example:
-# Nmax=40, x=16, n=23, beta(0.6,0.4) prior distribution,
-# thetaT=0.9. The control response rate is 60\%:
-predprob(
-  x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9,
-  parE = c(0.6, 0.4)
-)
-# So the predictive probability is 56.6\%. 12 responses
-# in the remaining 17 patients are required for success.
-
-# Now to the modified example, where the control response
-# rate p has a beta(7, 11) distribution.
-# For example if the 60\% threshold (control) stems from a trial
-# with 10 patients, of which 6 were observed with response.
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0, thetaT = 0.9,
   parE = c(0.6, 0.4), parS = c(7, 11)
 )
-# Now only7 responses are needed in the remaining 17 patients
-# in order to have a successful trial.
-# Also, the predictive probability for a Go decision
-# is now 97.78\% instead of merely 56.6\%.
-
-# If the response threshold of 60\% stems from an SOC estimate (e.g. 50\% = 5/10)
-# and a margin of e.g. 10\%, then the margin can be specified with
-# the delta argument:
+# Specifying delta.
 predprobDist(
   x = 16, n = 23, Nmax = 40, delta = 0.1, thetaT = 0.9,
   parE = c(1, 1), parS = c(6, 11)
 )
-# This again changes the result: Only 10 future responses are required,
-# the predictive probability of success is now 80\%.
 
-# Next we will use a beta mixture prior, with a weight of 1/3 for an
-# informative beta(50, 10) prior, on the experimental response rate:
+# Lowering theta increases predictive probability.
 predprobDist(
-  x = 16, n = 23, Nmax = 40, delta = 0.1, thetaT = 0.9,
-  parE = rbind(c(1, 1), c(50, 10)),
-  weights = c(2, 1), parS = c(6, 11)
+  x = 16, n = 23, Nmax = 40, delta = 0.1, thetaT = 0.5,
+  parE = c(1, 1), parS = c(6, 11)
 )
-# Now still 10 future responses are required for success, but the predictive
-# success probability is higher (87.2\%).
 
-# We can also have additional controls in our trial. For example
-# assume that in the interim analysis we had 10 control patients observed
-# with 5 responses out of 20 in total at the end.
-# We also had historical control data (say 60 patients of
-# which 20 responded), but in order to be robust against changes in the response
-# rate over time, we will again use a beta mixture, putting only 1/3 of weight
-# on the historical controls:
+# Beta-mixture prior for experimental arm.
 predprobDist(
-  x = 16, n = 23, xS = 5, nS = 10,
-  Nmax = 40, NmaxControl = 20,
-  delta = 0.1, thetaT = 0.9,
-  parE = rbind(c(1, 1), c(50, 10)),
+  x = 16,
+  n = 23,
+  Nmax = 40,
+  delta = 0.1,
+  thetaT = 0.9,
+  parE = rbind(c(1, 1), c(2, 6)),
   weights = c(2, 1),
-  parS = rbind(c(1, 1), c(20, 40)),
+  parS = c(6, 11)
+)
+
+# More extensive use of historical trials for control arm.
+predprobDist(
+  x = 16,
+  n = 23,
+  xS = 5,
+  nS = 10,
+  Nmax = 40,
+  NmaxControl = 20,
+  delta = 0.1,
+  thetaT = 0.9,
+  parE = rbind(c(1, 1), c(3, 5)),
+  weights = c(2, 1),
+  parS = rbind(c(1, 1), c(2, 6)),
   weightsS = c(2, 1)
 )
-# Now we only have 59.9\% predictive probability of success. The bgttheta matrix
-# lists the cases where we would have success, for all possible combinations
-# of future responses in the control and experimental arms. We see that the
-# success threshold for experimental responses depends on the number of
-# control responses.
 }
 \references{
 Lee, J. J., & Liu, D. D. (2008). A predictive probability

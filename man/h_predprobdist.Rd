@@ -27,6 +27,8 @@ h_predprobdist(
 
 \item{xS}{(\code{number}):\cr number of successes in the \code{S} group at interim.}
 
+\item{nS}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
+
 \item{Nmax}{(\code{number}):\cr maximum number of patients in the \code{E} group at final analysis.}
 
 \item{NmaxControl}{(\code{number}):\cr maximum number of patients in the \code{S} group at final analysis.}
@@ -34,11 +36,11 @@ h_predprobdist(
 \item{delta}{(\code{number}):\cr difference between response rates to be met.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \verb{[postprobDist()]}.}
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \code{\link[=postprobDist]{postprobDist()}}.}
 
 \item{parE}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
-for the \code{E} group. See details.}
+for the \code{E} group.}
 
 \item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution for the \code{S} group.}

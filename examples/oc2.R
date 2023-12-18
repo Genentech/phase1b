@@ -1,4 +1,4 @@
-## this looks OK now:
+# this looks OK now:
 oc2(
   method = "Prior.PP",
   histSize = 1e5L,

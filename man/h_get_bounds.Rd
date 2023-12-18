@@ -8,13 +8,13 @@ h_get_bounds(controlBetamixPost)
 }
 \arguments{
 \item{controlBetamixPost}{(\code{list}):\cr a list of posterior parameters of a beta-mixture-binomial distribution with generic names
-\code{par} and \code{weights}. See \verb{[getBetaMix()]}.}
+\code{par} and \code{weights}. See \code{\link[=h_getBetamixPost]{h_getBetamixPost()}}.}
 }
 \value{
 Integrand function
 }
 \description{
 Using the quantile of the Beta Mixture Distribution from parameters given by standard of care \code{S} or
-experimental group \code{E} to determine bounds as inputs to \verb{[stats::integrate()]}.
+experimental group \code{E} to determine bounds as inputs to \code{\link[stats:integrate]{stats::integrate()}}.
 }
 \keyword{internal}
