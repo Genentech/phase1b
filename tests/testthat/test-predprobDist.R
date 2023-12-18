@@ -1,5 +1,5 @@
 # h_predprobdist_single_arm ----
-test_that("h_predprobdist gives correct results", {
+test_that("h_predprobdist_single_arm gives correct results", {
   result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
     x = 16,
     n = 23,
@@ -48,7 +48,7 @@ test_that("h_predprobdist_single_arm gives higher predictive probability when th
   expect_true(is_higher$result > is_lower$result)
 })
 
-test_that("h_predprobdist gives correct list", {
+test_that("h_predprobdist_single_arm gives correct list", {
   result <- h_predprobdist_single_arm( # From Lee & Liu (2008) example
     x = 16,
     n = 23,
@@ -65,39 +65,32 @@ test_that("h_predprobdist gives correct list", {
   expected <- list(
     result = 0.708190673645917,
     table = data.frame(
-      list(
-        counts = 0:17,
-        cumul_counts = c(
-          16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-          26, 27, 28, 29, 30, 31, 32, 33
-        ),
-        density = c(
-          1.88519627332867e-06,
-          2.27351448005706e-05, 0.000142906624460729, 0.00062104280723588,
-          0.00208840865570497, 0.005765730288637, 0.0135369319820173,
-          0.0276295672473687, 0.0496995264510597, 0.0793901526426017,
-          0.112910439313922, 0.142631776121115, 0.158735363747693,
-          0.153165701861808, 0.124552328986526, 0.0810915163188868,
-          0.0381323201737623, 0.00988166643612601
-        ),
-        posterior = c(
-          0.273531410553188,
-          0.337791887816968, 0.4060867759263, 0.476483339905221, 0.546948408163723,
-          0.615503378263203, 0.68036482033612, 0.74005747797379, 0.793490884253671,
-          0.839995719658816, 0.879320792671476, 0.91159559002206, 0.93726634490541,
-          0.957015305250502, 0.971673319374667, 0.982135113639861,
-          0.989284955003113, 0.993938086698407
-        ),
-        success = c(
-          FALSE,
-          FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-          FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
-        )
+      counts = 0:17,
+      cumul_counts = c(
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32, 33
       ),
-      class = "data.frame",
-      row.names = c(
-        NA,
-        -18L
+      density = c(
+        1.88519627332867e-06,
+        2.27351448005706e-05, 0.000142906624460729, 0.00062104280723588,
+        0.00208840865570497, 0.005765730288637, 0.0135369319820173,
+        0.0276295672473687, 0.0496995264510597, 0.0793901526426017,
+        0.112910439313922, 0.142631776121115, 0.158735363747693,
+        0.153165701861808, 0.124552328986526, 0.0810915163188868,
+        0.0381323201737623, 0.00988166643612601
+      ),
+      posterior = c(
+        0.273531410553188,
+        0.337791887816968, 0.4060867759263, 0.476483339905221, 0.546948408163723,
+        0.615503378263203, 0.68036482033612, 0.74005747797379, 0.793490884253671,
+        0.839995719658816, 0.879320792671476, 0.91159559002206, 0.93726634490541,
+        0.957015305250502, 0.971673319374667, 0.982135113639861,
+        0.989284955003113, 0.993938086698407
+      ),
+      success = c(
+        FALSE,
+        FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+        FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
       )
     )
   )
@@ -171,7 +164,7 @@ test_that("h_predprobdist gives higher predictive probability when thetaT is low
   expect_true(is_higher$result > is_lower$result)
 })
 
-test_that("sum of joint density in h_predprobdist is 1 and predictive probabilities are less than 1", {
+test_that("h_predprobdist gives correct results", {
   result <- h_predprobdist(
     NmaxControl = 10,
     Nmax = 10,
@@ -193,7 +186,7 @@ test_that("sum of joint density in h_predprobdist is 1 and predictive probabilit
 })
 
 # predprobDist ----
-test_that("predprobDist gives the correct predictive probability in a single-arm study", {
+test_that("predprobDist gives the correct results in a single-arm study", {
   result <- predprobDist(
     NmaxControl = 10,
     Nmax = 10,
@@ -234,7 +227,7 @@ test_that("predprobDist gives the correct results in a two-arm study", {
   expect_equal(sum(result$density), 1, tolerance = 1e-4)
 })
 
-test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower in a single-arm trial", {
+test_that("predprobDist gives higher predictive probability when thetaT is lower in a single-arm trial", {
   is_lower <- predprobDist(
     x = 16,
     n = 23,
@@ -266,7 +259,7 @@ test_that("h_predprobdist_single_arm gives higher predictive probability when th
   expect_true(is_higher$result > is_lower$result)
 })
 
-test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower in a two-arm trial", {
+test_that("predprobDist gives higher predictive probability when thetaT is lower in a two-arm trial", {
   is_lower <- predprobDist(
     x = 16,
     n = 23,
