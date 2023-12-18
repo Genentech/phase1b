@@ -46,12 +46,6 @@ maximum sample size it may happen that no decision is made ("gray zone").'><!-- 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -216,9 +210,9 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      11.7        0.95       0.95          0       0.97       0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        12        0.96       0.94       0.02       0.97       0.03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]          0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># generate random look locations around 10,20,30 patients</span></span></span>
@@ -238,9 +232,9 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res2</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     12.24        0.94       0.94          0       0.99          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      12.7        0.95       0.93       0.02       0.94       0.02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.04</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># specify the distance for random looks around the look locations in nn (d=5 for illustration)</span></span></span>
 <span class="r-in"><span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu">ocPostprobDist</span><span class="op">(</span></span></span>
@@ -259,9 +253,9 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res3</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     13.22        0.96       0.93       0.03       0.95       0.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     12.44        0.93       0.91       0.02       0.95       0.02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.03</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># finally, we can also have separate specification of efficacy and futility analyses. E.g.</span></span></span>
@@ -272,9 +266,9 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res4</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     13.95        0.86       0.86          0       0.92       0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     13.83        0.87       0.87          0       0.93       0.03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0.04</span>
 <span class="r-in"><span><span class="co"># compared to res3, we see that there is no early futility stopping anymore,</span></span></span>
 <span class="r-in"><span><span class="co"># and the overall probability for stopping for futility (which is the type II error here)</span></span></span>
 <span class="r-in"><span><span class="co"># is much lower.</span></span></span>

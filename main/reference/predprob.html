@@ -11,7 +11,7 @@ where Y is the number of future responses in the treatment group and x is
 the current number of responses in the treatment group out of n.
 The prior for the response rate in the experimental arm is P_E ~ beta(a, b).
 A table with the following contents will be included in the return output :
-i: Y = i, number of future successes in Nmax-n subjects.
+counts: Y = i, number of future successes in Nmax-n subjects.
 density: Pr(Y = i|x) using beta-(mixture)-binomial distribution.
 posterior: Pr(P_E &amp;gt; p | x, Y=i) using beta posterior.
 success: indicator I(b &amp;gt; thetaT).
@@ -28,7 +28,7 @@ where Y is the number of future responses in the treatment group and x is
 the current number of responses in the treatment group out of n.
 The prior for the response rate in the experimental arm is P_E ~ beta(a, b).
 A table with the following contents will be included in the return output :
-i: Y = i, number of future successes in Nmax-n subjects.
+counts: Y = i, number of future successes in Nmax-n subjects.
 density: Pr(Y = i|x) using beta-(mixture)-binomial distribution.
 posterior: Pr(P_E &amp;gt; p | x, Y=i) using beta posterior.
 success: indicator I(b &amp;gt; thetaT).
@@ -70,12 +70,6 @@ success: indicator I(b &amp;gt; thetaT).
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -109,7 +103,7 @@ Then the predictive probability for success is:
 where <code>Y</code> is the number of future responses in the treatment group and <code>x</code> is
 the current number of responses in the treatment group out of n.
 The prior for the response rate in the experimental arm is <code>P_E ~ beta(a, b)</code>.</p>
-<p>A table with the following contents will be included in the return output :</p><ul><li><p><code>i</code>: <code>Y = i</code>, number of future successes in <code>Nmax-n</code> subjects.</p></li>
+<p>A table with the following contents will be included in the return output :</p><ul><li><p><code>counts</code>: <code>Y = i</code>, number of future successes in <code>Nmax-n</code> subjects.</p></li>
 <li><p><code>density</code>: <code>Pr(Y = i|x)</code> using beta-(mixture)-binomial distribution.</p></li>
 <li><p><code>posterior</code>: <code>Pr(P_E &gt; p | x, Y=i)</code> using beta posterior.</p></li>
 <li><p><code>success</code>: indicator <code>I(b &gt; thetaT)</code>.</p></li>

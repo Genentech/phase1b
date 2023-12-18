@@ -40,12 +40,6 @@ standard of care (S) group."><!-- mathjax --><script src="https://cdnjs.cloudfla
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -106,6 +100,10 @@ standard of care (<code>S</code>) group.</p>
 <dd><p>(<code>number</code>):<br> number of successes in the <code>S</code> group at interim.</p></dd>
 
 
+<dt>nS</dt>
+<dd><p>(<code>number</code>):<br> number of patients in the <code>E</code> group at interim.</p></dd>
+
+
 <dt>Nmax</dt>
 <dd><p>(<code>number</code>):<br> maximum number of patients in the <code>E</code> group at final analysis.</p></dd>
 
@@ -120,13 +118,13 @@ standard of care (<code>S</code>) group.</p>
 
 <dt>relativeDelta</dt>
 <dd><p>(<code>flag</code>):<br> If <code>TRUE</code>, then a <code>relativeDelta</code> is used. Represents that a minimum
-response rate in magnitude of <code>delta</code> of the <code>S</code> non-responding patients. See <code>[postprobDist()]</code>.</p></dd>
+response rate in magnitude of <code>delta</code> of the <code>S</code> non-responding patients. See <code><a href="postprobDist.html">postprobDist()</a></code>.</p></dd>
 
 
 <dt>parE</dt>
 <dd><p>(<code>numeric</code>):<br> parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution
-for the <code>E</code> group. See details.</p></dd>
+for the <code>E</code> group.</p></dd>
 
 
 <dt>parS</dt>
