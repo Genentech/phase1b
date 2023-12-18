@@ -250,15 +250,15 @@ oc2 <- function(method =
         xControl <- x[which(!isActive[1:i])]
         ## compute the two probabilities
         qL <- postprobDist(
-          x = sum(xActive), n = length(xActive),
-          xS = sum(xControl), nS = length(xControl),
+          x = sum(xControl), n = length(xControl),
+          xS = sum(xActive), nS = length(xActive),
           delta = deltaF,
           parE = parS,
           parS = parE, weightsS = weights
         )
         qU <- postprobDist(
-          x = sum(xActive), n = length(xActive),
-          xS = sum(xControl), nS = length(xControl),
+          x = sum(xControl), n = length(xControl),
+          xS = sum(xActive), nS = length(xActive),
           delta = deltaE,
           parE = parE, weights = weights,
           parS = parS
