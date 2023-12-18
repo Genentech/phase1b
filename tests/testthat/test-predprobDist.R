@@ -64,7 +64,7 @@ test_that("h_predprobdist gives correct list", {
   )
   expected <- list(
     result = 0.708190673645917,
-    table = structure(
+    table = data.frame(
       list(
         counts = 0:17,
         cumul_counts = c(
