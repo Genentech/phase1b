@@ -189,9 +189,10 @@ test_that("sum of joint density in h_predprobdist is 1 and predictive probabilit
   )
   expect_equal(sum(result$density), 1, tolerance = 1e-4)
   expect_true(all(result$posterior < 1))
+  expect_equal(sum(result$density), 1, tolerance = 1e-4)
 })
 
-## predprobDist ----
+# predprobDist ----
 test_that("predprobDist gives the correct predictive probability in a single-arm study", {
   result <- predprobDist(
     NmaxControl = 10,

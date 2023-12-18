@@ -206,9 +206,9 @@ h_predprobdist <- function(x,
 #' where `Y` is the number of future responses in the treatment group and `x` is
 #' the current number of responses in the treatment group out of `n`.
 #' Please see note in [postprobDist()] for definition of `delta` and `relativeDelta`.
-#' Prior is `P_E ~ beta(a, b)` and uniform which is a `beta(1,1)`.
+#' Prior is `P_E ~ beta(a, b)` and uniform is a `beta(1,1)`.
 #' However, a beta mixture prior can also be specified. Analogously
-#' for `P_S` either a classic beta prior or a beta mixture prior can be
+#' for `P_S` either a uniform beta prior or a beta mixture prior can be
 #' specified.
 #'
 #' Also data on the `S` might be available. Then the predictive probability is
@@ -225,8 +225,7 @@ h_predprobdist <- function(x,
 #' - `success`: indicator `I( b > thetaT )`.
 #'
 #' If `NmaxControl` is not zero, i.e., when data on the control treatment
-#' is available in this trial, then a list with will be included with the
-#' following elements:
+#' is available in this trial, then a list with the following contents will be included in the return output :
 #' - `counts`: `Y = i`, number of future successes in `Nmax-n` subjects in ascending order.
 #' - `cumul_counts`: `Y = i`, number of future successes in `Nmax-n` subjects.
 #' - `density`: `Pr(Y = i|x)` using beta-(mixture)-binomial distribution.

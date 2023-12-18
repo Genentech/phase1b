@@ -74,9 +74,9 @@ Then the predictive probability for success is:
 where \code{Y} is the number of future responses in the treatment group and \code{x} is
 the current number of responses in the treatment group out of \code{n}.
 Please see note in \code{\link[=postprobDist]{postprobDist()}} for definition of \code{delta} and \code{relativeDelta}.
-Prior is \code{P_E ~ beta(a, b)} and uniform which is a \code{beta(1,1)}.
+Prior is \code{P_E ~ beta(a, b)} and uniform is a \code{beta(1,1)}.
 However, a beta mixture prior can also be specified. Analogously
-for \code{P_S} either a classic beta prior or a beta mixture prior can be
+for \code{P_S} either a uniform beta prior or a beta mixture prior can be
 specified.
 
 Also data on the \code{S} might be available. Then the predictive probability is
@@ -95,8 +95,7 @@ In the case where \code{NmaxControl = 0}, a table with the following contents wi
 }
 
 If \code{NmaxControl} is not zero, i.e., when data on the control treatment
-is available in this trial, then a list with will be included with the
-following elements:
+is available in this trial, then a list with the following contents will be included in the return output :
 \itemize{
 \item \code{counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects in ascending order.
 \item \code{cumul_counts}: \code{Y = i}, number of future successes in \code{Nmax-n} subjects.
