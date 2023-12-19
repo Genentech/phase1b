@@ -1,0 +1,213 @@
+---
+title: "Design document for ocPostprobDist.R"
+output: html_document
+date: "2023-12-19"
+---
+## Input parameters from example file :
+
+# design details
+# multiple looks @ 10, 20, 30 patients
+# True response rate of the treatment group=0.4
+
+# stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
+# stop for futility (deltaF): P(pE < pS - deltaF) >tL
+# where pE is the response rate of treatment group, pS is the response rate of
+# control group. Both of them are random variables.
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+nn <- c(10, 20, 30)
+p <- 0.4 # control
+deltaE <- 0.1
+deltaF <- -0.1
+tL <- 0.6
+tU <- 0.6
+parE <- c(1, 1)
+parS <- c(5, 25)
+ns <- 100
+nr <- TRUE
+d <- 5
+relativeDelta <- FALSE
+```
+
+## Function on Main branch
+
+```{r cars}
+ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
+                           tL, tU,
+                           parE = c(a = 1, b = 1),
+                           parS = c(a = 1, b = 1),
+                           ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+  nnE <- sort(nn)
+  nnF <- sort(nnF)
+  s <- rep(NA, ns)
+  n <- s
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+  if (nr && is.null(d)) { # HELPER ? get_distance ?
+    ## set parameter d for randomly generating look locations
+    d <- floor(min(nn - c(0, nn[-nL])) / 2)
+  }
+  nnr <- nn
+  nnrE <- nnE
+  nnrF <- nnF
+
+  ## simulate a clinical trial ns times
+  for (k in 1:ns) {
+    if (nr && (d > 0)) {
+      ## randomly generate look locations
+      dd <- sample(-d:d,
+        size = nL - 1, replace = TRUE,
+        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+      )
+      nnr <- nn + c(dd, 0)
+      nnrE <- nnr[nn %in% nnE]
+      nnrF <- nnr[nn %in% nnF]
+    }
+    x <- stats::rbinom(Nmax, 1, p)
+    j <- 1
+    i <- nnr[j]
+    while (is.na(s[k]) && (j <= length(nnr))) {
+      if (i %in% nnrF) {
+        qL <- postprobDist(
+          x = 0, n = 0,
+          xS = sum(x[1:i]), nS = i,
+          delta = deltaF, relativeDelta = relativeDelta,
+          parE = parS, parS = parE
+        )
+        s[k] <- ifelse(qL >= tL, FALSE, NA)
+      }
+
+      if (i %in% nnrE) {
+        qU <- postprobDist(
+          x = sum(x[1:i]), n = i,
+          xS = 0, nS = 0,
+          delta = deltaE, relativeDelta = relativeDelta,
+          parE = parE, parS = parS
+        )
+        s[k] <- ifelse(qU < tU, s[k], TRUE)
+      }
+
+
+      n[k] <- i
+      j <- j + 1
+      i <- nnr[j]
+    }
+  }
+  oc <- cbind(
+    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
+    PrGrayZone = sum(is.na(s) / ns)
+  )
+  return(list(
+    oc = oc, Decision = s, SampleSize = n,
+    nn = nn, nnE = nnE, nnF = nnF,
+    params = as.list(match.call(expand.dots = FALSE))
+  ))
+}
+```
+
+## Example
+
+```{r pressure, echo=FALSE}
+res3 <- ocPostprobDist(
+  nn = c(10, 20, 30),
+  p = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  ns = 100,
+  nr = TRUE,
+  d = 5
+)
+
+res3$oc
+```
+
+
+```{r}
+ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
+                           tL, tU,
+                           parE = c(a = 1, b = 1),
+                           parS = c(a = 1, b = 1),
+                           sim = 50000, randomdist = FALSE, dist = NULL, nnF = nn, wiggle = TRUE) { # wiggle ?
+  nnE <- sort(nn)
+  nnF <- sort(nnF)
+  s <- rep(NA, sim) # the matrix for TRUE, FALSE, NA (Efficacious, Futile, NA)
+  n <- s # the matrix
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+  if (nr && is.null(d)) { # HELPER ? get_distance ?
+    ## set parameter d for randomly generating look locations
+    d <- floor(min(nn - c(0, nn[-nL])) / 2)
+  }
+  nnr <- nn
+  nnrE <- nnE
+  nnrF <- nnF
+  ## simulate a clinical trial ns times
+  for (k in 1:ns) {
+    if (nr && (d > 0)) {
+      ## randomly generate look locations
+      dd <- sample(-d:d,
+        size = nL - 1, replace = TRUE,
+        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+      )
+      nnr <- nn + c(dd, 0)
+      nnrE <- nnr[nn %in% nnE]
+      nnrF <- nnr[nn %in% nnF]
+    }
+    x <- stats::rbinom(Nmax, 1, p)
+    j <- 1
+    i <- nnr[j]
+    while (is.na(s[k]) && (j <= length(nnr))) {
+      if (i %in% nnrF) {
+        qL <- postprobDist(
+          x = 0, n = 0,
+          xS = sum(x[1:i]), nS = i,
+          delta = deltaF, relativeDelta = relativeDelta,
+          parE = parS, parS = parE
+        )
+        s[k] <- ifelse(qL >= tL, FALSE, NA)
+      }
+      if (i %in% nnrE) {
+        qU <- postprobDist(
+          x = sum(x[1:i]), n = i,
+          xS = 0, nS = 0,
+          delta = deltaE, relativeDelta = relativeDelta,
+          parE = parE, parS = parS
+        )
+        s[k] <- ifelse(qU < tU, s[k], TRUE)
+      }
+      n[k] <- i
+      j <- j + 1
+      i <- nnr[j]
+    }
+  }
+  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_Eff_n = nnrE,
+    wiggled_Fut_n = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
