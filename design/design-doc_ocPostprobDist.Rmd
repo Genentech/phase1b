@@ -55,10 +55,10 @@ h_get_decisionDist <- function(nnr,
     # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.3
     if (size_look %in% nnF) {
       qL <- postprobDist( # P(P_E < P_S + delta or P_S(1-PS)*delta | data)  >= tL
-        x = 0,
-        n = 0,
-        xS = sum(response[1:i]),
-        nS = i,
+        x = sum(response[1:length(response)]),
+        n = nnF,
+        xS = sum(response[1:length(response)]),
+        nS = nnF,
         delta = deltaF,
         relativeDelta = relativeDelta,
         parE = parS,
@@ -66,12 +66,12 @@ h_get_decisionDist <- function(nnr,
       )
       s[k] <- ifelse(qL >= tL, FALSE, NA)
     }
-    if (i %in% nnrE) {
+    if (size_look %in% nnrE) {
       qU <- postprobDist( #  P(P_E > P_S + delta or P_S(1-PS)*delta | data) =< tU
-        x = sum(response[1:i]),
-        n = i,
-        xS = 0,
-        nS = 0,
+        x = sum(response[1:length(response)]),
+        n = nnE,
+        xS = sum(response[1:length(response)]),
+        nS = nnE,
         delta = deltaE,
         relativeDelta = relativeDelta,
         parE = parE,
@@ -118,8 +118,8 @@ ocPostprobDist <- function(nn,
   Nstart <- nn[1]
   Nmax <- nn[nL]
   ## simulate a clinical trial ns times
-  for (k in 1:ns) {
-    if (nr && (d > 0)) {
+  for (k in 1:sim) {
+    if (randomdist && (dist > 0)) {
       ## randomly generate look locations
       dist <- h_get_distance(nn = nn) # we generate sim number of distances ?
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
