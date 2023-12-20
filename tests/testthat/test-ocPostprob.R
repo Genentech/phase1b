@@ -33,8 +33,8 @@ test_that("get_decision will give GO decision in favourable conditions", {
   tmp <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
-    # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.8
-    # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.5
+    # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.2
+    # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.3
     p0 = 0.2,
     p1 = 0.5,
     tL = 0.2,
