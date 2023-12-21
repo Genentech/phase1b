@@ -14,21 +14,35 @@ date: "2023-12-19"
 # where pE is the response rate of treatment group, pS is the response rate of
 # control group. Both of them are random variables.
 
+Design notes :
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-nn <- c(10, 20, 30)
+# nn <- c(10, 20, 30)
+# truep <- 0.4
+# deltaE <- 0.1
+# deltaF <- -0.1
+# tL <- 0.6
+# tU <- 0.6
+# parE <- c(1, 1)
+# parS <- c(5, 25)
+# sim <- 100
+# randomdist <- TRUE
+# dist <- 5
+# relativeDelta <- FALSE
+
+
+nn <- nnE <- nnF <- c(10, 20, 30)
+p0 <- 0.2
+p1 <- 0.3
+parE <- parS <- c(1, 1)
 truep <- 0.4
-deltaE <- 0.1
-deltaF <- -0.1
+tU <- 0.8
 tL <- 0.6
-tU <- 0.6
-parE <- c(1, 1)
-parS <- c(5, 25)
+wiggle <- TRUE
 sim <- 100
-randomdist <- TRUE
-dist <- 5
+randomdist <- NULL
 relativeDelta <- FALSE
 ```
 
@@ -43,7 +57,9 @@ h_get_decisionDist <- function(nnr,
                                nnE,
                                nnF,
                                tL,
-                               tU) {
+                               tU,
+                               deltaF,
+                               deltaE) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -53,31 +69,60 @@ h_get_decisionDist <- function(nnr,
   while (is.na(decision) && index_look <= length(nnr)) {
     # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.2
     # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.3
-    if (size_look %in% nnF) {
-      qL <- postprobDist( # P(P_E < P_S + delta or P_S(1-PS)*delta | data)  >= tL
-        x = sum(response[1:length(response)]),
-        n = nnF,
-        xS = sum(response[1:length(response)]),
-        nS = nnF,
+    # if ( (size_look %in% nnF && nnE) ) {
+    #   qL <- 1 - postprobDist(  # Evaluating the "Stop zone" here
+    #     # P(P_E < P_S + delta or P_S(1-PS)*delta | data)  >= tL this is stop
+    #     x = sum(response[1:length(response)]),
+    #     n = size_look,
+    #     xS = sum(response[1:length(response)]),
+    #     nS = size_look,
+    #     delta = deltaF,
+    #     relativeDelta = relativeDelta,
+    #     parE = parS,
+    #     parS = parE
+    #   )
+    #   s[k] <- ifelse(qL >= tL, FALSE, NA)
+    # }
+    # if (size_look %in% nnF && nnF) {
+    #   qU <- postprobDist( #  Evaluating the "grey zone" here
+    #     # P(P_E < P_S + delta or P_S(1-PS)*delta | data)  >= tL minus P(P_E > P_S + delta or P_S(1-PS)*delta | data) =< tU
+    #     x = sum(response[1:length(response)]),
+    #     n = nnE,
+    #     xS = sum(response[1:length(response)]),
+    #     nS = nnE,
+    #     delta = deltaE,
+    #     relativeDelta = relativeDelta,
+    #     parE = parE,
+    #     parS = parS
+    #   )
+    #   s[k] <- ifelse(qU < tU, s[k], TRUE)
+    # }
+    if (size_look %in% nnrF) {
+      qL <- postprobDist(
+        x = 0,
+        n = 0,
+        xS = sum(response[1:size_look]),
+        nS = size_look,
         delta = deltaF,
         relativeDelta = relativeDelta,
         parE = parS,
         parS = parE
       )
-      s[k] <- ifelse(qL >= tL, FALSE, NA)
+      decision[k] <- ifelse(qL >= tL, FALSE, NA)
     }
+
     if (size_look %in% nnrE) {
-      qU <- postprobDist( #  P(P_E > P_S + delta or P_S(1-PS)*delta | data) =< tU
-        x = sum(response[1:length(response)]),
-        n = nnE,
-        xS = sum(response[1:length(response)]),
-        nS = nnE,
+      qU <- postprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = 0,
+        nS = 0,
         delta = deltaE,
         relativeDelta = relativeDelta,
         parE = parE,
         parS = parS
       )
-      s[k] <- ifelse(qU < tU, s[k], TRUE)
+      decision[k] <- ifelse(qU < tU, decision[k], TRUE)
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -89,6 +134,23 @@ h_get_decisionDist <- function(nnr,
   )
 }
 ```
+
+```{r}
+h_get_decisionDist(
+  nnr = nnr,
+  truep = truep,
+  p0 = p0,
+  p1 = p1,
+  parE = c(1, 1),
+  nnE = nnE,
+  nnF = nnF,
+  tL = tL,
+  tU = tU,
+  deltaF = 0.1,
+  deltaE = 0.2
+)
+```
+
 
 ## Main Function
 
@@ -102,8 +164,9 @@ ocPostprobDist <- function(nn,
                            tU,
                            parE = c(a = 1, b = 1),
                            parS = c(a = 1, b = 1),
+                           wiggle = TRUE,
                            sim = 50000,
-                           randomdist = FALSE,
+                           randomdist = NULL,
                            dist = NULL,
                            nnF = nn) {
   if (sim < 50000) {
@@ -118,8 +181,9 @@ ocPostprobDist <- function(nn,
   Nstart <- nn[1]
   Nmax <- nn[nL]
   ## simulate a clinical trial ns times
-  for (k in 1:sim) {
-    if (randomdist && (dist > 0)) {
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle && is.null(randomdist)) {
+      # if (wiggle && is.null(randomdist) ) {
       ## randomly generate look locations
       dist <- h_get_distance(nn = nn) # we generate sim number of distances ?
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
@@ -170,7 +234,8 @@ res3 <- ocPostprobDist(
   parS = c(5, 25),
   sim = 100,
   randomdist = TRUE,
-  dist = 5
+  dist = 5,
+  wiggle = TRUE
 )
 
 res3$oc
