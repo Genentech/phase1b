@@ -136,8 +136,6 @@ ocPostprobDist <- function(nn,
                            parS = c(a = 1, b = 1),
                            wiggle = TRUE,
                            sim = 50000,
-                           randomdist = TRUE,
-                           dist = NULL,
                            nnF = nn) {
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
