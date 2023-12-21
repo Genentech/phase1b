@@ -54,7 +54,7 @@ res4$oc
 # trial failure is defined as: P(RRS<p1)>tFu
 # (gray zone could occur in the final analysis)
 
-# when tFu=1-tT and phiFu=1-phiL, this decisian rule (res5) is the same as the res1
+# when tFu=1-tT and phiFu=1-phiL, this decision rule (res5) is the same as the res1
 
 set.seed(20)
 res5 <- ocPredprob(c(10, 20, 30),

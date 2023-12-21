@@ -5,46 +5,42 @@ date: "2023-12-19"
 ---
 ## Input parameters from example file :
 
-# design details
-# multiple looks @ 10, 20, 30 patients
-# True response rate of the treatment group=0.4
+design details
+multiple looks @ 10, 20, 30 patients
+True response rate of the treatment group=0.4
 
-# stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
-# stop for futility (deltaF): P(pE < pS - deltaF) >tL
-# where pE is the response rate of treatment group, pS is the response rate of
-# control group. Both of them are random variables.
+stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
+stop for futility (deltaF): P(pE < pS - deltaF) >tL
+where pE is the response rate of treatment group, pS is the response rate of
+control group. Both of them are random variables.
 
 Design notes :
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-nn <- nnE <- nnF <- c(10, 20, 30)
-p0 <- 0.2
-p1 <- 0.3
-parE <- c(1, 1)
-parS <- c(5, 25)
-truep <- 0.4
-tU <- 0.8
-tL <- 0.6
-wiggle <- TRUE
-sim <- 100
-randomdist <- NULL
-relativeDelta <- FALSE
-deltaE <- 0.1
-deltaF <- -0.1
+# nn <- nnE <- nnF <- c(10, 20, 30)
+# p0 <- 0.2
+# p1 <- 0.3
+# parE <- c(1, 1)
+# parS <- c(5, 25)
+# truep <- 0.4
+# tU <- 0.8
+# tL <- 0.6
+# wiggle <- TRUE
+# sim <- 100
+# randomdist <- NULL
+# relativeDelta <- FALSE
+# deltaE <- 0.1
+# deltaF <- -0.1
 ```
 
 
-# Input for h_get_decisionDist
-```{r}
-dist <- h_get_distance(nn = nn) # we generate sim number of distances ?
-nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
-nnrE <- nnr$nnrE
-nnrF <- nnr$nnrF
-```
 
 # Adapted h_get_decision as helper function
+
+We use the `h_get_decision` from `postprob.R` to evaluate the posteriors and create an "array" of "vector" of decision results. `h_get_decision` will adapt by incorporating `postprobDist()` instead of `postprob()` to evaluate this posterior. The methodology is from Thall ] Simon 1994 (Biometrics).
+
 ```{r}
 h_get_decisionDist <- function(nnr,
                                nnrE,
@@ -105,7 +101,16 @@ h_get_decisionDist <- function(nnr,
 }
 ```
 
+# Example to test `h_get_decisionDist()`.
+
+# To test `h_get_decisionDist()`
 ```{r}
+# required input
+dist <- h_get_distance(nn = nn) # we generate sim number of distances ?
+nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
+nnrE <- nnr$nnrE
+nnrF <- nnr$nnrF
+
 h_get_decisionDist(
   nnr = c(10, 20, 30),
   truep = truep,
@@ -136,7 +141,8 @@ ocPostprobDist <- function(nn,
                            parS = c(a = 1, b = 1),
                            wiggle = TRUE,
                            sim = 50000,
-                           nnF = nn) {
+                           nnF = nn,
+                           randomdist = TRUE) {
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
