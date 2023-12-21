@@ -19,20 +19,6 @@ Design notes :
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-# nn <- c(10, 20, 30)
-# truep <- 0.4
-# deltaE <- 0.1
-# deltaF <- -0.1
-# tL <- 0.6
-# tU <- 0.6
-# parE <- c(1, 1)
-# parS <- c(5, 25)
-# sim <- 100
-# randomdist <- TRUE
-# dist <- 5
-# relativeDelta <- FALSE
-
-
 nn <- nnE <- nnF <- c(10, 20, 30)
 p0 <- 0.2
 p1 <- 0.3
@@ -44,11 +30,17 @@ wiggle <- TRUE
 sim <- 100
 randomdist <- NULL
 relativeDelta <- FALSE
+deltaE <- 0.1
+deltaF <- -0.1
 ```
 
 # Adapted h_get_decision as helper function
 
 ```{r}
+dist <- h_get_distance(nn = nn) # we generate sim number of distances ?
+nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
+nnrE <- nnr$nnrE
+nnrF <- nnr$nnrF
 h_get_decisionDist <- function(nnr,
                                truep,
                                p0,
@@ -108,7 +100,7 @@ h_get_decisionDist <- function(nnr,
         parE = parS,
         parS = parE
       )
-      decision[k] <- ifelse(qL >= tL, FALSE, NA)
+      decision <- ifelse(qL >= tL, FALSE, NA)
     }
 
     if (size_look %in% nnrE) {
@@ -122,7 +114,7 @@ h_get_decisionDist <- function(nnr,
         parE = parE,
         parS = parS
       )
-      decision[k] <- ifelse(qU < tU, decision[k], TRUE)
+      decision <- ifelse(qU < tU, decision, TRUE)
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -137,7 +129,7 @@ h_get_decisionDist <- function(nnr,
 
 ```{r}
 h_get_decisionDist(
-  nnr = nnr,
+  nnr = c(10, 20, 30),
   truep = truep,
   p0 = p0,
   p1 = p1,
@@ -203,20 +195,22 @@ ocPostprobDist <- function(nn,
       nnE = nnrE,
       nnF = nnrF,
       tL = tL,
-      tU = tU
+      tU = tU,
+      deltaE = deltaE,
+      deltaF = deltaF
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
-    oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
-    list(
-      oc = oc,
-      Decision = decision,
-      SampleSize = all_sizes,
-      nn = nn,
-      nnE = nnE,
-      nnF = nnF
-    )
   }
+  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    nn = nn,
+    nnE = nnE,
+    nnF = nnF
+  )
 }
 ```
 
@@ -239,4 +233,19 @@ res3 <- ocPostprobDist(
 )
 
 res3$oc
+```
+
+```{r}
+res2 <- ocPostprobDist(
+  nn = c(10, 20, 30),
+  truep = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  sim = 100,
+  wiggle = TRUE
+)
 ```
