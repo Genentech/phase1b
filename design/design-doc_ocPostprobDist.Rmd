@@ -188,8 +188,8 @@ ocPostprobDist <- function(nn,
     union_nn = nnr,
     input_nnE = nnE,
     input_nnF = nnF,
-    wiggled_Eff_n = nnrE,
-    wiggled_Fut_n = nnrF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
     wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
