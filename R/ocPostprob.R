@@ -195,8 +195,8 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' @typed wiggle : logical
 #'  generate random look locations (not default).
 #'  if `TRUE`, optional to specify `dist` (see @details).
-#' @typed randomdist : logical
-#'  Random distance added to looks. if `NULL`, and `wiggle = TRUE`, function will
+#' @typed randomdist : flag
+#'  Random distance added to looks. if `TRUE`, and `wiggle = TRUE`, function will
 #'  generate and add a random distance within range of the closest looks.
 #'
 #' @return A list with the following elements:
@@ -217,7 +217,7 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' @example examples/ocPostprob.R
 #' @export
 ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
-                       sim = 50000, wiggle = FALSE, randomdist = NULL, nnF = nnE) {
+                       sim = 50000, wiggle = FALSE, randomdist = FALSE, nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
   if (sim < 50000) {

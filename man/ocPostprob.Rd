@@ -14,7 +14,7 @@ ocPostprob(
   parE = c(1, 1),
   sim = 50000,
   wiggle = FALSE,
-  randomdist = NULL,
+  randomdist = FALSE,
   nnF = nnE
 )
 }
@@ -40,7 +40,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{wiggle}{(\code{logical}):\cr generate random look locations (not default).
 if \code{TRUE}, optional to specify \code{dist} (see @details).}
 
-\item{randomdist}{(\code{logical}):\cr Random distance added to looks. if \code{NULL}, and \code{wiggle = TRUE}, function will
+\item{randomdist}{(\code{flag}):\cr Random distance added to looks. if \code{TRUE}, and \code{wiggle = TRUE}, function will
 generate and add a random distance within range of the closest looks.}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
