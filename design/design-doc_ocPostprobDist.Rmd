@@ -16,7 +16,7 @@ control group. Both of them are random variables.
 
 Design notes :
 
-Three helper files assist. Two from ocPostprob.R. The only one specialised for ocPostprobDist is `h_get_decisionDist` which gives the end result.
+Three helper functions assist. Two from ocPostprob.R. The only one specialised for ocPostprobDist is `h_get_decisionDist` which gives the end result.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
