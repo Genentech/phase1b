@@ -97,8 +97,6 @@ h_get_decisionDist(
   nnrE = c(8, 20, 30),
   nnrF = c(8, 20, 30),
   truep = 0.4,
-  # p0 = 0.2,
-  # p1 = 0.3,
   parE = c(1, 1),
   tL = 0.8,
   tU = 0.6,
