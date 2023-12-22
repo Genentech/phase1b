@@ -192,7 +192,7 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' @inheritParams h_get_decision
 #' @typed sim : number
 #'  number of simulations.
-#' @typed wiggle : logical
+#' @typed wiggle : flag
 #'  generate random look locations (not default).
 #'  if `TRUE`, optional to specify `dist` (see @details).
 #' @typed randomdist : flag
@@ -220,13 +220,15 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
                        sim = 50000, wiggle = FALSE, randomdist = FALSE, nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_flag(randomdist)
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
   for (k in seq_len(sim)) {
-    if (length(nn) != 1 && wiggle && is.null(randomdist)) {
+    if (length(nn) != 1 && wiggle && randomdist) {
       dist <- h_get_distance(nn = nn)
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
@@ -253,8 +255,8 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     union_nn = nnr,
     input_nnE = nnE,
     input_nnF = nnF,
-    wiggled_Eff_n = nnrE,
-    wiggled_Fut_n = nnrF,
+    wiggled_nnrE = nnrE,
+    wiggled_nnrF = nnrF,
     wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )

@@ -20,13 +20,31 @@ Three helper files assist. Two from ocPostprob.R. The only one specialised for o
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
 
+input <- list(
+  nn = c(10, 20, 30),
+  nnE = c(10, 20, 30),
+  nnF = c(10, 20, 30),
+  p0 = 0.2,
+  p1 = 0.3,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  truep = 0.4,
+  tU = 0.8,
+  tL = 0.6,
+  wiggle = TRUE,
+  sim = 100,
+  randomdist = NULL,
+  relativeDelta = FALSE,
+  deltaE = 0.1,
+  deltaF = -0.1
+)
+```
 
 
 # h_get_decision as helper function
 
-We use the `h_get_decision` from `postprob.R` to evaluate the posteriors and create an "array" of "vector" of decision results. `h_get_decision` will adapt by incorporating `postprobDist()` instead of `postprob()` to evaluate this posterior. The methodology is from Thall ] Simon 1994 (Biometrics).
+We use the `h_get_decision` from `postprob.R` to evaluate the posteriors and create an "array" of "vector" of decision results. `h_get_decision` was adapted by incorporating `postprobDist()` instead of `postprob()` to evaluate this posterior. The methodology is from Thall & Simon 1994 (Biometrics).
 
 ```{r}
 h_get_decisionDist <- function(nnr,
@@ -44,7 +62,6 @@ h_get_decisionDist <- function(nnr,
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1) # but do we need this ? it's not an input to h_get_decisionDist
 
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnrF) {
@@ -86,16 +103,16 @@ h_get_decisionDist <- function(nnr,
 
 # Example to test `h_get_decisionDist()`.
 ```{r}
-# dist <- h_get_distance(nn = c(10, 20, 30))
-# nnr <- h_get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30)) # we generate sim number of looks
-# nnrE <- nnr$nnrE
-# nnrF <- nnr$nnrF
+example_dist <- h_get_distance(nn = c(10, 20, 30))
+looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+looks_nnrE <- looks$nnrE
+looks_nnrF <- looks$nnrF
 
 # input values from above arguments
 h_get_decisionDist(
   nnr = c(10, 20, 30),
-  nnrE = c(8, 20, 30),
-  nnrF = c(8, 20, 30),
+  nnrE = looks_nnrE,
+  nnrF = looks_nnrF,
   truep = 0.4,
   parE = c(1, 1),
   tL = 0.8,
@@ -106,9 +123,7 @@ h_get_decisionDist(
 )
 ```
 
-
 ## Main Function
-
 ```{r cars}
 ocPostprobDist <- function(nn,
                            truep,
@@ -123,15 +138,19 @@ ocPostprobDist <- function(nn,
                            sim = 50000,
                            nnF = nn,
                            randomdist = TRUE) {
-  assert_numeric(nn, min.len = 1, lower = 1, upper = max(nn), any.missing = FALSE) # in get_looks
+  assert_numeric(nn, min.len = 1, lower = 1, upper = max(nn), any.missing = FALSE)
   assert_number(truep, lower = 0, upper = 1)
-  assert_number(tL, lower = 0, upper = 1)
-  assert_number(tU, lower = 0, upper = 1)
   assert_number(deltaE, upper = 1, finite = TRUE)
   assert_number(deltaF, upper = 1, finite = TRUE)
   assert_flag(relativeDelta)
-  assert_number(sim, lower = 100, finite = TRUE) # the only one in ocpostprob main function
-  assert_numeric(nnF, min.len = 1, any.missing = FALSE) # in get_looks
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 100, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 1, any.missing = FALSE)
+  assert_flag(randomdist)
 
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
@@ -145,7 +164,7 @@ ocPostprobDist <- function(nn,
   nL <- length(nn)
   Nstart <- nn[1]
   Nmax <- nn[nL]
-  assert_flag(wiggle)
+
   # simulate a clinical trial sim times
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle && randomdist) {

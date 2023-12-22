@@ -37,7 +37,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{wiggle}{(\code{logical}):\cr generate random look locations (not default).
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
 if \code{TRUE}, optional to specify \code{dist} (see @details).}
 
 \item{randomdist}{(\code{flag}):\cr Random distance added to looks. if \code{TRUE}, and \code{wiggle = TRUE}, function will
