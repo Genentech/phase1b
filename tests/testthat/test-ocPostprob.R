@@ -33,8 +33,8 @@ test_that("get_decision will give GO decision in favourable conditions", {
   tmp <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
-    # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.8
-    # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.5
+    # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.2
+    # Stop criteria is P_E(p < p0) > tL, where P_E(truep > 0.20) > 0.3
     p0 = 0.2,
     p1 = 0.5,
     tL = 0.2,
@@ -82,13 +82,13 @@ test_that("the PrFutility increases with increase futility looks", {
   set.seed(1989)
   expect_warning(res_fut <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
+    sim = 10000, wiggle = FALSE, randomdist = TRUE, nnF = c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
 
   res_fut$oc$PrFutility
   expect_warning(res_one_fut <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, randomdist = NULL, nnF = 10
+    sim = 10000, wiggle = FALSE, randomdist = TRUE, nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
   res_one_fut$oc$PrFutility
   expect_true(res_fut$oc$PrFutility > res_one_fut$oc$PrFutility)
@@ -98,13 +98,13 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   expect_warning(res_eff <- ocPostprob(
     nnE = c(30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, randomdist = NULL, nnF = 30
+    sim = 10000, wiggle = FALSE, randomdist = TRUE, nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
 
   res_eff$oc$PrEfficacy
   expect_warning(res_more_eff <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
+    sim = 10000, wiggle = FALSE, randomdist = TRUE, nnF = c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
   res_more_eff$oc$PrEfficacy
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)

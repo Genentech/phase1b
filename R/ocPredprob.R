@@ -30,15 +30,15 @@ NULL
 #' (if futility looks should be different, please specify also \code{nnF})
 #' @param p true rate (scenario)
 #' @param p0 threshold on the response rate
-#' @param p1 futility threshold on the response rate. Specify only when decisian rule 2 is used.
+#' @param p1 futility threshold on the response rate. Specify only when decision rule 2 is used.
 #' @param tT threshold for the probability to be above the response rate p0
 #' at the end of the trial
 #' @param tFu threshold for the probability to be under the response rate p1
-#' at the end of the trial. Specify only when decisian rule 2 is used.
+#' at the end of the trial. Specify only when decision rule 2 is used.
 #' @param phiL lower threshold on the predictive probability
 #' @param phiU upper threshold on the predictive probability
 #' @param phiFu threshold on the predictive probability for futility. Specify only
-#' when decisian rule 2 is used. phiL argument should be skipped in this case.
+#' when decision rule 2 is used. phiL argument should be skipped in this case.
 #' @param parE beta parameters for the prior on the treatment proportion
 #' @param ns number of simulations
 #' @param nr generate random look locations? (not default)

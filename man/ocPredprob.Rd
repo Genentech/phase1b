@@ -30,20 +30,20 @@ ocPredprob(
 
 \item{p0}{threshold on the response rate}
 
-\item{p1}{futility threshold on the response rate. Specify only when decisian rule 2 is used.}
+\item{p1}{futility threshold on the response rate. Specify only when decision rule 2 is used.}
 
 \item{tT}{threshold for the probability to be above the response rate p0
 at the end of the trial}
 
 \item{tFu}{threshold for the probability to be under the response rate p1
-at the end of the trial. Specify only when decisian rule 2 is used.}
+at the end of the trial. Specify only when decision rule 2 is used.}
 
 \item{phiL}{lower threshold on the predictive probability}
 
 \item{phiU}{upper threshold on the predictive probability}
 
 \item{phiFu}{threshold on the predictive probability for futility. Specify only
-when decisian rule 2 is used. phiL argument should be skipped in this case.}
+when decision rule 2 is used. phiL argument should be skipped in this case.}
 
 \item{parE}{beta parameters for the prior on the treatment proportion}
 
@@ -148,7 +148,7 @@ res4$oc
 # trial failure is defined as: P(RRS<p1)>tFu
 # (gray zone could occur in the final analysis)
 
-# when tFu=1-tT and phiFu=1-phiL, this decisian rule (res5) is the same as the res1
+# when tFu=1-tT and phiFu=1-phiL, this decision rule (res5) is the same as the res1
 
 set.seed(20)
 res5 <- ocPredprob(c(10, 20, 30),

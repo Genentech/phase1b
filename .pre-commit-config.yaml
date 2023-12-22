@@ -42,6 +42,10 @@ repos:
           .*\.RData
           )$
       - id: lintr
+        exclude: >
+          (?x)^(
+          design/.*
+          )$
       - id: readme-rmd-rendered
       - id: parsable-R
       - id: no-browser-statement
@@ -53,6 +57,7 @@ repos:
         exclude: >
           (?x)^(
           .*\.yaml
+          design/.*
           )$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0

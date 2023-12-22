@@ -1,0 +1,250 @@
+---
+title: "Design document for ocPostprobDist.R"
+output: html_document
+date: "2023-12-19"
+---
+# Input parameters from example file :
+
+design details
+multiple looks @ 10, 20, 30 patients
+True response rate of the treatment group=0.4
+
+stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
+stop for futility (deltaF): P(pE < pS - deltaF) >tL
+where pE is the response rate of treatment group, pS is the response rate of
+control group. Both of them are random variables.
+
+Design notes :
+
+Three helper functions assist. Two from ocPostprob.R. The only one specialised for ocPostprobDist is `h_get_decisionDist` which gives the end result.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+input <- list(
+  nn = c(10, 20, 30),
+  nnE = c(10, 20, 30),
+  nnF = c(10, 20, 30),
+  p0 = 0.2,
+  p1 = 0.3,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  truep = 0.4,
+  tU = 0.8,
+  tL = 0.6,
+  wiggle = TRUE,
+  sim = 100,
+  randomdist = NULL,
+  relativeDelta = FALSE,
+  deltaE = 0.1,
+  deltaF = -0.1
+)
+```
+
+
+# h_get_decision as helper function
+
+We use the `h_get_decision` from `postprob.R` to evaluate the posteriors and create an "array" of "vector" of decision results. `h_get_decision` was adapted by incorporating `postprobDist()` instead of `postprob()` to evaluate this posterior. The methodology is from Thall & Simon 1994 (Biometrics).
+
+```{r}
+h_get_decisionDist <- function(nnr,
+                               nnrE,
+                               nnrF,
+                               truep,
+                               parE = c(1, 1),
+                               parS = c(1, 1),
+                               tL,
+                               tU,
+                               deltaF,
+                               deltaE,
+                               relativeDelta) {
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnrF) {
+      qL <- postprobDist(
+        x = 0,
+        n = 0,
+        xS = sum(response[1:size_look]),
+        nS = size_look,
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parS,
+        parS = parE
+      )
+      decision <- ifelse(qL >= tL, FALSE, NA)
+    }
+    if (size_look %in% nnrE) {
+      qU <- postprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = 0,
+        nS = 0,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+# Example to test `h_get_decisionDist()`.
+```{r}
+example_dist <- h_get_distance(nn = c(10, 20, 30))
+looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+looks_nnrE <- looks$nnrE
+looks_nnrF <- looks$nnrF
+
+# input values from above arguments
+h_get_decisionDist(
+  nnr = c(10, 20, 30),
+  nnrE = looks_nnrE,
+  nnrF = looks_nnrF,
+  truep = 0.4,
+  parE = c(1, 1),
+  tL = 0.8,
+  tU = 0.6,
+  deltaF = 0.1,
+  deltaE = 0.2,
+  relativeDelta = TRUE
+)
+```
+
+## Main Function
+```{r cars}
+ocPostprobDist <- function(nn,
+                           truep,
+                           deltaE,
+                           deltaF,
+                           relativeDelta = FALSE,
+                           tL,
+                           tU,
+                           parE = c(a = 1, b = 1),
+                           parS = c(a = 1, b = 1),
+                           wiggle = TRUE,
+                           sim = 50000,
+                           nnF = nn,
+                           randomdist = TRUE) {
+  assert_numeric(nn, min.len = 1, lower = 1, upper = max(nn), any.missing = FALSE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 100, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 1, any.missing = FALSE)
+  assert_flag(randomdist)
+
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+
+  nnE <- sort(nn)
+  nnF <- sort(nnF)
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+  # simulate a clinical trial sim times
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle && randomdist) {
+      # randomly generate look locations
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- h_get_decisionDist(
+      nnr = nnr,
+      nnrE = nnrE,
+      nnrF = nnrF,
+      truep = truep,
+      parE = c(1, 1),
+      tL = tL,
+      tU = tU,
+      deltaE = deltaE,
+      deltaF = deltaF,
+      relativeDelta = relativeDelta
+    )
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
+  }
+  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
+
+## Example
+```{r pressure, echo=FALSE}
+res3 <- ocPostprobDist(
+  nn = c(10, 20, 30),
+  truep = 0.4,
+  deltaE = 0.1,
+  deltaF = 0.1,
+  relativeDelta = FALSE,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  sim = 100,
+  randomdist = TRUE,
+  wiggle = TRUE
+)
+
+res3$oc
+res3
+```
+
+```{r}
+res2 <- ocPostprobDist(
+  nn = c(10, 20, 30),
+  truep = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  relativeDelta = FALSE,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  sim = 100,
+  randomdist = TRUE,
+  wiggle = TRUE
+)
+
+res2
+```

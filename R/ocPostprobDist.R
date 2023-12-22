@@ -64,7 +64,6 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
   nL <- length(nn)
   Nstart <- nn[1]
   Nmax <- nn[nL]
-
   if (nr && is.null(d)) {
     ## set parameter d for randomly generating look locations
     d <- floor(min(nn - c(0, nn[-nL])) / 2)
@@ -72,7 +71,6 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
   nnr <- nn
   nnrE <- nnE
   nnrF <- nnF
-
   ## simulate a clinical trial ns times
   for (k in 1:ns) {
     if (nr && (d > 0)) {
@@ -93,39 +91,44 @@ ocPostprobDist <- function(nn, p, deltaE, deltaF, relativeDelta = FALSE,
         qL <- postprobDist(
           x = 0, n = 0,
           xS = sum(x[1:i]), nS = i,
-          delta = deltaF, relativeDelta = relativeDelta,
+          delta = deltaF,
+          relativeDelta = relativeDelta,
           parE = parS, parS = parE
         )
         s[k] <- ifelse(qL >= tL, FALSE, NA)
       }
-
       if (i %in% nnrE) {
         qU <- postprobDist(
           x = sum(x[1:i]), n = i,
           xS = 0, nS = 0,
-          delta = deltaE, relativeDelta = relativeDelta,
-          parE = parE, parS = parS
+          delta = deltaE,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          parS = parS
         )
         s[k] <- ifelse(qU < tU, s[k], TRUE)
       }
-
-
       n[k] <- i
       j <- j + 1
       i <- nnr[j]
     }
   }
   oc <- cbind(
-    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
+    ExpectedN = mean(n),
+    PrStopEarly = mean(n < Nmax),
     PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
     PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
     PrEfficacy = sum(s, na.rm = TRUE) / ns,
     PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
-    nn = nn, nnE = nnE, nnF = nnF,
+  list(
+    oc = oc,
+    Decision = s,
+    SampleSize = n,
+    nn = nn,
+    nnE = nnE,
+    nnF = nnF,
     params = as.list(match.call(expand.dots = FALSE))
-  ))
+  )
 }

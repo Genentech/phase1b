@@ -32,16 +32,16 @@ NULL
 #' @param p true rate (scenario)
 #' @param delta We want to be better than the control + delta (default: 0)
 #' @param deltaFu declare futility when worse than the control + deltaW.
-#' Specify only when decisian rule 2 is used.
+#' Specify only when decision rule 2 is used.
 #' @param relativeDelta see \code{\link{postprobDist}}
 #' @param tT threshold for the probability to be above control + delta
 #' at the end of the trial
 #' @param tFu threshold for the probability to be under control + deltaFu
-#' at the end of the trial. Specify only when decisian rule 2 is used.
+#' at the end of the trial. Specify only when decision rule 2 is used.
 #' @param phiL lower threshold on the predictive probability
 #' @param phiU upper threshold on the predictive probability
 #' @param phiFu threshold on the predictive probability for futility. Specify only
-#' when decisian rule 2 is used. phiL argument should be skipped in this case.
+#' when decision rule 2 is used. phiL argument should be skipped in this case.
 #' @param parE beta parameters for the prior on the treatment proportion
 #' @param parS beta parameters for the prior on the control proportion
 #' @param ns number of simulations

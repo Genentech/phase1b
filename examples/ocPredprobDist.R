@@ -67,7 +67,7 @@ res5 <- ocPredprobDist(c(10, 20, 30), 0.4,
 res5$oc
 
 
-# when tFu=1-tT and phiFu=1-phiL, this decisian rule (res6) is the same as the res1
+# when tFu=1-tT and phiFu=1-phiL, this decision rule (res6) is the same as the res1
 set.seed(20)
 res6 <- ocPredprobDist(c(10, 20, 30), 0.4,
   delta = 0.1, tT = 0.6, tFu = 0.4, phiFu = 0.8, phiU = 0.8,

@@ -58,7 +58,7 @@ Cov
 cov
 cutB
 cutW
-decisian
+decisionDist
 deltaE
 deltaF
 DeltaFu
@@ -111,6 +111,8 @@ normalised
 nS
 oc
 ocPostProb
+ocPostprob
+ocPostprobDist
 params
 parX
 parY
@@ -154,6 +156,7 @@ SampleSizeActive
 SampleSizeControl
 seperate
 ShinyPhase
+specialised
 sumbetadiff
 summerize
 summerizes
