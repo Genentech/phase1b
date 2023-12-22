@@ -255,8 +255,8 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     union_nn = nnr,
     input_nnE = nnE,
     input_nnF = nnF,
-    wiggled_nnrE = nnrE,
-    wiggled_nnrF = nnrF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
     wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
