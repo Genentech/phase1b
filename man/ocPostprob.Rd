@@ -109,7 +109,7 @@ res$oc
 # We specify the distance in this example.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = TRUE, randomdist = TRUE, nnF = c(10, 20, 30)
+  sim = 50000, wiggle = TRUE, randomdist = FALSE, nnF = c(10, 20, 30)
 )
 
 res$oc
