@@ -696,7 +696,7 @@ we issue the following command:
 set.seed(4)
 results <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.4, p0 = 0.2, p1 = 0.3, tL = 0.6,
-  tU = 0.8, parE = c(1, 1), sim = 10000, wiggle = FALSE, randomdist = NULL, nnF = c(10, 20, 30)
+  tU = 0.8, parE = c(1, 1), sim = 10000, wiggle = FALSE, randomdist = FALSE, nnF = c(10, 20, 30)
 )
 results$oc
 ```
