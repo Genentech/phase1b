@@ -112,6 +112,7 @@ normalised
 nS
 oc
 ocPostProb
+ocPostprob
 ocPostprobDist
 params
 parX
@@ -156,6 +157,7 @@ SampleSizeActive
 SampleSizeControl
 seperate
 ShinyPhase
+specialised
 sumbetadiff
 summerize
 summerizes
