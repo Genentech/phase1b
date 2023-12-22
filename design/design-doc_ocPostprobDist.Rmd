@@ -146,10 +146,10 @@ ocPostprobDist <- function(nn,
   Nstart <- nn[1]
   Nmax <- nn[nL]
   assert_flag(wiggle)
-  ## simulate a clinical trial sim times
+  # simulate a clinical trial sim times
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle && randomdist) {
-      ## randomly generate look locations
+      # randomly generate look locations
       dist <- h_get_distance(nn = nn)
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
       nnrE <- nnr$nnrE
