@@ -34,18 +34,42 @@ for the \code{S} group. See details.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the standard of care or control or \code{S} group.}
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for efficacy is used to
+calculate \code{P(P_E > P_S + deltaE)} which should
+exceed threshold \code{tU} to to stop for efficacy.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
-\item{deltaF}{(\code{number}):\cr delta for efficacy: \code{P(P_E > P_S + deltaE)} should be large
-to stop for efficacy.}
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for futility is used to
+calculate  \code{P(P_E > P_S + deltaS)} which should
+exceed threshold \code{tL} to stop for futility.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See note.}
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients
+is included as the margin between treatment and control group. See note.}
 }
 \description{
 A helper function adapted from \code{h_get_decision()} from \code{ocPostprob.R} by
 replacing the internal use of \code{postprob()} with \code{postprobDist()}
 to generate numeric of \code{decisions} and random looks \code{all_sizes}.
+}
+\note{
+\subsection{Delta :}{
+
+The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
+The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+\enumerate{
+\item The absolute case is when we define an absolute delta, greater than \code{P_S},
+the response rate of the standard of care or control or \code{S} group such that
+the posterior is \code{Pr(P_E > P_S + deltaE | data)} for efficacy looks
+or \code{Pr(P_E > P_S + deltaF | data)} for futility looks.
+\item In the relative case, we suppose that the treatment group's
+response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for efficacy looks
+or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for futility looks.
+}
+}
 }
 \keyword{internal}
