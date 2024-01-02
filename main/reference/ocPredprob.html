@@ -46,12 +46,6 @@ above tT. Otherwise the decision is "failure". In this case, there is no gray zo
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -118,7 +112,7 @@ above tT. Otherwise the decision is "failure". In this case, there is no gray zo
 
 
 <dt>p1</dt>
-<dd><p>futility threshold on the response rate. Specify only when decisian rule 2 is used.</p></dd>
+<dd><p>futility threshold on the response rate. Specify only when decision rule 2 is used.</p></dd>
 
 
 <dt>tT</dt>
@@ -128,7 +122,7 @@ at the end of the trial</p></dd>
 
 <dt>tFu</dt>
 <dd><p>threshold for the probability to be under the response rate p1
-at the end of the trial. Specify only when decisian rule 2 is used.</p></dd>
+at the end of the trial. Specify only when decision rule 2 is used.</p></dd>
 
 
 <dt>phiL</dt>
@@ -141,7 +135,7 @@ at the end of the trial. Specify only when decisian rule 2 is used.</p></dd>
 
 <dt>phiFu</dt>
 <dd><p>threshold on the predictive probability for futility. Specify only
-when decisian rule 2 is used. phiL argument should be skipped in this case.</p></dd>
+when decision rule 2 is used. phiL argument should be skipped in this case.</p></dd>
 
 
 <dt>parE</dt>
@@ -271,7 +265,7 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span><span class="co"># trial failure is defined as: P(RRS&lt;p1)&gt;tFu</span></span></span>
 <span class="r-in"><span><span class="co"># (gray zone could occur in the final analysis)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># when tFu=1-tT and phiFu=1-phiL, this decisian rule (res5) is the same as the res1</span></span></span>
+<span class="r-in"><span><span class="co"># when tFu=1-tT and phiFu=1-phiL, this decision rule (res5) is the same as the res1</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res5</span> <span class="op">&lt;-</span> <span class="fu">ocPredprob</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
