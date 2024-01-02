@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprobDist.R
 \name{h_get_decisionDist}
 \alias{h_get_decisionDist}
-\title{Evaluate posteriors based on  Efficacy and Futility thresholds in two-armed trials.}
+\title{Evaluate posteriors based on  Efficacy and Futility thresholds in two-armed trials}
 \usage{
 h_get_decisionDist(
   nnr,
@@ -13,38 +13,40 @@ h_get_decisionDist(
   parS = c(1, 1),
   tL,
   tU,
-  deltaF,
   deltaE,
+  deltaF,
   relativeDelta
 )
 }
 \arguments{
 \item{nnr}{(\code{numeric}):\cr the union of \code{nnE}and \code{nnF}.}
 
+\item{nnrE}{(\code{numeric}):\cr the result for Efficacy looks with random distance added.}
+
+\item{nnrF}{(\code{numeric}):\cr the result for Futility looks with random distance added.}
+
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{parE}{(``):\cr alpha and beta parameters for the prior on the treatment population.
+\item{parE}{(\code{numeric} or \code{matrix}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{parS}{(``):\cr alpha and beta parameters for the prior on the control population.
+\item{parS}{(\code{numeric} or \code{matrix}):\cr alpha and beta parameters for the prior on the control population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{deltaF}{(``):\cr delta for efficacy: \code{P(P_E > P_S + deltaE)} should be large
-to stop for efficacy.}
-
 \item{deltaE}{(``):\cr margin by which the response rate in the treatment group should
 be better than in the standard of care or control or \code{S} group.}
+
+\item{deltaF}{(``):\cr delta for efficacy: \code{P(P_E > P_S + deltaE)} should be large
+to stop for efficacy.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients
 exists and is used if \code{TRUE}.
 See \code{\link[=postprobDist]{postprobDist()}}.}
-
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
 A list of the following objects :

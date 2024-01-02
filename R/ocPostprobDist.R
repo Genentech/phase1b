@@ -1,7 +1,7 @@
 #' @include postprobDist.R
 NULL
 
-#' Evaluate posteriors based on  Efficacy and Futility thresholds in two-armed trials.
+#' Evaluate posteriors based on  Efficacy and Futility thresholds in two-armed trials
 #'
 #' The helper function to evaluate generated posteriors and create an "array"
 #' or "vector" of decision results based on user defined thresholds.
@@ -11,16 +11,16 @@ NULL
 #'
 #' @typed nnr : numeric
 #'  the union of `nnE`and `nnF`.
-#' @typed nnrE
+#' @typed nnrE : numeric
 #'  the result for Efficacy looks with random distance added.
-#' @typed nnrF
+#' @typed nnrF : numeric
 #'  the result for Futility looks with random distance added.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
-#' @typed parE :
+#' @typed parE : "`numeric` or `matrix`"
 #'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
-#' @typed parS :
+#' @typed parS : "`numeric` or `matrix`"
 #'  alpha and beta parameters for the prior on the control population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #' @typed tL : number
@@ -54,9 +54,21 @@ h_get_decisionDist <- function(nnr,
                                parS = c(1, 1),
                                tL,
                                tU,
-                               deltaF,
                                deltaE,
+                               deltaF,
                                relativeDelta) {
+  assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
+  assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
+  assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_number(deltaE, lower = 0, upper = 1)
+  assert_number(deltaF, lower = 0, upper = 1)
+  assert_flag(relativeDelta)
+
   index_look <- 1
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
