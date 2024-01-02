@@ -3,9 +3,9 @@ NULL
 
 #' Evaluate Posteriors based on Efficacy and Futility Thresholds in Two-Armed trials
 #'
-#' A helper function adapted from `h_get_decision()` from `ocPostprob.R` by
-#' replacing the internal use of `postprob()` with `postprobDist()`
-#' to generate numeric of `decisions` and random looks `all_sizes`.
+#' A helper function adapted from [h_get_decision()] by
+#' replacing the internal use of [postprob()] with [postprobDist()]
+#' to generate the `decision` and random looks `all_sizes`.
 #'
 #'
 #' @inheritParams h_get_decision
