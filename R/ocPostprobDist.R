@@ -7,7 +7,6 @@ NULL
 #' replacing the internal use of [postprob()] with [postprobDist()]
 #' to generate the `decision` and random looks `all_sizes`.
 #'
-#'
 #' @inheritParams h_get_decision
 #' @inheritParams postprobDist
 #' @typed deltaE : number
@@ -22,23 +21,6 @@ NULL
 #'  calculate  `P(P_E > P_S + deltaS)` which should
 #'  exceed threshold `tL` to stop for futility.
 #'  Note that this can also be negative, e.g. when non-inferiority is being assessed.
-#'
-#' @note
-#'
-#' ## Delta :
-#'
-#' The desired improvement is denoted as `delta`. There are two options in using `delta`.
-#' The absolute case when `relativeDelta = FALSE` and relative as when `relativeDelta = TRUE`.
-#'
-#' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
-#' the response rate of the standard of care or control or `S` group such that
-#' the posterior is `Pr(P_E > P_S + deltaE | data)` for efficacy looks
-#' or `Pr(P_E > P_S + deltaF | data)` for futility looks.
-#'
-#' 2. In the relative case, we suppose that the treatment group's
-#' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
-#' the posterior is `Pr(P_E > P_S + (1 - P_S) * deltaE | data)` for efficacy looks
-#' or `Pr(P_E > P_S + (1 - P_S) * deltaF | data)` for futility looks.
 #'
 #' @keywords internal
 #'

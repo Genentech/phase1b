@@ -51,25 +51,8 @@ response rate in magnitude of \code{delta} of the \code{S} non-responding patien
 is included as the margin between treatment and control group. See note.}
 }
 \description{
-A helper function adapted from \code{h_get_decision()} from \code{ocPostprob.R} by
-replacing the internal use of \code{postprob()} with \code{postprobDist()}
-to generate numeric of \code{decisions} and random looks \code{all_sizes}.
-}
-\note{
-\subsection{Delta :}{
-
-The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
-The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
-\enumerate{
-\item The absolute case is when we define an absolute delta, greater than \code{P_S},
-the response rate of the standard of care or control or \code{S} group such that
-the posterior is \code{Pr(P_E > P_S + deltaE | data)} for efficacy looks
-or \code{Pr(P_E > P_S + deltaF | data)} for futility looks.
-\item In the relative case, we suppose that the treatment group's
-response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
-the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for efficacy looks
-or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for futility looks.
-}
-}
+A helper function adapted from \code{\link[=h_get_decision]{h_get_decision()}} by
+replacing the internal use of \code{\link[=postprob]{postprob()}} with \code{\link[=postprobDist]{postprobDist()}}
+to generate the \code{decision} and random looks \code{all_sizes}.
 }
 \keyword{internal}
