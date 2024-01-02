@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprobDist.R
 \name{h_get_decisionDist}
 \alias{h_get_decisionDist}
-\title{Evaluate Posteriors based on Efficacy and Futility thresholds in Two-armed trials}
+\title{Evaluate Posteriors based on Efficacy and Futility Thresholds in Two-Armed trials}
 \usage{
 h_get_decisionDist(
   nnr,

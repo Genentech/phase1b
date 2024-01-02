@@ -30,7 +30,7 @@ specify in \code{nnF}.}
 \value{
 A list of the following objects :
 \itemize{
-\item \code{decision} : resulting vector of decision, one of \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
+\item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum
 look size is an indicated interim, Futility or Efficacy or both.
 }

@@ -1,7 +1,7 @@
 #' @include postprobDist.R
 NULL
 
-#' Evaluate Posteriors based on Efficacy and Futility thresholds in Two-armed trials
+#' Evaluate Posteriors based on Efficacy and Futility Thresholds in Two-Armed trials
 #'
 #' A helper function adapted from `h_get_decision()` from `ocPostprob.R` by
 #' replacing the internal use of `postprob()` with `postprobDist()`

@@ -17,7 +17,7 @@ test_that("Monte Carlo result converges to Go probability", {
     upper = 1
   )
   expected <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-  expect_equal(results$value, expected, tolerance = 1e-3)
+  expect_equal(results$value, expected, tolerance = 1e-9)
 })
 
 test_that("Monte Carlo result converges to Stop probability", {

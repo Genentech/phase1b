@@ -79,7 +79,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #'
 #' @return A list of the following objects :
-#'  - `decision` : resulting vector of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
 #'
