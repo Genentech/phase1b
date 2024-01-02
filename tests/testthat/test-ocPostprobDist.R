@@ -1,5 +1,6 @@
 # h_get_decisionDist ----
 test_that("h_get_decisionDist gives correct result when relativeDelta = TRUE", {
+  set.seed(1989)
   example_dist <- h_get_distance(nn = c(10, 20, 30))
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
@@ -24,6 +25,7 @@ test_that("h_get_decisionDist gives correct result when relativeDelta = TRUE", {
 })
 
 test_that("h_get_decisionDist gives correct result relativeDelta = FALSE", {
+  set.seed(1989)
   example_dist <- h_get_distance(nn = c(10, 20, 30))
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
@@ -49,6 +51,7 @@ test_that("h_get_decisionDist gives correct result relativeDelta = FALSE", {
 
 
 test_that("h_get_decisionDist gives correct result when nnE <U+2260> nnF", {
+  set.seed(1989)
   example_dist <- h_get_distance(nn = c(10, 20, 30))
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20))
   looks_nnrE <- looks$nnrE
