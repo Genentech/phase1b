@@ -75,12 +75,12 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed tU : number
 #'  posterior probability threshold for being above `p1`.
 #' @typed parE : numeric
-#'  alpha and beta parameters for the prior on the treatment proportion.
+#'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #'
 #' @return A list of the following objects :
-#'  - `decision` : resulting numeric of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
-#'  - `all_sizes` : resulting numeric of look size, anything below maximum
+#'  - `decision` : resulting vector of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal

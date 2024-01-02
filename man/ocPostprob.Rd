@@ -32,7 +32,7 @@ specify in \code{nnF}.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment proportion.
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{sim}{(\code{number}):\cr number of simulations.}

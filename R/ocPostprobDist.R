@@ -1,48 +1,21 @@
 #' @include postprobDist.R
 NULL
 
-#' Evaluate posteriors based on  Efficacy and Futility thresholds in two-armed trials
+#' Evaluate Posteriors based on Efficacy and Futility thresholds in Two-armed trials
 #'
-#' The helper function to evaluate generated posteriors and create an "array"
-#' or "vector" of decision results based on user defined thresholds.
-#' `h_get_decisionDist` was adapted by incorporating `postprobDist()`
-#' instead of `postprob()` to evaluate this posterior.
-#' The methodology is from Thall & Simon 1994 (Biometrics).
+#' A helper function adapted from `h_get_decision()` from `ocPostprob.R` by
+#' replacing the internal use of `postprob()` with `postprobDist()`
+#' to generate numeric of `decisions` and random looks `all_sizes`.
 #'
-#' @typed nnr : numeric
-#'  the union of `nnE`and `nnF`.
-#' @typed nnrE : numeric
-#'  the result for Efficacy looks with random distance added.
-#' @typed nnrF : numeric
-#'  the result for Futility looks with random distance added.
-#' @typed truep : number
-#'  assumed true response rate or true rate (scenario).
-#' @typed parE : "`numeric` or `matrix`"
-#'  alpha and beta parameters for the prior on the treatment population.
-#'  Default set at alpha = 1, beta = 1, or uniform prior.
-#' @typed parS : "`numeric` or `matrix`"
-#'  alpha and beta parameters for the prior on the control population.
-#'  Default set at alpha = 1, beta = 1, or uniform prior.
-#' @typed tL : number
-#'  posterior probability threshold for being below `p0`.
-#' @typed tU : number
-#'  posterior probability threshold for being above `p1`.
-#' @typed deltaF :
+#'
+#' @inheritParams h_get_decision
+#' @inheritParams postprobDist
+#' @typed deltaF : number
 #'  delta for efficacy: `P(P_E > P_S + deltaE)` should be large
 #'  to stop for efficacy.
-#' @typed deltaE :
+#' @typed deltaE : number
 #'  margin by which the response rate in the treatment group should
 #'  be better than in the standard of care or control or `S` group.
-#' @typed relativeDelta : flag
-#'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `S` non-responding patients
-#'  exists and is used if `TRUE`.
-#'  See [postprobDist()].
-#'
-#' @return A list of the following objects :
-#'  - `decision` : resulting numeric of decision, one of `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
-#'  - `all_sizes` : resulting numeric of look size, anything below maximum
-#'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal
 #'

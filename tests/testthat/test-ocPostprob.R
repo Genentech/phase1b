@@ -30,7 +30,7 @@ test_that("h_get_looks gives correct results if input is identical", {
 
 # h_get_decision ----
 test_that("get_decision will give GO decision in favourable conditions", {
-  tmp <- h_get_decision(
+  result <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
     # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.2
@@ -42,7 +42,8 @@ test_that("get_decision will give GO decision in favourable conditions", {
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30)
   )
-  expect_equal(tmp$decision, TRUE)
+  expect_equal(result$decision, TRUE)
+  expect_equal(result$all_sizes, 10)
 })
 
 # h_get_oc ----
