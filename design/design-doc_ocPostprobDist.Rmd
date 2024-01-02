@@ -136,8 +136,7 @@ ocPostprobDist <- function(nn,
                            parS = c(a = 1, b = 1),
                            wiggle = TRUE,
                            sim = 50000,
-                           nnF = nn,
-                           randomdist = TRUE) {
+                           nnF = nn) {
   assert_numeric(nn, min.len = 1, lower = 1, upper = max(nn), any.missing = FALSE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(deltaE, upper = 1, finite = TRUE)
@@ -150,7 +149,6 @@ ocPostprobDist <- function(nn,
   assert_number(sim, lower = 100, finite = TRUE)
   assert_flag(wiggle)
   assert_numeric(nnF, min.len = 1, any.missing = FALSE)
-  assert_flag(randomdist)
 
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
@@ -167,7 +165,7 @@ ocPostprobDist <- function(nn,
 
   # simulate a clinical trial sim times
   for (k in seq_len(sim)) {
-    if (length(nn) != 1 && wiggle && randomdist) {
+    if (length(nn) != 1 && wiggle) {
       # randomly generate look locations
       dist <- h_get_distance(nn = nn)
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
@@ -222,7 +220,6 @@ res3 <- ocPostprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   sim = 100,
-  randomdist = TRUE,
   wiggle = TRUE
 )
 
@@ -242,7 +239,6 @@ res2 <- ocPostprobDist(
   parE = c(1, 1),
   parS = c(5, 25),
   sim = 100,
-  randomdist = TRUE,
   wiggle = TRUE
 )
 

@@ -2,12 +2,12 @@
 % Please edit documentation in R/ocPostprobDist.R
 \name{ocPostprobDist}
 \alias{ocPostprobDist}
-\title{Calculate operating characteristics for posterior probability method
-with beta prior on SOC}
+\title{Calculate Operating characteristics of Posterior Probability method
+with Beta Prior on the Control or Standard of Care Arm}
 \usage{
 ocPostprobDist(
   nn,
-  p,
+  truep,
   deltaE,
   deltaF,
   relativeDelta = FALSE,
@@ -15,73 +15,96 @@ ocPostprobDist(
   tU,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
+  wiggle = TRUE,
+  sim = 50000,
   nnF = nn
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy
-(if futility looks should be different, please specify also \code{nnF})}
+\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF} (if futility analysis or looks exists) supplied.}
 
-\item{p}{true rate (scenario)}
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{deltaE}{delta for efficacy: P(pE > pS + deltaE) should be large
-to stop for efficacy}
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for efficacy is used to
+calculate \code{P(P_E > P_S + deltaE)} which should
+exceed threshold \code{tU} to to stop for efficacy.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.
+See note.}
 
-\item{deltaF}{delta for futility: P(pE < pS - deltaF) should be large to
-stop for futility}
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for futility is used to
+calculate  \code{P(P_E > P_S + deltaS)} which should
+exceed threshold \code{tL} to stop for futility.
+Note that this can also be negative, e.g. when non-inferiority is being assessed.
+See note.}
 
-\item{relativeDelta}{see \code{\link{postprobDist}}}
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients
+is included as the margin between treatment and control group. See note.}
 
-\item{tL}{probability threshold for being below control - deltaF}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
-\item{tU}{probability threshold for being above control + deltaE}
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{parE}{beta parameters for the prior on the treatment proportion}
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{parS}{beta parameters for the prior on the control proportion}
+\item{parS}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{S} group. See details.}
 
-\item{ns}{number of simulations}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
+if \code{TRUE}, optional to specify \code{dist} (see @details).}
 
-\item{nr}{generate random look locations? (not default)}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{d}{distance for random looks around the look locations in \code{nn}}
-
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
-}
-\value{
-A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-decision)
-SampleSize: vector of the sample sizes in the simulated trials
-nn: vector of look locations
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-todo: would we like to return nnr instead, the actual look locations?
-params: input parameters for this function
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \description{
 The trial is stopped for efficacy if the posterior probability to be at
-least deltaE better than the control is larger than tU, and stopped for
-futility if the posterior probability to be at least deltaF worse than the
-control is larger than tL. Otherwise the trial is continued, and at the
+least \code{deltaE} better than the control is larger than \code{tU}, and stopped for
+futility if the posterior probability to be at least \code{deltaF} worse than the
+control is larger than \code{tL}. Otherwise the trial is continued, and at the
 maximum sample size it may happen that no decision is made ("gray zone").
 }
 \details{
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-PrStopEarly: probability to stop the trial early (before reaching the
+#' Stop criteria for Efficacy :
+
+\code{P_e(p > p1 + deltaE) > tU}
+
+Stop criteria for Futility :
+
+\code{P_E(p < p0 + deltaF) > tL}
+
+Resulting operating characteristics include the following:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
 maximum sample size)
-PrEarlyEff: probability to decide for efficacy early
-PrEarlyFut: probability to decide for futility early
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of for Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
+}
+\note{
+\subsection{Delta :}{
+
+The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
+The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+\enumerate{
+\item The absolute case is when we define an absolute delta, greater than \code{P_S},
+the response rate of the standard of care or control or \code{S} group such that
+the posterior is \code{Pr(P_E > P_S + deltaE | data)} for efficacy looks
+or \code{Pr(P_E > P_S + deltaF | data)} for futility looks.
+\item In the relative case, we suppose that the treatment group's
+response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for efficacy looks
+or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for futility looks.
+}
+}
 }
 \examples{
 # operating characteristics for posterior probability method with beta prior on SOC

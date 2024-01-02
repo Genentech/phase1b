@@ -54,7 +54,7 @@ The posterior probability
 
 Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
 posterior probability of achieving superior response rate in the treatment group \code{E}
-compared to standard of care \code{S}. \code{E}See note below for two formulations of the difference in response rates.
+compared to standard of care \code{S}. See note below for two formulations of the difference in response rates.
 }
 \details{
 The beta mixture prior for the \code{E} arm requires argument \code{parE} and \code{weights}.
