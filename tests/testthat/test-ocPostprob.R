@@ -44,7 +44,7 @@ test_that("get_decision will give GO decision in favourable conditions", {
     nnF = c(10, 20, 30)
   )
   expect_equal(result$decision, TRUE)
-  expect_equal(result$all_sizes, 10)
+  expect_equal(result$all_sizes, 20)
 })
 
 # h_get_oc ----

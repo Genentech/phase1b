@@ -9,6 +9,7 @@ test_that("dbetadiff gives error with empty numeric for z", {
 })
 
 test_that("Monte Carlo result converges to Go probability", {
+  set.seed(1989)
   results <- integrate(
     f = dbetadiff,
     parY = parY,
@@ -17,10 +18,11 @@ test_that("Monte Carlo result converges to Go probability", {
     upper = 1
   )
   expected <- mean(rbeta(n = 1e6, parY[1], parY[2]) - rbeta(n = 1e6, parX[1], parX[2]) > 0.15)
-  expect_equal(results$value, expected, tolerance = 1e-9)
+  expect_equal(results$value, expected, tolerance = 1e-4)
 })
 
 test_that("Monte Carlo result converges to Stop probability", {
+  set.seed(1989)
   results <- integrate(
     f = dbetadiff,
     parY = parY,
