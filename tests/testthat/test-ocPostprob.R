@@ -30,7 +30,8 @@ test_that("h_get_looks gives correct results if input is identical", {
 
 # h_get_decision ----
 test_that("get_decision will give GO decision in favourable conditions", {
-  tmp <- h_get_decision(
+  set.seed(1989)
+  result <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
     # Go criteria is P_E(p > p1) > tU, where P_E(truep > 0.30) > 0.2
@@ -42,11 +43,13 @@ test_that("get_decision will give GO decision in favourable conditions", {
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30)
   )
-  expect_equal(tmp$decision, TRUE)
+  expect_equal(result$decision, TRUE)
+  expect_equal(result$all_sizes, 20)
 })
 
 # h_get_oc ----
 test_that("the probability results of get_oc are less than 1", {
+  set.seed(1989)
   oc <- h_get_oc(
     all_sizes = sample(c(11, 14, 20), size = 10000, replace = TRUE),
     decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
@@ -57,6 +60,7 @@ test_that("the probability results of get_oc are less than 1", {
 })
 
 test_that("the ExpectedN is within range based on vector of looks", {
+  set.seed(1989)
   all_sizes <- sample(c(11, 14, 20), size = 10000, replace = TRUE)
   oc <- h_get_oc(
     all_sizes = all_sizes,

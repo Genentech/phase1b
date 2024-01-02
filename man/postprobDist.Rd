@@ -31,7 +31,8 @@ be better than in the standard of care or control or \code{S} group.
 Note that this can also be negative, e.g. when non-inferiority is being assessed.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
-response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See note.}
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients
+is included as the margin between treatment and control group. See note.}
 
 \item{parE}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 and each row corresponds to each component of a beta-mixture distribution

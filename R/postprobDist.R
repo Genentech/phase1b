@@ -102,7 +102,8 @@ h_get_bounds <- function(controlBetamixPost) {
 #'  number of patients in the `S` group.
 #' @typed relativeDelta : flag
 #'  If `TRUE`, then a `relativeDelta` is used. Represents that a minimum
-#'  response rate in magnitude of `delta` of the `S` non-responding patients. See note.
+#'  response rate in magnitude of `delta` of the `S` non-responding patients
+#'  is included as the margin between treatment and control group. See note.
 #' @typed parE : "`numeric` or `matrix`"
 #'  parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
 #'  and each row corresponds to each component of a beta-mixture distribution

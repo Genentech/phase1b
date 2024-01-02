@@ -15,7 +15,7 @@ h_get_decision(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 
 \item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
 
-\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment proportion.
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
@@ -30,8 +30,8 @@ specify in \code{nnF}.}
 \value{
 A list of the following objects :
 \itemize{
-\item \code{decision} : resulting numeric of decision, one of \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
-\item \code{all_sizes} : resulting numeric of look size, anything below maximum
+\item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
+\item \code{all_sizes} : resulting number of look size, anything below maximum
 look size is an indicated interim, Futility or Efficacy or both.
 }
 }
