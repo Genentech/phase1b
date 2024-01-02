@@ -11,16 +11,10 @@ NULL
 #' @inheritParams postprobDist
 #' @typed deltaE : number
 #'  margin by which the response rate in the treatment group should be better
-#'  than in the standard of care of `group`. Delta for efficacy is used to
-#'  calculate `P(P_E > P_S + deltaE)` which should
-#'  exceed threshold `tU` to to stop for efficacy.
-#'  Note that this can also be negative, e.g. when non-inferiority is being assessed.
+#'  than in the standard of care of `group` in efficacy looks.
 #' @typed deltaF : number
 #'  margin by which the response rate in the treatment group should be better
-#'  than in the standard of care of `group`. Delta for futility is used to
-#'  calculate  `P(P_E > P_S + deltaS)` which should
-#'  exceed threshold `tL` to stop for futility.
-#'  Note that this can also be negative, e.g. when non-inferiority is being assessed.
+#'  than in the standard of care of `group` in futility looks.
 #'
 #' @keywords internal
 #'

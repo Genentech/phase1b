@@ -35,16 +35,10 @@ for the \code{S} group. See details.}
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
 \item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group}. Delta for efficacy is used to
-calculate \code{P(P_E > P_S + deltaE)} which should
-exceed threshold \code{tU} to to stop for efficacy.
-Note that this can also be negative, e.g. when non-inferiority is being assessed.}
+than in the standard of care of \code{group} in efficacy looks.}
 
 \item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group}. Delta for futility is used to
-calculate  \code{P(P_E > P_S + deltaS)} which should
-exceed threshold \code{tL} to stop for futility.
-Note that this can also be negative, e.g. when non-inferiority is being assessed.}
+than in the standard of care of \code{group} in futility looks.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients
