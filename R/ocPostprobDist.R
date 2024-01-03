@@ -30,8 +30,8 @@ h_get_decisionDist <- function(nnr,
                                deltaF,
                                relativeDelta) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
-  assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
-  assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
+  assert_numeric(nnrE, any.missing = FALSE)
+  assert_numeric(nnrF, any.missing = FALSE)
   assert_number(truep, lower = 0, upper = 1)
   assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
