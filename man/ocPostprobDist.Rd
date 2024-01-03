@@ -6,7 +6,7 @@
 with Beta Prior on the Control or Standard of Care Arm}
 \usage{
 ocPostprobDist(
-  nn,
+  nnE,
   truep,
   deltaE,
   deltaF,
@@ -17,27 +17,26 @@ ocPostprobDist(
   parS = c(a = 1, b = 1),
   wiggle = TRUE,
   sim = 50000,
-  nnF = nn
+  nnF = nnE
 )
 }
 \arguments{
-\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF} (if futility analysis or looks exists) supplied.}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
+specify in \code{nnF}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group}. Delta for efficacy is used to
-calculate \code{P(P_E > P_S + deltaE)} which should
-exceed threshold \code{tU} to to stop for efficacy.
-Note that this can also be negative, e.g. when non-inferiority is being assessed.
-See note.}
+\item{deltaE}{(\code{number}):\cr margin of which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for Efficacy is used to
+calculate \code{P(truep > P_S + deltaE)} which should
+exceed threshold \code{tU} to to stop for Efficacy. \code{DeltaE} can also be negative in
+non-inferiority setting. See also note.}
 
-\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group}. Delta for futility is used to
-calculate  \code{P(P_E > P_S + deltaS)} which should
-exceed threshold \code{tL} to stop for futility.
-Note that this can also be negative, e.g. when non-inferiority is being assessed.
-See note.}
+\item{deltaF}{(\code{number}):\cr margin of which the response rate in the treatment group should be better
+than in the standard of care of \code{group}. Delta for Futility is used to
+calculate  \code{P(truep > P_S - deltaF)} which should
+exceed threshold \code{tL} to stop for Futility.\code{DeltaF} can also be negative in
+non-inferiority setting. See also note.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients
@@ -62,20 +61,27 @@ if \code{TRUE}, optional to specify \code{dist} (see @details).}
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \description{
-The trial is stopped for efficacy if the posterior probability to be at
-least \code{deltaE} better than the control is larger than \code{tU}, and stopped for
-futility if the posterior probability to be at least \code{deltaF} worse than the
-control is larger than \code{tL}. Otherwise the trial is continued, and at the
-maximum sample size it may happen that no decision is made ("gray zone").
+The trial is stopped for Efficacy if the posterior probability of assumed
+true response rate or \code{truep} is better than the control arm by at least
+\code{deltaE}, is larger than \code{tU}. Analogously, The trial is stopped for Efficacy
+if the posterior probability of assumed true response rate or \code{truep} is
+better than the control arm by at least \code{deltaF}, is larger than \code{tL}
+for Futility looks. If these criteria are not met, the trial is continued
+and at the maximum sample size, it may reach no decision or "gray zone".The
+following represents the stopping criteria for Efficacy and Futility
+respectively.
 }
 \details{
-#' Stop criteria for Efficacy :
+Stop criteria for Efficacy :
 
-\code{P_e(p > p1 + deltaE) > tU}
+\code{Pr(truep > P_S + deltaE) > tU}
 
 Stop criteria for Futility :
 
-\code{P_E(p < p0 + deltaF) > tL}
+\code{Pr(truep < P_S - deltaF) > tL}
+
+Where \code{truep} is the assumed true rate of response and \code{p1} and \code{p0} respectively are
+the thresholds for Efficacy and Futility respectively.
 
 Resulting operating characteristics include the following:
 \itemize{
@@ -92,91 +98,75 @@ maximum sample size)
 \note{
 \subsection{Delta :}{
 
-The desired improvement is denoted as \code{delta}. There are two options in using \code{delta}.
-The absolute case when \code{relativeDelta = FALSE} and relative as when \code{relativeDelta = TRUE}.
+The desired improvement is denoted as \code{deltaE} or \code{deltaF} and two options
+exist in its use: The absolute case when \code{relativeDelta = FALSE} and
+relative as when \code{relativeDelta = TRUE}.
 \enumerate{
 \item The absolute case is when we define an absolute delta, greater than \code{P_S},
 the response rate of the standard of care or control or \code{S} group such that
-the posterior is \code{Pr(P_E > P_S + deltaE | data)} for efficacy looks
-or \code{Pr(P_E > P_S + deltaF | data)} for futility looks.
+the posterior is \code{Pr(P_E > P_S + deltaE | data)} for Efficacy looks
+or \code{Pr(P_E > P_S + deltaF | data)} for Futility looks.
 \item In the relative case, we suppose that the treatment group's
 response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
-the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for efficacy looks
-or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for futility looks.
+the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for Efficacy looks
+or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for Futility looks.
 }
 }
 }
 \examples{
 # operating characteristics for posterior probability method with beta prior on SOC
-
-# design details
-# multiple looks @ 10, 20, 30 patietns
-# True response rate of the treatment group=0.4
-
-# stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
-# stop for futility (deltaF): P(pE < pS - deltaF) >tL
-# where pE is the response rate of treatment group, pS is the response rate of
-# control group. Both of them are random variables.
-
-
+# For three looks of 10, 20 and 30 we have the following assumptions :
+# True response rate or truep of the treatment group = 40\%
+# The following are the Go and Stop rules respectively :
+# Prior of treatment arm parE= Beta(1,1).
+# stop for efficacy (deltaE): Pr(truep > P_S + deltaE) > tU
+# stop for futility (deltaF): Pr(truep < P_S - deltaF) > tL
+# Without random distance allowed for Futility and Efficacy Looks.
 res1 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100
+  sim = 5000,
+  wiggle = FALSE
 )
 
 res1$oc
 
-
-# generate random look locations around 10,20,30 patients
-# this call will generate d (distance for random looks around the look locations)
-# based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
+# Allow random distance for Efficacy and Futility looks.
 res2 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100, nr = TRUE
+  sim = 100,
+  wiggle = TRUE
 )
 
 res2$oc
 
-# specify the distance for random looks around the look locations in nn (d=5 for illustration)
-res3 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+# Allow Futility analysis only at the end.
+res4 <- ocPostprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100,
-  nr = TRUE,
-  d = 5
+  sim = 100,
+  wiggle = TRUE,
+  nnF = 30
 )
 
-res3$oc
-
-
-# finally, we can also have separate specification of efficacy and futility analyses. E.g.
-# here have futility decisions only at the final analysis:
-res4 <- ocPostprobDist(
-  nn = c(10, 20, 30), p = 0.4, deltaE = 0.1, deltaF = -0.1, tL = 0.6, tU = 0.6,
-  parE = c(1, 1), parS = c(5, 25), ns = 100, nr = TRUE, d = 5, nnF = c(30)
-)
 res4$oc
-# compared to res3, we see that there is no early futility stopping anymore,
-# and the overall probability for stopping for futility (which is the type II error here)
-# is much lower.
 }

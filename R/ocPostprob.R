@@ -171,11 +171,11 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #'
 #' Stop criteria for Efficacy :
 #'
-#' `P_E(p > p1) > tU`
+#' `Pr(truep > p1) > tU`
 #'
 #' Stop criteria for Futility :
 #'
-#' `P_E(p < p0) > tL`
+#' `Pr(truep < p0) > tL`
 #'
 #' Resulting operating characteristics include the following:
 #'
