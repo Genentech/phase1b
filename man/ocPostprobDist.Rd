@@ -61,6 +61,9 @@ if \code{TRUE}, optional to specify \code{dist} (see @details).}
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 The trial is stopped for Efficacy if the posterior probability of assumed
 true response rate or \code{truep} is better than the control arm by at least
 \code{deltaE}, is larger than \code{tU}. Analogously, The trial is stopped for Efficacy
@@ -70,8 +73,7 @@ for Futility looks. If these criteria are not met, the trial is continued
 and at the maximum sample size, it may reach no decision or "gray zone".The
 following represents the stopping criteria for Efficacy and Futility
 respectively.
-}
-\details{
+
 Stop criteria for Efficacy :
 
 \code{Pr(truep > P_S + deltaE) > tU}
@@ -104,12 +106,12 @@ relative as when \code{relativeDelta = TRUE}.
 \enumerate{
 \item The absolute case is when we define an absolute delta, greater than \code{P_S},
 the response rate of the standard of care or control or \code{S} group such that
-the posterior is \code{Pr(P_E > P_S + deltaE | data)} for Efficacy looks
-or \code{Pr(P_E > P_S + deltaF | data)} for Futility looks.
+the posterior is \code{Pr(truep > P_S + deltaE | data)} for Efficacy looks
+or \code{Pr(truep > P_S + deltaF | data)} for Futility looks.
 \item In the relative case, we suppose that the treatment group's
 response rate is assumed to be greater than \code{P_S + (1-P_S) * delta} such that
-the posterior is \code{Pr(P_E > P_S + (1 - P_S) * deltaE | data)} for Efficacy looks
-or \code{Pr(P_E > P_S + (1 - P_S) * deltaF | data)} for Futility looks.
+the posterior is \code{Pr(truep > P_S + (1 - P_S) * deltaE | data)} for Efficacy looks
+or \code{Pr(truep > P_S + (1 - P_S) * deltaF | data)} for Futility looks.
 }
 }
 }

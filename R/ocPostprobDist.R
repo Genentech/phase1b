@@ -86,6 +86,8 @@ h_get_decisionDist <- function(nnr,
 #' Calculate Operating characteristics of Posterior Probability method
 #' with Beta Prior on the Control or Standard of Care Arm
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' The trial is stopped for Efficacy if the posterior probability of assumed
 #' true response rate or `truep` is better than the control arm by at least
 #' `deltaE`, is larger than `tU`. Analogously, The trial is stopped for Efficacy
@@ -145,13 +147,13 @@ h_get_decisionDist <- function(nnr,
 #'
 #' 1. The absolute case is when we define an absolute delta, greater than `P_S`,
 #' the response rate of the standard of care or control or `S` group such that
-#' the posterior is `Pr(P_E > P_S + deltaE | data)` for Efficacy looks
-#' or `Pr(P_E > P_S + deltaF | data)` for Futility looks.
+#' the posterior is `Pr(truep > P_S + deltaE | data)` for Efficacy looks
+#' or `Pr(truep > P_S + deltaF | data)` for Futility looks.
 #'
 #' 2. In the relative case, we suppose that the treatment group's
 #' response rate is assumed to be greater than `P_S + (1-P_S) * delta` such that
-#' the posterior is `Pr(P_E > P_S + (1 - P_S) * deltaE | data)` for Efficacy looks
-#' or `Pr(P_E > P_S + (1 - P_S) * deltaF | data)` for Futility looks.
+#' the posterior is `Pr(truep > P_S + (1 - P_S) * deltaE | data)` for Efficacy looks
+#' or `Pr(truep > P_S + (1 - P_S) * deltaF | data)` for Futility looks.
 #'
 #' @example examples/ocPostprobDist.R
 #' @export
