@@ -1,6 +1,11 @@
 #' @include postprob.R
 NULL
 
+h_dist0 <- function(nn) {
+  assert_numeric(nn, lower = 1, unique = TRUE, sorted = TRUE, min.len = 1)
+  ceiling(min(nn - c(0, nn[-length(nn)])) / 2) - 1
+}
+
 #' Generating random distance in given looks for sample sizes for Efficacy and Futility.
 #'
 #' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
@@ -14,9 +19,7 @@ NULL
 #' @keywords internal
 #'
 h_get_distance <- function(nn) {
-  assert_numeric(nn, unique = TRUE, sorted = TRUE, min.len = 1)
-  dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
-  assert_numeric(dist0, sorted = TRUE)
+  dist0 <- h_dist0(nn)
   sample(-dist0:dist0,
     size = length(nn) - 1,
     replace = TRUE,

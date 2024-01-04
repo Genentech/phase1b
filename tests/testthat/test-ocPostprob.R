@@ -1,3 +1,15 @@
+# h_dist0 ----
+
+test_that("h_dist0 works as expected", {
+  expect_identical(h_dist0(c(10, 20, 40)), 4)
+  expect_identical(h_dist0(c(10, 19, 40)), 4)
+  expect_identical(h_dist0(c(10, 18, 40)), 3)
+  expect_identical(h_dist0(c(1, 2, 3)), 0)
+  expect_identical(h_dist0(c(1, 3, 5)), 0)
+  expect_identical(h_dist0(c(3, 5, 7)), 0)
+  expect_identical(h_dist0(c(4, 7, 10)), 1)
+})
+
 # h_get_distance ----
 test_that("h_get_distance gives an error with one element numeric", {
   expect_equal(h_get_distance(10), integer(0))
