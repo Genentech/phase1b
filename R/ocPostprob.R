@@ -1,6 +1,18 @@
 #' @include postprob.R
 NULL
 
+#' Generating random distance for `h_get_distance` helper function.
+#'
+#' A helper function for `h_get_distance` by first calculating non-overlapping
+#' distance between looks.
+#'
+#' @typed nn : number or numeric
+#'  the union of `nnE` and `nnF` (if futility analysis or looks exists) supplied.
+#'
+#' @return A numeric with minimum distance between looks of length 1.
+#'
+#' @keywords internal
+#'
 h_dist0 <- function(nn) {
   assert_numeric(nn, lower = 1, unique = TRUE, sorted = TRUE, min.len = 1)
   ceiling(min(nn - c(0, nn[-length(nn)])) / 2) - 1
@@ -11,9 +23,7 @@ h_dist0 <- function(nn) {
 #' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
 #' Numeric looks `nn` must be of minimum two elements and will generate `length(nn)-1` distances.
 #'
-#' @typed nn : number or numeric
-#'  the union of `nnE` and `nnF` (if futility analysis or looks exists) supplied.
-#'
+#' @inheritParams h_dist0
 #' @return A numeric with `length(nn)-1` elements.
 #'
 #' @keywords internal
