@@ -28,6 +28,17 @@ test_that("h_get_looks gives correct results if input is identical", {
   expect_equal(results$nnrE, results$nnrF)
 })
 
+test_that("h_get_looks together with h_get_distance always gives unique looks", {
+  nn <- c(10, 20, 30)
+  set.seed(123)
+  for (i in seq_len(1000)) {
+    dist <- h_get_distance(nn = nn)
+    nnr <- h_get_looks(dist = dist, nnE = nn, nnF = nn)
+    nnr <- as.integer(nnr$nnrE)
+    expect_integer(nnr, unique = TRUE)
+  }
+})
+
 # h_get_decision ----
 test_that("get_decision will give GO decision in favourable conditions", {
   set.seed(1989)
