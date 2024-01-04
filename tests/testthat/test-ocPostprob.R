@@ -11,6 +11,7 @@ test_that("h_dist0 works as expected", {
 
 # h_get_distance ----
 test_that("h_get_distance gives an error with one element numeric", {
+  set.seed(1989)
   expect_equal(h_get_distance(10), integer(0))
 })
 
