@@ -10,7 +10,7 @@ h_dist0(nn)
 \item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF} (if futility analysis or looks exists) supplied.}
 }
 \value{
-A numeric with minimum distance between looks of length 1.
+A number providing the wiggle distance.
 }
 \description{
 A helper function for \code{h_get_distance} by first calculating non-overlapping

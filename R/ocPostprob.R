@@ -9,7 +9,7 @@ NULL
 #' @typed nn : number or numeric
 #'  the union of `nnE` and `nnF` (if futility analysis or looks exists) supplied.
 #'
-#' @return A numeric with minimum distance between looks of length 1.
+#' @return A number providing the wiggle distance.
 #'
 #' @keywords internal
 #'
