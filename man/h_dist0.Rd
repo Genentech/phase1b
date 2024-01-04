@@ -14,6 +14,6 @@ A numeric with minimum distance between looks of length 1.
 }
 \description{
 A helper function for \code{h_get_distance} by first calculating non-overlapping
-distance between looks.
+distance between looks if looks are of minimum length of 2.
 }
 \keyword{internal}

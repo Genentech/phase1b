@@ -14,6 +14,5 @@ A numeric with \code{length(nn)-1} elements.
 }
 \description{
 A helper function for \code{ocPostprob} to generate random distance's wiggle room around looks \code{nn}.
-Numeric looks \code{nn} must be of minimum two elements and will generate \code{length(nn)-1} distances.
 }
 \keyword{internal}
