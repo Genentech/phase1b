@@ -14,7 +14,6 @@ ocPostprob(
   parE = c(1, 1),
   sim = 50000,
   wiggle = FALSE,
-  randomdist = FALSE,
   nnF = nnE
 )
 }
@@ -39,9 +38,6 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
 if \code{TRUE}, optional to specify \code{dist} (see @details).}
-
-\item{randomdist}{(\code{flag}):\cr Random distance added to looks. if \code{TRUE}, and \code{wiggle = TRUE}, function will
-generate and add a random distance within range of the closest looks.}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 }
@@ -101,7 +97,7 @@ As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code
 # Prior of treatment arm parE= Beta(1,1).
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = TRUE, randomdist = TRUE, nnF = c(10, 20, 30)
+  sim = 50000, wiggle = TRUE, nnF = c(10, 20, 30)
 )
 
 res$oc
@@ -109,7 +105,7 @@ res$oc
 # We specify the distance in this example.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = TRUE, randomdist = TRUE, nnF = c(10, 20, 30)
+  sim = 50000, wiggle = TRUE, nnF = c(10, 20, 30)
 )
 
 res$oc
@@ -117,7 +113,7 @@ res$oc
 # Here, nnE = nnF, and no wiggle room is allowed. Random distance also not supplied.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = FALSE, randomdist = TRUE, nnF = c(10, 20, 30)
+  sim = 50000, wiggle = FALSE, nnF = c(10, 20, 30)
 )
 
 res$oc
@@ -125,7 +121,7 @@ res$oc
 # Here, we only have one Futility and Efficacy look or stop.
 res <- ocPostprob(
   nnE = c(10), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = FALSE, randomdist = TRUE, nnF = 10
+  sim = 50000, wiggle = FALSE, nnF = 10
 )
 
 res$oc
@@ -133,7 +129,7 @@ res$oc
 # Here, we only have one Futility but many Efficacy looks or stop.
 res <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 50000, wiggle = FALSE, randomdist = TRUE, nnF = 10
+  sim = 50000, wiggle = FALSE, nnF = 10
 )
 
 res$oc
