@@ -277,6 +277,45 @@ the function `postprob()`, one could calculate the posterior probability that th
 rate $P_E$ is greater than (or less than) some threshold $p$, i.e., $\Pr(P_E>p\given x)$,
 by simply calculating the area under the corresponding Beta distribution.
 
+## Updating Posterior Distribution parameters and weights
+
+To demonstrate the calculation of the posterior probability of a mixed
+Beta Binomial distribution and the updates parameters and weight, we
+illustrate the reasoning as follows.
+
+We present the Binomial and Beta densities to begin:
+
+$$f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}$$
+
+and
+
+$$f(\pi) \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-x}$$
+
+Where the sum $w$ has to equal 1:
+
+$$\sum_{j = 1}^{k} w_j = 1$$
+
+We also identify that:
+
+$$f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-x}$$
+Here, the product of likelihood and prior gives the kernal for the posterior where we exclude the normalising constant $\frac {1}{f(x)}$:
+
+Posterior = $f(\pi | x) \infty f(\pi) * f(x | \pi) $
+
+$$ \infty \ \pi^x (1-\pi)^{n-x} * (\sum_{j = 1}^{k} \ w_j \frac {1}{Beta(\alpha_j, \beta_j)} * \pi^{\alpha-1}(1-\pi){^\beta-1} ) $$
+ $$ \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} * \pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1} * \frac{\beta(\alpha_j + x, \beta_j +n -x)}{\beta(\alpha_j + x, \beta_j +n -x}$$
+Knowing that :
+
+$ f(\pi | \alpha_j + x + 1, \beta_i + n - x) $ a Beta distribution
+$$  f(\pi | \alpha_j + x + 1, \beta_i + n - x) = \frac{\pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1}}{{Beta(\alpha_j + x, \beta_j +n -x )}}$$
+
+We simply to the following:
+
+$$ \sum_{j}^{k} * \frac {w * Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} * f(\pi | \alpha_j + x + 1, \beta_i + n - x)$$
+
+We update the weights $w$ in `R` code with $\frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}$ which is represented by the `h_getBetaMixPost()` function call:
+`exp(lbeta(alpha + x, beta + n - x) - lbeta(alpha,  beta))`.
+
 ## Difference in beta random variables {#betadiff}
 
 One may wish to know the distribution of the difference in response rates between groups.
@@ -1091,23 +1130,25 @@ calculate the *PPs*, if there are 18 PET-CR at the first interim analysis:
 
 ```{r ex3:predictive, echo=TRUE}
 # PP(event A)
-predprobDist(
+result1 <- predprobDist(
   x = 18, n = 25, Nmax = 80,
   delta = 0.15,
   thetaT = 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)$result
+)
+result1$result
 
 
 ## PP(event B)
-1 - predprobDist(
+result2 <- 1 - predprobDist(
   x = 18, n = 25, Nmax = 80,
   delta = 0.05,
   thetaT = 1 - 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)$result
+)
+result2$result
 ```
 
 According to the result, study will continue since neither PP(event A),
