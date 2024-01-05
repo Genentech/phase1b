@@ -6,9 +6,9 @@ The trial is stopped for Efficacy if the posterior probability to be
 above p1 is larger than tU, and stopped for Futility if the posterior
 probability to be below p0 is larger than tL:
 Stop criteria for Efficacy :
-P_E(p &amp;gt; p1) &amp;gt; tU
+Pr(truep &amp;gt; p1) &amp;gt; tU
 Stop criteria for Futility :
-P_E(p &amp;lt; p0) &amp;gt; tL
+Pr(truep &amp;lt; p0) &amp;gt; tL
 Resulting operating characteristics include the following:
 ExpectedN: expected number of patients in the trials
 PrStopEarly: probability to stop the trial early (before reaching the
@@ -26,9 +26,9 @@ The trial is stopped for Efficacy if the posterior probability to be
 above p1 is larger than tU, and stopped for Futility if the posterior
 probability to be below p0 is larger than tL:
 Stop criteria for Efficacy :
-P_E(p &amp;gt; p1) &amp;gt; tU
+Pr(truep &amp;gt; p1) &amp;gt; tU
 Stop criteria for Futility :
-P_E(p &amp;lt; p0) &amp;gt; tL
+Pr(truep &amp;lt; p0) &amp;gt; tL
 Resulting operating characteristics include the following:
 ExpectedN: expected number of patients in the trials
 PrStopEarly: probability to stop the trial early (before reaching the
@@ -76,12 +76,6 @@ PrGrayZone: probability between Go and Stop ,"Evaluate" or Gray decision zone
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -111,9 +105,9 @@ The trial is stopped for Efficacy if the posterior probability to be
 above <code>p1</code> is larger than <code>tU</code>, and stopped for Futility if the posterior
 probability to be below <code>p0</code> is larger than <code>tL</code>:</p>
 <p>Stop criteria for Efficacy :</p>
-<p><code>P_E(p &gt; p1) &gt; tU</code></p>
+<p><code>Pr(truep &gt; p1) &gt; tU</code></p>
 <p>Stop criteria for Futility :</p>
-<p><code>P_E(p &lt; p0) &gt; tL</code></p>
+<p><code>Pr(truep &lt; p0) &gt; tL</code></p>
 <p>Resulting operating characteristics include the following:</p><ul><li><p><code>ExpectedN</code>: expected number of patients in the trials</p></li>
 <li><p><code>PrStopEarly</code>: probability to stop the trial early (before reaching the
 maximum sample size)</p></li>
@@ -136,7 +130,6 @@ maximum sample size)</p></li>
 <span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  sim <span class="op">=</span> <span class="fl">50000</span>,</span>
 <span>  wiggle <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  randomdist <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nnF <span class="op">=</span> <span class="va">nnE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -182,11 +175,6 @@ Default set at alpha = 1, beta = 1, or uniform prior.</p></dd>
 if <code>TRUE</code>, optional to specify <code>dist</code> (see @details).</p></dd>
 
 
-<dt>randomdist</dt>
-<dd><p>(<code>flag</code>):<br> Random distance added to looks. if <code>TRUE</code>, and <code>wiggle = TRUE</code>, function will
-generate and add a random distance within range of the closest looks.</p></dd>
-
-
 <dt>nnF</dt>
 <dd><p>(<code>numeric</code>):<br> sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.</p></dd>
 
@@ -213,59 +201,59 @@ As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># For three looks of 10, 20 and 30 we have the following assumptions :</span></span></span>
-<span class="r-in"><span><span class="co"># True response rate of the treatment group = 40%</span></span></span>
-<span class="r-in"><span><span class="co"># The following are the Go and Stop rules respectively :</span></span></span>
-<span class="r-in"><span><span class="co"># Look for Efficacy: P(response rate &gt; 30% )&gt; 80%</span></span></span>
-<span class="r-in"><span><span class="co"># Look for Futility: P(response rate &lt; 20% )&gt; 60%</span></span></span>
+<span class="r-in"><span><span class="co"># True response rate or truep of the treatment group = 40%</span></span></span>
+<span class="r-in"><span><span class="co"># The following are the Stop rules respectively :</span></span></span>
+<span class="r-in"><span><span class="co"># Look for Efficacy: Pr(truep &gt; 30% )&gt; 80%</span></span></span>
+<span class="r-in"><span><span class="co"># Look for Futility: Pr(truep &lt; 20% )&gt; 60%</span></span></span>
 <span class="r-in"><span><span class="co"># Prior of treatment arm parE= Beta(1,1).</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">TRUE</span>, randomdist <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   18.1407     0.69272    0.64954    0.04318    0.77054    0.04516     0.1843</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   18.0968     0.69294    0.65142    0.04152    0.77334    0.04324    0.18342</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We specify the distance in this example.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">TRUE</span>, randomdist <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  18.11094     0.69614     0.6535    0.04264     0.7727    0.04506    0.18224</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  18.12016       0.692    0.65132    0.04068     0.7714    0.04272    0.18588</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, nnE = nnF, and no wiggle room is allowed. Random distance also not supplied.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, randomdist <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1368     0.67278    0.61918     0.0536    0.75146    0.05522    0.19332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1124      0.6751    0.62238    0.05272    0.75414    0.05442    0.19144</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, we only have one Futility and Efficacy look or stop.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, randomdist <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, nnF <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10           0          0          0    0.36672    0.04688     0.5864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10           0          0          0    0.36326    0.04652    0.59022</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Here, we only have one Futility but many Efficacy looks or stop.</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, randomdist <span class="op">=</span> <span class="cn">TRUE</span>, nnF <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, nnF <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1246           0    0.62508          0    0.75506    0.04614     0.1988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   19.1762           0    0.62074          0    0.75438    0.04578    0.19984</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
