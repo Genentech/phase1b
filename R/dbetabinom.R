@@ -93,9 +93,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
   postParProb <- postPar[, 1] / (postPar[, 1] + postPar[, 2])
   # We compute updated mixture probabilities.
   tmp <- exp(
-    stats::dbinom(x, size = n, prob = postParProb, log = TRUE) +
-      stats::dbeta(postParProb, par[, 1], par[, 2], log = TRUE) -
-      stats::dbeta(postParProb, postPar[, 1], postPar[, 2], log = TRUE)
+    lbeta(a = postPar[, 1], b = postPar[, 2]) - lbeta(a = par[, 1], b = par[, 2])
   )
   # We compute the updated weights of the posterior
   postWeights <- weights * tmp / sum(weights * tmp)
