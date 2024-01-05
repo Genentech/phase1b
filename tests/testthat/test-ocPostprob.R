@@ -1,6 +1,18 @@
+# h_dist0 ----
+test_that("h_dist0 works as expected", {
+  expect_identical(h_dist0(c(10, 20, 40)), 4)
+  expect_identical(h_dist0(c(10, 19, 40)), 4)
+  expect_identical(h_dist0(c(10, 18, 40)), 3)
+  expect_identical(h_dist0(c(1, 2, 3)), 0)
+  expect_identical(h_dist0(c(1, 3, 5)), 0)
+  expect_identical(h_dist0(c(3, 5, 7)), 0)
+  expect_identical(h_dist0(c(4, 7, 10)), 1)
+})
+
 # h_get_distance ----
 test_that("h_get_distance gives an error with one element numeric", {
-  expect_equal(h_get_distance(10), integer(0))
+  set.seed(1989)
+  expect_error(h_get_distance(10), "has length 1")
 })
 
 test_that("h_get_distance gives results within range", {
@@ -26,6 +38,17 @@ test_that("h_get_looks gives correct results if input is identical", {
   dist <- c(0, 5)
   results <- h_get_looks(dist = dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   expect_equal(results$nnrE, results$nnrF)
+})
+
+test_that("h_get_looks together with h_get_distance always gives unique looks", {
+  nn <- c(10, 20, 30)
+  set.seed(123)
+  for (i in seq_len(1000)) {
+    dist <- h_get_distance(nn = nn)
+    nnr <- h_get_looks(dist = dist, nnE = nn, nnF = nn)
+    nnr <- as.integer(nnr$nnrE)
+    expect_integer(nnr, unique = TRUE)
+  }
 })
 
 # h_get_decision ----

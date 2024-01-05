@@ -74,3 +74,89 @@ test_that("h_get_decisionDist gives correct result when nnE <U+2260> nnF", {
   expect_equal(result$decision, NA)
   expect_equal(result$all_sizes, 30)
 })
+
+# ocPostprobDist ----
+test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
+  set.seed(1989)
+  expect_warning(res1 <- ocPostprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.4,
+    deltaE = 0.1,
+    deltaF = -0.1,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    sim = 1000,
+    wiggle = FALSE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  results <- sum(res1$oc[5:7])
+  expect_equal(results, 1)
+})
+
+test_that("the PrFutility increases with increase futility looks", {
+  set.seed(1989)
+  expect_warning(res_one_fut <- ocPostprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.4,
+    deltaE = 0.1,
+    deltaF = -0.1,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = 30
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  res_one_fut$oc$PrFutility
+  expect_warning(res_three_fut <- ocPostprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.4,
+    deltaE = 0.1,
+    deltaF = -0.1,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = c(10, 20, 30)
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  res_three_fut$oc$PrFutility
+  expect_true(res_three_fut$oc$PrFutility > res_one_fut$oc$PrFutility)
+})
+
+test_that("the PrEfficacy increases with increase Efficacy looks", {
+  set.seed(1989)
+  expect_warning(res_eff <- ocPostprobDist(
+    nnE = 30,
+    truep = 0.4,
+    deltaE = 0.1,
+    deltaF = -0.1,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = 10
+  ), "Advise to use sim >= 50000 to achieve convergence")
+
+  res_eff$oc$PrEfficacy
+  expect_warning(res_more_eff <- ocPostprobDist(
+    nnE = c(10, 20, 31),
+    truep = 0.4,
+    deltaE = 0.1,
+    deltaF = -0.1,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = 10
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  res_more_eff$oc$PrEfficacy
+  expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
+})

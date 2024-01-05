@@ -21,6 +21,10 @@ h_get_decisionDist(
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
+\item{nnrE}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnE}.}
+
+\item{nnrF}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnF}.}
+
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
@@ -35,10 +39,10 @@ for the \code{S} group. See details.}
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
 \item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group} in efficacy looks.}
+than in the standard of care of \code{group} in Efficacy looks.}
 
 \item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group} in futility looks.}
+than in the standard of care of \code{group} in Futility looks.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients

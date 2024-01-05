@@ -1,72 +1,55 @@
 # operating characteristics for posterior probability method with beta prior on SOC
-
-# design details
-# multiple looks @ 10, 20, 30 patietns
-# True response rate of the treatment group=0.4
-
-# stop for efficacy (deltaE): P(pE > pS + deltaE) >tU
-# stop for futility (deltaF): P(pE < pS - deltaF) >tL
-# where pE is the response rate of treatment group, pS is the response rate of
-# control group. Both of them are random variables.
-
-
+# For three looks of 10, 20 and 30 we have the following assumptions :
+# True response rate or truep of the treatment group = 40%
+# The following are the Go and Stop rules respectively :
+# Prior of treatment arm parE= Beta(1,1).
+# stop for efficacy (deltaE): Pr(truep > P_S + deltaE) > tU
+# stop for futility (deltaF): Pr(truep < P_S - deltaF) > tL
+# Without random distance allowed for Futility and Efficacy Looks.
 res1 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100
+  sim = 5000,
+  wiggle = FALSE
 )
 
 res1$oc
 
-
-# generate random look locations around 10,20,30 patients
-# this call will generate d (distance for random looks around the look locations)
-# based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
+# Allow random distance for Efficacy and Futility looks.
 res2 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100, nr = TRUE
+  sim = 100,
+  wiggle = TRUE
 )
 
 res2$oc
 
-# specify the distance for random looks around the look locations in nn (d=5 for illustration)
-res3 <- ocPostprobDist(
-  nn = c(10, 20, 30),
-  p = 0.4,
+# Allow Futility analysis only at the end.
+res4 <- ocPostprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
   deltaE = 0.1,
   deltaF = -0.1,
   tL = 0.6,
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  ns = 100,
-  nr = TRUE,
-  d = 5
+  sim = 100,
+  wiggle = TRUE,
+  nnF = 30
 )
 
-res3$oc
-
-
-# finally, we can also have separate specification of efficacy and futility analyses. E.g.
-# here have futility decisions only at the final analysis:
-res4 <- ocPostprobDist(
-  nn = c(10, 20, 30), p = 0.4, deltaE = 0.1, deltaF = -0.1, tL = 0.6, tU = 0.6,
-  parE = c(1, 1), parS = c(5, 25), ns = 100, nr = TRUE, d = 5, nnF = c(30)
-)
 res4$oc
-# compared to res3, we see that there is no early futility stopping anymore,
-# and the overall probability for stopping for futility (which is the type II error here)
-# is much lower.

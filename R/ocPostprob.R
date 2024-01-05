@@ -1,28 +1,42 @@
 #' @include postprob.R
 NULL
 
-#' Generating random distance in given looks for sample sizes for Efficacy and Futility.
+#' Generating random distance for `h_get_distance` helper function.
 #'
-#' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
-#' Numeric looks `nn` must be of minimum two elements and will generate `length(nn)-1` distances.
+#' A helper function for `h_get_distance` by first calculating non-overlapping
+#' distance between looks if looks are of minimum length of 2 elements.
 #'
 #' @typed nn : number or numeric
 #'  the union of `nnE` and `nnF` (if futility analysis or looks exists) supplied.
+#'
+#' @return A number providing the wiggle distance.
+#'
+#' @keywords internal
+#'
+h_dist0 <- function(nn) {
+  assert_numeric(nn, lower = 1, unique = TRUE, sorted = TRUE, min.len = 2)
+  ceiling(min(nn - c(0, nn[-length(nn)])) / 2) - 1
+}
+
+#' Generating random distance in given looks for sample sizes for Efficacy and Futility.
+#'
+#' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
+#'
+#' @inheritParams h_dist0
 #'
 #' @return A numeric with `length(nn)-1` elements.
 #'
 #' @keywords internal
 #'
 h_get_distance <- function(nn) {
-  assert_numeric(nn, unique = TRUE, sorted = TRUE, min.len = 1)
-  dist0 <- floor(min(nn - c(0, nn[-length(nn)])) / 2)
-  assert_numeric(dist0, sorted = TRUE)
+  dist0 <- h_dist0(nn)
   sample(-dist0:dist0,
     size = length(nn) - 1,
     replace = TRUE,
     prob = 2^(-abs(-dist0:dist0) / 2)
   )
 }
+
 
 #' Generating looks from random distance
 #'
@@ -171,11 +185,11 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #'
 #' Stop criteria for Efficacy :
 #'
-#' `P_E(p > p1) > tU`
+#' `Pr(truep > p1) > tU`
 #'
 #' Stop criteria for Futility :
 #'
-#' `P_E(p < p0) > tL`
+#' `Pr(truep < p0) > tL`
 #'
 #' Resulting operating characteristics include the following:
 #'

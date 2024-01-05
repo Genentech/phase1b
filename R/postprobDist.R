@@ -88,7 +88,7 @@ h_get_bounds <- function(controlBetamixPost) {
 #'
 #' Using the approach by Thall and Simon (Biometrics, 1994), this evaluates the
 #' posterior probability of achieving superior response rate in the treatment group `E`
-#' compared to standard of care `S`. `E`See note below for two formulations of the difference in response rates.
+#' compared to standard of care `S`. See note below for two formulations of the difference in response rates.
 #'
 #' @inheritParams h_integrand_relDelta
 #'
