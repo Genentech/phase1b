@@ -1128,7 +1128,7 @@ while the advanced predictive probability design should be used.
 
 An advantage of such a design is that it allows an option of further evaluation
 on additional clinical endpoints or PD markers when the decision falls into the
-"gray zone". Moreover, a seperate delta can be specified for the futility decision
+"gray zone". Moreover, a separate delta can be specified for the futility decision
 to represent a "pool clinical improvement", which makes it a more flexible
 decision rule.
 
@@ -1175,8 +1175,7 @@ result1 <- predprobDist(
   thetaT = 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)
-result1$result
+)$result
 
 
 ## PP(event B)
@@ -1186,8 +1185,7 @@ result2 <- 1 - predprobDist(
   thetaT = 1 - 0.6,
   parE = c(5.75, 4.25),
   parS = c(75, 75)
-)
-result2$result
+)$result
 ```
 
 According to the result, study will continue since neither PP(event A),
