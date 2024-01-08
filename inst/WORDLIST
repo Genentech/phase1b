@@ -2,6 +2,7 @@ analysed
 apriori
 bA
 ba
+BayesBetaBinom
 BayesRobust
 bB
 bbeta
@@ -12,6 +13,7 @@ bD
 bE
 beps
 betadiff
+BetaPrior
 bF
 bG
 bgttheta
@@ -51,6 +53,7 @@ bX
 bY
 bZ
 bz
+calc
 calulation
 cdf
 comparator
@@ -151,6 +154,7 @@ pU
 py
 pyz
 RCT
+rearrangingWeightedBayes
 refering
 renewcommand
 responder
@@ -160,6 +164,7 @@ SampleSizeActive
 SampleSizeControl
 seperate
 ShinyPhase
+simplifiedWeightedBayes
 specialised
 sumbetadiff
 summerize
@@ -181,6 +186,8 @@ USUBJID
 VAD
 vanillaBayes
 vanillaPP
+WeightedBayes
+weightedBetaPrior
 xL
 xS
 xU

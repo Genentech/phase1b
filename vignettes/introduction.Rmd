@@ -279,42 +279,81 @@ by simply calculating the area under the corresponding Beta distribution.
 
 ## Updating Posterior Distribution parameters and weights
 
-To demonstrate the calculation of the posterior probability of a mixed
-Beta Binomial distribution and the updates parameters and weight, we
+In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta Binomial distribution is involved. To demonstrate the calculation the updated parameters and weights, we
 illustrate the reasoning as follows.
 
 We present the Binomial and Beta densities to begin:
 
+\begin{equation}
 $$f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}$$
+(\#eq:binomial)
+\end{equation}
 
 and
 
-$$f(\pi) \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-x}$$
+\begin{equation}
+$$f(\pi) = \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-x}$$
+(\#eq:weightedBetaPrior)
+\end{equation}
 
-Where the sum $w$ has to equal 1:
+Where the sum $w$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$.
 
-$$\sum_{j = 1}^{k} w_j = 1$$
-
-We also identify that:
-
+Where the unweighted version looks like:
+\begin{equation}
 $$f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-x}$$
+(\#eq:unweighted BetaPrior)
+\end{equation}
+
 Here, the product of likelihood and prior gives the kernal for the posterior where we exclude the normalising constant $\frac {1}{f(x)}$:
 
+\begin{equation}
 Posterior = $f(\pi | x) \infty f(\pi) * f(x | \pi) $
+$$f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}$$
+(\#eq: BayesBetaBinom)
+\end{equation}
 
+\begin{equation}
 $$ \infty \ \pi^x (1-\pi)^{n-x} * (\sum_{j = 1}^{k} \ w_j \frac {1}{Beta(\alpha_j, \beta_j)} * \pi^{\alpha-1}(1-\pi){^\beta-1} ) $$
- $$ \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} * \pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1} * \frac{\beta(\alpha_j + x, \beta_j +n -x)}{\beta(\alpha_j + x, \beta_j +n -x}$$
-Knowing that :
+(\#eq:WeightedBayes)
+\end{equation}
 
-$ f(\pi | \alpha_j + x + 1, \beta_i + n - x) $ a Beta distribution
-$$  f(\pi | \alpha_j + x + 1, \beta_i + n - x) = \frac{\pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1}}{{Beta(\alpha_j + x, \beta_j +n -x )}}$$
+\begin{equation}
+ $$ \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} * \pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1} * \frac{\beta(\alpha_j + x, \beta_j +n -x)}{\beta(\alpha_j + x, \beta_j +n - x)}$$
+ (\#eq:rearrangingWeightedBayes)
+ \end{equation}
 
-We simply to the following:
+From \@ref(eq:rearrangingWeightedBayes), we know that the prior is embedded and can be simplified to the following:
 
-$$ \sum_{j}^{k} * \frac {w * Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} * f(\pi | \alpha_j + x + 1, \beta_i + n - x)$$
+<!-- $ f(\pi | \alpha_j + x + 1, \beta_i + n - x) $ a Beta distribution -->
+<!-- $$  f(\pi | \alpha_j + x + 1, \beta_i + n - x) = \frac{\pi^{\alpha_j + x-1}(1-\pi)^{\beta_j+ n -x-1}}{{Beta(\alpha_j + x, \beta_j +n -x )}}$$ -->
 
-We update the weights $w$ in `R` code with $\frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}$ which is represented by the `h_getBetaMixPost()` function call:
+\begin{equation}
+$$ \sum_{j}^{k}  \frac {w_j * Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} * f(\pi | \alpha_j + x + 1, \beta_i + n - x)$$
+ (\#eq:simplifiedWeightedBayes1)
+ \end{equation}
+
+ Which can be further simplified to its kernal @\ref(eq:simplifiedWeightedBayes2):
+ \begin{equation}
+$$\sum_{j}^{k} w_j \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}$$
+ (\#eq:simplifiedWeightedBayes2)
+ \end{equation}
+ The kernal of @\ref(eq:simplifiedWeightedBayes2) is incorporated in the function call as:
 `exp(lbeta(alpha + x, beta + n - x) - lbeta(alpha,  beta))`.
+
+Finally, we update the weights $w$ where by
+ \begin{equation}
+$$w_j = \frac {w_j * \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}} {\sum_{} (w_j * \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)})} $$
+ (\#eq:calc_weights)
+ \end{equation}
+
+and we update the parameters simply as:
+ \begin{equation}
+* updated $\alpha = \alpha + x $$
+* updated $\beta = \beta + n - x $$
+ (\#eq:updated_pars)
+ \end{equation}
+
+Both @\ref(eq:calc_weights) and @\ref(eq:updated_pars) are incorporated by the `h_getBetaMixPost()` function call.
 
 ## Difference in beta random variables {#betadiff}
 
