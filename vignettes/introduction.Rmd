@@ -3,6 +3,8 @@ title: "`phase1b`: Tools for Decision Making in Phase 1b Studies"
 package: phase1b
 bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
 author:
+  - name: Audrey Yeo
+    email: audrey.yeo@roche.com
   - name: Tony Pourmohamad
     email: pourmoht@gene.com
   - name: Jiawen Zhu
