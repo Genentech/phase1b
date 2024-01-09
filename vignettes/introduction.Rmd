@@ -318,7 +318,7 @@ f(\pi | x) \propto \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} \pi^{\a
  (\#eq:rearrangingWeightedBayes)
  \end{equation}
 
-From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}} {Beta(\alpha_j + x, \beta_j + n - x)}$ is embedded and can be simplified to the following:
+From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {1} {Beta(\alpha_j + x, \beta_j + n - x)}\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}$ is embedded and can be simplified to the following:
 
 \begin{equation}
  f(\pi | x) \propto \sum_{j}^{k}  {w_j} \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_i + n - x)
