@@ -54,6 +54,7 @@ bY
 bZ
 bz
 calc
+calcweights
 calulation
 cdf
 comparator
@@ -165,6 +166,8 @@ SampleSizeControl
 seperate
 ShinyPhase
 simplifiedWeightedBayes
+simplifiedWeightedBayesone
+simplifiedWeightedBayestwo
 specialised
 sumbetadiff
 summerize
@@ -182,6 +185,8 @@ tT
 TtR
 tU
 UciL
+unweightedBetaPrior
+updatedpars
 USUBJID
 VAD
 vanillaBayes
