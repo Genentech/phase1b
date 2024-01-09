@@ -186,6 +186,8 @@ TtR
 tU
 UciL
 unweightedBetaPrior
+updatedparsalpha
+updatedparsbeta
 USUBJID
 VAD
 vanillaBayes

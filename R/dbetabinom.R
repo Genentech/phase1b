@@ -90,7 +90,6 @@ h_getBetamixPost <- function(x, n, par, weights) {
   postPar <- par
   postPar[, 1] <- postPar[, 1] + x
   postPar[, 2] <- postPar[, 2] + n - x
-  postParProb <- postPar[, 1] / (postPar[, 1] + postPar[, 2])
   # We compute updated mixture probabilities.
   tmp <- exp(
     lbeta(a = postPar[, 1], b = postPar[, 2]) - lbeta(a = par[, 1], b = par[, 2])

@@ -286,71 +286,70 @@ illustrate the reasoning as follows.
 
 We present the Binomial likelihood and the mixture of Beta distributions prior to begin:
 
-\begin{equation}
+\begin{align}
 f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}
 (\#eq:binomial)
-\end{equation}
+\end{align}
 
 and
 
-\begin{equation}
+\begin{align}
 f(\pi) = \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
 (\#eq:weightedBetaPrior)
-\end{equation}
+\end{align}
 
 Where the sum $w_j$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$.
 
 Where component $j$ has the Beta density:
-\begin{equation}
+\begin{align}
 f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
 (\#eq:unweightedBetaPrior)
-\end{equation}
+\end{align}
 Here $B(\alpha, \beta)$ is the beta function evaluated with parameters $\alpha$ and $\beta$.
 Then, the product of likelihood and prior  $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constant $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
 
-\begin{equation}
+\begin{align}
  f(\pi | x) \propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{Beta(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
 (\#eq:WeightedBayes)
-\end{equation}
+\end{align}
 
-\begin{equation}
+\begin{align}
 f(\pi | x) \propto \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{Beta(\alpha_j + x, \beta_j + n - x)}{Beta(\alpha_j + x, \beta_j + n - x)}
  (\#eq:rearrangingWeightedBayes)
- \end{equation}
+ \end{align}
 
 From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {1} {Beta(\alpha_j + x, \beta_j + n - x)}\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}$ is embedded and can be simplified to the following:
 
-\begin{equation}
+\begin{align}
  f(\pi | x) \propto \sum_{j}^{k}  {w_j} \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_i + n - x)
  (\#eq:simplifiedWeightedBayesone)
- \end{equation}
+ \end{align}
 
  Which can be further simplified to its kernal from \@ref(eq:simplifiedWeightedBayesone) :
- \begin{equation}
+ \begin{align}
 f(\pi | x) \propto \sum_{j}^{k} w_j \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
- \end{equation}
+ \end{align}
 
 The kernal in \@ref(eq:simplifiedWeightedBayestwo) is important to update the weights $w_j$:
 \
 
-\begin{equation}
+\begin{align}
 \bar{w_j} = w_j \frac {\frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}}
 (\#eq:calcweights)
-\end{equation}
+\end{align}
 
 and parameters as:
 
-\begin{equation}
+\begin{align}
 \alpha_{updated} = \alpha + x
- (\#eq:updatedpars1)
-\end{equation}
+ (\#eq:updatedparsalpha)
+\end{align}
 
-\begin{equation}
+\begin{align}
 \beta_{updated} = \beta + n - x
-(\#eq:updatedpars2)
-\end{equation}
-
+(\#eq:updatedparsbeta)
+\end{align}
 ## Difference in beta random variables {#betadiff}
 
 One may wish to know the distribution of the difference in response rates between groups.
