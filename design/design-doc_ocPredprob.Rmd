@@ -126,23 +126,59 @@ ocPredprob <- function(nnE,
 
 ## Rule 1
 
-In an Efficacy look, the following rules apply:
+"Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
+#' successful trial is larger than phiU, and stopped for futility if it is below
+#' phiL. A trial is successful if after the maximum number of patients the
+#' posterior probability of the treatment having more than p0 response rate is
+#' above tT. Otherwise the decision is "failure". In this case, there is no gray zone.
+#'"
 
-Pr(truep > tT) => phiU which represents a successful trial, otherwise if Pr(truep < tT) => phiU is not a successful trial.
+final decision :
 
-In a Futility look, the following rules apply:
+Pr(truep > p0) > tT which represents a successful trial, otherwise if Pr(truep > p0) < tT is not a successful trial.
 
-1 - Pr(truep > tFu) => phiFu which represents an unsuccessful trial.
+interim decision:
 
-## Rule 2
+Predictive probability of Pr( Pr(truep > p0) > tT = Successful trial S) > phiU at interim, then we have an early Go decision
 
-Note `p1` futility threshold on the response rate. Specify only when decision rule 2 is used.
+early decision to Stop:
 
-The Rule 1 Efficacy look applies, however there is a variation in the Futility look at final.
+Pr( Pr(truep > p0) > tT = Successful trial S) < phiL
 
-In a Futility look only at _final_, the following rules apply:
+Otherwise we continue the trial, e.g. no early decision made.
 
-Pr(truep < p1) => phiFu which represents an unsuccessful trial.
+#' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
+#' p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
+#' probability of an unsuccessful trial is larger than phiFu. In this case, the
+#' decision is "failure" when the posterior probability of having the treatment
+#' response rate at most p1 is above tFu at the maximum number of patients.
+#'
+
+at final decision:
+
+Pr (truep < p1) > tFu (if it's too high then it's a failure, here p1 and tFu exist)
+
+at interim:
+
+Pred prob of this failure
+
+Pred prob (failure) > tFu (the confidence for failing high, then we stop)
+
+
+
+<!-- In a Futility look, the following rules apply: -->
+
+<!-- 1 - Pr(truep > tFu) => phiFu which represents an unsuccessful trial. -->
+
+<!-- ## Rule 2 -->
+
+<!-- Note `p1` futility threshold on the response rate. Specify only when decision rule 2 is used. -->
+
+<!-- The Rule 1 Efficacy look applies, however there is a variation in the Futility look at final. -->
+
+<!-- In a Futility look only at _final_, the following rules apply: -->
+
+<!-- Pr(truep < p1) => phiFu which represents an unsuccessful trial. -->
 
 
 ```{r pressure, echo=FALSE}
