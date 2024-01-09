@@ -126,7 +126,7 @@ ocPredprob <- function(nnE,
 
 Efficacy Look
 
-
+Pr(truep )
 
 ```{r pressure, echo=FALSE}
 # nnE,
