@@ -343,12 +343,12 @@ and parameters as:
 
 \begin{align}
 \alpha_{updated} = \alpha + x
- (\#eq:updatedparsalpha)
+ (\#eq:updatedalpha)
 \end{align}
 
 \begin{align}
 \beta_{updated} = \beta + n - x
-(\#eq:updatedparsbeta)
+(\#eq:updatedbeta)
 \end{align}
 ## Difference in beta random variables {#betadiff}
 
