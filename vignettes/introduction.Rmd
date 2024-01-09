@@ -306,7 +306,7 @@ f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (
 (\#eq:unweightedBetaPrior)
 \end{equation}
 Here $B(\alpha, \beta)$ is the beta function evaluated with parameters $\alpha$ and $\beta$.
-Here, the product of likelihood and prior  $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernal for the posterior where we exclude the normalising constant $\frac {1}{f(x)}$:
+Then, the product of likelihood and prior  $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constant $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
 
 \begin{equation}
  f(\pi | x) \propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{Beta(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
