@@ -28,24 +28,6 @@ h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  # while (is.na(s[k]) && (j <= length(nnr))) {
-  #   if (i %in% nnrF) {
-  #     qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
-  #
-  #     s[k] <- ifelse(qL > phiFu, FALSE, NA)
-  #   }
-  #
-  #   if (i %in% nnrE) {
-  #     q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
-  #
-  #     s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
-  #   }
-  #
-  #   n[k] <- i
-  #   j <- j + 1
-  #   i <- nnr[j]
-  # }
-
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
       qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
@@ -69,7 +51,7 @@ h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF
 ```
 
 ```{r}
-h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   sim <- length(all_sizes)
   assert_logical(decision, len = sim)
   assert_numeric(all_sizes)
@@ -82,15 +64,22 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
     PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
     PrEfficacy = sum(decision, na.rm = TRUE) / sim,
     PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
-    PrGrayZone = sum(is.na(decision)) / sim
   )
 }
 ```
 
 
 ```{r cars}
-ocPredprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
-                       sim = 50000, wiggle = FALSE, nnF = nnE) {
+ocPredprob <- function(nnE,
+                       truep,
+                       p0,
+                       p1,
+                       tL,
+                       tU,
+                       parE = c(1, 1),
+                       sim = 50000,
+                       wiggle = FALSE,
+                       nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
@@ -109,29 +98,6 @@ ocPredprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
       nnrE <- nnE
       nnrF <- nnF
     }
-
-
-
-    # while (is.na(s[k]) && (j <= length(nnr))) {
-    #   if (i %in% nnrF) {
-    #     qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
-    #
-    #     s[k] <- ifelse(qL > phiFu, FALSE, NA)
-    #   }
-    #
-    #   if (i %in% nnrE) {
-    #     q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
-    #
-    #     s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
-    #   }
-    #
-    #   n[k] <- i
-    #   j <- j + 1
-    #   i <- nnr[j]
-    # }
-
-
-
     nnr <- unique(c(nnrE, nnrF))
     tmp <- h_get_decision_predprob(
       nnr = nnr,
@@ -142,7 +108,7 @@ ocPredprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
   list(
     oc = oc,
     Decision = decision,
@@ -156,94 +122,33 @@ ocPredprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
-
-ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
-                       parE = c(1, 1),
-                       ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  # Calculate operating characteristics via simulation
-  # nn: vector of look locations
-  # s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  #    during trial if continuing (NA)
-  #   nn <- sort(unique(c(nnF, nnE)))
-  #   assert_number(sim, lower = 1, finite = TRUE)
-  #   assert_flag(wiggle)
-  #   assert_flag(randomdist)
-  if (phiL + phiFu != 1) {
-    warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
-  }
-
-  nnE <- sort(nn)
-  nnF <- sort(nnF)
-  s <- rep(NA, ns)
-  n <- s
-  nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn)
-  Nstart <- nn[1]
-  Nmax <- nn[nL]
-
-
-  if (nr && is.null(d)) {
-    # set parameter d for randomly generating look locations
-    d <- floor(min(nn - c(0, nn[-nL])) / 2)
-  }
-  nnr <- nn
-  nnrE <- nnE
-  nnrF <- nnF
-
-  for (k in 1:ns) {
-    # simulate a clinical trial ns times
-    if (nr && (d > 0)) {
-      # randomly generate look locations
-      dd <- sample(-d:d,
-        size = nL - 1, replace = TRUE,
-        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
-      )
-      nnr <- nn + c(dd, 0)
-
-
-      nnrE <- nnr[nn %in% nnE]
-      nnrF <- nnr[nn %in% nnF]
-    }
-    x <- stats::rbinom(Nmax, 1, p)
-    j <- 1
-    i <- nnr[j]
-    # while (is.na(s[k]) && (j <= length(nnr))) {
-    #   if (i %in% nnrF) {
-    #     qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
-    #
-    #     s[k] <- ifelse(qL > phiFu, FALSE, NA)
-    #   }
-    #
-    #   if (i %in% nnrE) {
-    #     q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
-    #
-    #     s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
-    #   }
-    #
-    #   n[k] <- i
-    #   j <- j + 1
-    #   i <- nnr[j]
-    # }
-  }
-  oc <- cbind(
-    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
-    PrEfficacy = sum(s, na.rm = TRUE) / ns,
-    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
-    PrGrayZone = sum(is.na(s) / ns)
-  )
-
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
-    nn = nn, nnE = nnE, nnF = nnF,
-    params = as.list(match.call(expand.dots = FALSE))
-  ))
-}
 ```
+
+Efficacy Look
 
 
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+# nnE,
+#                        truep,
+#                        p0,
+#                        p1,
+#                        tL,
+#                        tU,
+#                        parE = c(1, 1),
+#                        sim = 50000,
+#                        wiggle = FALSE,
+#                        nnF = nnE
+res2 <- ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 100,
+  wiggle = TRUE
+)
+res2$oc
 ```
