@@ -284,7 +284,7 @@ by simply calculating the area under the corresponding Beta distribution.
 In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta-Binomial distribution is involved. To demonstrate the calculation the updated parameters and weights, we
 illustrate the reasoning as follows.
 
-We present the Binomial and Beta densities to begin:
+We present the Binomial likelihood and the mixture of Beta distributions prior to begin:
 
 \begin{equation}
 f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}
