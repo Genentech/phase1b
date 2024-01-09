@@ -325,13 +325,13 @@ From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(
  (\#eq:simplifiedWeightedBayesone)
  \end{equation}
 
- Which can be further simplified to its kernal from @\ref(eq:simplifiedWeightedBayesone) :
+ Which can be further simplified to its kernal from \@ref(eq:simplifiedWeightedBayesone) :
  \begin{equation}
 f(\pi | x) \propto \sum_{j}^{k} w_j \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
  \end{equation}
 
-The kernal in @\ref(eq:simplifiedWeightedBayestwo) is important to update the weights $w_j$:
+The kernal in \@ref(eq:simplifiedWeightedBayestwo) is important to update the weights $w_j$:
 \
 
 \begin{equation}
