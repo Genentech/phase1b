@@ -268,10 +268,8 @@ following Beta distribution
 P_E\given x\sim\text{Beta}(a+x,b+n-x)
 \end{equation}
 
-Of course we could have carried out this calculation using the more general prior,
-$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, however, for sake of illustration
-(and to avoid tedious bookkeeping) we chose to use the simpler non-mixture of
-Beta distributions for ease of calculation.
+Here we illustrate a posterior of a simple prior as an illustration
+$P_E\sim \sum_{j=1}^kw_i\text{Beta}(a_j,b_j)$. In Section, we illustrate a mixture Beta distribution and how weights and parameters are updated with data.
 
 All further probabilistic calculations follow naturally under the Bayesian approach
 once the posterior distribution has been identified.  For example, as seen in
@@ -289,11 +287,9 @@ We present the Binomial likelihood and the mixture of Beta distributions prior t
 \begin{align}
 f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}
 (\#eq:binomial)
-\end{align}
-
+\\
 and
-
-\begin{align}
+\\
 f(\pi) = \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
 (\#eq:weightedBetaPrior)
 \end{align}
@@ -309,47 +305,42 @@ Here $B(\alpha, \beta)$ is the beta function evaluated with parameters $\alpha$ 
 Then, the product of likelihood and prior  $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constant $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
 
 \begin{align}
- f(\pi | x) \propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{Beta(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
+ f(\pi | x) \propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
 (\#eq:WeightedBayes)
-\end{align}
-
-\begin{align}
-f(\pi | x) \propto \sum_{j = 1}^{k} \frac {w_j}{Beta(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{Beta(\alpha_j + x, \beta_j + n - x)}{Beta(\alpha_j + x, \beta_j + n - x)}
+\\
+f(\pi | x) \propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
  (\#eq:rearrangingWeightedBayes)
  \end{align}
 
 From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {1} {Beta(\alpha_j + x, \beta_j + n - x)}\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}$ is embedded and can be simplified to the following:
 
 \begin{align}
- f(\pi | x) \propto \sum_{j}^{k}  {w_j} \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_i + n - x)
+ f(\pi | x) \propto \sum_{j}^{k}  {w_j} \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_i + n - x)
  (\#eq:simplifiedWeightedBayesone)
- \end{align}
-
- Which can be further simplified to its kernal from \@ref(eq:simplifiedWeightedBayesone) :
- \begin{align}
-f(\pi | x) \propto \sum_{j}^{k} w_j \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}
+\\
+Which can be further simplified to its kernel from \@ref(eq:simplifiedWeightedBayesone) :
+\\
+f(\pi | x) \propto \sum_{j}^{k} w_j \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
  \end{align}
-
-The kernal in \@ref(eq:simplifiedWeightedBayestwo) is important to update the weights $w_j$:
-\
-
+\\
+The weights can be updated with the multiplication of \@ref(eq:simplifiedWeightedBayestwo) without constants $w_j$:
+\\
 \begin{align}
-\bar{w_j} = w_j \frac {\frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{Beta(\alpha_j, \beta_j)}}
+\bar{w_j} = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
 (\#eq:calcweights)
-\end{align}
+
 
 and parameters as:
 
-\begin{align}
+
 \alpha_{updated} = \alpha + x
  (\#eq:updatedalpha)
-\end{align}
-
-\begin{align}
+\\
 \beta_{updated} = \beta + n - x
 (\#eq:updatedbeta)
 \end{align}
+
 ## Difference in beta random variables {#betadiff}
 
 One may wish to know the distribution of the difference in response rates between groups.
