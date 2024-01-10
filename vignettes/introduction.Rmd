@@ -279,41 +279,36 @@ by simply calculating the area under the corresponding Beta distribution.
 
 ## Updating Posterior Distribution parameters and weights
 
-In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta-Binomial distribution is involved. To demonstrate the calculation the updated parameters and weights, we
+In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta-Binomial distribution is involved. To demonstrate the calculation of how parameters and weights are updated, we
 illustrate the reasoning as follows.
 
 We present the Binomial likelihood and the mixture of Beta distributions prior to begin:
 
-\begin{align*}
-f(x|\pi) = \binom{n}{k} \pi^x (1-\pi)^{n-x}
-\
-f(\pi) = \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
+\begin{align}
+f(x|\pi) &= \binom{n}{k} \pi^x (1-\pi)^{n-x} \\
+f(\pi) &= \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
 (\#eq:binomial)
-\end{align*}
+\end{align}
 <!-- (\#eq:weightedBetaPrior) -->
-
-\begin{align*}
-f(\pi) = \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
-\end{align*}
 
 Where the sum $w_j$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$. With the normalizing constant removed, the weights will later be updated.
 
-Where component $j$ has the Beta density:
+Each component $j$ has the Beta density:
 \begin{align}
 f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
 (\#eq:unweightedBetaPrior)
 \end{align}
 
 Here $B(\alpha, \beta)$ is the beta function evaluated with parameters $\alpha$ and $\beta$.
-Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constant $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
+Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constants $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
 
 \begin{align}
- f(\pi | x) \propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
+ f(\pi | x) &\propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
 (\#eq:WeightedBayes)
  \end{align}
 
  \begin{align}
-f(\pi | x) \propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
+f(\pi | x) &\propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
  (\#eq:rearrangingWeightedBayes)
  \end{align}
 
@@ -324,29 +319,29 @@ From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(
  (\#eq:simplifiedWeightedBayesone)
   \end{align}
 \
-Which can be further simplified to its kernel from \@ref(eq:simplifiedWeightedBayesone) :
+Since $\sum_w= 1$, we update the weights from a modified version of \@ref(eq:simplifiedWeightedBayesone) :
 \
 \begin{align}
 f(\pi | x) \propto \sum_{j}^{k} w_j \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
  \end{align}
 \
-The weights from \@ref(eq:simplifiedWeightedBayestwo) are updated to ensure $\sum w_j = 1$:
+such that each $j$ of $w_j$ is :
 \
 \begin{align}
 \bar{w_j} = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
 (\#eq:calcweights)
 \end{align}
 
-and parameters as:
+and parameters are updated as:
 \
 \begin{align}
-\alpha_{updated} = \alpha + x
+\alpha_{updated} &= \alpha + x
  (\#eq:updatedalpha)
 \end{align}
 \
 \begin{align}
-\beta_{updated} = \beta + n - x
+\beta_{updated} &= \beta + n - x
 (\#eq:updatedbeta)
 \end{align}
 
