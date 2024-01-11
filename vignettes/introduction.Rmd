@@ -269,7 +269,7 @@ P_E\given x\sim\text{Beta}(a+x,b+n-x)
 \end{equation}
 
 Here we illustrate a posterior of a simple prior as an illustration
-$P_E\sim \sum_{j=1}^kw_i\text{Beta}(a_j,b_j)$. In Section, we illustrate a mixture Beta distribution and how weights and parameters are updated with data.
+$P_E\sim \sum_{j=1}^kw_i\text{Beta}(a_j,b_j)$. In section \@ref(updateposterior), we illustrate a mixture Beta distribution and how weights and parameters are updated with data.
 
 All further probabilistic calculations follow naturally under the Bayesian approach
 once the posterior distribution has been identified.  For example, as seen in
@@ -277,7 +277,7 @@ the function `postprob()`, one could calculate the posterior probability that th
 rate $P_E$ is greater than (or less than) some threshold $p$, i.e., $\Pr(P_E>p\given x)$,
 by simply calculating the area under the corresponding Beta distribution.
 
-## Updating Posterior Distribution parameters and weights
+## Updating Posterior Distribution parameters and weights  {#updateposterior}
 
 In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta-Binomial distribution is involved. To demonstrate the calculation of how parameters and weights are updated, we
 illustrate the reasoning as follows.
