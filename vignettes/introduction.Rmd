@@ -244,7 +244,7 @@ Under the Bayesian approach, the parameter $P_E$ is treated as a random unknown
 quantity in the model. The prior distribution for $P_E$ can be elicited from
 external knowledge or expert opinion, however, the use of a conjugate prior is
 employed here. The prior used in `postprob()` is of the following form:
-$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, so a mixture of Beta
+$P_E\sim \sum_i=1}^kw_i\text{Beta}(a_i,b_i)$, so a mixture of Beta
 distributions, but for simplicity, the default prior in `postprob()` is
 set to be the single conjugate Beta distribution, $\text{Beta}(\alpha,\beta)$.
 Here we make the assumption that a (mixture) Beta prior is a reasonable choice
@@ -304,7 +304,7 @@ Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$
 
 \begin{align}
  f(\pi | x) &\propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
-(\#eq:WeightedBayes) \\
+\\
 &\propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
  (\#eq:rearrangingWeightedBayes)
  \end{align}
@@ -312,7 +312,7 @@ Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$
 From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {1} {Beta(\alpha_j + x, \beta_j + n - x)}\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}$ is embedded and can be simplified to the following:
 
 \begin{align}
- f(\pi | x) \propto \sum_{j}^{k}  {w_j} \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_i + n - x)
+ f(\pi | x) \propto \sum_{j = 1}^{k}  {w_j} \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_j + n - x)
  (\#eq:simplifiedWeightedBayesone)
   \end{align}
 \
@@ -320,7 +320,7 @@ We can identify the shape of the density as that of a mixture distribution with 
 \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}.
 
 \begin{align}
-f(\pi | x) \propto \sum_{j}^{k} w_j \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
+f(\pi | x) \propto \sum_{j = 1}^{k} w_j \frac {B(\alpha_j + x, \beta_j + n -x )}{B(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
  \end{align}
 \
