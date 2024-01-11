@@ -291,7 +291,7 @@ f(\pi) &= \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}
 \end{align}
 <!-- (\#eq:weightedBetaPrior) -->
 
-Where the sum $w_j$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$. With the normalizing constant removed, the weights will later be updated.
+Where the sum $w_j$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$.
 
 Each component $j$ has the Beta density:
 \begin{align}
@@ -316,30 +316,26 @@ From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(
  (\#eq:simplifiedWeightedBayesone)
   \end{align}
 \
-Since $\sum_w= 1$, we update the weights from a modified version of \@ref(eq:simplifiedWeightedBayesone) :
-\
+We can identify the shape of the density as that of a mixture distribution with weights being proportional to $w_j$ :
+\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}.
+
 \begin{align}
 f(\pi | x) \propto \sum_{j}^{k} w_j \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
  (\#eq:simplifiedWeightedBayestwo)
  \end{align}
 \
-such that each $j$ of $w_j$ is :
-\
+The normalizing constant is thus:
+
 \begin{align}
-\bar{w_j} = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
-(\#eq:calcweights)
+\frac {1}{\sum_{j=1}^{k}w_j\frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j, \beta_j)}}
+ (\#eq:normalizingconstant)
 \end{align}
 
-and parameters are updated as:
+such that the updated weights are given as :
 \
 \begin{align}
-\alpha_{updated} &= \alpha + x
- (\#eq:updatedalpha)
-\end{align}
-\
-\begin{align}
-\beta_{updated} &= \beta + n - x
-(\#eq:updatedbeta)
+\tilde{w_j} = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
+(\#eq:calcweights)
 \end{align}
 
 ## Difference in beta random variables {#betadiff}
