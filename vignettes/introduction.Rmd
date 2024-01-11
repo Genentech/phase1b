@@ -305,7 +305,7 @@ Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$
 \begin{align}
  f(\pi | x) &\propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
 (\#eq:WeightedBayes) \\
-f(\pi | x) &\propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
+&\propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
  (\#eq:rearrangingWeightedBayes)
  \end{align}
 
