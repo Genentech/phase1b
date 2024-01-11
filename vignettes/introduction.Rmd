@@ -317,7 +317,7 @@ From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(
   \end{align}
 \
 We can identify the shape of the density as that of a mixture distribution with weights being proportional to $w_j$ :
-\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}.
+\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
 
 \begin{align}
 f(\pi | x) \propto \sum_{j = 1}^{k} w_j \frac {B(\alpha_j + x, \beta_j + n -x )}{B(\alpha_j, \beta_j)}
