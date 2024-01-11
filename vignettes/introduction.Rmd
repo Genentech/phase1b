@@ -334,7 +334,7 @@ The normalizing constant is thus:
 such that the updated weights are given as :
 \
 \begin{align}
-\tilde{w_j} = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
+\tilde{w}_j = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
 (\#eq:calcweights)
 \end{align}
 
