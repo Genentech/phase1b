@@ -3,125 +3,6 @@ title: "Design Document for ocPredprob.R"
 output: html_document
 date: "2024-01-08"
 ---
-design details
-multiple looks @ 10, 20, 30 patients
-True response rate of the treatment group=0.4
-
-Design notes :
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## h_get_decision_predprob
-```{r}
-h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
-  index_look <- 1
-  assert_numeric(nnr)
-  size_look <- nnr[index_look]
-  all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look <= length(nnr)) {
-    if (size_look %in% nnF) {
-      qL <- 1 - predprob(x = sum(x = response[1:size_look]), n = size_look, Nmax = nnF[length(nnF)], p = p1, thetaT = 1 - tFu, parE = parE)$result
-      assert_number(qL, lower = 0, upper = 1)
-      decision <- ifelse(qL >= tL, FALSE, NA)
-    }
-    if (size_look %in% nnE) {
-      qU <- predprob(x = sum(x = response[1:size_look]), n = size_look, Nmax = nnE[length(nnE)], p = p0, thetaT = tT, parE = parE)$result
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < tU, decision, TRUE)
-    }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
-  }
-  list(
-    decision = decision,
-    all_sizes = all_sizes
-  )
-}
-```
-
-```{r}
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  sim <- length(all_sizes)
-  assert_logical(decision, len = sim)
-  assert_numeric(all_sizes)
-  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
-  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
-  data.frame(
-    ExpectedN = mean(all_sizes, na.rm = TRUE),
-    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
-    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
-    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
-    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
-    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
-  )
-}
-```
-## ocPredprob
-
-```{r cars}
-ocPredprob <- function(nnE,
-                       truep,
-                       p0,
-                       p1 = p0,
-                       tT,
-                       tFu,
-                       phiL = 1 - phiFu,
-                       phiU,
-                       phiFu = 1 - phiL,
-                       parE = c(1, 1),
-                       sim = 50000,
-                       wiggle = FALSE,
-                       nnF = nnE) {
-  nn <- sort(unique(c(nnF, nnE)))
-  assert_number(sim, lower = 1, finite = TRUE)
-  assert_flag(wiggle)
-  if (sim < 50000) {
-    warning("Advise to use sim >= 50000 to achieve convergence")
-  }
-  decision <- vector(length = sim)
-  all_sizes <- vector(length = sim)
-  for (k in seq_len(sim)) {
-    if (length(nn) != 1 && wiggle) {
-      dist <- h_get_distance(nn = nn)
-      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
-      nnrE <- nnr$nnrE
-      nnrF <- nnr$nnrF
-    } else {
-      nnrE <- nnE
-      nnrF <- nnF
-    }
-    nnr <- unique(c(nnrE, nnrF))
-    tmp <- h_get_decision_predprob(
-      nnr = nnr,
-      truep = truep, p0 = p0, p1 = p1,
-      parE = c(1, 1), nnE = nnrE,
-      nnF = nnrF, tL = tL, tU = tU
-    )
-    decision[k] <- tmp$decision
-    all_sizes[k] <- tmp$all_sizes
-  }
-  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
-  list(
-    oc = oc,
-    Decision = decision,
-    SampleSize = all_sizes,
-    union_nn = nnr,
-    input_nnE = nnE,
-    input_nnF = nnF,
-    wiggled_nnE = nnrE,
-    wiggled_nnF = nnrF,
-    wiggle_dist = dist,
-    params = as.list(match.call(expand.dots = FALSE))
-  )
-}
-```
-
 ## Rule 1
 
 "Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
@@ -162,34 +43,141 @@ Pred prob of this failure
 
 Pred prob (failure) > tFu (the confidence for failing high, then we stop)
 
+Design notes :
+
+* the code does not cater for interim decisions
+The code only caters for success critical for Decision 1 and failure for Decision 2
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## h_get_decision_predprob
+```{r}
+h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnF) {
+      qL <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p1,
+        thetaT = 1 - tFu,
+        parE = parE
+      )$result
+      assert_number(qL, lower = 0, upper = 1)
+      decision <- ifelse(qL >= tL, FALSE, NA)
+      # Decision 2
+      # P(truep < p1) > tFu when the Prob to fail (truep < p1) is too high
+      # reasoning:
+      # the code says : P(truep > p1) < 1-tFu, where if true, then
+      # we rearrange : tFu < 1-P (truep > p1)
+      # tFu < P(truep < p1)
+      # P(truep < p1) > tFu, and this is the same as above under "Decision 2"
+    }
+    if (size_look %in% nnE) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    # Decision 1
+    # P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
+    # the code is NOT consistent with the notation in Decision 1, where trial is successful if qU < tU
+    # the  code says : P(truep > p0) > tT
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+```{r}
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+  sim <- length(all_sizes)
+  assert_logical(decision, len = sim)
+  assert_numeric(all_sizes)
+  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
+  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+  data.frame(
+    ExpectedN = mean(all_sizes, na.rm = TRUE),
+    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+  )
+}
+```
+## ocPredprob
+
+```{r cars}
+ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
+                       sim = 50000, wiggle = FALSE, nnF = nnE) {
+  nn <- sort(unique(c(nnF, nnE)))
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    if (is.na(decision[k]) && (j <= length(nnr))) {
+      tmp <- h_get_decision_predprob(
+        nnr = nnr,
+        truep = truep, p0 = p0, p1 = p1,
+        parE = c(1, 1), nnE = nnrE,
+        nnF = nnrF, tL = tL, tU = tU
+      )
+      decision[k] <- tmp$decision
+      all_sizes[k] <- tmp$all_sizes
+    }
+  }
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
 
 
-<!-- In a Futility look, the following rules apply: -->
-
-<!-- 1 - Pr(truep > tFu) => phiFu which represents an unsuccessful trial. -->
-
-<!-- ## Rule 2 -->
-
-<!-- Note `p1` futility threshold on the response rate. Specify only when decision rule 2 is used. -->
-
-<!-- The Rule 1 Efficacy look applies, however there is a variation in the Futility look at final. -->
-
-<!-- In a Futility look only at _final_, the following rules apply: -->
-
-<!-- Pr(truep < p1) => phiFu which represents an unsuccessful trial. -->
-
-
-```{r pressure, echo=FALSE}
-# nnE,
-#                        truep,
-#                        p0,
-#                        p1,
-#                        tL,
-#                        tU,
-#                        parE = c(1, 1),
-#                        sim = 50000,
-#                        wiggle = FALSE,
-#                        nnF = nnE
+```{r, echo=FALSE}
 res2 <- ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
@@ -202,5 +190,4 @@ res2 <- ocPredprob(
   sim = 100,
   wiggle = TRUE
 )
-res2$oc
 ```
