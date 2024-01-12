@@ -31,7 +31,6 @@ Otherwise we continue the trial, e.g. no early decision made.
 #' probability of an unsuccessful trial is larger than phiFu. In this case, the
 #' decision is "failure" when the posterior probability of having the treatment
 #' response rate at most p1 is above tFu at the maximum number of patients.
-#'
 
 at final decision:
 
@@ -41,12 +40,14 @@ at interim:
 
 Pred prob of this failure
 
-Pred prob (failure) > tFu (the confidence for failing high, then we stop)
+Pred prob (failure) > PhiFu (the confidence for failing high, then we stop)
 
 Design notes :
 
 * the code does not cater for interim decisions
 The code only caters for success critical for Decision 1 and failure for Decision 2
+* helper function based on decision
+flag decision
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
