@@ -16,8 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## h_get_decision_predprob
 ```{r}
-# x, n, Nmax, p, thetaT, parE = c(1, 1),
-#                      weights
 h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
   index_look <- 1
   assert_numeric(nnr)
