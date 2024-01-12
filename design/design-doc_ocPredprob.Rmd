@@ -73,9 +73,9 @@ h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF
       )$result
       assert_number(qL, lower = 0, upper = 1)
       decision <- ifelse(qL >= tL, FALSE, NA)
-      # Decision 2
+      # Decision 2 says:
       # P(truep < p1) > tFu when the Prob to fail (truep < p1) is too high
-      # reasoning:
+      # reasoning in the code :
       # the code says : P(truep > p1) < 1-tFu, where if true, then
       # we rearrange : tFu < 1-P (truep > p1)
       # tFu < P(truep < p1)
@@ -93,7 +93,7 @@ h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU < tU, decision, TRUE)
     }
-    # Decision 1
+    # Decision 1 says:
     # P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
     # the code is NOT consistent with the notation in Decision 1, where trial is successful if qU < tU
     # the  code says : P(truep > p0) > tT
