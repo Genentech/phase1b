@@ -86,7 +86,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
@@ -127,7 +127,7 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
@@ -139,22 +139,22 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    }  else { # interim decision where index_look != length(nnr)
+    } else { # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
         qU <- something()
         assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU > phiU, TRUE, decision) 
-      } 
-      
+        decision <- ifelse(qU > phiU, TRUE, decision)
+      }
+
       if (size_look %in% nnF) { # for futility looks
         qU <- something()
         assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU < phiL, FALSE, decision) 
+        decision <- ifelse(qU < phiL, FALSE, decision)
       }
     }
     all_sizes <- size_look
@@ -195,7 +195,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       )$result
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    } 
+    }
     if (size_look %in% nnF) {
       qU <- 1 - predprob(
         x = sum(x = response[1:size_look]),
@@ -267,13 +267,13 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     if (size_look %in% nnE) { # for efficacy looks
       qU <- something()
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > phiU, FALSE, decision) 
-    } 
-    
+      decision <- ifelse(qU > phiU, FALSE, decision)
+    }
+
     if (size_look %in% nnF) { # for futility looks
       qU <- something()
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < phiL, TRUE, decision) 
+      decision <- ifelse(qU < phiL, TRUE, decision)
     }
   }
   list(
