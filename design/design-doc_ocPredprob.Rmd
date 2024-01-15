@@ -111,22 +111,22 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnE) {
-      qU <- 1-predprob(
+      qU <- 1 - predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p1,
-        thetaT = tF,  # the  code says : P(truep < p1) > tF
+        thetaT = tF, # the  code says : P(truep < p1) > tF
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     }
-   # Decision 2 says:
-   # STOP = P(truep < p1) > tF:
-   # when the prob of poor response is high enough, then we have a UNsuccessful trial
-   # GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
-   # EVAL = there is no evaluate
+    # Decision 2 says:
+    # STOP = P(truep < p1) > tF:
+    # when the prob of poor response is high enough, then we have a UNsuccessful trial
+    # GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
+    # EVAL = there is no evaluate
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
