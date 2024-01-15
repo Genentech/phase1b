@@ -1,0 +1,436 @@
+---
+title: "Design Document for ocPredprob.R"
+output: html_document
+date: "2024-01-08"
+---
+
+## Rule 1
+Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
+successful trial is larger than phiU, and stopped for futility if it is below
+phiL. A trial is successful if after the maximum number of patients the
+posterior probability of the treatment having more than p0 response rate is
+above tT. Otherwise the decision is "failure". In this case, there is no gray zone.
+
+
+final decision :
+
+Pr(truep > p0) > tT which represents a successful trial, otherwise if Pr(truep > p0) < tT is not a successful trial.
+
+interim decision:
+
+Predictive probability of Pr( Pr(truep > p0) > tT = Successful trial S) > phiU at interim, then we have an early Go decision
+
+early decision to Stop:
+
+Pr( Pr(truep > p0) > tT = Successful trial S) < phiL
+
+Otherwise we continue the trial, e.g. no early decision made.
+
+## Rule 2
+Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
+p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
+probability of an unsuccessful trial is larger than phiFu. In this case, the
+decision is "failure" when the posterior probability of having the treatment
+response rate at most p1 is above tFu at the maximum number of patients.
+
+at final decision:
+
+Pr (truep < p1) > tFu (if it's too high then it's a failure, here p1 and tFu exist)
+
+at interim:
+
+Pred prob of this failure
+
+Pred prob (failure) > PhiFu (the confidence for failing high, then we stop)
+
+## Design notes :
+
+* the original code does not cater for interim decisions
+The code only caters for success critical for Decision 1 and failure for Decision 2
+* for main function, we flags based on either decision 1 or 2 (rule 1 or 2)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1a Helper function for Decision 1a (does not include interim)
+    * Decision 1 says:
+    * GO = P(truep > p0) > tT,
+    when the prob of good response is high enough, then we have a successful trial
+    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * EVAL = there is no evaluate BUT there are interims.... not in this code
+```{r}
+h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT, # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+    if (size_look %in% nnF) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+## 1b Helper function for Decision 1b
+    * Decision 1 says:
+    * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
+    when the prob of good response is high enough, then we have a successful trial
+    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * EVAL = there is no evaluate BUT there are interims.... in this code
+    * interim GO =  P(successful trial) > phiU, P(qU > tT) > phiU
+    * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
+    * interim EVAL = in between
+```{r}
+h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+    if (size_look %in% nnF) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }  else { # interim decision where index_look != length(nnr)
+      if (size_look %in% nnE) { # for efficacy looks
+        qU <- something()
+        assert_number(qU, lower = 0, upper = 1)
+        decision <- ifelse(qU > phiU, TRUE, decision) 
+      } 
+      
+      if (size_look %in% nnF) { # for futility looks
+        qU <- something()
+        assert_number(qU, lower = 0, upper = 1)
+        decision <- ifelse(qU < phiL, FALSE, decision) 
+      }
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+## 2a Helper function for Decision 2a
+    * Decision 2 says:
+    * STOP = P(truep < p1) > tF:
+    when the prob of poor response is high enough, then we have a UNsuccessful trial
+    * GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
+    * EVAL = there is no evaluate
+    * no interim here .....
+```{r}
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p1,
+        thetaT = tF, # the  code says : P(truep < p1) > tF
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    } 
+    if (size_look %in% nnF) {
+      qU <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p1,
+        thetaT = tF, # the  code says : P(truep < p1) > tF
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < tF, decision, FALSE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+## 2b Helper function for Decision 2b
+    * Decision 2 says:
+    * STOP = P(truep < p1) > tF:
+    when the prob of poor response is high enough, then we have a UNsuccessful trial
+    * GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
+    * EVAL = there is no evaluate
+    * interim included here .....
+```{r}
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  if (is.na(decision) && index_look == length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p1,
+        thetaT = tF, # the  code says : P(truep < p1) > tF
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+    if (size_look %in% nnF) {
+      qU <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p1,
+        thetaT = tF, # the  code says : P(truep < p1) > tF
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < tF, decision, FALSE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  } else {
+    # interim decision where index_look != length(nnr)
+    if (size_look %in% nnE) { # for efficacy looks
+      qU <- something()
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > phiU, FALSE, decision) 
+    } 
+    
+    if (size_look %in% nnF) { # for futility looks
+      qU <- something()
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < phiL, TRUE, decision) 
+    }
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+
+## parent code : h_get_decision_predprob 
+```{r}
+h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnF) {
+      qL <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p1,
+        thetaT = 1 - tFu,
+        parE = parE
+      )$result
+      assert_number(qL, lower = 0, upper = 1)
+      decision <- ifelse(qL >= tL, FALSE, NA)
+      # Decision 2 says:
+      # P(truep < p1) > tFu when the Prob to fail (truep < p1) is too high
+      # reasoning in the code :
+      # the code says : P(truep > p1) < 1-tFu, where if true, then
+      # we rearrange : tFu < 1-P (truep > p1)
+      # tFu < P(truep < p1)
+      # P(truep < p1) > tFu, and this is the same as above under "Decision 2"
+    }
+    if (size_look %in% nnE) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    # Decision 1 says:
+    # P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
+    # the code is NOT consistent with the notation in Decision 1, where trial is successful if qU < tU
+    # the  code says : P(truep > p0) > tT
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+# helper h_get_oc_predprob
+```{r}
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+  sim <- length(all_sizes)
+  assert_logical(decision, len = sim)
+  assert_numeric(all_sizes)
+  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
+  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+  data.frame(
+    ExpectedN = mean(all_sizes, na.rm = TRUE),
+    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+  )
+}
+```
+
+## ocPredprob
+
+```{r cars}
+ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
+                       sim = 50000, wiggle = FALSE, nnF = nnE) {
+  nn <- sort(unique(c(nnF, nnE)))
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    if (is.na(decision[k]) && (j <= length(nnr)) && decision == "default") {
+      tmp <- h_get_decision_one_predprob(
+        nnr = nnr,
+        truep = truep, p0 = p0, p1 = p1,
+        parE = c(1, 1), nnE = nnrE,
+        nnF = nnrF, tL = tL, tU = tU
+      )
+      decision[k] <- tmp$decision
+      all_sizes[k] <- tmp$all_sizes
+    } else {
+      tmp <- h_get_decision_two_predprob(
+        nnr = nnr,
+        truep = truep, p0 = p0, p1 = p1,
+        parE = c(1, 1), nnE = nnrE,
+        nnF = nnrF, tL = tL, tU = tU
+      )
+      decision[k] <- tmp$decision
+      all_sizes[k] <- tmp$all_sizes
+    }
+  }
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
+
+
+```{r, echo=FALSE}
+res2 <- ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  tT = 0.6,
+  tFu = 1 - 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 100,
+  wiggle = TRUE
+)
+```
