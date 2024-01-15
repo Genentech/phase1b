@@ -3,6 +3,8 @@ title: "`phase1b`: Tools for Decision Making in Phase 1b Studies"
 package: phase1b
 bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
 author:
+  - name: Audrey Yeo
+    email: audrey.yeo@roche.com
   - name: Tony Pourmohamad
     email: pourmoht@gene.com
   - name: Jiawen Zhu
@@ -242,7 +244,7 @@ Under the Bayesian approach, the parameter $P_E$ is treated as a random unknown
 quantity in the model. The prior distribution for $P_E$ can be elicited from
 external knowledge or expert opinion, however, the use of a conjugate prior is
 employed here. The prior used in `postprob()` is of the following form:
-$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, so a mixture of Beta
+$P_E\sim \sum_i=1}^kw_i\text{Beta}(a_i,b_i)$, so a mixture of Beta
 distributions, but for simplicity, the default prior in `postprob()` is
 set to be the single conjugate Beta distribution, $\text{Beta}(\alpha,\beta)$.
 Here we make the assumption that a (mixture) Beta prior is a reasonable choice
@@ -266,16 +268,75 @@ following Beta distribution
 P_E\given x\sim\text{Beta}(a+x,b+n-x)
 \end{equation}
 
-Of course we could have carried out this calculation using the more general prior,
-$P_E\sim \sum_{i=1}^kw_i\text{Beta}(a_i,b_i)$, however, for sake of illustration
-(and to avoid tedious bookkeeping) we chose to use the simpler non-mixture of
-Beta distributions for ease of calculation.
+Here we illustrate a posterior of a simple prior as an illustration
+$P_E\sim \sum_{j=1}^kw_i\text{Beta}(a_j,b_j)$. In section \@ref(updateposterior), we illustrate a mixture Beta distribution and how weights and parameters are updated with data.
 
 All further probabilistic calculations follow naturally under the Bayesian approach
 once the posterior distribution has been identified.  For example, as seen in
 the function `postprob()`, one could calculate the posterior probability that the
 rate $P_E$ is greater than (or less than) some threshold $p$, i.e., $\Pr(P_E>p\given x)$,
 by simply calculating the area under the corresponding Beta distribution.
+
+## Updating Posterior Distribution parameters and weights  {#updateposterior}
+
+In order to incorporate prior information and evaluate posterior probabilities, updated weights and parameters are required especially where mixed Beta-Binomial distribution is involved. To demonstrate the calculation of how parameters and weights are updated, we
+illustrate the reasoning as follows.
+
+We present the Binomial likelihood and the mixture of Beta distributions prior to begin:
+
+\begin{align}
+f(x|\pi) &= \binom{n}{k} \pi^x (1-\pi)^{n-x} \\
+f(\pi) &= \sum_{j = 1}^{k} w_j \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
+(\#eq:binomial)
+\end{align}
+<!-- (\#eq:weightedBetaPrior) -->
+
+Where the sum $w_j$ has to equal 1: $\sum_{j = 1}^{k} w_j = 1$.
+
+Each component $j$ has the Beta density:
+\begin{align}
+f(\pi | \alpha_j, \beta_j) = \frac {1} {B(\alpha_j, \beta_j)} \pi^{\alpha_j-1} (1-\pi)^{\beta_j-1}
+(\#eq:unweightedBetaPrior)
+\end{align}
+
+Here $B(\alpha, \beta)$ is the beta function evaluated with parameters $\alpha$ and $\beta$.
+Then, the product of likelihood and prior $f(\pi | x) \propto f(\pi) f(x | \pi)$ gives the kernel for the posterior where we exclude the normalising constants $\frac{1}{f(x)}$ as well as any other multiplicative constants not depending on $\pi$:
+
+\begin{align}
+ f(\pi | x) &\propto \pi^x (1-\pi)^{n-x}\sum_{j = 1}^{k} \ w_j \frac {1}{B(\alpha_j, \beta_j)} \pi^{\alpha_j-1}(1-\pi)^{\beta_j-1}
+\\
+&\propto \sum_{j = 1}^{k} \frac {w_j}{B(\alpha_j, \beta_j)} \pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1} \frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j + x, \beta_j + n - x)}
+ (\#eq:rearrangingWeightedBayes)
+ \end{align}
+
+From \@ref(eq:rearrangingWeightedBayes), we know that the updated Beta prior $f(\pi | \alpha + x_j, \beta_j + n -x) = \frac {1} {Beta(\alpha_j + x, \beta_j + n - x)}\pi^{\alpha_j + x -1} (1-\pi)^{\beta_j + n - x -1}$ is embedded and can be simplified to the following:
+
+\begin{align}
+ f(\pi | x) \propto \sum_{j = 1}^{k}  {w_j} \frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)} f(\pi | \alpha_j + x, \beta_j + n - x)
+ (\#eq:simplifiedWeightedBayesone)
+  \end{align}
+\
+We can identify the shape of the density as that of a mixture distribution with weights being proportional to $w_j$ :
+\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}
+
+\begin{align}
+f(\pi | x) \propto \sum_{j = 1}^{k} w_j \frac {B(\alpha_j + x, \beta_j + n -x )}{B(\alpha_j, \beta_j)}
+ (\#eq:simplifiedWeightedBayestwo)
+ \end{align}
+\
+The normalizing constant is thus:
+
+\begin{align}
+\frac {1}{\sum_{j=1}^{k}w_j\frac{B(\alpha_j + x, \beta_j + n - x)}{B(\alpha_j, \beta_j)}}
+ (\#eq:normalizingconstant)
+\end{align}
+
+such that the updated weights are given as :
+\
+\begin{align}
+\tilde{w}_j = w_j \frac {\frac {B(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}} {\sum_{j} w_j  \frac {Beta(\alpha_j + x, \beta_j +n -x )}{B(\alpha_j, \beta_j)}}
+(\#eq:calcweights)
+\end{align}
 
 ## Difference in beta random variables {#betadiff}
 
@@ -1050,7 +1111,7 @@ while the advanced predictive probability design should be used.
 
 An advantage of such a design is that it allows an option of further evaluation
 on additional clinical endpoints or PD markers when the decision falls into the
-"gray zone". Moreover, a seperate delta can be specified for the futility decision
+"gray zone". Moreover, a separate delta can be specified for the futility decision
 to represent a "pool clinical improvement", which makes it a more flexible
 decision rule.
 
@@ -1091,7 +1152,7 @@ calculate the *PPs*, if there are 18 PET-CR at the first interim analysis:
 
 ```{r ex3:predictive, echo=TRUE}
 # PP(event A)
-predprobDist(
+result1 <- predprobDist(
   x = 18, n = 25, Nmax = 80,
   delta = 0.15,
   thetaT = 0.6,
@@ -1101,7 +1162,7 @@ predprobDist(
 
 
 ## PP(event B)
-1 - predprobDist(
+result2 <- 1 - predprobDist(
   x = 18, n = 25, Nmax = 80,
   delta = 0.05,
   thetaT = 1 - 0.6,

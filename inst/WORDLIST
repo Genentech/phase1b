@@ -2,6 +2,7 @@ analysed
 apriori
 bA
 ba
+BayesBetaBinom
 BayesRobust
 bB
 bbeta
@@ -12,6 +13,7 @@ bD
 bE
 beps
 betadiff
+BetaPrior
 bF
 bG
 bgttheta
@@ -19,6 +21,7 @@ bH
 bh
 bI
 Binom
+binom
 Biometrics
 bL
 bLambda
@@ -50,6 +53,8 @@ bX
 bY
 bZ
 bz
+calc
+calcweights
 calulation
 cdf
 comparator
@@ -89,8 +94,10 @@ hyoithesis
 hyperprior
 increasement
 inefficacious
+infty
 Integrand
 integrations
+kernal
 LciU
 ldots
 leq
@@ -108,6 +115,8 @@ nnE
 nnF
 nnr
 normalised
+normalising
+normalizingconstant
 nS
 oc
 ocPostProb
@@ -150,6 +159,7 @@ pU
 py
 pyz
 RCT
+rearrangingWeightedBayes
 refering
 renewcommand
 responder
@@ -159,6 +169,9 @@ SampleSizeActive
 SampleSizeControl
 seperate
 ShinyPhase
+simplifiedWeightedBayes
+simplifiedWeightedBayesone
+simplifiedWeightedBayestwo
 specialised
 sumbetadiff
 summerize
@@ -177,10 +190,16 @@ tT
 TtR
 tU
 UciL
+unweightedBetaPrior
+updatedalpha
+updatedbeta
+updatedsalpha
 USUBJID
 VAD
 vanillaBayes
 vanillaPP
+WeightedBayes
+weightedBetaPrior
 xL
 xS
 xU
