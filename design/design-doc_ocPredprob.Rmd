@@ -53,12 +53,12 @@ flag decision
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Helper function for Decision 1
+## Helper function for Decision 1a
     * Decision 1 says:
     * GO = P(truep > p0) > tT,
     when the prob of good response is high enough, then we have a successful trial
     * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
-    * EVAL = there is no evaluate
+    * EVAL = there is no evaluate BUT there are interims.... not in this code
 ```{r}
 h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
   index_look <- 1
@@ -88,6 +88,58 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+## Helper function for Decision 1b
+    * Decision 1 says:
+    * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
+    when the prob of good response is high enough, then we have a successful trial
+    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * EVAL = there is no evaluate BUT there are interims.... in this code
+    * interim GO =  P(successful trial) > phiU, P(qU > tT) > phiU
+    * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
+    * interim EVAL = in between
+```{r}
+h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  if (is.na(decision) && index_look == length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tT, decision, TRUE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  } else { # interim decision where index_look != length(nnr)
+    if (size_look %in% nnE) { # for efficacy looks
+      qU <- something()
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > phiU, decision, TRUE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    } else {
+      if (size_look %in% nnF) { # for futility looks
+      qU <- something()
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU < phiL, decision, TRUE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
   }
   list(
     decision = decision,
