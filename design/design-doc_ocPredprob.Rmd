@@ -67,7 +67,7 @@ knitr::opts_chunk$set(echo = TRUE)
     * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
     * interim EVAL = in between
 ```{r}
-h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -100,7 +100,7 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
       decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     } else { # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        qU <- postprob(x = sum(x = response[1:size_look]), 
+        interim_qU <- postprob(x = sum(x = response[1:size_look]), 
                      n = size_look, 
                      p = qU, 
                      parE = c(1, 1), 
@@ -111,15 +111,15 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
         decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
       if (size_look %in% nnF) { # for futility looks
-        qU <- postprob(x = sum(x = response[1:size_look]), 
+        interim_qU <- postprob(x = sum(x = response[1:size_look]), 
                      n = size_look, 
                      p = qU, 
                      parE = c(1, 1), 
                      weights, 
                      betamixPost, 
                      log.p = FALSE)
-        assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
+        assert_number(interim_qU, lower = 0, upper = 1)
+        decision <- ifelse(interim_qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
     }
     all_sizes <- size_look
@@ -133,6 +133,10 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
 }
 ```
 
+```{r}
+h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnF = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
+```
+
 ## 2 Helper function for Decision 2
     * Decision 2 says:
     * STOP = P(truep < p1) > tF:
@@ -141,7 +145,7 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
     * EVAL = there is no evaluate
     * interim included here .....
 ```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights, qU = qU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -179,7 +183,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   } else {
     # interim decision where index_look != length(nnr)
     if (size_look %in% nnE) { # for efficacy looks
-      qU <- postprob(
+      interim_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         p = qU,
@@ -188,11 +192,11 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         betamixPost,
         log.p = FALSE
       )
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
+      assert_number(interim_qU, lower = 0, upper = 1)
+      decision <- ifelse(interim_qU > phiFu, FALSE, ifelse(interim_qU > PhiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
-      qU <- postprob(
+      interim_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         p = qU,
@@ -201,8 +205,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         betamixPost,
         log.p = FALSE
       )
-      assert_number(qU, lower = 0, upper = 1)
-     decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
+      assert_number(interim_qU, lower = 0, upper = 1)
+     decision <- ifelse(interim_qU > phiFu, FALSE, ifelse(interim_qU > PhiU, TRUE, decision))
     }
   }
   list(
@@ -212,8 +216,12 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 }
 ```
 
+```{r}
+h_get_decision_two_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnF = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
+```
 
-## parent code : h_get_decision_predprob 
+
+## parent code : h_get_decision_predprob probably don't need this anymore
 ```{r}
 h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
   index_look <- 1
@@ -291,7 +299,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 ## ocPredprob
 
 ```{r cars}
-ocPredprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
+ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE = c(1, 1),
                        sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
@@ -363,3 +371,128 @@ res2 <- ocPredprob(
   wiggle = TRUE
 )
 ```
+## Integration test: grandma vs new
+Example: To examine operating characteristics of a phase Ib design with 2 interim analyses
+(sample size @ 10, 20 using predictive probability) and one final analysis (sample size @ 30);
+
+* design details
+*  multiple looks @ 10, 20, 30 patients
+*  True response rate of the treatment group = 40%
+*  control response rate = 25%
+
+*  denote treatment response rate as RRS
+*  trial success is defined as: P(RRS > control) > tT
+```{r}
+# grandma
+g_ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
+                       parE = c(1, 1),
+                       ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+  # Calculate operating characteristics via simulation
+  # nn: vector of look locations
+  # s: decision reject H0 (TRUE) or fail to reject (FALSE)
+  #    during trial if continuing (NA)
+
+  if (phiL + phiFu != 1) {
+    warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
+  }
+
+  nnE <- sort(nn)
+  nnF <- sort(nnF)
+  s <- rep(NA, ns)
+  n <- s
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+
+  if (nr && is.null(d)) {
+    # set parameter d for randomly generating look locations
+    d <- floor(min(nn - c(0, nn[-nL])) / 2)
+  }
+  nnr <- nn
+  nnrE <- nnE
+  nnrF <- nnF
+
+  for (k in 1:ns) {
+    # simulate a clinical trial ns times
+    if (nr && (d > 0)) {
+      # randomly generate look locations
+      dd <- sample(-d:d,
+        size = nL - 1, replace = TRUE,
+        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+      )
+      nnr <- nn + c(dd, 0)
+
+
+      nnrE <- nnr[nn %in% nnE]
+      nnrF <- nnr[nn %in% nnF]
+    }
+    x <- stats::rbinom(Nmax, 1, p)
+    j <- 1
+    i <- nnr[j]
+    while (is.na(s[k]) && (j <= length(nnr))) {
+      if (i %in% nnrF) {
+        qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
+
+        s[k] <- ifelse(qL > phiFu, FALSE, NA)
+      }
+
+      if (i %in% nnrE) {
+        q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
+
+        s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
+      }
+
+      n[k] <- i
+      j <- j + 1
+      i <- nnr[j]
+    }
+  }
+  oc <- cbind(
+    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
+    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
+    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
+    PrEfficacy = sum(s, na.rm = TRUE) / ns,
+    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
+    PrGrayZone = sum(is.na(s) / ns)
+  )
+
+  return(list(
+    oc = oc, Decision = s, SampleSize = n,
+    nn = nn, nnE = nnE, nnF = nnF,
+    params = as.list(match.call(expand.dots = FALSE))
+  ))
+}
+
+```
+
+# Testing grandma code first
+```{r}
+set.seed(20)
+res1 <- g_ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+res1$oc
+
+res1 <- ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+res1$oc
+test_that("g_ocPredprob gives the same interim results as ocPredprob", {
+  set.seed(1989)
+result <- g_ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+expected <- ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+  expect_equal(result, expected, tolerance = 1E-4)
+})
+
+```
+
