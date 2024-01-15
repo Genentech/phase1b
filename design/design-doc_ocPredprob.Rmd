@@ -53,11 +53,12 @@ flag decision
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## helper function for Decision 1
-    # Decision 1 says:
-    # GO = P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
-    # STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
-    # EVAL = there is no evaluate
+## Helper function for Decision 1
+    * Decision 1 says:
+    * GO = P(truep > p0) > tT,
+    when the prob of good response is high enough, then we have a successful trial
+    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * EVAL = there is no evaluate
 ```{r}
 h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
   index_look <- 1
@@ -84,6 +85,49 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     # GO = P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
     # STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
     # EVAL = there is no evaluate
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes
+  )
+}
+```
+
+## Helper function for Decision 2
+    * Decision 2 says:
+    * STOP = P(truep < p1) > tF:
+    when the prob of poor response is high enough, then we have a UNsuccessful trial
+    * GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
+    * EVAL = there is no evaluate
+```{r}
+h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+  index_look <- 1
+  assert_numeric(nnr)
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnE) {
+      qU <- 1-predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p1,
+        thetaT = tF,  # the  code says : P(truep < p1) > tF
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+    }
+   # Decision 2 says:
+   # STOP = P(truep < p1) > tF:
+   # when the prob of poor response is high enough, then we have a UNsuccessful trial
+   # GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
+   # EVAL = there is no evaluate
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
