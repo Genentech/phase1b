@@ -67,14 +67,13 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look <= length(nnr)) {
-    
     if (size_look %in% nnE) {
       qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT,  # the  code says : P(truep > p0) > tT
+        thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
@@ -82,7 +81,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     }
     # Decision 1 says:
     # GO = P(truep > p0) > tT, when the prob of good response is high enough, then we have a successful trial
-    # STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    # STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful
     # EVAL = there is no evaluate
     all_sizes <- size_look
     index_look <- index_look + 1
