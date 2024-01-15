@@ -48,6 +48,10 @@ Pred prob (failure) > PhiFu (the confidence for failing high, then we stop)
 * the original code does not cater for interim decisions
 The code only caters for success critical for Decision 1 and failure for Decision 2
 * for main function, we flags based on either decision 1 or 2 (rule 1 or 2)
+* 2 helper functions for each decision
+* in each, incorporate interim 
+* intergrative test with grandma to compare results
+* We compare results and maybe we stick to grandma's 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -120,7 +124,7 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look <= length(nnr)) {
+  while (is.na(decision) && index_look == length(nnr)) {
     if (size_look %in% nnE) {
       qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -236,28 +240,28 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look == length(nnr)) {
     if (size_look %in% nnE) {
-      qU <- 1 - predprob(
+      qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
-        p = p1,
-        thetaT = tF, # the  code says : P(truep < p1) > tF
+        p = p0,
+        thetaT = tT, # the  code says : P(truep < p0) => tT for efficacy look
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+      decision <- ifelse(qU > tT, TRUE, FALSE)
     }
     if (size_look %in% nnF) {
-      qU <- 1 - predprob(
+      qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
-        p = p1,
-        thetaT = tF, # the  code says : P(truep < p1) > tF
+        p = p0,
+        thetaT = tT, # the  code says : P(truep < p0) => tT for efficacy look
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < tF, decision, FALSE)
+      decision <- ifelse(qU > tT, TRUE, FALSE) 
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -265,15 +269,26 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   } else {
     # interim decision where index_look != length(nnr)
     if (size_look %in% nnE) { # for efficacy looks
-      qU <- something()
+      qU <- postprob(x = sum(x = response[1:size_look]), 
+                     n = size_look, 
+                     p = qU, 
+                     parE = c(1, 1), 
+                     weights, 
+                     betamixPost, 
+                     log.p = FALSE)
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > phiU, FALSE, decision)
+      decision <- ifelse(qU > phiFu, FALSE, decision)
     }
-
     if (size_look %in% nnF) { # for futility looks
-      qU <- something()
+      qU <-  postprob(x = sum(x = response[1:size_look]), 
+                     n = size_look, 
+                     p = qU, 
+                     parE = c(1, 1), 
+                     weights, 
+                     betamixPost, 
+                     log.p = FALSE)
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < phiL, TRUE, decision)
+     decision <- ifelse(qU > phiU, TRUE, decision)
     }
   }
   list(
