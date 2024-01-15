@@ -57,57 +57,7 @@ The code only caters for success critical for Decision 1 and failure for Decisio
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 1a Helper function for Decision 1a (does not include interim)
-    * Decision 1 says:
-    * GO = P(truep > p0) > tT,
-    when the prob of good response is high enough, then we have a successful trial
-    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
-    * EVAL = there is no evaluate BUT there are interims.... not in this code
-```{r}
-h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
-  index_look <- 1
-  assert_numeric(nnr)
-  size_look <- nnr[index_look]
-  all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look <= length(nnr)) {
-    if (size_look %in% nnE) {
-      qU <- predprob(
-        x = sum(x = response[1:size_look]),
-        n = size_look,
-        Nmax = nnE[length(nnE)],
-        p = p0,
-        thetaT = tT, # the  code says : P(truep > p0) > tT
-        parE = parE
-      )$result
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    }
-    if (size_look %in% nnF) {
-      qU <- predprob(
-        x = sum(x = response[1:size_look]),
-        n = size_look,
-        Nmax = nnE[length(nnE)],
-        p = p0,
-        thetaT = tT, # the  code says : P(truep > p0) > tT
-        parE = parE
-      )$result
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
-  }
-  list(
-    decision = decision,
-    all_sizes = all_sizes
-  )
-}
-```
-
-## 1b Helper function for Decision 1b
+## 1 Helper function for Decision
     * Decision 1 says:
     * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
@@ -150,15 +100,26 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
       decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     } else { # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        qU <- something()
+        qU <- postprob(x = sum(x = response[1:size_look]), 
+                     n = size_look, 
+                     p = qU, 
+                     parE = c(1, 1), 
+                     weights, 
+                     betamixPost, 
+                     log.p = FALSE)
         assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU > phiU, TRUE, decision)
+        decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
-
       if (size_look %in% nnF) { # for futility looks
-        qU <- something()
+        qU <- postprob(x = sum(x = response[1:size_look]), 
+                     n = size_look, 
+                     p = qU, 
+                     parE = c(1, 1), 
+                     weights, 
+                     betamixPost, 
+                     log.p = FALSE)
         assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU < phiL, FALSE, decision)
+        decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
     }
     all_sizes <- size_look
@@ -172,58 +133,7 @@ h_get_decision_oneb_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE
 }
 ```
 
-## 2a Helper function for Decision 2a
-    * Decision 2 says:
-    * STOP = P(truep < p1) > tF:
-    when the prob of poor response is high enough, then we have a UNsuccessful trial
-    * GO = P(truep > p1) < tF =  when the prob of poor response is low, then we have a successful trial
-    * EVAL = there is no evaluate
-    * no interim here .....
-```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
-  index_look <- 1
-  assert_numeric(nnr)
-  size_look <- nnr[index_look]
-  all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look <= length(nnr)) {
-    if (size_look %in% nnE) {
-      qU <- 1 - predprob(
-        x = sum(x = response[1:size_look]),
-        n = size_look,
-        Nmax = nnE[length(nnE)],
-        p = p1,
-        thetaT = tF, # the  code says : P(truep < p1) > tF
-        parE = parE
-      )$result
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > tF, decision, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    }
-    if (size_look %in% nnF) {
-      qU <- 1 - predprob(
-        x = sum(x = response[1:size_look]),
-        n = size_look,
-        Nmax = nnE[length(nnE)],
-        p = p1,
-        thetaT = tF, # the  code says : P(truep < p1) > tF
-        parE = parE
-      )$result
-      assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU < tF, decision, FALSE)
-    }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
-  }
-  list(
-    decision = decision,
-    all_sizes = all_sizes
-  )
-}
-```
-
-## 2b Helper function for Decision 2b
+## 2 Helper function for Decision 2
     * Decision 2 says:
     * STOP = P(truep < p1) > tF:
     when the prob of poor response is high enough, then we have a UNsuccessful trial
@@ -277,7 +187,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
                      betamixPost, 
                      log.p = FALSE)
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > phiFu, FALSE, decision)
+      decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
       qU <-  postprob(x = sum(x = response[1:size_look]), 
@@ -288,7 +198,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
                      betamixPost, 
                      log.p = FALSE)
       assert_number(qU, lower = 0, upper = 1)
-     decision <- ifelse(qU > phiU, TRUE, decision)
+     decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
     }
   }
   list(
