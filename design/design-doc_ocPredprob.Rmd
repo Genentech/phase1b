@@ -261,7 +261,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > tT, TRUE, FALSE) 
+      decision <- ifelse(qU > tT, TRUE, FALSE)
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -269,26 +269,30 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   } else {
     # interim decision where index_look != length(nnr)
     if (size_look %in% nnE) { # for efficacy looks
-      qU <- postprob(x = sum(x = response[1:size_look]), 
-                     n = size_look, 
-                     p = qU, 
-                     parE = c(1, 1), 
-                     weights, 
-                     betamixPost, 
-                     log.p = FALSE)
+      qU <- postprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        p = qU,
+        parE = c(1, 1),
+        weights,
+        betamixPost,
+        log.p = FALSE
+      )
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > phiFu, FALSE, decision)
     }
     if (size_look %in% nnF) { # for futility looks
-      qU <-  postprob(x = sum(x = response[1:size_look]), 
-                     n = size_look, 
-                     p = qU, 
-                     parE = c(1, 1), 
-                     weights, 
-                     betamixPost, 
-                     log.p = FALSE)
+      qU <- postprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        p = qU,
+        parE = c(1, 1),
+        weights,
+        betamixPost,
+        log.p = FALSE
+      )
       assert_number(qU, lower = 0, upper = 1)
-     decision <- ifelse(qU > phiU, TRUE, decision)
+      decision <- ifelse(qU > phiU, TRUE, decision)
     }
   }
   list(
