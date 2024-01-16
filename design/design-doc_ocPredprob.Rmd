@@ -67,14 +67,14 @@ knitr::opts_chunk$set(echo = TRUE)
     * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
     * interim EVAL = in between
 ```{r}
-h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look == length(nnr)) {
+ if (is.na(decision) && index_look == length(nnr)) {
     if (size_look %in% nnE) {
       qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -91,14 +91,17 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
-        Nmax = nnE[length(nnE)],
+        Nmax = nnF[length(nnE)],
         p = p0,
         thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
       )$result
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
-    } else { # interim decision where index_look != length(nnr)
+    }
+  } else { 
+    if(is.na(decision) && index_look <= length(nnr)) {
+     # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
         interim_qU <- postprob(
           x = sum(x = response[1:size_look]),
@@ -106,12 +109,11 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
           p = qU,
           parE = c(1, 1),
           weights,
-          betamixPost,
           log.p = FALSE
         )
         assert_number(qU, lower = 0, upper = 1)
         decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
-      }
+      } 
       if (size_look %in% nnF) { # for futility looks
         interim_qU <- postprob(
           x = sum(x = response[1:size_look]),
@@ -119,7 +121,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
           p = qU,
           parE = c(1, 1),
           weights,
-          betamixPost,
           log.p = FALSE
         )
         assert_number(interim_qU, lower = 0, upper = 1)
@@ -138,6 +139,31 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 ```
 
 ```{r}
+nnr = c(10, 20)
+truep = 0.3
+p0 = 0.2
+p1 = 0.3
+parE = c(1,1)
+nnE = c(10, 20)
+nnF = c(10, 20)
+tL = 0.90
+tU = 0.60
+tT = 0.6
+weights = 1
+phiFu = 0.4
+phiU = 0.5
+phiL = 0.5
+(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights)
+h_get_decision_one_predprob(nnr = c(10, 20),
+                            truep = 0.3,
+                            p0 = 0.2,
+                            parE = c(1,1),
+                            nnE = c(10, 20),
+                            nnF = c(10, 20),
+                            tT = 0.6,
+                            weights = 1,
+                            phiU  = 0.5,
+                            phiL = 0.5)
 h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnF = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
 ```
 
@@ -149,7 +175,7 @@ h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, pa
     * EVAL = there is no evaluate
     * interim included here .....
 ```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU = qU, phiFu) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -173,7 +199,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
-        Nmax = nnE[length(nnE)],
+        Nmax = nnF[length(nnF)],
         p = p0,
         thetaT = tT, # the  code says : P(truep < p0) => tT for efficacy look
         parE = parE
