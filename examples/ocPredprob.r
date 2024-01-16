@@ -2,12 +2,12 @@
 ## (sample size @ 10, 20 using predictive probability) and one final analysis (sample size @ 30);
 
 # design details
-# multiple looks @ 10, 20, 30 patietns
-# True response rate of the treatment group=40%
-# control response rate=25%
+# multiple looks @ 10, 20, 30 patients
+# True response rate of the treatment group = 40%
+# control response rate = 25%
 
 # denote treatment response rate as RRS
-# trial success is defined as: P(RRS>control)>tT
+# trial success is defined as: P(RRS > control) > tT
 set.seed(20)
 res1 <- ocPredprob(c(10, 20, 30),
   p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
