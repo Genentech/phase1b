@@ -245,18 +245,20 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 ```
 
 ```{r}
-h_get_decision_two_predprob(nnr = c(10, 20),
-                            truep = 0.3,
-                            p0 = 0.2,
-                            p1 = 0.3,
-                            parE = c(1,1),
-                            nnE = c(10, 20),
-                            nnF = c(10, 20),
-                            tL = 0.90,
-                            tU = 0.60,
-                            tT = 0.6,
-                            weights = 1,
-                            phiFu = 0.4)
+h_get_decision_two_predprob(
+  nnr = c(10, 20),
+  truep = 0.3,
+  p0 = 0.2,
+  p1 = 0.3,
+  parE = c(1, 1),
+  nnE = c(10, 20),
+  nnF = c(10, 20),
+  tL = 0.90,
+  tU = 0.60,
+  tT = 0.6,
+  weights = 1,
+  phiFu = 0.4
+)
 # h_get_decision_two_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnE = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
 ```
 
