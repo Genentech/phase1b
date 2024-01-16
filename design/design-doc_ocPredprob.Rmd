@@ -149,7 +149,7 @@ h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, pa
     * EVAL = there is no evaluate
     * interim included here .....
 ```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights, qU = qU) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU = qU, phiFu) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -181,9 +181,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > tT, TRUE, FALSE)
     }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
   } else {
     # interim decision where index_look != length(nnr)
     if (size_look %in% nnE) { # for efficacy looks
@@ -193,7 +190,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         p = qU,
         parE = c(1, 1),
         weights,
-        betamixPost,
         log.p = FALSE
       )
       assert_number(interim_qU, lower = 0, upper = 1)
@@ -206,13 +202,15 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         p = qU,
         parE = c(1, 1),
         weights,
-        betamixPost,
         log.p = FALSE
       )
       assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
     }
   }
+  all_sizes <- size_look
+  index_look <- index_look + 1
+  size_look <- nnr[index_look]
   list(
     decision = decision,
     all_sizes = all_sizes
@@ -221,7 +219,19 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 ```
 
 ```{r}
-h_get_decision_two_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnF = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
+h_get_decision_two_predprob(nnr = c(10, 20),
+                            truep = 0.3,
+                            p0 = 0.2,
+                            p1 = 0.3,
+                            parE = c(1,1),
+                            nnE = c(10, 20),
+                            nnF = c(10, 20),
+                            tL = 0.90,
+                            tU = 0.60,
+                            tT = 0.6,
+                            weights = 1,
+                            phiFu = 0.4)
+# h_get_decision_two_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnE = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
 ```
 
 
@@ -324,7 +334,7 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (is.na(decision[k]) && (j <= length(nnr)) && decision1 == TRUE) {
+    if (is.na(decision[k]) && (j <= length(nnr)) && decision1 == decision1) {
       tmp <- h_get_decision_one_predprob(
         nnr = nnr,
         truep = truep, p0 = p0, p1 = p1,
@@ -478,7 +488,8 @@ res1 <- g_ocPredprob(c(10, 20, 30),
   phiU = 0.8, parE = c(1, 1), ns = 100
 )
 res1$oc
-
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]      14.9        0.91       0.82       0.09        0.9        0.1          0
 res1 <- ocPredprob(c(10, 20, 30),
   p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
   phiU = 0.8, parE = c(1, 1), ns = 100
