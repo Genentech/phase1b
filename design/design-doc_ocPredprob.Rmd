@@ -387,8 +387,13 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
       tmp <- h_get_decision_one_predprob(
         # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights)
         nnr = nnr,
-        truep = truep, p0 = p0,
-        nnF = nnrF, tL = tL, phiU = phiU, phiL = phiL, weights = weights
+        truep = truep, 
+        p0 = p0, 
+        nnF = nnrF, 
+        tL = tL, 
+        phiU = phiU, 
+        phiL = phiL, 
+        weights = weights
       )
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
@@ -396,9 +401,18 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
       tmp <- h_get_decision_two_predprob(
         # nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu, phiU
         nnr = nnr,
-        truep = truep, p0 = p0, p1 = p1,
-        parE = c(1, 1), nnE = nnrE,
-        nnF = nnrF, tL = tL, tU = tU, weights = weights, qU = qU, phiFu = phiFu, phiU = phiU
+        truep = truep, 
+        p0 = p0, 
+        p1 = p1,
+        parE = c(1, 1), 
+        nnE = nnrE,
+        nnF = nnrF, 
+        tL = tL, 
+        tU = tU, 
+        weights = weights, 
+        qU = qU, 
+        phiFu = phiFu, 
+        phiU = phiU
       )
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
