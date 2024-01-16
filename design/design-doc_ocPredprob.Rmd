@@ -100,24 +100,28 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     } else { # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        interim_qU <- postprob(x = sum(x = response[1:size_look]), 
-                     n = size_look, 
-                     p = qU, 
-                     parE = c(1, 1), 
-                     weights, 
-                     betamixPost, 
-                     log.p = FALSE)
+        interim_qU <- postprob(
+          x = sum(x = response[1:size_look]),
+          n = size_look,
+          p = qU,
+          parE = c(1, 1),
+          weights,
+          betamixPost,
+          log.p = FALSE
+        )
         assert_number(qU, lower = 0, upper = 1)
         decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
       if (size_look %in% nnF) { # for futility looks
-        interim_qU <- postprob(x = sum(x = response[1:size_look]), 
-                     n = size_look, 
-                     p = qU, 
-                     parE = c(1, 1), 
-                     weights, 
-                     betamixPost, 
-                     log.p = FALSE)
+        interim_qU <- postprob(
+          x = sum(x = response[1:size_look]),
+          n = size_look,
+          p = qU,
+          parE = c(1, 1),
+          weights,
+          betamixPost,
+          log.p = FALSE
+        )
         assert_number(interim_qU, lower = 0, upper = 1)
         decision <- ifelse(interim_qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
       }
@@ -385,8 +389,8 @@ Example: To examine operating characteristics of a phase Ib design with 2 interi
 ```{r}
 # grandma
 g_ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
-                       parE = c(1, 1),
-                       ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+                         parE = c(1, 1),
+                         ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   # Calculate operating characteristics via simulation
   # nn: vector of look locations
   # s: decision reject H0 (TRUE) or fail to reject (FALSE)
@@ -464,7 +468,6 @@ g_ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu,
     params = as.list(match.call(expand.dots = FALSE))
   ))
 }
-
 ```
 
 # Testing grandma code first
@@ -483,16 +486,15 @@ res1 <- ocPredprob(c(10, 20, 30),
 res1$oc
 test_that("g_ocPredprob gives the same interim results as ocPredprob", {
   set.seed(1989)
-result <- g_ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-expected <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
+  result <- g_ocPredprob(c(10, 20, 30),
+    p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+    phiU = 0.8, parE = c(1, 1), ns = 100
+  )
+  expected <- ocPredprob(c(10, 20, 30),
+    p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+    phiU = 0.8, parE = c(1, 1), ns = 100
+  )
   expect_equal(result, expected, tolerance = 1E-4)
 })
-
 ```
 
