@@ -383,19 +383,20 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
     nnr <- unique(c(nnrE, nnrF))
     if (is.na(decision[k]) && (j <= length(nnr)) && decision1 == decision1) {
       tmp <- h_get_decision_one_predprob(
+        # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights)
         nnr = nnr,
-        truep = truep, p0 = p0, p1 = p1,
-        parE = c(1, 1), nnE = nnrE,
-        nnF = nnrF, tL = tL, tU = tU
+        truep = truep, p0 = p0, 
+        nnF = nnrF, tL = tL, phiU = phiU, phiL = phiL, weights = weights
       )
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
     } else {
       tmp <- h_get_decision_two_predprob(
+        # nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu, phiU
         nnr = nnr,
         truep = truep, p0 = p0, p1 = p1,
         parE = c(1, 1), nnE = nnrE,
-        nnF = nnrF, tL = tL, tU = tU
+        nnF = nnrF, tL = tL, tU = tU, weights = weights, qU = qU, phiFu = phiFu, phiU = phiU
       )
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
@@ -423,14 +424,18 @@ res2 <- ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
+  p1 = p0,
   tT = 0.6,
   tFu = 1 - 0.6,
   phiL = 0.2,
-  phiU = 0.8,
   parE = c(1, 1),
   sim = 100,
-  wiggle = TRUE
+  wiggle = TRUE,
+  nnF = c(11, 12, 15),
+  decision1 = FALSE
 )
+# (nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE = c(1, 1),
+#                        sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
 ```
 ## Integration test: grandma vs new
 Example: To examine operating characteristics of a phase Ib design with 2 interim analyses
