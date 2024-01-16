@@ -91,7 +91,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
-        Nmax = nnF[length(nnE)],
+        Nmax = nnF[length(nnF)],
         p = p0,
         thetaT = tT, # the  code says : P(truep > p0) > tT
         parE = parE
@@ -103,18 +103,15 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     if(is.na(decision) && index_look <= length(nnr)) {
      # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        interim_qU <- postprob(
-          x = sum(x = response[1:size_look]),
-          n = size_look,
-          p = qU,
-          parE = c(1, 1),
-          weights,
-          log.p = FALSE
-        )
-        assert_number(qU, lower = 0, upper = 1)
-        decision <- ifelse(qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
-      } 
-      if (size_look %in% nnF) { # for futility looks
+        qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT, # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
         interim_qU <- postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
@@ -124,7 +121,28 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           log.p = FALSE
         )
         assert_number(interim_qU, lower = 0, upper = 1)
-        decision <- ifelse(interim_qU > phiU, TRUE, ifelse(qU > phiL, FALSE, decision))
+        decision <- ifelse(interim_qU > phiU, TRUE, ifelse(interim_qU> phiL, FALSE, decision))
+      } 
+      if (size_look %in% nnF) { # for futility looks
+        qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p0,
+        thetaT = tT, # the  code says : P(truep > p0) > tT
+        parE = parE
+      )$result
+      assert_number(qU, lower = 0, upper = 1)
+        interim_qU <- postprob(
+          x = sum(x = response[1:size_look]),
+          n = size_look,
+          p = qU,
+          parE = c(1, 1),
+          weights,
+          log.p = FALSE
+        )
+        assert_number(interim_qU, lower = 0, upper = 1)
+        decision <- ifelse(interim_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
     }
     all_sizes <- size_look
@@ -139,32 +157,17 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 ```
 
 ```{r}
-nnr = c(10, 20)
-truep = 0.3
-p0 = 0.2
-p1 = 0.3
-parE = c(1,1)
-nnE = c(10, 20)
-nnF = c(10, 20)
-tL = 0.90
-tU = 0.60
-tT = 0.6
-weights = 1
-phiFu = 0.4
-phiU = 0.5
-phiL = 0.5
-(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights)
 h_get_decision_one_predprob(nnr = c(10, 20),
-                            truep = 0.3,
+                            nnE = c(10, 20),
+                            truep = 0.4,
+                            nnF = c(11, 15),
                             p0 = 0.2,
                             parE = c(1,1),
-                            nnE = c(10, 20),
-                            nnF = c(10, 20),
                             tT = 0.6,
                             weights = 1,
                             phiU  = 0.5,
                             phiL = 0.5)
-h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnF = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
+# (nnr, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights)
 ```
 
 ## 2 Helper function for Decision 2
@@ -175,7 +178,7 @@ h_get_decision_one_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, pa
     * EVAL = there is no evaluate
     * interim included here .....
 ```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu, phiU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -210,6 +213,14 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   } else {
     # interim decision where index_look != length(nnr)
     if (size_look %in% nnE) { # for efficacy looks
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT, # the  code says : P(truep < p0) => tT for efficacy look
+        parE = parE
+      )$result
       interim_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
@@ -219,9 +230,17 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         log.p = FALSE
       )
       assert_number(interim_qU, lower = 0, upper = 1)
-      decision <- ifelse(interim_qU > phiFu, FALSE, ifelse(interim_qU > PhiU, TRUE, decision))
+      decision <- ifelse(interim_qU > phiFu, FALSE, ifelse(interim_qU > phiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
+      qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p0,
+        thetaT = tT, # the  code says : P(truep < p0) => tT for efficacy look
+        parE = parE
+      )$result
       interim_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
@@ -231,7 +250,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         log.p = FALSE
       )
       assert_number(qU, lower = 0, upper = 1)
-      decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
+      decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > phiU, TRUE, decision))
     }
   }
   all_sizes <- size_look
@@ -257,9 +276,9 @@ h_get_decision_two_predprob(
   tU = 0.60,
   tT = 0.6,
   weights = 1,
-  phiFu = 0.4
+  phiFu = 0.4,
+  phiU = 0.5
 )
-# h_get_decision_two_predprob(nnr = c(10, 20), truep = 0.3, p0 = 0.2, p1 = 0.3, parE = c(1, 1), nnE = c(10, 20), nnE = c(10, 20), tL = 0.90, tU = 0.60, weights = 1)
 ```
 
 
@@ -319,7 +338,7 @@ h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF
 }
 ```
 
-# helper h_get_oc_predprob
+# helper h_get_oc_predprob : the last helper step in the user interfacing function
 ```{r}
 h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   sim <- length(all_sizes)
@@ -518,7 +537,7 @@ res1 <- g_ocPredprob(c(10, 20, 30),
 res1$oc
 #      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # [1,]      14.9        0.91       0.82       0.09        0.9        0.1          0
-res1 <- ocPredprob(c(10, 20, 30),
+res2 <- ocPredprob(c(10, 20, 30),
   p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
   phiU = 0.8, parE = c(1, 1), ns = 100
 )
