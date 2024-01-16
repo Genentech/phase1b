@@ -205,8 +205,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         betamixPost,
         log.p = FALSE
       )
-      assert_number(interim_qU, lower = 0, upper = 1)
-     decision <- ifelse(interim_qU > phiFu, FALSE, ifelse(interim_qU > PhiU, TRUE, decision))
+      assert_number(qU, lower = 0, upper = 1)
+      decision <- ifelse(qU > phiFu, FALSE, ifelse(qU > PhiU, TRUE, decision))
     }
   }
   list(
