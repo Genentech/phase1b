@@ -2,6 +2,8 @@
 title: "Design Document for ocPredprob.R"
 output: html_document
 date: "2024-01-08"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Rule 1
@@ -67,7 +69,7 @@ knitr::opts_chunk$set(echo = TRUE)
     * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
     * interim EVAL = in between
 ```{r}
-h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, weights) {
+h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -116,8 +118,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           x = sum(x = response[1:size_look]),
           n = size_look,
           p = qU,
-          parE = c(1, 1),
-          weights,
+          parE = parE,
           log.p = FALSE
         )
         assert_number(interim_qU, lower = 0, upper = 1)
@@ -137,8 +138,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           x = sum(x = response[1:size_look]),
           n = size_look,
           p = qU,
-          parE = c(1, 1),
-          weights,
+          parE =  parE,
           log.p = FALSE
         )
         assert_number(interim_qU, lower = 0, upper = 1)
@@ -165,7 +165,6 @@ h_get_decision_one_predprob(
   p0 = 0.2,
   parE = c(1, 1),
   tT = 0.6,
-  weights = 1,
   phiU = 0.5,
   phiL = 0.5
 )
@@ -180,7 +179,7 @@ h_get_decision_one_predprob(
     * EVAL = there is no evaluate
     * interim included here .....
 ```{r}
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, weights, qU, phiFu, phiU) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, tT, qU, phiFu, phiU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -228,7 +227,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         n = size_look,
         p = qU,
         parE = c(1, 1),
-        weights,
         log.p = FALSE
       )
       assert_number(interim_qU, lower = 0, upper = 1)
@@ -248,7 +246,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         n = size_look,
         p = qU,
         parE = c(1, 1),
-        weights,
         log.p = FALSE
       )
       assert_number(qU, lower = 0, upper = 1)
@@ -277,7 +274,6 @@ h_get_decision_two_predprob(
   tL = 0.90,
   tU = 0.60,
   tT = 0.6,
-  weights = 1,
   phiFu = 0.4,
   phiU = 0.5
 )
@@ -286,7 +282,7 @@ h_get_decision_two_predprob(
 
 ## parent code : h_get_decision_predprob probably don't need this anymore
 ```{r}
-h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, weights) {
+h_get_decision_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   index_look <- 1
   assert_numeric(nnr)
   size_look <- nnr[index_look]
@@ -389,11 +385,13 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
         nnr = nnr,
         truep = truep,
         p0 = p0,
+        parE = parE,
+        nnE = nnE,
         nnF = nnrF,
-        tL = tL,
+        tT = tT,
+        # tL = tL,
         phiU = phiU,
-        phiL = phiL,
-        weights = weights
+        phiL = phiL
       )
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
@@ -404,12 +402,12 @@ ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL = 0.2, phiU = 0.8, parE
         truep = truep,
         p0 = p0,
         p1 = p1,
-        parE = c(1, 1),
+        parE = parE,
         nnE = nnrE,
         nnF = nnrF,
         tL = tL,
         tU = tU,
-        weights = weights,
+        tT = tT,
         qU = qU,
         phiFu = phiFu,
         phiU = phiU
