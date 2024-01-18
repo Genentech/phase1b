@@ -74,7 +74,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep)
+  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p1, but p1 only used if decision2 is specified
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) { # interim
     if (size_look %in% nnE) { # GO decision for interim
@@ -86,7 +86,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT, 
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+      decision <- ifelse(interim_qU > phiU, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob( # STOP decision for interim
@@ -97,31 +97,29 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+      decision <- ifelse(interim_qU < phiL, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     }
   } else {
     data <- data.frame(responders = 0:sum(x = response[1:size_look]),
                   posterior = c(1-pbeta(p0, parE[1], parE[2])))
     if (is.na(decision) && index_look <= length(nnr)) {
-      # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        # what is the response rate for a GO decision : P(response rate for GO > tT ) 
+        # what is the response rate for a GO decision : P(truep > pO ) > tT 
         go_counts <- data$responders[data$posterior >= tT][1]
-        final_qU <- postprob(
+        final_eff_qU <- postprob(
           x = go_counts,
           n = size_look,
           p = tT,
           parE = parE,
           log.p = FALSE
         )
-        assert_number(interim_qU, lower = 0, upper = 1)
         # it is an interim GO if P(response rate for GO > tT ) > phiU
-        decision <- ifelse(interim_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
+        decision <- ifelse(final_eff_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
       if (size_look %in% nnF) { # for futility looks
-        # what is the response rate for a STOP decision : P(response rate for STOP < tT ) 
+        # what is the response rate for a STOP decision : P( truep < pO ) < tT
         stop_counts <- data$responders[data$posterior >= tT][1]
-        final_qU <- 1- postprob(
+        final_fu_qU <- 1- postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
           Nmax = nnF[length(nnF)],
@@ -129,17 +127,15 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           thetaT = tT, # the  code says : P(truep > p0) > tT
           parE = parE
         )$result
-        assert_number(qU, lower = 0, upper = 1)
-        interim_qU <- postprob(
+        final_fu_qU <- postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
           p = qU,
           parE = parE,
           log.p = FALSE
         )
-        assert_number(interim_qU, lower = 0, upper = 1)
         # it is an interim STOP if P(response rate for STOP < tT )  < phiL
-        decision <- ifelse(interim_qU < phiL, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
+        decision <- ifelse(final_fu_qU < phiL, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
     }
     all_sizes <- size_look
@@ -229,7 +225,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         parE = c(1, 1),
         log.p = FALSE
       )
-      assert_number(final_qU, lower = 0, upper = 1)
       decision <- ifelse(final_qU > tT, FALSE, ifelse(interim_qU > phiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
@@ -240,7 +235,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         parE = c(1, 1),
         log.p = FALSE
       )
-      assert_number(final_qU, lower = 0, upper = 1)
       decision <- ifelse(final_qU > tF, FALSE, ifelse(qU > phiU, TRUE, decision))
     }
   }
@@ -486,7 +480,24 @@ Example: To examine operating characteristics of a phase Ib design with 2 interi
 *  denote treatment response rate as RRS
 *  trial success is defined as: P(RRS > control) > tT
 
-# Testing grandma code first
+ * Decision 1 says:
+    * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
+    when the prob of good response is high enough, then we have a successful trial
+    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * EVAL = there is no evaluate BUT there are interims.... in this code
+    * interim GO =  P(successful trial) > phiU, P(qU > tT) > phiU
+    * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
+    * interim EVAL = in between
+
+therefore in this example:
+
+ GO = P(truep => p0 = 0.4) > tT = 0.6
+ STOP =  P(truep > p0 = 0.4) < tT = 0.6
+ interim GO =  P(successful trial) > phiU = 0.8, P(interim_qU > tT) > phiU
+ interim STOP = P(successful trial) > phiL = 0.3, P(interim_qU > tT) < phiL
+ interim EVAL = in between
+ 
+
 ```{r}
 set.seed(20)
 res1 <- g_ocPredprob(c(10, 20, 30),
@@ -503,14 +514,36 @@ res2 <- ocPredprob(c(10, 20, 30),
 res1$oc
 test_that("g_ocPredprob gives the same interim results as ocPredprob", {
   set.seed(1989)
-  result <- g_ocPredprob(c(10, 20, 30),
+  result <- ocPredprob(
+    nn = c(10, 20, 30),
+    p = 0.4, # truep
+    p0 = 0.25, 
+    tT = 0.6, 
+    phiL = 0.3,
+    phiU = 0.8, 
+    parE = c(1, 1), 
+    ns = 50000
+  )$oc
+  expected <- new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = NA,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1,1),
+  sim = 50000, 
+  wiggle = FALSE,
+  nnF = c(10, 20, 30), 
+  decision1 = TRUE
+)
+  
+  
+  new_ocPredprob(c(10, 20, 30),
     p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
     phiU = 0.8, parE = c(1, 1), ns = 100
-  )
-  expected <- ocPredprob(c(10, 20, 30),
-    p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-    phiU = 0.8, parE = c(1, 1), ns = 100
-  )
+  )$oc
   expect_equal(result, expected, tolerance = 1E-4)
 })
 ```
