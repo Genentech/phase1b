@@ -83,7 +83,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT, 
+        thetaT = tT,
         parE = parE
       )$result
       decision <- ifelse(interim_qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
@@ -100,12 +100,14 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       decision <- ifelse(interim_qU > tT, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
     }
   } else {
-    data <- data.frame(responders = 0:sum(x = response[1:size_look]),
-                  posterior = c(1-pbeta(p0, parE[1], parE[2])))
+    data <- data.frame(
+      responders = 0:sum(x = response[1:size_look]),
+      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
+    )
     if (is.na(decision) && index_look <= length(nnr)) {
       # interim decision where index_look != length(nnr)
       if (size_look %in% nnE) { # for efficacy looks
-        # what is the response rate for a GO decision : P(response rate for GO > tT ) 
+        # what is the response rate for a GO decision : P(response rate for GO > tT )
         go_counts <- data$responders[data$posterior >= tT][1]
         final_qU <- postprob(
           x = go_counts,
@@ -119,9 +121,9 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         decision <- ifelse(interim_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
       if (size_look %in% nnF) { # for futility looks
-        # what is the response rate for a STOP decision : P(response rate for STOP < tT ) 
+        # what is the response rate for a STOP decision : P(response rate for STOP < tT )
         stop_counts <- data$responders[data$posterior >= tT][1]
-        final_qU <- 1- postprob(
+        final_qU <- 1 - postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
           Nmax = nnF[length(nnF)],
@@ -195,13 +197,13 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) {
-    if (size_look %in% nnE) { 
+    if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
-        thetaT = tT, 
+        thetaT = tT,
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, FALSE)
@@ -218,11 +220,13 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiFu, TRUE, FALSE)
     }
   } else {
-    data <- data.frame(responders = 0:sum(x = response[1:size_look]),
-                       posterior = c(1-pbeta(p0, parE[1], parE[2])))
+    data <- data.frame(
+      responders = 0:sum(x = response[1:size_look]),
+      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
+    )
     if (size_look %in% nnE) { # for efficacy looks
-      go_counts <- data$responders[data$posterior >= tT][1] 
-      final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT 
+      go_counts <- data$responders[data$posterior >= tT][1]
+      final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
         x = response,
         n = size_look,
         p = truep,
@@ -363,7 +367,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 
 ```{r cars}
 new_ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE = c(1, 1),
-                       sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE) {
+                           sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
@@ -383,7 +387,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE 
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (decision1 == TRUE) { #is.na(decision[k]) && 
+    if (decision1 == TRUE) { # is.na(decision[k]) &&
       tmp <- h_get_decision_one_predprob(
         # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
         nnr = nnr,
@@ -443,15 +447,15 @@ dec1 <- new_ocPredprob(
   tFu = 1 - 0.6,
   phiL = 0.2,
   phiU = 0.10,
-  phiFu = NA, 
-  parE = c(1,1),
-  sim = 100, 
+  phiFu = NA,
+  parE = c(1, 1),
+  sim = 100,
   wiggle = FALSE,
-  nnF = c(10, 22, 25), 
+  nnF = c(10, 22, 25),
   decision1 = TRUE
 )
-#(nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE = c(1, 1),
-                      # sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
+# (nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE = c(1, 1),
+# sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
 ```
 # Example for dec 2
 ```{r, echo=FALSE}
@@ -459,19 +463,19 @@ dec2 <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
-  p1 =0.25,
+  p1 = 0.25,
   tT = 0.6,
   tFu = 1 - 0.6,
   phiL = 0.2,
   phiU = 0.10,
   phiFu = 0.1,
-  sim = 100, 
+  sim = 100,
   wiggle = FALSE,
-  nnF = c(10, 22, 25), 
+  nnF = c(10, 22, 25),
   decision1 = FALSE
 )
 # (nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE = c(1, 1),
-                       # sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
+# sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
 ```
 
 ## Integration test: grandma vs new
