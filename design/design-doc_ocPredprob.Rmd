@@ -106,7 +106,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     )
     if (is.na(decision) && index_look <= length(nnr)) {
       if (size_look %in% nnE) { # for efficacy looks
-        # what is the response rate for a GO decision : P(truep > pO ) > tT 
+        # what is the response rate for a GO decision : P(truep > pO ) > tT
         go_counts <- data$responders[data$posterior >= tT][1]
         final_eff_qU <- postprob(
           x = go_counts,
@@ -121,7 +121,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       if (size_look %in% nnF) { # for futility looks
         # what is the response rate for a STOP decision : P( truep < pO ) < tT
         stop_counts <- data$responders[data$posterior >= tT][1]
-        final_fu_qU <- 1- postprob(
+        final_fu_qU <- 1 - postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
           Nmax = nnF[length(nnF)],
@@ -521,29 +521,29 @@ test_that("g_ocPredprob gives the same interim results as ocPredprob", {
   result <- ocPredprob(
     nn = c(10, 20, 30),
     p = 0.4, # truep
-    p0 = 0.25, 
-    tT = 0.6, 
+    p0 = 0.25,
+    tT = 0.6,
     phiL = 0.3,
-    phiU = 0.8, 
-    parE = c(1, 1), 
+    phiU = 0.8,
+    parE = c(1, 1),
     ns = 50000
   )$oc
   expected <- new_ocPredprob(
-  nnE = c(10, 20, 30),
-  truep = 0.4,
-  p0 = 0.25,
-  p1 = NA,
-  tT = 0.6,
-  phiL = 0.3,
-  phiU = 0.8,
-  parE = c(1,1),
-  sim = 50000, 
-  wiggle = FALSE,
-  nnF = c(10, 20, 30), 
-  decision1 = TRUE
-)
-  
-  
+    nnE = c(10, 20, 30),
+    truep = 0.4,
+    p0 = 0.25,
+    p1 = NA,
+    tT = 0.6,
+    phiL = 0.3,
+    phiU = 0.8,
+    parE = c(1, 1),
+    sim = 50000,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  )
+
+
   new_ocPredprob(c(10, 20, 30),
     p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
     phiU = 0.8, parE = c(1, 1), ns = 100
