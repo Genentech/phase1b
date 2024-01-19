@@ -74,7 +74,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p, 
+  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p,
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) { # at interim
     if (size_look %in% nnE) { # GO decision for interim
