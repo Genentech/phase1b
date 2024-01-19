@@ -86,7 +86,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, TRUE, FALSE) 
+      decision <- ifelse(interim_qU > phiU, TRUE, FALSE)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob( # STOP decision for interim
@@ -124,7 +124,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           n = size_look,
           Nmax = nnF[length(nnF)],
           p = p0,
-          thetaT = tT, 
+          thetaT = tT,
           parE = parE
         )$result
         final_fu_qU <- postprob(
@@ -218,14 +218,14 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       responders = 0:sum(x = response[1:size_look]),
       posterior = c(1 - pbeta(p0, parE[1], parE[2]))
     )
-     data_stop <- data.frame(
+    data_stop <- data.frame(
       responders = 0:sum(x = response[1:size_look]),
       posterior = c(1 - pbeta(p0, parE[1], parE[2]))
     )
     if (size_look %in% nnE) { # for efficacy looks
       go_counts <- data$responders[data$posterior >= tT][1]
       final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
-        x =  data_go$responders[data$posterior < tT][1],
+        x = data_go$responders[data$posterior < tT][1],
         n = size_look,
         p = truep,
         parE = c(1, 1),
@@ -235,8 +235,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     }
     if (size_look %in% nnF) { # for futility looks
       stop_counts <- data_stop$responders[data$posterior < tT][1]
-# based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
-      final_qU <- 1 - postprob( 
+      # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
+      final_qU <- 1 - postprob(
         x = stop_counts,
         n = size_look,
         p = truep,
