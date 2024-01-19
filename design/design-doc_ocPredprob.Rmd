@@ -74,7 +74,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep) 
+  response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) { # at interim
     if (size_look %in% nnE) { # GO decision for interim
@@ -101,28 +101,28 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     }
   } else {
     # at final
-      if (size_look %in% nnE) { # for efficacy looks
-        final_eff_qU <- postprob(
-          x = response,
-          n = size_look,
-          p = p0,
-          parE = parE,
-          log.p = FALSE
-        )
-        # it is an final GO if P(response rate for GO > tT ) > phiU
-        decision <- ifelse(final_eff_qU > tT, TRUE, FALSE)
-      }
-      if (size_look %in% nnF) { # for futility looks
-        final_fu_qU <- 1 - postprob(
-          x = response,
-          n = size_look,
-          p = p0,
-          parE = parE,
-          log.p = FALSE
-        )$result
-        # it is an final STOP if P(response rate for STOP < tT )  < phiL
-        decision <- ifelse(final_fu_qU < phiL, FALSE, decision)
-      }
+    if (size_look %in% nnE) { # for efficacy looks
+      final_eff_qU <- postprob(
+        x = response,
+        n = size_look,
+        p = p0,
+        parE = parE,
+        log.p = FALSE
+      )
+      # it is an final GO if P(response rate for GO > tT ) > phiU
+      decision <- ifelse(final_eff_qU > tT, TRUE, FALSE)
+    }
+    if (size_look %in% nnF) { # for futility looks
+      final_fu_qU <- 1 - postprob(
+        x = response,
+        n = size_look,
+        p = p0,
+        parE = parE,
+        log.p = FALSE
+      )$result
+      # it is an final STOP if P(response rate for STOP < tT )  < phiL
+      decision <- ifelse(final_fu_qU < phiL, FALSE, decision)
+    }
   }
   all_sizes <- size_look
   index_look <- index_look + 1
