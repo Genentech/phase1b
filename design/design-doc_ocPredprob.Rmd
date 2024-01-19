@@ -74,7 +74,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p, 
+  response <- stats::rbinom(max(nnr), size = 1, truep) 
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) { # at interim
     if (size_look %in% nnE) { # GO decision for interim
@@ -86,7 +86,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, TRUE, FALSE)
+      decision <- ifelse(interim_qU > phiU, TRUE, NA)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob( # STOP decision for interim
@@ -97,50 +97,36 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU < phiL, TRUE, FALSE)
+      decision <- ifelse(interim_qU < phiL, FALSE, decision)
     }
   } else {
-    data <- data.frame(
-      responders = 0:sum(x = response[1:size_look]),
-      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
-    )
     # at final
       if (size_look %in% nnE) { # for efficacy looks
-        go_counts <- data$responders[data$posterior >= tT][1]
         final_eff_qU <- postprob(
-          x = go_counts,
+          x = response,
           n = size_look,
-          p = tT,
+          p = p0,
           parE = parE,
           log.p = FALSE
         )
         # it is an final GO if P(response rate for GO > tT ) > phiU
-        decision <- ifelse(final_eff_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
+        decision <- ifelse(final_eff_qU > tT, TRUE, FALSE)
       }
       if (size_look %in% nnF) { # for futility looks
-        stop_counts <- data$responders[data$posterior < tT][1]
         final_fu_qU <- 1 - postprob(
-          x = sum(x = response[1:size_look]),
+          x = response,
           n = size_look,
-          Nmax = nnF[length(nnF)],
           p = p0,
-          thetaT = tT,
-          parE = parE
-        )$result
-        final_fu_qU <- postprob(
-          x = sum(x = response[1:size_look]),
-          n = size_look,
-          p = qU,
           parE = parE,
           log.p = FALSE
-        )
+        )$result
         # it is an final STOP if P(response rate for STOP < tT )  < phiL
-        decision <- ifelse(final_fu_qU < phiL, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
+        decision <- ifelse(final_fu_qU < phiL, FALSE, decision)
       }
   }
-    all_sizes <- size_look
-    index_look <- index_look + 1
-    size_look <- nnr[index_look]
+  all_sizes <- size_look
+  index_look <- index_look + 1
+  size_look <- nnr[index_look]
   list(
     decision = decision,
     all_sizes = all_sizes
@@ -213,18 +199,10 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiFu, TRUE, FALSE)
     }
   } else {
-    data_go <- data.frame(
-      responders = 0:sum(x = response[1:size_look]),
-      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
-    )
-    data_stop <- data.frame(
-      responders = 0:sum(x = response[1:size_look]),
-      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
-    )
     if (size_look %in% nnE) { # for efficacy looks
       go_counts <- data$responders[data$posterior >= tT][1]
       final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
-        x = data_go$responders[data$posterior < tT][1],
+        x = response,
         n = size_look,
         p = truep,
         parE = c(1, 1),
@@ -236,7 +214,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       stop_counts <- data_stop$responders[data$posterior < tT][1]
       # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
       final_qU <- 1 - postprob(
-        x = stop_counts,
+        x = response,
         n = size_look,
         p = truep,
         parE = c(1, 1),
@@ -509,56 +487,56 @@ therefore in this example:
 
 ```{r}
 set.seed(20)
- result <- ocPredprob(
-    nn = c(10, 20, 30),
-    p = 0.4, # truep
-    p0 = 0.25,
-    tT = 0.6,
-    phiL = 0.3,
-    phiU = 0.8,
-    parE = c(1, 1),
-    ns = 50000
-  )$oc
-  expected <- new_ocPredprob(
-    nnE = c(10, 20, 30),
-    truep = 0.4,
-    p0 = 0.25,
-    p1 = NA,
-    tT = 0.6,
-    phiL = 0.3,
-    phiU = 0.8,
-    parE = c(1, 1),
-    sim = 50000,
-    wiggle = FALSE,
-    nnF = c(10, 20, 30),
-    decision1 = TRUE
-  )$oc
+result <- ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 50000
+)$oc
+expected <- new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = NA,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)$oc
 
-  set.seed(1989)
-  result <- ocPredprob(
-    nn = c(10, 20, 30),
-    p = 0.4, # truep
-    p0 = 0.25,
-    tT = 0.6,
-    phiL = 0.3,
-    phiU = 0.8,
-    parE = c(1, 1),
-    ns = 50000
-  )$oc
-  expected <- new_ocPredprob(
-    nnE = c(10, 20, 30),
-    truep = 0.4,
-    p0 = 0.25,
-    p1 = NA,
-    tT = 0.6,
-    phiL = 0.3,
-    phiU = 0.8,
-    parE = c(1, 1),
-    sim = 50000,
-    wiggle = FALSE,
-    nnF = c(10, 20, 30),
-    decision1 = TRUE
-  )
+set.seed(1989)
+result <- ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 50000
+)$oc
+expected <- new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = NA,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
 # >  expected
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
 # 1        10           1    0.04592    0.95408    0.04592    0.95408
