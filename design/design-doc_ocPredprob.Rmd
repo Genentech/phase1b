@@ -22,7 +22,7 @@ interim decision:
 
 Predictive probability of Pr( Pr(truep > p0) > tT = Successful trial S) > phiU at interim, then we have an early Go decision
 
-early decision to Stop:
+early/interim decision to Stop:
 
 Pr( Pr(truep > p0) > tT = Successful trial S) < phiL
 
@@ -61,12 +61,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1 Helper function for Decision
     * Decision 1 says:
-    * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
+    * GO = P(truep > p0 | data) > tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
-    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
     * EVAL = there is no evaluate BUT there are interims.... in this code
-    * interim GO =  P(successful trial) > phiU, P(qU > tT) > phiU
-    * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
+    * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
+    * interim STOP = P(successful trial at final) > phiL, P(interim_qU > tT) < phiL
     * interim EVAL = in between
 ```{r}
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
@@ -74,7 +74,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p1, but p1 only used if decision2 is specified
+  response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p, 
   assert_numeric(response, lower = 0, upper = 1)
   if (is.na(decision) && index_look <= length(nnr)) { # interim
     if (size_look %in% nnE) { # GO decision for interim
@@ -82,7 +82,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
-        p = p0,
+        p = p0, # p1 only used if decision2 is specified so it does not exist here
         thetaT = tT,
         parE = parE
       )$result
@@ -182,8 +182,8 @@ h_get_decision_one_predprob(
     * STOP = P(truep < p1) > tF:
     when the prob of poor response is high enough, then we have a UNsuccessful trial
     * interim included here .....
-    * interim STOP : P (failure) > phiFu
-    * interim GO : P (failure) > phiU
+    * interim STOP : P (failure at final ) > phiFu
+    * interim GO : P (failure at final ) > phiU
 ```{r}
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   index_look <- 1
@@ -485,12 +485,12 @@ Example: To examine operating characteristics of a phase Ib design with 2 interi
 *  trial success is defined as: P(RRS > control) > tT
 
  * Decision 1 says:
-    * GO = P(truep > p0) > tT, by the way P(truep > p0) > tT = qU
+    * GO = P(truep > p0 | data ) > tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
-    * STOP = P(truep > p0) < tT =  Unsuccessful trial if not successful 
+    * STOP = P(truep > p0  | data) < tT =  Unsuccessful trial if not successful 
     * EVAL = there is no evaluate BUT there are interims.... in this code
-    * interim GO =  P(successful trial) > phiU, P(qU > tT) > phiU
-    * interim STOP = P(successful trial) > phiL, P(qU > tT) < phiL
+    * interim GO =  P(successful trial | interim data ) > phiU, P(qU > tT) > phiU
+    * interim STOP = P(successful trial | interim data) > phiL, P(qU > tT) < phiL
     * interim EVAL = in between
 
 therefore in this example:
@@ -504,18 +504,6 @@ therefore in this example:
 
 ```{r}
 set.seed(20)
-res1 <- g_ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-res1$oc
-#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
-# [1,]      14.9        0.91       0.82       0.09        0.9        0.1          0
-res2 <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-res1$oc
 test_that("g_ocPredprob gives the same interim results as ocPredprob", {
   set.seed(1989)
   result <- ocPredprob(
@@ -550,5 +538,20 @@ test_that("g_ocPredprob gives the same interim results as ocPredprob", {
   )$oc
   expect_equal(result, expected, tolerance = 1E-4)
 })
+```
+
+
+```{r}
+res1 <- ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+res1$oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]      14.9        0.91       0.82       0.09        0.9        0.1          0
+res2 <- ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
 ```
 
