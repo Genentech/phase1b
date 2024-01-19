@@ -66,7 +66,7 @@ knitr::opts_chunk$set(echo = TRUE)
     * STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
     * EVAL = there is no evaluate BUT there are interims.... in this code
     * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
-    * interim STOP = P(successful trial at final) > phiL, P(interim_qU > tT) < phiL
+    * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
     * interim EVAL = in between
 ```{r}
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
@@ -166,7 +166,7 @@ h_get_decision_one_predprob(
     when the prob of poor response is high enough, then we have a UNsuccessful trial
     * interim included here .....
     * interim STOP : P (failure at final ) > phiFu
-    * interim GO : P (failure at final ) > phiU
+    * interim GO : P ( success at final) > phiU
 ```{r}
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   index_look <- 1
@@ -196,11 +196,10 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiFu, TRUE, FALSE)
+      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
     }
   } else {
     if (size_look %in% nnE) { # for efficacy looks
-      go_counts <- data$responders[data$posterior >= tT][1]
       final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
         x = response,
         n = size_look,
@@ -211,7 +210,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(final_qU < tT, FALSE, ifelse(interim_qU > phiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
-      stop_counts <- data_stop$responders[data$posterior < tT][1]
       # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
       final_qU <- 1 - postprob(
         x = response,
