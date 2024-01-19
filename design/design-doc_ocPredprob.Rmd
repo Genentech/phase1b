@@ -61,7 +61,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1 Helper function for Decision
     * Decision 1 says:
-    * GO = P(truep > p0 | data) > tT, by the way P(truep > p0) > tT = qU
+    * GO = P(truep > p0 | data) => tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
     * STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
     * EVAL = there is no evaluate BUT there are interims.... in this code
@@ -76,7 +76,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep) # in grandma, truep = p, 
   assert_numeric(response, lower = 0, upper = 1)
-  if (is.na(decision) && index_look <= length(nnr)) { # interim
+  if (is.na(decision) && index_look <= length(nnr)) { # at interim
     if (size_look %in% nnE) { # GO decision for interim
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -86,7 +86,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+      decision <- ifelse(interim_qU > phiU, TRUE, FALSE) 
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob( # STOP decision for interim
@@ -97,16 +97,15 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU < phiL, TRUE, FALSE) # grandma :  ifelse(qU < tU, decision, TRUE)
+      decision <- ifelse(interim_qU < phiL, TRUE, FALSE)
     }
   } else {
     data <- data.frame(
       responders = 0:sum(x = response[1:size_look]),
       posterior = c(1 - pbeta(p0, parE[1], parE[2]))
     )
-    if (is.na(decision) && index_look <= length(nnr)) {
+    if (is.na(decision) && index_look == length(nnr)) { # at final
       if (size_look %in% nnE) { # for efficacy looks
-        # what is the response rate for a GO decision : P(truep > pO ) > tT
         go_counts <- data$responders[data$posterior >= tT][1]
         final_eff_qU <- postprob(
           x = go_counts,
@@ -115,18 +114,17 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           parE = parE,
           log.p = FALSE
         )
-        # it is an interim GO if P(response rate for GO > tT ) > phiU
+        # it is an final GO if P(response rate for GO > tT ) > phiU
         decision <- ifelse(final_eff_qU > phiU, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
       if (size_look %in% nnF) { # for futility looks
-        # what is the response rate for a STOP decision : P( truep < pO ) < tT
-        stop_counts <- data$responders[data$posterior >= tT][1]
+        stop_counts <- data$responders[data$posterior < tT][1]
         final_fu_qU <- 1 - postprob(
           x = sum(x = response[1:size_look]),
           n = size_look,
           Nmax = nnF[length(nnF)],
           p = p0,
-          thetaT = tT, # the  code says : P(truep > p0) > tT
+          thetaT = tT, 
           parE = parE
         )$result
         final_fu_qU <- postprob(
@@ -136,7 +134,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
           parE = parE,
           log.p = FALSE
         )
-        # it is an interim STOP if P(response rate for STOP < tT )  < phiL
+        # it is an final STOP if P(response rate for STOP < tT )  < phiL
         decision <- ifelse(final_fu_qU < phiL, TRUE, ifelse(interim_qU > phiL, FALSE, decision))
       }
     }
@@ -178,8 +176,8 @@ h_get_decision_one_predprob(
 
 ## 2 Helper function for Decision 2
     * Decision 2 says:
-    * GO = P(truep > p0) < tT =  when the prob of poor response is low, then we have a successful trial 
-    * STOP = P(truep < p1) > tF:
+    * Final GO = P(truep > p0) < tT =  when the prob of poor response is low, then we have a successful trial 
+    * Final STOP = P(truep < p1) > tF:
     when the prob of poor response is high enough, then we have a UNsuccessful trial
     * interim included here .....
     * interim STOP : P (failure at final ) > phiFu
@@ -216,14 +214,18 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiFu, TRUE, FALSE)
     }
   } else {
-    data <- data.frame(
+    data_go <- data.frame(
+      responders = 0:sum(x = response[1:size_look]),
+      posterior = c(1 - pbeta(p0, parE[1], parE[2]))
+    )
+     data_stop <- data.frame(
       responders = 0:sum(x = response[1:size_look]),
       posterior = c(1 - pbeta(p0, parE[1], parE[2]))
     )
     if (size_look %in% nnE) { # for efficacy looks
       go_counts <- data$responders[data$posterior >= tT][1]
       final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
-        x = response,
+        x =  data_go$responders[data$posterior < tT][1],
         n = size_look,
         p = truep,
         parE = c(1, 1),
@@ -232,8 +234,10 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(final_qU > tT, FALSE, ifelse(interim_qU > phiU, TRUE, decision))
     }
     if (size_look %in% nnF) { # for futility looks
-      final_qU <- 1 - postprob( # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
-        x = response,
+      stop_counts <- data_stop$responders[data$posterior < tT][1]
+# based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
+      final_qU <- 1 - postprob( 
+        x = stop_counts,
         n = size_look,
         p = truep,
         parE = c(1, 1),
