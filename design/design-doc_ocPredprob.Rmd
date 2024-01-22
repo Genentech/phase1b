@@ -510,11 +510,11 @@ expected
 1. Run ten simulations of decision 1, compare it with the grandma function
 2. Run ten simulations of decision 2, compare it with the grandma function
 ```{r}
-sn_ocPredprob <- function(nnE, nnF, truep, p0, p1, tT, tF, phiU, phiL, phiFu, sim, wiggle = FALSE, decision1 = TRUE, parE = c(1,1)) {
-   nn <- sort(unique(c(nnF, nnE)))
-   decision <- vector(length = sim)
-   all_sizes <- vector(length = sim)
-   for (k in seq_len(sim)) {
+sn_ocPredprob <- function(nnE, nnF, truep, p0, p1, tT, tF, phiU, phiL, phiFu, sim, wiggle = FALSE, decision1 = TRUE, parE = c(1, 1)) {
+  nn <- sort(unique(c(nnF, nnE)))
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+  for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       dist <- h_get_distance(nn = nn)
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
@@ -526,7 +526,7 @@ sn_ocPredprob <- function(nnE, nnF, truep, p0, p1, tT, tF, phiU, phiL, phiFu, si
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (decision1 == TRUE) { 
+    if (decision1 == TRUE) {
       tmp <- h_get_decision_one_predprob(
         nnr = nnr,
         truep = truep,
@@ -557,9 +557,9 @@ sn_ocPredprob <- function(nnE, nnF, truep, p0, p1, tT, tF, phiU, phiL, phiFu, si
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
     }
-   }
-   oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
-   list(decision = decision, all_sizes = all_sizes, oc = oc)
+  }
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(decision = decision, all_sizes = all_sizes, oc = oc)
 }
 
 g_ocPredprob <- function(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, phiFu, phiU, nr = FALSE) {
@@ -583,12 +583,12 @@ g_ocPredprob <- function(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, p
     if (nr && (d > 0)) {
       # randomly generate look locations
       dd <- sample(-d:d,
-                   size = nL - 1, replace = TRUE,
-                   prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+        size = nL - 1, replace = TRUE,
+        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
-      
-      
+
+
       nnrE <- nnr[nn %in% nnE]
       nnrF <- nnr[nn %in% nnF]
     }
@@ -600,8 +600,8 @@ g_ocPredprob <- function(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, p
       if (nr && (d > 0)) {
         # randomly generate look locations
         dd <- sample(-d:d,
-                     size = nL - 1, replace = TRUE,
-                     prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+          size = nL - 1, replace = TRUE,
+          prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
         )
         nnr <- nn + c(dd, 0)
         nnrE <- nnr[nn %in% nnE]
@@ -623,7 +623,7 @@ g_ocPredprob <- function(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, p
         j <- j + 1
         i <- nnr[j]
       }
-       oc <- h_get_oc_predprob(all_sizes = n, nnr = nnr, decision = d, nnrE = nnrE, nnrF = nnrF)
+      oc <- h_get_oc_predprob(all_sizes = n, nnr = nnr, decision = d, nnrE = nnrE, nnrF = nnrF)
     }
   }
 }
@@ -631,11 +631,11 @@ g_ocPredprob <- function(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, p
 # Decision 1 simulations vs grandma's decision 1
 ```{r}
 set.seed(2024)
-tt <- list(nnE = c(10, 20, 30) , nnF = c(10, 20, 30), truep = 0.2, p0 = 0.3, p1 = 0.2, tT = 0.5, tF = 0.5, phiU = 0.6, phiL = 0.7, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1,1))
+tt <- list(nnE = c(10, 20, 30), nnF = c(10, 20, 30), truep = 0.2, p0 = 0.3, p1 = 0.2, tT = 0.5, tF = 0.5, phiU = 0.6, phiL = 0.7, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1, 1))
 sn_ocPredprob(nnE = tt$nnE, nnF = tt$nnF, truep = tt$truep, p0 = tt$p0, p1 = tt$p1, tT = tt$tT, tF = tt$tF, phiU = tt$phiU, phiL = tt$phiL, phiFu = tt$phiFu, sim = tt$sim, decision1 = tt$decision1, parE = tt$parE)
 
-g_ocPredprob(nn = tt$nnE, nnE= tt$nnE, nnF = tt$nnF, ns = tt$sim, d = NULL, p = tt$truep, p0 = tt$p0, p1 = tt$p1, tT = tt$tT, tFu = tt$tF, parE = tt$parE, phiFu = tt$tF, phiU = tt$phiU, nr = FALSE)
-#(nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, phiFu, phiU, nr = FALSE)
+g_ocPredprob(nn = tt$nnE, nnE = tt$nnE, nnF = tt$nnF, ns = tt$sim, d = NULL, p = tt$truep, p0 = tt$p0, p1 = tt$p1, tT = tt$tT, tFu = tt$tF, parE = tt$parE, phiFu = tt$tF, phiU = tt$phiU, nr = FALSE)
+# (nn, nnE, nnF, ns, d = NULL, p, p0, p1, tT, tFu, parE, phiFu, phiU, nr = FALSE)
 ```
 
 # Decision 2 simulations vs
