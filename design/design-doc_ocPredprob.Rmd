@@ -144,17 +144,19 @@ Interim:
 GO: P (successful trial) > phiU = 0.5
 STOP: P (successful trial) < phiL = 0.5 # no grey zone
 
+Should be a Go since the truep is assumed to be 0.6 and the threshold for a good response (p0) is 0.2, and the final threshold is only 0.6.
+
 ```{r}
 h_get_decision_one_predprob(
   nnr = c(10, 20),
-  truep = 0.1,
-  p0 = 0.6,
+  truep = 0.6,
+  p0 = 0.2,
   parE = c(1, 1),
   nnE = c(10, 20),
   nnF = c(11, 15),
   tT = 0.6,
-  phiU = 0.4,
-  phiL = 0.4
+  phiU = 0.5,
+  phiL = 0.5
 )
 # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
 ```
@@ -188,12 +190,12 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiU, TRUE, FALSE)
     }
     if (size_look %in% nnF) {
-      interim_qU <- predprob(
+      interim_qU <-1- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnF[length(nnF)],
         p = p1,
-        thetaT = tT,
+        thetaT = tF,
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiFu, FALSE, decision)
