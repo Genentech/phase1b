@@ -177,7 +177,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  if (is.na(decision) && index_look <= length(nnr)) {
+  if (is.na(decision) && index_look <= length(nnr)) {  # as long s there is no decision...
     if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -187,7 +187,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, TRUE, FALSE)
+      decision <- ifelse(interim_qU > phiU, TRUE, NA)
     }
     if (size_look %in% nnF) {
       interim_qU <-1- predprob(
@@ -198,7 +198,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         thetaT = tF,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+      decision <- ifelse(interim_qU > phiU, FALSE, decision)
     }
   } else {
     if (size_look %in% nnE) { # for efficacy looks
@@ -243,11 +243,11 @@ Interim:
 GO: P (successful trial) > phiU = 0.5 
 STOP: P (successful trial) > phiFu = 0.5 # no grey zone
 
-when truep = 0.3
+when truep = 0.4 and the threshold is lower at 0.2 = p0 = p1.
 ```{r}
 h_get_decision_two_predprob(
   nnr = c(10, 20),
-  truep = 0.3,
+  truep = 0.4,
   p0 = 0.2,
   p1 = 0.2,
   parE = c(1, 1),
@@ -255,7 +255,7 @@ h_get_decision_two_predprob(
   nnF = c(10, 20),
   tT = 0.6,
   tF = 0.6,
-  phiFu = 0.4,
+  phiFu = 0.5,
   phiU = 0.5
 )
 
@@ -276,7 +276,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
     PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
     PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
     PrEfficacy = sum(decision, na.rm = TRUE) / sim,
-    PrFutility = sum(1 - decision, na.rm = TRUE) / sim
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+    PrGrayZone = sum(is.na(decision) / sim)
   )
 }
 ```
@@ -284,7 +285,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 ## new_ocPredprob
 
 ```{r cars}
-new_ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE = c(1, 1),
+new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE = c(1, 1),
                            sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
@@ -306,7 +307,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tFu, phiL, phiU, phiFu, parE 
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (decision1 == TRUE) { # is.na(decision[k]) &&
+    if (decision1 == TRUE) { # is.na(decision[k]) &&  in helper 
       tmp <- h_get_decision_one_predprob(
         # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
         nnr = nnr,
@@ -363,7 +364,7 @@ dec1 <- new_ocPredprob(
   p0 = 0.25,
   p1 = NA,
   tT = 0.6,
-  tFu = 1 - 0.6,
+  tF = 1 - 0.6,
   phiL = 0.2,
   phiU = 0.10,
   phiFu = NA,
@@ -385,7 +386,7 @@ dec2 <- new_ocPredprob(
   p0 = 0.25,
   p1 = 0.25,
   tT = 0.6,
-  tFu = 1 - 0.6,
+  tF = 1 - 0.6,
   phiL = 0.2,
   phiU = 0.10,
   phiFu = 0.1,
@@ -439,13 +440,9 @@ result <- ocPredprob(
   phiL = 0.3,
   phiU = 0.8,
   parE = c(1, 1),
-  ns = 50000
-)
-#  $oc
-#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
-# [1,]   13.8676     0.94786    0.87152    0.07634    0.91502    0.08498
-#      PrGrayZone
-# [1,]          0
+  ns = 50
+)$oc
+result 
 expected <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
@@ -455,61 +452,60 @@ expected <- new_ocPredprob(
   phiL = 0.3,
   phiU = 0.8,
   parE = c(1, 1),
-  sim = 50000,
+  sim = 50,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
   decision1 = TRUE
-)
+)$oc
+expected
+# >   result
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]    13.875     0.94906    0.87224    0.07682    0.91414    0.08586          0
 # > expected
 # $oc
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
-# 1        10           1    0.61862    0.04674    0.61862    0.04674
+# 1        10           1    0.61876    0.04592    0.61876    0.04592
 
+
+```
+
+
+```{r}
 set.seed(1989)
 result <- ocPredprob(
   nn = c(10, 20, 30),
   p = 0.4, # truep
   p0 = 0.25,
+  p1 = 0.30,
   tT = 0.6,
   phiL = 0.3,
   phiU = 0.8,
   parE = c(1, 1),
-  ns = 50000
+  ns = 50
 )$oc
+result
+# > result
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]    12.141           1     0.7942     0.2058     0.7942     0.2058          0
 expected <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
-  p1 = NA,
+  p1 = 0.30,
   tT = 0.6,
+  tF = 0.5,
   phiL = 0.3,
   phiU = 0.8,
   parE = c(1, 1),
-  sim = 50000,
+  sim = 50,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
-  decision1 = TRUE
-)
-# >  expected
+  decision1 = FALSE
+)$oc
+expected
+# > expected
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
-# 1        10           1    0.04592    0.95408    0.04592    0.95408
-# >   result
-#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
-# [1,]    13.875     0.94906    0.87224    0.07682    0.91414    0.08586          0
-```
+# 1        10           1    0.61456    0.38544    0.61456    0.38544
 
-
-```{r}
-res1 <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-res1$oc
-#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
-# [1,]      14.9        0.91       0.82       0.09        0.9        0.1          0
-res2 <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
 ```
 
