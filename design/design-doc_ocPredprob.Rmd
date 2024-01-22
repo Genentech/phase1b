@@ -177,7 +177,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  if (is.na(decision) && index_look <= length(nnr)) {  # as long s there is no decision...
+  if (is.na(decision) && index_look <= length(nnr)) { # as long s there is no decision...
     if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -190,7 +190,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiU, TRUE, NA)
     }
     if (size_look %in% nnF) {
-      interim_qU <-1- predprob(
+      interim_qU <- 1 - predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnF[length(nnF)],
@@ -307,7 +307,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (decision1 == TRUE) { # is.na(decision[k]) &&  in helper 
+    if (decision1 == TRUE) { # is.na(decision[k]) &&  in helper
       tmp <- h_get_decision_one_predprob(
         # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
         nnr = nnr,
@@ -442,7 +442,7 @@ result <- ocPredprob(
   parE = c(1, 1),
   ns = 50
 )$oc
-result 
+result
 expected <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
@@ -465,8 +465,6 @@ expected
 # $oc
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
 # 1        10           1    0.61876    0.04592    0.61876    0.04592
-
-
 ```
 
 
@@ -506,6 +504,5 @@ expected
 # > expected
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility
 # 1        10           1    0.61456    0.38544    0.61456    0.38544
-
 ```
 
