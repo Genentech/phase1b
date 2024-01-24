@@ -72,11 +72,11 @@ knitr::opts_chunk$set(echo = TRUE)
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
-  size_look <- nnr[index_look]
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  if (is.na(decision) && index_look <= length(nnr)) { # at interim
+  while (is.na(decision) && index_look < length(nnr)) { # at interim
+     size_look <- nnr[index_look]
     if (size_look %in% nnE) { # GO decision for interim
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -99,7 +99,10 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
     }
-  } else {
+    index_look <- index_look + 1
+  } 
+  if(is.na(decision)) {
+     size_look <- nnr[index_look]
     # at final
     if (size_look %in% nnE) { # for efficacy looks
       final_eff_qU <- postprob(
@@ -113,23 +116,20 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       decision <- ifelse(final_eff_qU > tT, TRUE, NA)
     }
     if (size_look %in% nnF) { # for futility looks
-      final_fu_qU <- 1 - postprob(
+      final_fu_qU <- postprob(
         x = response,
         n = size_look,
         p = p0,
         parE = parE,
         log.p = FALSE
-      )$result
+      )
       # it is an final STOP if P(response rate for STOP < tT )  < phiL
       decision <- ifelse(final_fu_qU < tT, FALSE, decision)
     }
   }
-  all_sizes <- size_look
-  index_look <- index_look + 1
-  size_look <- nnr[index_look]
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = size_look
   )
 }
 ```
@@ -148,15 +148,15 @@ Should be a Go since the truep is assumed to be 0.6 and the threshold for a good
 
 ```{r}
 h_get_decision_one_predprob(
-  nnr = c(10, 20),
-  truep = 0.6,
-  p0 = 0.2,
+  nnr = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
   parE = c(1, 1),
-  nnE = c(10, 20),
-  nnF = c(11, 15),
+  nnE = c(10, 20, 30),
+  nnF = c(10, 20, 30),
   tT = 0.6,
-  phiU = 0.5,
-  phiL = 0.5
+  phiU = 0.8,
+  phiL = 0.3
 )
 # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
 ```
@@ -177,7 +177,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  if (is.na(decision) && index_look < length(nnr)) { # as long s there is no decision...
+ while (is.na(decision) && index_look < length(nnr)) { # as long as there is no decision...
     if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
@@ -200,8 +200,9 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       )$result
       decision <- ifelse(interim_qU > phiFu, FALSE, decision)
     }
-  } else {
-    if (size_look %in% nnE) { # for efficacy looks
+   index_look <- index_look + 1
+ }
+    if (size_look %in% nnE) { # for efficacy looks at FINAL
       final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
         x = response,
         n = size_look,
@@ -211,7 +212,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       )
       decision <- ifelse(final_qU > tT, TRUE, NA)
     }
-    if (size_look %in% nnF) { # for futility looks
+    if (size_look %in% nnF) { # for futility looks at FINAL
       # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
       final_qU <- 1 - postprob(
         x = response,
@@ -222,10 +223,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       )
       decision <- ifelse(final_qU > tF, FALSE, decision)
     }
-  }
-  all_sizes <- size_look
-  index_look <- index_look + 1
-  size_look <- nnr[index_look]
   list(
     decision = decision,
     all_sizes = all_sizes
@@ -285,7 +282,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 ## new_ocPredprob
 
 ```{r cars}
-new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL, parE = c(1, 1),
+new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE = c(1, 1),
                            sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE) {
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
@@ -356,6 +353,37 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL = 1 - phiFu, phiU, p
   )
 }
 ```
+# testing dec 1 ten times
+
+```{r}
+set.seed(10)
+new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 10,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 10
+)
+```
+
 # Example for dec 1
 ```{r, echo=FALSE}
 set.seed(2024)
@@ -376,9 +404,9 @@ dec1 <- new_ocPredprob(
   decision1 = TRUE
 )
 dec1$oc
-> dec1$oc
-  ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
-1        10           1          1          0          1          0          0
+# > dec1$oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1        10           1          1          0          1          0          0
 ```
 # Example for dec 2
 ```{r, echo=FALSE}
