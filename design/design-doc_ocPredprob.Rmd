@@ -378,7 +378,7 @@ new_ocPredprob(
   nnF = c(10, 20, 30),
   decision1 = TRUE
 )
-ocPredprob(
+ocPredprob( # no wiggle is default
   nn = c(10, 20, 30),
   p = 0.4, # truep
   p0 = 0.25,
@@ -392,7 +392,7 @@ ocPredprob(
 # ---------------------
 # more simulations
 set.seed(10)
-new_ocPredprob(
+result <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
@@ -407,11 +407,10 @@ new_ocPredprob(
   nnF = c(10, 20, 30),
   decision1 = TRUE
 )
-$oc
 # for 1000 sims
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # 1     14.08       0.937      0.858      0.079      0.858      0.142          0
-ocPredprob(
+expected <- ocPredprob(
   nn = c(10, 20, 30),
   p = 0.4, # truep
   p0 = 0.25,
@@ -421,6 +420,8 @@ ocPredprob(
   parE = c(1, 1),
   ns = 1000
 )
+table(result$SampleSize)
+table(expected$SampleSize)
 # $oc
 #      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # [1,]      13.8       0.959      0.886      0.073      0.921      0.079          0
@@ -428,7 +429,7 @@ ocPredprob(
 # ---------------------
 # more simulations
 set.seed(10)
-new_ocPredprob(
+result <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
@@ -446,7 +447,7 @@ new_ocPredprob(
 # $oc
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # 1    13.938      0.9476     0.8713     0.0763     0.8713     0.1287          0
-ocPredprob(
+expected <- ocPredprob(
   nn = c(10, 20, 30),
   p = 0.4, # truep
   p0 = 0.25,
