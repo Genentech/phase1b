@@ -355,6 +355,10 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
   )
 }
 ```
+# Are we getting the same results ? We simulate sim number of trials to check if in decision 1 and decision 2, we are getting the same results
+1. Run ten simulations of decision 1, compare it with the grandma function
+2. Run ten simulations of decision 2, compare it with the grandma function
+
 # testing dec 1 ten times
 
 ```{r}
@@ -382,6 +386,120 @@ ocPredprob(
   phiL = 0.3,
   phiU = 0.8,
   parE = c(1, 1),
+  ns = 10
+)
+
+# ---------------------
+# more simulations
+set.seed(10)
+new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 1000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+$oc
+# for 1000 sims
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1     14.08       0.937      0.858      0.079      0.858      0.142          0
+ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 1000
+)
+# $oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]      13.8       0.959      0.886      0.073      0.921      0.079          0
+
+# ---------------------
+# more simulations
+set.seed(10)
+new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 10000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+# $oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1    13.938      0.9476     0.8713     0.0763     0.8713     0.1287          0
+ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 10000
+)
+# $oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]    13.862      0.9501     0.8725     0.0776     0.9142     0.0858          0
+```
+
+# testing dec 2 ten times
+
+```{r}
+# (nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE = c(1, 1),
+#                            sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
+# (nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu,  phiU)
+set.seed(10)
+new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  sim = 10,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = FALSE
+)
+# (nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
+#                        parE = c(1, 1),
+#                        ns = 10000, nr = FALSE, d = NULL, nnF = nn)
+ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  # phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  nr = FALSE,
+  d = NULL,
   ns = 10
 )
 ```
@@ -553,9 +671,7 @@ expected
 # 1        10           1    0.61456    0.38544    0.61456    0.38544
 ```
 
-# Are we getting the same results ? We simulate sim number of trials to check if in decision 1 and decision 2, we are getting the same results
-1. Run ten simulations of decision 1, compare it with the grandma function
-2. Run ten simulations of decision 2, compare it with the grandma function
+
 ```{r}
 sn_ocPredprob <- function(nnE, nnF, truep, p0, p1, tT, tF, phiU, phiL, phiFu, sim, wiggle = FALSE, decision1 = TRUE, parE = c(1, 1)) {
   nn <- sort(unique(c(nnF, nnE)))
