@@ -553,6 +553,35 @@ mod_predprob(x = 0:10,
              thetaT = 0.4,
              parE = c(1,1))
 ```
+# Creating global variables for final results testing
+```{r}
+set.seed(2024)
+tt <- list(nnE = c(10, 20, 30) , nnF = c(10, 20, 30), truep = 0.4, p0 = 0.25, p1 = 0.30, tT = 0.6, tF = 0.5, tFu = 0.6,
+           phiU = 0.8, phiL = 0.3, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1,1), size_look = 30)
+
+nnE <- tt$nnE
+nnF <- sort(tt$nnF)
+s <- rep(NA, tt$sim)
+n <- s
+nn <- sort(unique(c(tt$nnF, tt$nnE)))
+nL <- length(nn)
+Nstart <- nn[1]
+Nmax <- nn[nL]
+decision1 <- tt$decision1
+# d = FALSE
+p = tt$truep
+p1 = tt$p0
+p0 <- tt$p0
+tFu <- 1 - tt$tT
+parE <- tt$parE
+tT <- tt$tT
+ns = tt$sim
+nr = FALSE
+phiFu <- tt$phiFu
+phiU <- tt$phiU
+size_look <- tt$size_look
+
+```
 
 
 ## Integration test: grandma vs new
