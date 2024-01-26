@@ -87,6 +87,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, NA)
+      assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob( # STOP decision for interim
@@ -98,6 +99,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
+        assert_flag(decision, na.ok = TRUE)
     }
     index_look <- index_look + 1
   } 
@@ -106,7 +108,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     # at final
     if (size_look %in% nnE) { # for efficacy looks
       final_eff_qU <- postprob(
-        x = response,
+        x = sum(x = response[1:size_look]),
         n = size_look,
         p = p0,
         parE = parE,
@@ -114,10 +116,11 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       )
       # it is an final GO if P(response rate for GO > tT ) > phiU
       decision <- ifelse(final_eff_qU > tT, TRUE, NA)
+        assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) { # for futility looks
       final_fu_qU <- postprob(
-        x = response,
+        x = sum(x = response[1:size_look]),
         n = size_look,
         p = p0,
         parE = parE,
@@ -125,6 +128,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       )
       # it is an final STOP if P(response rate for STOP < tT )  < phiL
       decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+        assert_flag(decision, na.ok = TRUE)
     }
   }
   list(
@@ -163,10 +167,8 @@ h_get_decision_one_predprob(
 
 ## 2 Helper function for Decision 2
     * Decision 2 says:
-    * Final GO = P(truep > p0) < tT =  when the prob of poor response is low, then we have a successful trial 
-    * Final STOP = P(truep < p1) > tF:
-    when the prob of poor response is high enough, then we have a UNsuccessful trial
-    * interim included here .....
+    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial 
+    * Final STOP = P(truep < p1) > tF = when the prob of poor response is high, then we have an unsuccessful trial
     * interim STOP : P (failure at final ) > phiFu
     * interim GO : P ( success at final) > phiU
 ```{r}
@@ -204,7 +206,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
  }
   if(is.na(decision)) {
     if (size_look %in% nnE) { # for efficacy looks at FINAL
-      final_qU <- postprob( # based on all data, the posterior probability of success is a GO when P(truep > p0) > tT
+      final_qU <- postprob( 
+        # based on all data, the posterior probability is a GO when P(truep > p0) > tT
         x = response,
         n = size_look,
         p = truep,
@@ -214,7 +217,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(final_qU > tT, TRUE, NA)
     }
     if (size_look %in% nnF) { # for futility looks at FINAL
-      # based on all data, the posterior probability of success is a STOP when P(truep > p0) < tT
+      # based on all data, the posterior probability is a STOP when P(truep > p0) > tF
       final_qU <- 1 - postprob(
         x = response,
         n = size_look,
@@ -227,7 +230,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   }
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = size_look
   )
 }
 ```
@@ -319,6 +322,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
         phiU = phiU,
         phiL = phiL
       )
+      assert_flag(tmp$decision)
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
     } else {
@@ -378,6 +382,9 @@ new_ocPredprob(
   nnF = c(10, 20, 30),
   decision1 = TRUE
 )
+# $oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1        15           1        0.8        0.2        0.8        0.2          0
 ocPredprob( # no wiggle is default
   nn = c(10, 20, 30),
   p = 0.4, # truep
@@ -388,7 +395,9 @@ ocPredprob( # no wiggle is default
   parE = c(1, 1),
   ns = 10
 )
-
+# $oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]        13         0.9        0.9          0          1          0          0
 # ---------------------
 # more simulations
 set.seed(10)
@@ -407,6 +416,7 @@ result <- new_ocPredprob(
   nnF = c(10, 20, 30),
   decision1 = TRUE
 )
+result$oc
 # for 1000 sims
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # 1     14.08       0.937      0.858      0.079      0.858      0.142          0
@@ -420,6 +430,7 @@ expected <- ocPredprob(
   parE = c(1, 1),
   ns = 1000
 )
+expected$oc
 table(result$SampleSize)
 table(expected$SampleSize)
 # $oc
@@ -433,7 +444,7 @@ result <- new_ocPredprob(
   nnE = c(10, 20, 30),
   truep = 0.4,
   p0 = 0.25,
-  p1 = 0.30,
+  # p1 = 0.30,
   tT = 0.6,
   # tF = 0.5,
   phiL = 0.3,
@@ -456,20 +467,84 @@ expected <- ocPredprob(
   phiU = 0.8,
   parE = c(1, 1),
   ns = 10000
-)
+)$oc
 table(result$SampleSize)
 table(expected$SampleSize)
 # $oc
 #      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
 # [1,]    13.862      0.9501     0.8725     0.0776     0.9142     0.0858          0
+
+
+
+
+#--- more and more
+set.seed(10)
+new_ocPredprob(
+  nnE = 30,
+  truep = 0.4,
+  p0 = 0.25,
+  # p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 10000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)$oc
+# ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1        30           0          0          0      0.954      0.046          0
+ocPredprob( # no wiggle is default
+  nn = 30,
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 10000
+)$oc
+# ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]        30           0          0          0     0.9583     0.0417          0
+
+
+new_ocPredprob(
+  nnE = 30,
+  truep = 0.4,
+  p0 = 0.25,
+  # p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)$oc
+# ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1        30           0          0          0    0.95678    0.04322          0
+ocPredprob( # no wiggle is default
+  nn = 30,
+  p = 0.4, # truep
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  ns = 50000
+)$oc
+# + )$oc
+# ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]        30           0          0          0    0.95542    0.04458          0
 ```
 
 # testing dec 2 ten times
 
 ```{r}
-# (nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE = c(1, 1),
-#                            sim = 50000, wiggle = FALSE, nnF = nnE, decision1 = TRUE)
-# (nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu,  phiU)
 set.seed(10)
 new_ocPredprob(
   nnE = c(10, 20, 30),
@@ -487,9 +562,9 @@ new_ocPredprob(
   nnF = c(10, 20, 30),
   decision1 = FALSE
 )
-# (nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
-#                        parE = c(1, 1),
-#                        ns = 10000, nr = FALSE, d = NULL, nnF = nn)
+# $oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1        12           1        0.7        0.3        0.7        0.3          0
 ocPredprob(
   nn = c(10, 20, 30),
   p = 0.4, # truep
@@ -505,6 +580,100 @@ ocPredprob(
   d = NULL,
   ns = 10
 )
+# $oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]        11           1        0.8        0.2        0.8        0.2          0
+
+#--- more iterations---
+set.seed(10)
+result <- new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  sim = 100,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = FALSE
+)
+
+result$oc
+# > result$oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1      11.6           1        0.8        0.2        0.8        0.2          0
+expected <- ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  # phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  nr = FALSE,
+  d = NULL,
+  ns = 100
+)
+expected$oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]      11.9           1       0.76       0.24       0.76       0.24          0
+table(result$SampleSize)
+table(expected$SampleSize)
+
+#--- more and more iterations---
+set.seed(10)
+result <- new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  sim = 10000,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = FALSE
+)
+
+result$oc
+# > result$oc
+#   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# 1     12.19           1     0.7975     0.2025     0.7975     0.2025          0
+
+expected <- ocPredprob(
+  nn = c(10, 20, 30),
+  p = 0.4, # truep
+  p0 = 0.25,
+  p1 = 0.30,
+  tT = 0.6,
+  tF = 0.5,
+  # phiL = NA,
+  phiU = 0.8,
+  phiFu = 0.5,
+  parE = c(1, 1),
+  nr = FALSE,
+  d = NULL,
+  ns = 10000
+)
+expected$oc
+# > expected$oc
+#      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
+# [1,]    12.118           1     0.7926     0.2074     0.7926     0.2074          0
+
+table(result$SampleSize)
+table(expected$SampleSize)
 ```
 
 
