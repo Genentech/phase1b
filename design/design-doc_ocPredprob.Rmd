@@ -453,7 +453,7 @@ result <- new_ocPredprob(
   sim = 10000,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
-  decision1 = TRUE
+  decision1 = TRUE 
 )
 # $oc
 #   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone
@@ -477,7 +477,7 @@ table(expected$SampleSize)
 
 
 
-#--- more and more
+#--- we changed it to sum(x) in responses:
 set.seed(10)
 new_ocPredprob(
   nnE = 30,
