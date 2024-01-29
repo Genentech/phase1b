@@ -122,6 +122,7 @@ oc
 ocPostProb
 ocPostprob
 ocPostprobDist
+ocPredprob
 params
 parX
 parY
@@ -143,6 +144,8 @@ PProbust
 PPs
 PrEarlyEff
 PrEarlyFut
+Pred
+predprob
 predprobDist
 PrEfficacy
 PrFutility
@@ -182,6 +185,7 @@ thetaT
 throshold
 tL
 todo
+truep
 tT
 TtR
 tU
