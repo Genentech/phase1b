@@ -311,7 +311,6 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
         phiU = phiU,
         phiL = phiL
       )
-      assert_flag(tmp$decision)
       decision[k] <- tmp$decision
       all_sizes[k] <- tmp$all_sizes
     } else {
