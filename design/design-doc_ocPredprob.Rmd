@@ -280,6 +280,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
   nn <- sort(unique(c(nnF, nnE)))
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
+  assert_flag(decision1)
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
