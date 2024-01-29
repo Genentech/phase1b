@@ -297,7 +297,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
-    if (decision1 == TRUE) { # is.na(decision[k]) &&  in helper
+    tmp <- if (decision1) { # is.na(decision[k]) &&  in helper
       tmp <- h_get_decision_one_predprob(
         # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
         nnr = nnr,
