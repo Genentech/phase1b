@@ -31,6 +31,7 @@ bmu
 boldsymbol
 bOmega
 bomega
+Bové
 bPhi
 bphi
 bpi
@@ -122,6 +123,7 @@ oc
 ocPostProb
 ocPostprob
 ocPostprobDist
+ocPredprob
 params
 parX
 parY
@@ -143,6 +145,8 @@ PProbust
 PPs
 PrEarlyEff
 PrEarlyFut
+Pred
+predprob
 predprobDist
 PrEfficacy
 PrFutility
@@ -161,6 +165,7 @@ refering
 renewcommand
 responder
 responders
+Sabanés
 SampleSize
 SampleSizeActive
 SampleSizeControl
@@ -182,6 +187,7 @@ thetaT
 throshold
 tL
 todo
+truep
 tT
 TtR
 tU

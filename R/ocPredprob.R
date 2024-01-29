@@ -86,7 +86,6 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
   nnr <- nn
   nnrE <- nnE
   nnrF <- nnF
-
   for (k in 1:ns) {
     # simulate a clinical trial ns times
     if (nr && (d > 0)) {
@@ -96,8 +95,6 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
         prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
       )
       nnr <- nn + c(dd, 0)
-
-
       nnrE <- nnr[nn %in% nnE]
       nnrF <- nnr[nn %in% nnF]
     }
@@ -110,13 +107,11 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
 
         s[k] <- ifelse(qL > phiFu, FALSE, NA)
       }
-
       if (i %in% nnrE) {
         q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
 
         s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
       }
-
       n[k] <- i
       j <- j + 1
       i <- nnr[j]
@@ -130,7 +125,6 @@ ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, p
     PrFutility = sum(1 - s, na.rm = TRUE) / ns,
     PrGrayZone = sum(is.na(s) / ns)
   )
-
   return(list(
     oc = oc, Decision = s, SampleSize = n,
     nn = nn, nnE = nnE, nnF = nnF,
