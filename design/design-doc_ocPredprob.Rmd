@@ -56,7 +56,7 @@ knitr::opts_chunk$set(echo = TRUE)
     * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
     * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
     * interim EVAL = in between
-```{r}
+```{r, echo = TRUE}
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
