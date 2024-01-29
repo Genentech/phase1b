@@ -311,8 +311,6 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
         phiU = phiU,
         phiL = phiL
       )
-      decision[k] <- tmp$decision
-      all_sizes[k] <- tmp$all_sizes
     } else {
       h_get_decision_two_predprob(
         # (nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU)
@@ -328,9 +326,9 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
         phiFu = phiFu,
         phiU = phiU
       )
-      decision[k] <- tmp$decision
-      all_sizes[k] <- tmp$all_sizes
     }
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
   }
   oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
   list(
