@@ -109,12 +109,10 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
       qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
-      assert_number(qL, lower = 0, upper = 1)
       decision <- ifelse(qL >= tL, FALSE, NA)
     }
     if (size_look %in% nnE) {
       qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
-      assert_number(qU, lower = 0, upper = 1)
       decision <- ifelse(qU < tU, decision, TRUE)
     }
     all_sizes <- size_look
