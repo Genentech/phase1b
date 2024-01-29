@@ -676,54 +676,8 @@ table(result$SampleSize)
 table(expected$SampleSize)
 ```
 
-
-# I modified predprod to only get the "result" 
-```{r}
-mod_predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
-                     weights) {
-  # m = Nmax - n future observations
-  m <- Nmax - n
-  if (is.vector(parE)) {
-    assert_true(identical(length(parE), 2L))
-    # and transpose to matrix with one row
-    parE <- t(parE)
-  }
-  if (missing(weights)) {
-    weights <- rep(1, nrow(parE))
-  }
-  betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
-
-  density <- with(
-    betamixPost,
-    dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
-  )
-  assert_numeric(density, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
-  assert_number(thetaT, lower = 0, upper = 1, finite = TRUE)
-  # posterior probabilities to be above threshold p
-  posterior <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)
-  list(
-    result = sum(density * (posterior > thetaT))
-  )
-}
-```
-
-```{r}
-mod_predprob(x = 10,
-             n = 30,
-             Nmax = 30,
-             p = 0.40,
-             thetaT = 0.4,
-             parE = c(1,1))
-
-mod_predprob(x = 0:10,
-             n = 30,
-             Nmax = 30,
-             p = 0.40,
-             thetaT = 0.4,
-             parE = c(1,1))
-```
 # Creating global variables for final results testing
-```{r}
+```{r, echo = FALSE}
 set.seed(2024)
 tt <- list(nnE = c(10, 20, 30) , nnF = c(10, 20, 30), truep = 0.4, p0 = 0.25, p1 = 0.30, tT = 0.6, tF = 0.5, tFu = 0.6,
            phiU = 0.8, phiL = 0.3, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1,1), size_look = 30)
@@ -753,33 +707,3 @@ size_look <- tt$size_look
 ```
 
 
-## Integration test: grandma vs new
-Example: To examine operating characteristics of a phase Ib design with 2 interim analyses
-(sample size @ 10, 20 using predictive probability) and one final analysis (sample size @ 30);
-
-* design details
-*  multiple looks @ 10, 20, 30 patients
-*  True response rate of the treatment group = 40%
-*  control response rate = 25%
-
-*  denote treatment response rate as RRS
-*  trial success is defined as: P(RRS > control) > tT
-
- * Decision 1 says:
-    * GO = P(truep > p0 | data ) > tT, by the way P(truep > p0) > tT = qU
-    when the prob of good response is high enough, then we have a successful trial
-    * STOP = P(truep > p0  | data) < tT =  Unsuccessful trial if not successful 
-    * EVAL = there is no evaluate BUT there are interims.... in this code
-    * interim GO =  P(successful trial | interim data ) > phiU, P(qU > tT) > phiU
-    * interim STOP = P(successful trial | interim data) > phiL, P(qU > tT) < phiL
-    * interim EVAL = in between
-
-therefore in this example:
-
- GO = P(truep => p0 = 0.4) > tT = 0.6
- STOP =  P(truep > p0 = 0.4) < tT = 0.6
- interim GO =  P(successful trial) > phiU = 0.8, P(interim_qU > tT) > phiU
- interim STOP = P(successful trial) > phiL = 0.3, P(interim_qU > tT) < phiL
-
- interim EVAL = in between
- 
