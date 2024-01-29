@@ -7,26 +7,21 @@ editor_options:
 ---
 
 ## Rule 1
-Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
+"Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
 successful trial is larger than phiU, and stopped for futility if it is below
 phiL. A trial is successful if after the maximum number of patients the
 posterior probability of the treatment having more than p0 response rate is
-above tT. Otherwise the decision is "failure". In this case, there is no gray zone.
+above tT. Otherwise the decision is "failure". In this case, there is no gray zone."
 
-
-final decision :
-
-Pr(truep > p0) > tT which represents a successful trial, otherwise if Pr(truep > p0) < tT is not a successful trial.
-
-interim decision:
-
-Predictive probability of Pr( Pr(truep > p0) > tT = Successful trial S) > phiU at interim, then we have an early Go decision
-
-early/interim decision to Stop:
-
-Pr( Pr(truep > p0) > tT = Successful trial S) < phiL
-
-Otherwise we continue the trial, e.g. no early decision made.
+Translation:
+* Decision 1 says:
+    * Final GO = P(truep > p0 | data) => tT, by the way P(truep > p0) > tT = qU
+    when the prob of good response is high enough, then we have a successful trial
+    * Final STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
+    * Final EVAL = there is no evaluate 
+    * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
+    * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
+    * interim EVAL = in between
 
 ## Rule 2
 Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
@@ -35,25 +30,18 @@ probability of an unsuccessful trial is larger than phiFu. In this case, the
 decision is "failure" when the posterior probability of having the treatment
 response rate at most p1 is above tFu at the maximum number of patients.
 
-at final decision:
-
-Pr (truep < p1) > tFu (if it's too high then it's a failure, here p1 and tFu exist)
-
-at interim:
-
-Pred prob of this failure
-
-Pred prob (failure) > PhiFu (the confidence for failing high, then we stop)
+Translation:
+* Decision 2 says:
+    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial 
+    * Final STOP = P(truep < p1) > tF = when the prob of poor response is high, then we have an unsuccessful trial
+    * Final EVAL = in between
+    * interim STOP = P (failure at final ) > phiFu
+    * interim GO = P ( success at final) > phiU
+    * interim EVAL = in between
 
 ## Design notes :
 
-* the original code does not cater for interim decisions
-The code only caters for success critical for Decision 1 and failure for Decision 2
-* for main function, we flags based on either decision 1 or 2 (rule 1 or 2)
-* 2 helper functions for each decision
-* in each, incorporate interim 
-* intergrative test with grandma to compare results
-* We compare results and maybe we stick to grandma's 
+* both decisions converge with old code
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
