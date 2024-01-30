@@ -11,7 +11,7 @@ h_get_looks(dist, nnE, nnF)
 where \code{dist}is generated from \code{h_get_distance} in a numeric of at least one element.
 If \code{NULL}, only one location look will be set at \code{nnE} or \code{nnF}.}
 
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
 specify in \code{nnF}.}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
