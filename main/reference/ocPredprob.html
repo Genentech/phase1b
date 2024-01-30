@@ -46,12 +46,6 @@ above tT. Otherwise the decision is "failure". In this case, there is no gray zo
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -203,12 +197,12 @@ PrGrayZone: probability of no decision at the end ("gray zone")</p>
 <span class="r-in"><span><span class="co">## (sample size @ 10, 20 using predictive probability) and one final analysis (sample size @ 30);</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># design details</span></span></span>
-<span class="r-in"><span><span class="co"># multiple looks @ 10, 20, 30 patietns</span></span></span>
-<span class="r-in"><span><span class="co"># True response rate of the treatment group=40%</span></span></span>
-<span class="r-in"><span><span class="co"># control response rate=25%</span></span></span>
+<span class="r-in"><span><span class="co"># multiple looks @ 10, 20, 30 patients</span></span></span>
+<span class="r-in"><span><span class="co"># True response rate of the treatment group = 40%</span></span></span>
+<span class="r-in"><span><span class="co"># control response rate = 25%</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># denote treatment response rate as RRS</span></span></span>
-<span class="r-in"><span><span class="co"># trial success is defined as: P(RRS&gt;control)&gt;tT</span></span></span>
+<span class="r-in"><span><span class="co"># trial success is defined as: P(RRS &gt; control) &gt; tT</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">ocPredprob</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  p <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.25</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
