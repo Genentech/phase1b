@@ -7,7 +7,7 @@
 h_dist0(nn)
 }
 \arguments{
-\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF} if futility analysis or looks are supplied.}
+\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF}, if futility analysis or looks are supplied.}
 }
 \value{
 A number providing the wiggle distance.

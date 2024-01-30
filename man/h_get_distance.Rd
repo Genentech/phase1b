@@ -7,7 +7,7 @@
 h_get_distance(nn)
 }
 \arguments{
-\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF} if futility analysis or looks are supplied.}
+\item{nn}{(\verb{number or numeric}):\cr the union of \code{nnE} and \code{nnF}, if futility analysis or looks are supplied.}
 }
 \value{
 A numeric with \code{length(nn)-1} elements.
