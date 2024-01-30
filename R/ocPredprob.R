@@ -1,6 +1,97 @@
 #' @include predprob.R
 NULL
 
+#' Generating random decision and sample size looks.
+#'
+#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
+#'
+#' @typed nnr : numeric
+#'  union of `nnE`and `nnF` from `ocPredprob`.
+#' @typed truep : number
+#'  assumed true response rate or true rate (scenario).
+#' @typed p0 :
+#'  lower Futility threshold of response rate.
+#' @typed parE : numeric
+#'  alpha and beta parameters for the prior on the treatment population.
+#'  Default set at alpha = 1, beta = 1, or uniform prior.
+#' @typed nnE : numeric
+#'  sample size or sizes where study can be stopped for Efficacy decision.
+#' @typed nnF : numeric
+#'  sample size or sizes where study can be stopped for Efficacy decision.
+#' @typed tT : number
+#'  threshold of which assumed true response rate exceeds acceptable threshold of `p0`
+#' @typed phiU : number
+#'  upper threshold on the predictive probability
+#' @typed phiL : number
+#'  lower threshold on the predictive probability
+h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
+  index_look <- 1
+  assert_numeric(nnr)
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look < length(nnr)) { # at interim
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) { # GO decision for interim
+      interim_qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0, # p1 only used if decision2 is specified so it does not exist here
+        thetaT = tT,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU > phiU, TRUE, NA)
+      assert_flag(decision, na.ok = TRUE)
+    }
+    if (size_look %in% nnF) {
+      interim_qU <- predprob( # STOP decision for interim
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p0,
+        thetaT = tT,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU < phiL, FALSE, decision)
+      assert_flag(decision, na.ok = TRUE)
+    }
+    index_look <- index_look + 1
+  }
+  if (is.na(decision)) {
+    size_look <- nnr[index_look]
+    # at final
+    if (size_look %in% nnE) { # for efficacy looks
+      final_eff_qU <- postprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        p = p0,
+        parE = parE,
+        log.p = FALSE
+      )
+      # it is an final GO if P(response rate for GO > tT ) > phiU
+      decision <- ifelse(final_eff_qU > tT, TRUE, NA)
+      assert_flag(decision, na.ok = TRUE)
+    }
+    if (size_look %in% nnF) { # for futility looks
+      final_fu_qU <- postprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        p = p0,
+        parE = parE,
+        log.p = FALSE
+      )
+      # it is an final STOP if P(response rate for STOP < tT )  < phiL
+      decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+      assert_flag(decision, na.ok = TRUE)
+    }
+  }
+  list(
+    decision = decision,
+    all_sizes = size_look
+  )
+}
+
 #' Calculate operating characteristics for predictive probability method
 #' (gray zone allowed in the final analysis)
 #'
