@@ -18,6 +18,7 @@ h_dist0 <- function(nn) {
   ceiling(min(nn - c(0, nn[-length(nn)])) / 2) - 1
 }
 
+
 #' Generating random distance in given looks for sample sizes for Efficacy and Futility.
 #'
 #' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
