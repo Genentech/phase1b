@@ -31,6 +31,7 @@ bmu
 boldsymbol
 bOmega
 bomega
+Bové
 bPhi
 bphi
 bpi
@@ -86,10 +87,12 @@ ExpectedN
 ExpectedNactive
 ExpectedNcontrol
 frac
+funder
 generalizable
 geq
 grayzone
 hier
+Hoffmann
 hyoithesis
 hyperprior
 increasement
@@ -122,6 +125,7 @@ oc
 ocPostProb
 ocPostprob
 ocPostprobDist
+ocPredprob
 params
 parX
 parY
@@ -143,6 +147,8 @@ PProbust
 PPs
 PrEarlyEff
 PrEarlyFut
+Pred
+predprob
 predprobDist
 PrEfficacy
 PrFutility
@@ -161,6 +167,7 @@ refering
 renewcommand
 responder
 responders
+Sabanés
 SampleSize
 SampleSizeActive
 SampleSizeControl
@@ -182,6 +189,7 @@ thetaT
 throshold
 tL
 todo
+truep
 tT
 TtR
 tU
