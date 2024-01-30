@@ -7,7 +7,7 @@ NULL
 #' distance between looks if looks are of minimum length of 2 elements.
 #'
 #' @typed nn : number or numeric
-#'  the union of `nnE` and `nnF` if futility analysis or looks are supplied.
+#'  the union of `nnE` and `nnF`, if futility analysis or looks are supplied.
 #'
 #' @return A number providing the wiggle distance.
 #'
