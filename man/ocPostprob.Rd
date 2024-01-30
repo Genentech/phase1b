@@ -18,7 +18,7 @@ ocPostprob(
 )
 }
 \arguments{
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision
 specify in \code{nnF}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
