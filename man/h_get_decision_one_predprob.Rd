@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPredprob.R
 \name{h_get_decision_one_predprob}
 \alias{h_get_decision_one_predprob}
-\title{Generating random decision and sample size looks for \code{decision1 == TRUE} or default option.}
+\title{Generating random decision and sample size looks for \code{decision1 == TRUE} or default option}
 \usage{
 h_get_decision_one_predprob(
   nnr,

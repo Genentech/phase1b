@@ -1,7 +1,7 @@
 #' @include predprob.R
 NULL
 
-#' Generating random decision and sample size looks for `decision1 == TRUE` or default option.
+#' Generating random decision and sample size looks for `decision1 == TRUE` or default option
 #'
 #' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and random looks `all_sizes` for `decision1 == TRUE`.
 #'
