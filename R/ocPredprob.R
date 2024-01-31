@@ -1,43 +1,52 @@
 #' @include predprob.R
 NULL
 
-#' Generating random decision and sample size looks.
+#' Generating random decision and sample size looks for `decision1 == TRUE` or default option.
 #'
-#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
+#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
-#'  union of `nnE`and `nnF` from `ocPredprob`.
+#'  union of `nnE`and `nnF` from `ocPredprob`.
 #' @typed truep : number
-#'  assumed true response rate or true rate (scenario).
+#'  assumed true response rate or true rate (scenario).
 #' @typed p0 :
-#'  lower Futility threshold of response rate.
+#'  lower Futility threshold of response rate.
 #' @typed parE : numeric
-#'  alpha and beta parameters for the prior on the treatment population.
-#'  Default set at alpha = 1, beta = 1, or uniform prior.
+#'  alpha and beta parameters for the prior on the treatment population.
+#'  Default set at alpha = 1, beta = 1, or uniform prior.
 #' @typed nnE : numeric
-#'  sample size or sizes where study can be stopped for Efficacy decision.
+#'  sample size or sizes where study can be stopped for Efficacy decision.
 #' @typed nnF : numeric
-#'  sample size or sizes where study can be stopped for Efficacy decision.
+#'  sample size or sizes where study can be stopped for Efficacy decision.
 #' @typed tT : number
-#'  threshold of which assumed true response rate exceeds acceptable threshold of `p0`
+#'  threshold of which assumed `truep` exceeds acceptable threshold of `p0`.
 #' @typed phiU : number
-#'  upper threshold on the predictive probability
+#'  upper threshold on the predictive probability.
 #' @typed phiL : number
-#'  lower threshold on the predictive probability
+#'  lower threshold on the predictive probability.
+#'
+#' @return A list of the following objects :
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'
+#' @keywords internal
+#'
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
   all_sizes <- decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
-  while (is.na(decision) && index_look < length(nnr)) { # at interim
+  while (is.na(decision) && index_look < length(nnr)) {
+    # at interim
     size_look <- nnr[index_look]
-    if (size_look %in% nnE) { # GO decision for interim
+    if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
-        p = p0, # p1 only used if decision2 is specified so it does not exist here
+        p = p0, # p1 only used if decision1 == FALSE
         thetaT = tT,
         parE = parE
       )$result
@@ -45,7 +54,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) {
-      interim_qU <- predprob( # STOP decision for interim
+      interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnF[length(nnF)],
@@ -69,7 +78,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE,
         log.p = FALSE
       )
-      # it is an final GO if P(response rate for GO > tT ) > phiU
       decision <- ifelse(final_eff_qU > tT, TRUE, NA)
       assert_flag(decision, na.ok = TRUE)
     }
@@ -81,7 +89,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE,
         log.p = FALSE
       )
-      # it is an final STOP if P(response rate for STOP < tT )  < phiL
       decision <- ifelse(final_fu_qU < tT, FALSE, decision)
       assert_flag(decision, na.ok = TRUE)
     }
