@@ -3,7 +3,8 @@ NULL
 
 #' Generating random decision and sample size looks for `decision1 == TRUE` or default option
 #'
-#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and random looks `all_sizes` for `decision1 == TRUE`.
+#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and
+#' random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
 #'  union of `nnE`and `nnF` from `ocPredprob`.
@@ -51,6 +52,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, NA)
+      assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob(
@@ -62,6 +64,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
+      assert_flag(decision, na.ok = TRUE)
     }
     index_look <- index_look + 1
   }

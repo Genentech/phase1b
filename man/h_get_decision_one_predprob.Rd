@@ -45,6 +45,7 @@ look size is an indicated interim, Futility or Efficacy or both.
 }
 }
 \description{
-A helper function for \code{ocPredprob} to generate numeric of decisions \code{decisions} and random looks \code{all_sizes} for \code{decision1 == TRUE}.
+A helper function for \code{ocPredprob} to generate numeric of decisions \code{decisions} and
+random looks \code{all_sizes} for \code{decision1 == TRUE}.
 }
 \keyword{internal}
