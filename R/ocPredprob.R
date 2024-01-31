@@ -67,8 +67,8 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     index_look <- index_look + 1
   }
   if (is.na(decision)) {
-    size_look <- nnr[index_look]
     # at final
+    size_look <- nnr[index_look]
     if (size_look %in% nnE) { # for efficacy looks
       final_eff_qU <- postprob(
         x = sum(x = response[1:size_look]),
