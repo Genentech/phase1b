@@ -26,7 +26,7 @@ NULL
 #' @typed phiL : number
 #'  lower threshold on the predictive probability.
 #'
-#' @return A list with the following elements :
+#' @return A list with the following elements:
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.

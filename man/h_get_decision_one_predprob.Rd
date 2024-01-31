@@ -37,7 +37,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 }
 \value{
-A list with the following elements :
+A list with the following elements:
 \itemize{
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum
