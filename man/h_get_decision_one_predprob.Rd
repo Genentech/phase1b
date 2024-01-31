@@ -21,7 +21,7 @@ h_get_decision_one_predprob(
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{p0}{(``):\cr lower Futility threshold of response rate.}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
@@ -37,7 +37,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 }
 \value{
-A list of the following objects :
+A list with the following elements :
 \itemize{
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum
