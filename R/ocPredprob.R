@@ -51,7 +51,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, TRUE, NA)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob(
@@ -78,7 +77,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         log.p = FALSE
       )
       decision <- ifelse(final_eff_qU > tT, TRUE, NA)
-      assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) { # for futility looks
       final_fu_qU <- postprob(
@@ -89,7 +87,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         log.p = FALSE
       )
       decision <- ifelse(final_fu_qU < tT, FALSE, decision)
-      assert_flag(decision, na.ok = TRUE)
     }
   }
   list(
