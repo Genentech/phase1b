@@ -9,7 +9,7 @@ NULL
 #'  union of `nnE`and `nnF` from `ocPredprob`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
-#' @typed p0 :
+#' @typed p0 : number
 #'  lower Futility threshold of response rate.
 #' @typed parE : numeric
 #'  alpha and beta parameters for the prior on the treatment population.
@@ -25,7 +25,7 @@ NULL
 #' @typed phiL : number
 #'  lower threshold on the predictive probability.
 #'
-#' @return A list of the following objects :
+#' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
@@ -51,7 +51,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, NA)
-      assert_flag(decision, na.ok = TRUE)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob(
@@ -63,7 +62,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
-      assert_flag(decision, na.ok = TRUE)
     }
     index_look <- index_look + 1
   }
