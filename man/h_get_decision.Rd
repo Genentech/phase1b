@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprob.R
 \name{h_get_decision}
 \alias{h_get_decision}
-\title{Generating random decision and sample size looks.}
+\title{Generating random decision and sample size looks}
 \usage{
 h_get_decision(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 }
@@ -28,7 +28,7 @@ specify in \code{nnF}.}
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 }
 \value{
-A list of the following objects :
+A list with the following elements :
 \itemize{
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum

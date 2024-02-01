@@ -3,7 +3,7 @@
 #' @name Phase1b-package
 #' @aliases Phase1b
 #' @aliases phase1b
-#' @docType package
+#' @docType _PACKAGE
 #' @title Calculations for decisions on Phase 1b clinical trials
 #'
 #' @import checkmate

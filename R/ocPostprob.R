@@ -1,7 +1,7 @@
 #' @include postprob.R
 NULL
 
-#' Generating random distance for `h_get_distance` helper function.
+#' Generating random distance for `h_get_distance` helper function
 #'
 #' A helper function for `h_get_distance` by first calculating non-overlapping
 #' distance between looks if looks are of minimum length of 2 elements.
@@ -71,7 +71,7 @@ h_get_looks <- function(dist, nnE, nnF) {
   )
 }
 
-#' Generating random decision and sample size looks.
+#' Generating random decision and sample size looks
 #'
 #' A helper function for `ocPostprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
 #'
@@ -92,7 +92,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #'
-#' @return A list of the following objects :
+#' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
@@ -125,7 +125,7 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   )
 }
 
-#' Creating list for operating characteristics.
+#' Creating list for operating characteristics
 #'
 #' Generates operating characteristics.
 #'
