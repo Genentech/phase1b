@@ -47,7 +47,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         x = sum(x = response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
-        p = p0, # p1 only used if decision1 == FALSE
+        p = p0,
         thetaT = tT,
         parE = parE
       )$result
