@@ -3,7 +3,6 @@
 #' @name Phase1b-package
 #' @aliases Phase1b
 #' @aliases phase1b
-#' @docType _PACKAGE
 #' @title Calculations for decisions on Phase 1b clinical trials
 #'
 #' @import checkmate
@@ -12,4 +11,4 @@
 #' @importFrom stats acf
 #'
 #' @keywords package
-NULL
+"_PACKAGE"
