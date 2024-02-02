@@ -36,12 +36,12 @@ NULL
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   Nmax <- max(nnr)
-  assert_numeric(nnr, lower = 1)
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
-  assert_numeric(nnE, lower = 1, min.len = 1, any.missing = FALSE)
-  assert_numeric(nnF, lower = 1, min.len = 1, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, min.len = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, min.len = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tT, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)
