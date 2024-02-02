@@ -36,7 +36,7 @@ NULL
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
-  all_sizes <- decision <- NA
+  decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look < length(nnr)) {
