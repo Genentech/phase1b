@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Daniel Saban<U+00E9>s Bov<U+00E9> \email{daniel.sabanes_bove@roche.com}
+\strong{Maintainer}: Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
 
 Authors:
 \itemize{
