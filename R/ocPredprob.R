@@ -44,7 +44,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprob(
-        x = sum(x = response[1:size_look]),
+        x = sum(response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
