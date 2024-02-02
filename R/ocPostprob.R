@@ -104,8 +104,8 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   assert_numeric(nnr)
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
+  assert_number(truep, lower = 0, upper = 1)
   response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
       qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
