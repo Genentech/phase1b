@@ -36,7 +36,7 @@ NULL
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
   assert_numeric(nnr)
-  all_sizes <- decision <- NA
+  decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
   assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look < length(nnr)) {
@@ -44,7 +44,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprob(
-        x = sum(x = response[1:size_look]),
+        x = sum(response[1:size_look]),
         n = size_look,
         Nmax = nnE[length(nnE)],
         p = p0,
@@ -70,7 +70,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     # at final
     assert_number(nnE)
     size_look <- nnr[index_look]
-    if (size_look %in% nnE) { # for efficacy looks
+    if (size_look %in% nnE) {
       final_eff_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
@@ -78,19 +78,19 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE,
         log.p = FALSE
       )
-      decision <- ifelse(final_eff_qU > tT, TRUE, NA)
     }
-    assert_number(nnf)
-    if (size_look %in% nnF) { # for futility looks
-      final_fu_qU <- postprob(
-        x = sum(x = response[1:size_look]),
-        n = size_look,
-        p = p0,
-        parE = parE,
-        log.p = FALSE
-      )
-      decision <- ifelse(final_fu_qU < tT, FALSE, decision)
-    }
+    decision <- ifelse(final_eff_qU > tT, TRUE, NA)
+  }
+  assert_number(nnf)
+  if (size_look %in% nnF) { # for futility looks
+    final_fu_qU <- postprob(
+      x = sum(x = response[1:size_look]),
+      n = size_look,
+      p = p0,
+      parE = parE,
+      log.p = FALSE
+    )
+    decision <- ifelse(final_fu_qU < tT, FALSE, decision)
   }
   list(
     decision = decision,
