@@ -2,8 +2,8 @@
 % Please edit documentation in R/Phase1b-package.R
 \docType{package}
 \name{Phase1b-package}
+\alias{phase1b-package}
 \alias{Phase1b-package}
-\alias{_PACKAGE}
 \alias{Phase1b}
 \alias{phase1b}
 \title{Calculations for decisions on Phase 1b clinical trials}
