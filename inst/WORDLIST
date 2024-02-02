@@ -31,7 +31,6 @@ bmu
 boldsymbol
 bOmega
 bomega
-Bov
 Bov<U+00E9>
 bPhi
 bphi
@@ -114,6 +113,7 @@ mathbb
 mathbf
 mathcal
 mbox
+NANA
 newcommand
 Nmax
 NmaxControl
@@ -172,8 +172,7 @@ refering
 renewcommand
 responder
 responders
-Saban
-Saban<U+00E9>s
+Saban<U+00E9>
 SampleSize
 SampleSizeActive
 SampleSizeControl
