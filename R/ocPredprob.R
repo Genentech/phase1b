@@ -78,7 +78,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       )
       decision <- ifelse(final_eff_qU > tT, TRUE, NA)
     }
-    if (size_look %in% nnF) { # for futility looks
+    if (size_look %in% nnF) {
       final_fu_qU <- postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
