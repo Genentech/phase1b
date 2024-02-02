@@ -35,7 +35,7 @@ Imports:
 VignetteBuilder:
     knitr
 Encoding: UTF-8
-Language: en-US
+Language: Latin
 LazyData: true
 Roxygen:
     list(markdown = TRUE, packages = "roxytypes")
