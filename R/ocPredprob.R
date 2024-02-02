@@ -35,18 +35,25 @@ NULL
 #'
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   index_look <- 1
-  assert_numeric(nnr)
+  Nmax <- max(nnr)
+  assert_numeric(nnr, lower = 1)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, min.len = 1, any.missing = FALSE)
+  assert_numeric(nnF, lower = 1, min.len = 1, any.missing = FALSE)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
   decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look < length(nnr)) {
-    # at interim
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprob(
         x = sum(response[1:size_look]),
         n = size_look,
-        Nmax = nnE[length(nnE)],
+        Nmax = Nmax,
         p = p0,
         thetaT = tT,
         parE = parE
@@ -57,7 +64,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       interim_qU <- predprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
-        Nmax = nnF[length(nnF)],
+        Nmax = Nmax,
         p = p0,
         thetaT = tT,
         parE = parE
@@ -67,12 +74,11 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     index_look <- index_look + 1
   }
   if (is.na(decision)) {
-    # at final
     assert_number(nnE)
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       final_eff_qU <- postprob(
-        x = sum(x = response[1:size_look]),
+        x = sum(response[1:size_look]),
         n = size_look,
         p = p0,
         parE = parE,
@@ -84,7 +90,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_number(nnf)
   if (size_look %in% nnF) { # for futility looks
     final_fu_qU <- postprob(
-      x = sum(x = response[1:size_look]),
+      x = sum(response[1:size_look]),
       n = size_look,
       p = p0,
       parE = parE,
