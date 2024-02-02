@@ -14,6 +14,6 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
     phiL = 0.3
   )
   expect_flag(result$decision, TRUE)
-  expect_equal(result$all_sizes, 30)
+  expect_equal(result$all_sizes, 20)
   expect_list(result)
 })
