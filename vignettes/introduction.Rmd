@@ -9,7 +9,7 @@ author:
     email: pourmoht@gene.com
   - name: Jiawen Zhu
     email: zhu.jiawen@gene.com
-  - name: Daniel Sabanés Bové
+  - name: Daniel Sabanes Bove
     email: daniel.sabanes_bove@roche.com
 output:
   bookdown::html_document2:

@@ -3,7 +3,7 @@ Package: phase1b
 Title: Calculations for decisions on Phase 1b clinical trials
 Version: 1.0.0
 Authors@R: c(
-    person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
+    person("Daniel", "Sabanes Bove", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
     person("Markus", "Elze", , "markus.elze@roche.com", role = "aut"),
     person("Tony", "Pourmohamad", , "pourmoht@gene.com", role = "aut"),
     person("Jiawen", "Zhu", , "zhu.jiawen@gene.com", role = "aut"),

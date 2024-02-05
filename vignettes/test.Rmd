@@ -3,7 +3,7 @@ title: "test"
 package: phase1b
 bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
 author:
-  - name: Daniel Sabanés Bové
+  - name: Daniel Sabanes Bove
     email: daniel.sabanes_bove@roche.com
 output:
   bookdown::html_document2:
