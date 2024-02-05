@@ -52,7 +52,7 @@ test_that("h_get_looks together with h_get_distance always gives unique looks", 
 })
 
 # h_get_decision ----
-test_that("get_decision will give GO decision in favourable conditions", {
+test_that("h_get_decision will give GO decision in favourable conditions", {
   set.seed(1989)
   result <- h_get_decision(
     nnr = c(10, 20, 30),

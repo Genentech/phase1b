@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprob.R
 \name{h_get_oc}
 \alias{h_get_oc}
-\title{Creating list for operating characteristics.}
+\title{Creating list for operating characteristics}
 \usage{
 h_get_oc(all_sizes, nnr, decision, nnrE, nnrF)
 }
