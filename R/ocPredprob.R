@@ -104,6 +104,86 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   )
 }
 
+#' Title
+#'
+#' @typed nnr
+#' @typed truep
+#' @typed p0
+#' @typed p1
+#' @typed parE
+#' @typed nnE
+#' @typed nnF
+#' @typed tT
+#' @typed tF
+#' @typed phiFu
+#' @typed phiU
+#'
+#' @return
+#' @export
+#'
+#' @examples
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
+  index_look <- 1
+  assert_numeric(nnr)
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(max(nnr), size = 1, truep)
+  assert_numeric(response, lower = 0, upper = 1)
+  while (is.na(decision) && index_look < length(nnr)) { # as long as there is no decision...
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      interim_qU <- predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnE[length(nnE)],
+        p = p0,
+        thetaT = tT,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU > phiU, TRUE, NA)
+    }
+    if (size_look %in% nnF) {
+      interim_qU <- 1 - predprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        Nmax = nnF[length(nnF)],
+        p = p1,
+        thetaT = tF,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+    }
+    index_look <- index_look + 1
+  }
+  if (is.na(decision)) {
+    if (size_look %in% nnE) { # for efficacy looks at FINAL
+      final_qU <- postprob(
+        # based on all data, the posterior probability is a GO when P(truep > p0) > tT
+        x = response,
+        n = size_look,
+        p = truep,
+        parE = c(1, 1),
+        log.p = FALSE
+      )
+      decision <- ifelse(final_qU > tT, TRUE, NA)
+    }
+    if (size_look %in% nnF) { # for futility looks at FINAL
+      # based on all data, the posterior probability is a STOP when P(truep > p0) > tF
+      final_qU <- 1 - postprob(
+        x = response,
+        n = size_look,
+        p = truep,
+        parE = c(1, 1),
+        log.p = FALSE
+      )
+      decision <- ifelse(final_qU > tF, FALSE, decision)
+    }
+  }
+  list(
+    decision = decision,
+    all_sizes = size_look
+  )
+}
+
 #' Calculate operating characteristics for predictive probability method
 #' (gray zone allowed in the final analysis)
 #'
