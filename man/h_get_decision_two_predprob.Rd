@@ -19,7 +19,7 @@ h_get_decision_two_predprob(
 )
 }
 \arguments{
-\item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
+\item{nnr}{(\code{numeric}):\cr union of \code{nnE} and \code{nnF}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
