@@ -8,7 +8,7 @@ h_get_looks(dist, nnE, nnF)
 }
 \arguments{
 \item{dist}{(\verb{numeric or logical}):\cr distance for random looks around the look locations in \code{nn},
-where \code{dist}is generated from \code{\link[=h_get_distance]{h_get_distance()}} in a numeric of at least one element.
+where \code{dist} is generated from \code{\link[=h_get_distance]{h_get_distance()}} in a numeric of at least one element.
 If \code{NULL}, only one location look will be set at \code{nnE} or \code{nnF}.}
 
 \item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,

@@ -1,4 +1,5 @@
 #' @include predprob.R
+#' @include ocPostprob.R
 NULL
 
 #' Generating random decision and sample size looks for `decision1 == TRUE` or default option
