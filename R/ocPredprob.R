@@ -104,30 +104,38 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   )
 }
 
-#' Title
+#' Generating random decision and sample size looks for `decision1 == FALSE`
 #'
-#' @typed nnr
-#' @typed truep
-#' @typed p0
-#' @typed p1
-#' @typed parE
-#' @typed nnE
-#' @typed nnF
-#' @typed tT
-#' @typed tF
-#' @typed phiFu
-#' @typed phiU
+#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and
+#' random looks `all_sizes` for `decision1 == FALSE`.
 #'
-#' @return
-#' @export
+#' @inheritParams h_get_decision_one_predprob
+#' @typed phiU : number
+#'  upper threshold on the predictive probability.
 #'
-#' @examples
+#' @return A list with the following elements:
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'
+#' @keywords internal
+#'
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   index_look <- 1
-  assert_numeric(nnr)
-  all_sizes <- decision <- NA
+  Nmax <- max(nnr)
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_number(phiFu, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  decision <- NA
   response <- stats::rbinom(max(nnr), size = 1, truep)
-  assert_numeric(response, lower = 0, upper = 1)
   while (is.na(decision) && index_look < length(nnr)) { # as long as there is no decision...
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -143,7 +151,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     }
     if (size_look %in% nnF) {
       interim_qU <- 1 - predprob(
-        x = sum(x = response[1:size_look]),
+        x = sum(response[1:size_look]),
         n = size_look,
         Nmax = nnF[length(nnF)],
         p = p1,
