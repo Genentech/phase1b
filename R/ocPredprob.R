@@ -156,7 +156,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     }
     if (size_look %in% nnF) {
       # STOP when P (failure at final ) > phiFu
-      interim_qU <- 1 - predprob( # failure at final is truep < p1
+      interim_qU <- 1 - predprob( # failure at final is defined as P(p < p1) > tF
         x = sum(response[1:size_look]),
         n = size_look,
         Nmax = Nmax,
