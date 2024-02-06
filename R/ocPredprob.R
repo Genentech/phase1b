@@ -171,7 +171,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   if (is.na(decision)) {
     if (size_look %in% nnE) { # for efficacy looks at FINAL
       final_qU <- postprob(
-        # based on all data, the posterior probability is a GO when P(truep > p0) > tT
+        # based on all data, the posterior probability is a GO when P(p > p0) > tT
         x = sum(response[1:size_look]),
         n = size_look,
         p = p0,
