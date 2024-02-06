@@ -3,7 +3,7 @@ NULL
 
 #' Generating random decision and sample size looks for `decision1 == TRUE` or default option
 #'
-#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and
+#' A helper function for `[ocPredprob()]` to generate numeric of decisions `decisions` and
 #' random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
@@ -106,7 +106,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 
 #' Generating random decision and sample size looks for `decision1 == FALSE`
 #'
-#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and
+#' A helper function for `[ocPredprob()]` to generate numeric of decisions `decisions` and
 #' random looks `all_sizes` for `decision1 == FALSE`.
 #'
 #' @inheritParams h_get_decision_one_predprob
@@ -119,7 +119,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 #'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal
-#'
 #'
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   index_look <- 1
