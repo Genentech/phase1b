@@ -1,5 +1,4 @@
 #' @include postprob.R
-#' @include ocPostprob.R
 NULL
 
 #' Generating random distance for [h_get_distance()] helper function
