@@ -44,7 +44,7 @@ h_get_distance <- function(nn) {
 #'
 #' @typed dist : numeric or logical
 #'  distance for random looks around the look locations in `nn`,
-#'  where `dist`is generated from [h_get_distance()] in a numeric of at least one element.
+#'  where `dist` is generated from [h_get_distance()] in a numeric of at least one element.
 #'  If `NULL`, only one location look will be set at `nnE` or `nnF`.
 #' @typed nnE : numeric
 #'  sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
