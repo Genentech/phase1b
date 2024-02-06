@@ -143,7 +143,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
-      # GO when P(success at final) > tT
+      # GO when P(success at final) > phiU
       interim_qU <- predprob( # success at final is defined by P(p > p0) > tT
         x = sum(response[1:size_look]),
         n = size_look,
