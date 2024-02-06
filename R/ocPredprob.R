@@ -181,7 +181,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
       decision <- ifelse(final_qU > tT, TRUE, NA)
     }
     if (size_look %in% nnF) { # for futility looks at FINAL
-      # based on all data, the posterior probability is a STOP when P(truep < p1) > tF
+      # based on all data, the posterior probability is a STOP when P(p < p1) > tF
       final_qU <- 1 - postprob(
         x = sum(x = response[1:size_look]),
         n = size_look,
