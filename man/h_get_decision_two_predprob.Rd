@@ -25,6 +25,8 @@ h_get_decision_two_predprob(
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
+\item{p1}{(\code{number}):\cr upper Futility threshold of response rate.}
+
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
@@ -45,7 +47,7 @@ look size is an indicated interim, Futility or Efficacy or both.
 }
 }
 \description{
-A helper function for \verb{[ocPredprob()]} to generate numeric of decisions \code{decisions} and
+A helper function for \code{\link[=ocPredprob]{ocPredprob()}} to generate numeric of decisions \code{decisions} and
 random looks \code{all_sizes} for \code{decision1 == FALSE}.
 }
 \keyword{internal}
