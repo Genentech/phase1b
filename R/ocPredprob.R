@@ -7,7 +7,7 @@ NULL
 #' random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
-#'  union of `nnE`and `nnF` from `ocPredprob`.
+#'  union of `nnE`and `nnF`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
@@ -47,7 +47,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   index_look <- 1
   Nmax <- max(nnr)
   decision <- NA
-  response <- stats::rbinom(Nmax, size = 1, truep)
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -139,12 +139,12 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   index_look <- 1
   Nmax <- max(nnr)
   decision <- NA
-  response <- stats::rbinom(Nmax, size = 1, truep)
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       # GO when P(success at final) > tT
-      interim_qU <- predprob(
+      interim_qU <- predprob( # success at final is truep > p0
         x = sum(response[1:size_look]),
         n = size_look,
         Nmax = Nmax,
@@ -156,7 +156,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     }
     if (size_look %in% nnF) {
       # STOP when P (failure at final ) > phiFu
-      interim_qU <- 1 - predprob(
+      interim_qU <- 1 - predprob( # failure at final is truep < p1
         x = sum(response[1:size_look]),
         n = size_look,
         Nmax = Nmax,
