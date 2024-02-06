@@ -7,7 +7,7 @@ NULL
 #' random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
-#'  union of `nnE`and `nnF`.
+#'  union of `nnE` and `nnF`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
