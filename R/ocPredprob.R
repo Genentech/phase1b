@@ -120,6 +120,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 #'
 #' @keywords internal
 #'
+#'
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   index_look <- 1
   Nmax <- max(nnr)
