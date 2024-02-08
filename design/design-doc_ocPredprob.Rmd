@@ -254,12 +254,23 @@ h_get_decision_two_predprob(
 
 # helper h_get_oc_predprob : the last helper step in the user interfacing function
 ```{r}
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  sim <- length(all_sizes)
-  assert_logical(decision, len = sim)
-  assert_numeric(all_sizes)
-  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
-  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
+  # sim <- length(all_sizes)
+  # assert_logical(decision, len = sim)
+  # assert_numeric(all_sizes)
+  # assert_numeric(nnrE, lower = 0, upper = max(nnrF))
+  # assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+
+
+
+  assert_numeric(all_sizes, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1, upper = Nmax)
+  assert_logical(decision)
+  assert_numeric(nnrE, lower = 1, upper = Nmax)
+  assert_numeric(nnrE, lower = 1, upper = Nmax)
+  assert_number(Nmax, upper = Nmax)
+  assert_number(sim, lower = 1)
+
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
     PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
@@ -286,6 +297,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       dist <- h_get_distance(nn = nn)
@@ -298,6 +310,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
+    Nmax <- max(nnr)
     tmp <- if (decision1) {
       h_get_decision_one_predprob(
         nnr = nnr,
@@ -328,7 +341,7 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF, Nmax = Nmax)
   list(
     oc = oc,
     Decision = decision,
@@ -343,6 +356,27 @@ new_ocPredprob <- function(nnE, truep, p0, p1, tT, tF, phiL, phiU, phiFu, parE =
   )
 }
 ```
+
+
+```{r}
+set.seed(100)
+new_ocPredprob(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.25,
+  # p1 = 0.30,
+  tT = 0.6,
+  # tF = 0.5,
+  phiL = 0.3,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 10,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+```
+
 # Are we getting the same results ? We simulate sim number of trials to check if in decision 1 and decision 2, we are getting the same results
 1. Run ten simulations of decision 1, compare it with the grandma function
 2. Run ten simulations of decision 2, compare it with the grandma function

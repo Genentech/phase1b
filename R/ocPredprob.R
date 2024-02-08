@@ -193,6 +193,54 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   )
 }
 
+
+#' Generating random decision and sample size looks
+#'
+#' @inherit h_get_decision_one_predprob
+#' @typed all_sizes : matrix
+#'
+#' @typed nnr
+#' @typed decision
+#' @typed nnrE
+#' @typed nnrF
+#' @typed Nmax
+#' @typed sim
+#'
+#' @return A list of results containing :
+#'
+#' - `ExpectedN`: expected number of patients in the trials
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of for Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+#'
+#' @keywords internal
+
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
+  sim <- length(all_sizes)
+
+  assert_numeric(all_sizes, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1, upper = Nmax)
+  assert_logical(decision)
+  assert_numeric(nnrE, lower = 1, upper = Nmax)
+  assert_numeric(nnrE, lower = 1, upper = Nmax)
+  assert_number(Nmax, upper = Nmax)
+  assert_number(sim, lower = 1)
+
+  data.frame(
+    ExpectedN = mean(all_sizes, na.rm = TRUE),
+    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+    PrGrayZone = sum(is.na(decision) / sim)
+  )
+}
+
 #' Calculate operating characteristics for predictive probability method
 #' (gray zone allowed in the final analysis)
 #'
