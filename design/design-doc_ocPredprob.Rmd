@@ -382,7 +382,6 @@ new_ocPredprob(
 2. Run ten simulations of decision 2, compare it with the grandma function
 
 # testing dec 1 ten times
-
 ```{r}
 set.seed(10)
 new_ocPredprob(

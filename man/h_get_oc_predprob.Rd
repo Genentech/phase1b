@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPredprob.R
 \name{h_get_oc_predprob}
 \alias{h_get_oc_predprob}
-\title{Generating random decision and sample size looks}
+\title{Creating list for operating characteristics}
 \usage{
 h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
 }
@@ -13,11 +13,11 @@ h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
 
 \item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zine decisions of all looks simulated \code{length(sim)} times.}
 
-\item{nnrE}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnE}}
+\item{nnrE}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnE}.}
 
-\item{nnrF}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnF}}
+\item{nnrF}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnF}.}
 
-\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{union(c(nnF, nnE))}}
+\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{union(c(nnF, nnE))}.}
 
 \item{sim}{(\code{number}):\cr \code{length(all_sizes)} iterations for frequentist calculation of operating characteristics.}
 }

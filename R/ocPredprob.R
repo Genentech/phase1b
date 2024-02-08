@@ -193,8 +193,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   )
 }
 
-
-#' Generating random decision and sample size looks
+#' Creating list for operating characteristics
 #'
 #' @inherit h_get_decision_one_predprob
 #' @typed all_sizes : numeric
@@ -202,11 +201,11 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' @typed decision : numeric
 #'  Go, Stop or Gray Zine decisions of all looks simulated `length(sim)` times.
 #' @typed nnrE : numeric
-#'  Looks with random distance, if applied on `nnE`
+#'  Looks with random distance, if applied on `nnE`.
 #' @typed nnrF : numeric
-#'  Looks with random distance, if applied on `nnF`
+#'  Looks with random distance, if applied on `nnF`.
 #' @typed Nmax : number
-#'  Maximum sample size or final look from the maximum of `union(c(nnF, nnE))`
+#'  Maximum sample size or final look from the maximum of `union(c(nnF, nnE))`.
 #' @typed sim : number
 #'  `length(all_sizes)` iterations for frequentist calculation of operating characteristics.
 #'
@@ -228,8 +227,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
   assert_numeric(all_sizes, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, upper = Nmax)
   assert_logical(decision)
-  assert_numeric(nnrE, lower = 1, upper = Nmax)
-  assert_numeric(nnrE, lower = 1, upper = Nmax)
+  assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
+  assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
   assert_number(Nmax, upper = Nmax)
   assert_number(sim, lower = 1)
 

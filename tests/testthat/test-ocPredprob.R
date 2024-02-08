@@ -20,7 +20,6 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
 
 
 # h_get_decision_two_predprob ----
-
 test_that("h_get_decision_two_predprob gives correct result and list", {
   set.seed(1989)
   result <- h_get_decision_two_predprob(
@@ -39,4 +38,20 @@ test_that("h_get_decision_two_predprob gives correct result and list", {
   expect_flag(result$decision, TRUE)
   expect_equal(result$all_sizes, 10)
   expect_list(result)
+})
+
+# h_get_oc_predprob ----
+test_that("h_get_oc_predprob gives correct results", {
+  set.seed(1989)
+  oc <- h_get_oc_predprob(
+    all_sizes = sample(c(11, 14, 20), size = 1000, replace = TRUE),
+    nnr = c(10, 20, 30),
+    decision = sample(c(NA, TRUE, FALSE), size = 1000, replace = TRUE),
+    nnrE = c(11, 14, 20),
+    nnrF = c(11, 14, 20),
+    Nmax = 30
+  )
+  expect_true(oc$PrStopEarly && oc$PrFutility && oc$PrEarlyEff && oc$PrEfficacy < 1)
+  expect_data_frame(oc, any.missing = FALSE)
+  expect_number(oc$ExpectedN, lower = 11, upper = 20)
 })
