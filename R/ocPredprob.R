@@ -233,9 +233,9 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
 
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
-    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
-    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
-    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < Nmax), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < Nmax), na.rm = TRUE) / sim,
     PrEfficacy = sum(decision, na.rm = TRUE) / sim,
     PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
     PrGrayZone = sum(is.na(decision) / sim)
