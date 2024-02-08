@@ -230,7 +230,6 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
   assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
   assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
   assert_number(Nmax, upper = Nmax)
-  assert_number(sim, lower = 1)
 
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
