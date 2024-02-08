@@ -197,14 +197,18 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' Generating random decision and sample size looks
 #'
 #' @inherit h_get_decision_one_predprob
-#' @typed all_sizes : matrix
-#'
-#' @typed nnr
-#' @typed decision
-#' @typed nnrE
-#' @typed nnrF
-#' @typed Nmax
-#' @typed sim
+#' @typed all_sizes : numeric
+#'  Sample sizes of all simulated `length(sim)` times if `dist` applied.
+#' @typed decision : numeric
+#'  Go, Stop or Gray Zine decisions of all looks simulated `length(sim)` times.
+#' @typed nnrE : numeric
+#'  Looks with random distance, if applied on `nnE`
+#' @typed nnrF : numeric
+#'  Looks with random distance, if applied on `nnF`
+#' @typed Nmax : number
+#'  Maximum sample size or final look from the maximum of `union(c(nnF, nnE))`
+#' @typed sim : number
+#'  `length(all_sizes)` iterations for frequentist calculation of operating characteristics.
 #'
 #' @return A list of results containing :
 #'
@@ -218,8 +222,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
 #' @keywords internal
-
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax) {
   sim <- length(all_sizes)
 
   assert_numeric(all_sizes, any.missing = FALSE)

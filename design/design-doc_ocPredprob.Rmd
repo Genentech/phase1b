@@ -254,8 +254,8 @@ h_get_decision_two_predprob(
 
 # helper h_get_oc_predprob : the last helper step in the user interfacing function
 ```{r}
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
-  # sim <- length(all_sizes)
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax) {
+  sim <- length(all_sizes)
   # assert_logical(decision, len = sim)
   # assert_numeric(all_sizes)
   # assert_numeric(nnrE, lower = 0, upper = max(nnrF))

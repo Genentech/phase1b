@@ -4,12 +4,22 @@
 \alias{h_get_oc_predprob}
 \title{Generating random decision and sample size looks}
 \usage{
-h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax)
+h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
 }
 \arguments{
+\item{all_sizes}{(\code{numeric}):\cr Sample sizes of all simulated \code{length(sim)} times if \code{dist} applied.}
+
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE} and \code{nnF}.}
 
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
+\item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zine decisions of all looks simulated \code{length(sim)} times.}
+
+\item{nnrE}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnE}}
+
+\item{nnrF}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnF}}
+
+\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{union(c(nnF, nnE))}}
+
+\item{sim}{(\code{number}):\cr \code{length(all_sizes)} iterations for frequentist calculation of operating characteristics.}
 }
 \value{
 A list of results containing :
