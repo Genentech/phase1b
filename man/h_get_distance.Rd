@@ -13,6 +13,6 @@ h_get_distance(nn)
 A numeric with \code{length(nn)-1} elements.
 }
 \description{
-A helper function for \code{ocPostprob} to generate random distance's wiggle room around looks \code{nn}.
+A helper function for \code{\link[=ocPostprob]{ocPostprob()}} to generate random distance's wiggle room around looks \code{nn}.
 }
 \keyword{internal}

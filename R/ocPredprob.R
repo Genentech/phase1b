@@ -1,13 +1,10 @@
-#' @include predprob.R
-NULL
-
 #' Generating random decision and sample size looks for `decision1 == TRUE` or default option
 #'
-#' A helper function for `ocPredprob` to generate numeric of decisions `decisions` and
+#' A helper function for [ocPredprob()] to generate numeric of decisions `decisions` and
 #' random looks `all_sizes` for `decision1 == TRUE`.
 #'
 #' @typed nnr : numeric
-#'  union of `nnE`and `nnF` from `ocPredprob`.
+#'  union of `nnE` and `nnF`.
 #' @typed truep : number
 #'  assumed true response rate or true rate (scenario).
 #' @typed p0 : number
@@ -34,8 +31,6 @@ NULL
 #' @keywords internal
 #'
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
-  index_look <- 1
-  Nmax <- max(nnr)
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
@@ -45,8 +40,11 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_number(tT, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)
+
+  index_look <- 1
+  Nmax <- max(nnr)
   decision <- NA
-  response <- stats::rbinom(max(nnr), size = 1, truep)
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -74,7 +72,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     index_look <- index_look + 1
   }
   if (is.na(decision)) {
-    assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       final_eff_qU <- postprob(
@@ -87,7 +84,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     }
     decision <- ifelse(final_eff_qU > tT, TRUE, NA)
   }
-  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   if (size_look %in% nnF) {
     final_fu_qU <- postprob(
       x = sum(response[1:size_look]),
@@ -97,6 +93,99 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       log.p = FALSE
     )
     decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+  }
+  list(
+    decision = decision,
+    all_sizes = size_look
+  )
+}
+
+#' Generating random decision and sample size looks for `decision1 == FALSE`
+#'
+#' A helper function for [ocPredprob()] to generate numeric of decisions `decisions` and
+#' random looks `all_sizes` for `decision1 == FALSE`.
+#'
+#' @inheritParams h_get_decision_one_predprob
+#' @typed phiU : number
+#'  upper threshold on the predictive probability.
+#' @typed p1 : number
+#'  upper Futility threshold of response rate.
+#'
+#' @return A list with the following elements:
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'
+#' @keywords internal
+#'
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_number(phiFu, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+
+  index_look <- 1
+  Nmax <- max(nnr)
+  decision <- NA
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+  while (is.na(decision) && index_look < length(nnr)) {
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      # GO when P(success at final) > phiU
+      interim_qU <- predprob( # success at final is defined by P(p > p0) > tT
+        x = sum(response[1:size_look]),
+        n = size_look,
+        Nmax = Nmax,
+        p = p0,
+        thetaT = tT,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU > phiU, TRUE, NA)
+    }
+    if (size_look %in% nnF) {
+      # STOP when P (failure at final ) > phiFu
+      interim_qU <- 1 - predprob( # failure at final is defined as P(p < p1) > tF
+        x = sum(response[1:size_look]),
+        n = size_look,
+        Nmax = Nmax,
+        p = p1,
+        thetaT = tF,
+        parE = parE
+      )$result
+      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+    }
+    index_look <- index_look + 1
+  }
+  if (is.na(decision)) {
+    if (size_look %in% nnE) { # for efficacy looks at FINAL
+      final_qU <- postprob(
+        # based on all data, the posterior probability is a GO when P(p > p0) > tT
+        x = sum(response[1:size_look]),
+        n = size_look,
+        p = p0,
+        parE = parE,
+        log.p = FALSE
+      )
+      decision <- ifelse(final_qU > tT, TRUE, NA)
+    }
+    if (size_look %in% nnF) { # for futility looks at FINAL
+      # based on all data, the posterior probability is a STOP when P(p < p1) > tF
+      final_qU <- 1 - postprob(
+        x = sum(x = response[1:size_look]),
+        n = size_look,
+        p = p1,
+        parE = parE,
+        log.p = FALSE
+      )
+      decision <- ifelse(final_qU > tF, FALSE, decision)
+    }
   }
   list(
     decision = decision,

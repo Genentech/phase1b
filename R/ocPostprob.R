@@ -1,9 +1,9 @@
 #' @include postprob.R
 NULL
 
-#' Generating random distance for `h_get_distance` helper function
+#' Generating random distance for [h_get_distance()] helper function
 #'
-#' A helper function for `h_get_distance` by first calculating non-overlapping
+#' A helper function for [h_get_distance()] by first calculating non-overlapping
 #' distance between looks if looks are of minimum length of 2 elements.
 #'
 #' @typed nn : number or numeric
@@ -20,7 +20,7 @@ h_dist0 <- function(nn) {
 
 #' Generating random distance in given looks for sample sizes for Efficacy and Futility.
 #'
-#' A helper function for `ocPostprob` to generate random distance's wiggle room around looks `nn`.
+#' A helper function for [ocPostprob()] to generate random distance's wiggle room around looks `nn`.
 #'
 #' @inheritParams h_dist0
 #'
@@ -40,11 +40,11 @@ h_get_distance <- function(nn) {
 
 #' Generating looks from random distance
 #'
-#' A helper function for `ocPostprob` that applies the numeric element of `dist` to looks `nn`.
+#' A helper function for [ocPostprob()] that applies the numeric element of `dist` to looks `nn`.
 #'
 #' @typed dist : numeric or logical
 #'  distance for random looks around the look locations in `nn`,
-#'  where `dist`is generated from `h_get_distance` in a numeric of at least one element.
+#'  where `dist` is generated from [h_get_distance()] in a numeric of at least one element.
 #'  If `NULL`, only one location look will be set at `nnE` or `nnF`.
 #' @typed nnE : numeric
 #'  sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
@@ -52,7 +52,7 @@ h_get_distance <- function(nn) {
 #' @typed nnF : numeric
 #'  sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.
 #'
-#' @return Uses distance from `h_get_distance` to add to looks, creating wiggled looks:
+#' @return Uses distance from [h_get_distance()] to add to looks, creating wiggled looks:
 #'  - `nnrE` is the result for Efficacy looks with random distance added.
 #'  - `nnrF` is the result for Futility looks with random distance added.
 #'
@@ -73,7 +73,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 
 #' Generating random decision and sample size looks
 #'
-#' A helper function for `ocPostprob` to generate numeric of decisions `decisions` and random looks `all_sizes`.
+#' A helper function for [ocPostprob()] to generate numeric of decisions `decisions` and random looks `all_sizes`.
 #'
 #' @inheritParams h_get_looks
 #' @typed nnr : numeric

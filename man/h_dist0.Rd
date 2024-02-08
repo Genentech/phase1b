@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocPostprob.R
 \name{h_dist0}
 \alias{h_dist0}
-\title{Generating random distance for \code{h_get_distance} helper function}
+\title{Generating random distance for \code{\link[=h_get_distance]{h_get_distance()}} helper function}
 \usage{
 h_dist0(nn)
 }
@@ -13,7 +13,7 @@ h_dist0(nn)
 A number providing the wiggle distance.
 }
 \description{
-A helper function for \code{h_get_distance} by first calculating non-overlapping
+A helper function for \code{\link[=h_get_distance]{h_get_distance()}} by first calculating non-overlapping
 distance between looks if looks are of minimum length of 2 elements.
 }
 \keyword{internal}
