@@ -15,9 +15,9 @@ above tT. Otherwise the decision is "failure". In this case, there is no gray zo
 
 Translation:
 * Decision 1 says:
-    * Final GO = P(truep > p0 | data) => tT, by the way P(truep > p0) > tT = qU
+    * Final GO = P(p > p0 | data) => tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
-    * Final STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful
+    * Final STOP = P(p > p0 | data ) < tT =  Unsuccessful trial if not successful
     * Final EVAL = there is no evaluate
     * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
     * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
