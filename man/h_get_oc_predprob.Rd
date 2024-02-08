@@ -17,7 +17,7 @@ h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
 
 \item{nnrF}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnF}.}
 
-\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{union(c(nnF, nnE))}.}
+\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{c(nnF, nnE)}.}
 
 \item{sim}{(\code{number}):\cr \code{length(all_sizes)} iterations for frequentist calculation of operating characteristics.}
 }
