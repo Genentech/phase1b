@@ -1,7 +1,3 @@
-#' @include predprob.R
-#' @include ocPostprob.R
-NULL
-
 #' Generating random decision and sample size looks for `decision1 == TRUE` or default option
 #'
 #' A helper function for [ocPredprob()] to generate numeric of decisions `decisions` and
@@ -76,7 +72,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     index_look <- index_look + 1
   }
   if (is.na(decision)) {
-    assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       final_eff_qU <- postprob(
@@ -89,7 +84,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
     }
     decision <- ifelse(final_eff_qU > tT, TRUE, NA)
   }
-  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   if (size_look %in% nnF) {
     final_fu_qU <- postprob(
       x = sum(response[1:size_look]),

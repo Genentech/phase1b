@@ -31,8 +31,8 @@ bmu
 boldsymbol
 bOmega
 bomega
-Bove
 Bov<U+00E9>
+Bove
 bPhi
 bphi
 bpi
@@ -65,6 +65,7 @@ Cov
 cov
 cutB
 cutW
+dec
 decisionDist
 deltaE
 deltaF
@@ -85,6 +86,7 @@ ee
 Elze
 eq
 estunated
+EVAL
 ExpectedN
 ExpectedNactive
 ExpectedNcontrol
@@ -93,6 +95,7 @@ funder
 generalizable
 geq
 grayzone
+grey
 hier
 Hoffmann
 hyoithesis
@@ -166,14 +169,15 @@ pS
 pU
 py
 pyz
+qU
 RCT
 rearrangingWeightedBayes
 refering
 renewcommand
 responder
 responders
-Sabanes
 Saban<U+00E9>s
+Sabanes
 SampleSize
 SampleSizeActive
 SampleSizeControl
@@ -190,6 +194,7 @@ sumTable
 surivival
 Teterina
 texttt
+tF
 tFu
 Thall
 thetaT

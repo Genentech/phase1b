@@ -2,7 +2,7 @@
 title: "Design Document for ocPredprob.R"
 output: html_document
 date: "2024-01-08"
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -17,8 +17,8 @@ Translation:
 * Decision 1 says:
     * Final GO = P(truep > p0 | data) => tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
-    * Final STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
-    * Final EVAL = there is no evaluate 
+    * Final STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful
+    * Final EVAL = there is no evaluate
     * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
     * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
     * interim EVAL = in between
@@ -32,7 +32,7 @@ response rate at most p1 is above tFu at the maximum number of patients.
 
 Translation:
 * Decision 2 says:
-    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial 
+    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial
     * Final STOP = P(truep < p1) > tF = when the prob of poor response is high, then we have an unsuccessful trial
     * Final EVAL = in between
     * interim STOP = P (failure at final ) > phiFu
@@ -51,7 +51,7 @@ knitr::opts_chunk$set(echo = TRUE)
     * Decision 1 says:
     * GO = P(truep > p0 | data) => tT, by the way P(truep > p0) > tT = qU
     when the prob of good response is high enough, then we have a successful trial
-    * STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful 
+    * STOP = P(truep > p0 | data ) < tT =  Unsuccessful trial if not successful
     * EVAL = there is no evaluate BUT there are interims.... in this code
     * interim GO =  P(successful trial at final) > phiU, P(interim_qU > tT) > phiU
     * interim STOP = P(successful trial at final) < phiL, P(interim_qU > tT) < phiL
@@ -155,7 +155,7 @@ h_get_decision_one_predprob(
 
 ## 2 Helper function for Decision 2
     * Decision 2 says:
-    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial 
+    * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial
     * Final STOP = P(truep < p1) > tF = when the prob of poor response is high, then we have an unsuccessful trial
     * interim STOP : P (failure at final ) > phiFu
     * interim GO : P ( success at final) > phiU
@@ -230,7 +230,7 @@ GO: P (truep > p0 = 0.2) > tT = 0.6
 STOP = P(truep < p1 = 0.2) > tF = 0.6 # no grey zone
 
 Interim:
-GO: P (successful trial) > phiU = 0.5 
+GO: P (successful trial) > phiU = 0.5
 STOP: P (successful trial) > phiFu = 0.5 # no grey zone
 
 when truep = 0.4 and the threshold is lower at 0.2 = p0 = p1.
@@ -665,12 +665,14 @@ table(expected$SampleSize)
 set.seed(2024)
 tt <- list(
   nnE = c(10, 20, 30), nnF = c(10, 20, 30), truep = 0.4, p0 = 0.25, p1 = 0.30, tT = 0.6, tF = 0.5, tFu = 0.6,
-  phiU = 0.8, phiL = 0.3, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1, 1), size_look = 30
+  phiU = 0.8, phiL = 0.3, phiFu = 0.5, sim = 100, decision1 = TRUE, parE = c(1, 1), size_look = 30,
+  wiggle = TRUE, sim = 500
 )
 
 nnE <- tt$nnE
 nnF <- sort(tt$nnF)
 s <- rep(NA, tt$sim)
+truep <- tt$truep
 n <- s
 nn <- sort(unique(c(tt$nnF, tt$nnE)))
 nL <- length(nn)
@@ -688,7 +690,8 @@ ns <- tt$sim
 nr <- FALSE
 phiFu <- tt$phiFu
 phiU <- tt$phiU
+phiL <- tt$phiL
 size_look <- tt$size_look
+wiggle <- tt$wiggle
+sim <- tt$sim
 ```
-
-

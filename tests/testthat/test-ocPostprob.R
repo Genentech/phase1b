@@ -71,7 +71,7 @@ test_that("h_get_decision will give GO decision in favourable conditions", {
 })
 
 # h_get_oc ----
-test_that("the probability results of get_oc are less than 1", {
+test_that("the probability results of h_get_oc are less than 1", {
   set.seed(1989)
   oc <- h_get_oc(
     all_sizes = sample(c(11, 14, 20), size = 10000, replace = TRUE),
