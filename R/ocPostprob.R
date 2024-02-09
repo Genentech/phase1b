@@ -104,7 +104,6 @@ h_get_looks <- function(dist, nnE, nnF) {
 h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   Nmax <- max(nnr)
   index_look <- 1
-
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
   response <- stats::rbinom(Nmax, size = 1, truep)
