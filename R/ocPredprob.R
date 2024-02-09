@@ -221,7 +221,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
 #' @keywords internal
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax) {
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
   sim <- length(all_sizes)
 
   assert_numeric(all_sizes, any.missing = FALSE)
