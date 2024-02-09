@@ -102,6 +102,7 @@ test_that("the ExpectedN is within range based on vector of looks", {
 # ocPostprob ----
 test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
   set.seed(1989)
+
   expect_warning(result <- ocPostprob(
     nnE = 40, truep = 0.5, p0 = 0.45, p1 = 0.45, tL = 0.9, tU = 0.7,
     parE = c(1, 1), sim = 10000
