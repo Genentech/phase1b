@@ -103,15 +103,6 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'
 h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
   assert_numeric(nnr)
-
-
-  Nmax <- max(nnr)
-  index_look <- 1
-  size_look <- nnr[index_look]
-  all_sizes <- decision <- NA
-  response <- stats::rbinom(Nmax, size = 1, truep)
-
-
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(p1, lower = 0, upper = 1)
@@ -120,6 +111,12 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
+
+  Nmax <- max(nnr)
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(Nmax, size = 1, truep)
 
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
