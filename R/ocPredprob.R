@@ -207,7 +207,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' @typed Nmax : number
 #'  Maximum sample size or final look from the maximum of `c(nnF, nnE)`.
 #' @typed sim : number
-#'  `length(all_sizes)` iterations for frequentist calculation of operating characteristics.
+#'  number of simulations.
 #'
 #' @return A list of results containing :
 #'
