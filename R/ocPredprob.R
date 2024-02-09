@@ -221,15 +221,15 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
 #' @keywords internal
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF, Nmax) {
+h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+  Nmax <- max(nnr)
   sim <- length(all_sizes)
 
   assert_numeric(all_sizes, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, upper = Nmax)
   assert_logical(decision)
-  assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
-  assert_numeric(nnrE, lower = 1, upper = Nmax, any.missing = FALSE)
-  assert_number(Nmax, upper = Nmax)
+  assert_numeric(nnrE, lower = 1, any.missing = FALSE)
+  assert_numeric(nnrE, lower = 1, any.missing = FALSE)
 
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),

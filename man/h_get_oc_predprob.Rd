@@ -4,7 +4,7 @@
 \alias{h_get_oc_predprob}
 \title{Creating list for operating characteristics}
 \usage{
-h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF, Nmax = Nmax)
+h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF)
 }
 \arguments{
 \item{all_sizes}{(\code{numeric}):\cr Sample sizes of all simulated \code{length(sim)} times if \code{dist} applied.}

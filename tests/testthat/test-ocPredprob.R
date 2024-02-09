@@ -51,7 +51,10 @@ test_that("h_get_oc_predprob gives correct results", {
     nnrF = c(11, 14, 20),
     Nmax = 30
   )
-  expect_true(oc$PrStopEarly && oc$PrFutility && oc$PrEarlyEff && oc$PrEfficacy < 1)
+  expect_true(oc$PrStopEarly < 1)
+  expect_true(oc$PrFutility < 1)
+  expect_true(oc$PrEarlyEff < 1)
+  expect_true(oc$PrEfficacy < 1)
   expect_data_frame(oc, any.missing = FALSE)
   expect_number(oc$ExpectedN, lower = 11, upper = 20)
 })
