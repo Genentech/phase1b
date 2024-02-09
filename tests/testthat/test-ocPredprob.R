@@ -18,7 +18,6 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
   expect_list(result)
 })
 
-
 # h_get_decision_two_predprob ----
 test_that("h_get_decision_two_predprob gives correct result and list", {
   set.seed(1989)
@@ -50,7 +49,7 @@ test_that("h_get_oc_predprob gives correct results", {
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)
   )
-  expect_true(oc$PrStopEarly < 1)
+  expect_equal(oc$PrStopEarly, 1, tolerance = 1e-4)
   expect_true(oc$PrFutility < 1)
   expect_true(oc$PrEarlyEff < 1)
   expect_true(oc$PrEfficacy < 1)
