@@ -48,8 +48,7 @@ test_that("h_get_oc_predprob gives correct results", {
     nnr = c(10, 20, 30),
     decision = sample(c(NA, TRUE, FALSE), size = 1000, replace = TRUE),
     nnrE = c(11, 14, 20),
-    nnrF = c(11, 14, 20),
-    Nmax = 30
+    nnrF = c(11, 14, 20)
   )
   expect_true(oc$PrStopEarly < 1)
   expect_true(oc$PrFutility < 1)

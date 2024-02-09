@@ -226,7 +226,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   sim <- length(all_sizes)
 
   assert_numeric(all_sizes, any.missing = FALSE)
-  assert_numeric(nnr, lower = 1, upper = Nmax)
+  assert_numeric(nnr, lower = 1)
   assert_logical(decision)
   assert_numeric(nnrE, lower = 1, any.missing = FALSE)
   assert_numeric(nnrE, lower = 1, any.missing = FALSE)
