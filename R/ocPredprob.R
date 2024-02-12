@@ -234,6 +234,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
     PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
+    # Note: Below we use `sum` instead of `mean` because we also count trials with a decision `NA` outcome.
     PrEarlyEff = sum(decision * (all_sizes < Nmax), na.rm = TRUE) / sim,
     PrEarlyFut = sum((1 - decision) * (all_sizes < Nmax), na.rm = TRUE) / sim,
     PrEfficacy = sum(decision, na.rm = TRUE) / sim,
