@@ -4,7 +4,7 @@
 \alias{h_get_oc_predprob}
 \title{Creating list for operating characteristics of \code{ocPredprob}}
 \usage{
-h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF)
+h_get_oc_predprob(all_sizes, nnr, decision)
 }
 \arguments{
 \item{all_sizes}{(\code{numeric}):\cr Sample sizes of all trials.}
@@ -12,14 +12,6 @@ h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF)
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE} and \code{nnF}.}
 
 \item{decision}{(\code{numeric}):\cr Go (\code{TRUE}), Stop (\code{FALSE}) or Gray Zone (\code{NA}) decisions of all trials.}
-
-\item{nnrE}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnE}.}
-
-\item{nnrF}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnF}.}
-
-\item{Nmax}{(\code{number}):\cr Maximum sample size or final look from the maximum of \code{c(nnF, nnE)}.}
-
-\item{sim}{(\code{number}):\cr number of simulations.}
 }
 \value{
 A list of results containing :

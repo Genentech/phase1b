@@ -59,12 +59,11 @@ h_get_distance <- function(nn) {
 #' @keywords internal
 #'
 h_get_looks <- function(dist, nnE, nnF) {
-  nn <- unique(c(nnE, nnF))
-
+  assert_numeric(dist)
   assert_numeric(nnE)
   assert_numeric(nnF)
-  assert_numeric(dist)
 
+  nn <- unique(c(nnE, nnF))
   nnr <- nn + c(dist, 0)
   list(
     nnrE = nnr[nn %in% nnE],
@@ -165,15 +164,14 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #' @keywords internal
 #'
 h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  sim <- length(all_sizes)
+  assert_numeric(all_sizes)
   assert_numeric(nnr, any.missing = FALSE)
   assert_logical(decision, len = sim)
-  assert_numeric(all_sizes)
   assert_numeric(nnrE, lower = 0, upper = max(nnrE))
   assert_numeric(nnrF, lower = 0, upper = max(nnrF))
 
+  sim <- length(all_sizes)
   Nmax <- max(nnr)
-
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
     PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),

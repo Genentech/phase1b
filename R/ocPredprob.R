@@ -200,14 +200,6 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #'  Sample sizes of all trials.
 #' @typed decision : numeric
 #'  Go (`TRUE`), Stop (`FALSE`) or Gray Zone (`NA`) decisions of all trials.
-#' @typed nnrE : numeric
-#'  Looks with random distance, if applied on `nnE`.
-#' @typed nnrF : numeric
-#'  Looks with random distance, if applied on `nnF`.
-#' @typed Nmax : number
-#'  Maximum sample size or final look from the maximum of `c(nnF, nnE)`.
-#' @typed sim : number
-#'  number of simulations.
 #'
 #' @return A list of results containing :
 #'
@@ -221,16 +213,14 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - `PrGrayZone`: probability of Gray Zone decision
 #'
 #' @keywords internal
-h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  Nmax <- max(nnr)
-  sim <- length(all_sizes)
-
+h_get_oc_predprob <- function(all_sizes, nnr, decision) {
   assert_numeric(all_sizes, any.missing = FALSE)
   assert_numeric(nnr, lower = 1)
   assert_logical(decision)
-  assert_numeric(nnrE, lower = 1, any.missing = FALSE)
-  assert_numeric(nnrF, lower = 1, any.missing = FALSE)
+  assert_true(length(all_sizes) == length(decision))
 
+  Nmax <- max(nnr)
+  sim <- length(all_sizes)
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
     PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
