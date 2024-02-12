@@ -31,7 +31,7 @@ maximum sample size)
 \item \code{PrEarlyFut}: probability of for Early Stop decision
 \item \code{PrEfficacy}: probability of Go decision
 \item \code{PrFutility}: probability of Stop decision
-\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+\item \code{PrGrayZone}: probability of Gray Zone decision
 }
 }
 \description{
