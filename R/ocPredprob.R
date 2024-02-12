@@ -229,7 +229,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
   assert_numeric(nnr, lower = 1)
   assert_logical(decision)
   assert_numeric(nnrE, lower = 1, any.missing = FALSE)
-  assert_numeric(nnrE, lower = 1, any.missing = FALSE)
+  assert_numeric(nnrF, lower = 1, any.missing = FALSE)
 
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
