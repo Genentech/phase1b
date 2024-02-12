@@ -199,7 +199,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' @typed all_sizes : numeric
 #'  Sample sizes of all simulated `length(sim)` times if `dist` applied.
 #' @typed decision : numeric
-#'  Go, Stop or Gray Zine decisions of all looks simulated `length(sim)` times.
+#'  Go (`TRUE`), Stop (`FALSE`) or Gray Zone (`NA`) decisions of all trials.
 #' @typed nnrE : numeric
 #'  Looks with random distance, if applied on `nnE`.
 #' @typed nnrF : numeric
