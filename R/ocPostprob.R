@@ -63,7 +63,6 @@ h_get_looks <- function(dist, nnE, nnF) {
 
   assert_numeric(nnE)
   assert_numeric(nnF)
-  assert_numeric(nn)
   assert_numeric(dist)
 
   nnr <- nn + c(dist, 0)
