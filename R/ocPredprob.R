@@ -197,7 +197,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #'
 #' @inherit h_get_decision_one_predprob
 #' @typed all_sizes : numeric
-#'  Sample sizes of all simulated `length(sim)` times if `dist` applied.
+#'  Sample sizes of all trials.
 #' @typed decision : numeric
 #'  Go (`TRUE`), Stop (`FALSE`) or Gray Zone (`NA`) decisions of all trials.
 #' @typed nnrE : numeric
