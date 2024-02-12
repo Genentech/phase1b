@@ -2,16 +2,16 @@
 % Please edit documentation in R/ocPredprob.R
 \name{h_get_oc_predprob}
 \alias{h_get_oc_predprob}
-\title{Creating list for operating characteristics}
+\title{Creating list for operating characteristics of \code{ocPredprob}}
 \usage{
 h_get_oc_predprob(all_sizes, nnr, decision, nnrE, nnrF)
 }
 \arguments{
-\item{all_sizes}{(\code{numeric}):\cr Sample sizes of all simulated \code{length(sim)} times if \code{dist} applied.}
+\item{all_sizes}{(\code{numeric}):\cr Sample sizes of all trials.}
 
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE} and \code{nnF}.}
 
-\item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zine decisions of all looks simulated \code{length(sim)} times.}
+\item{decision}{(\code{numeric}):\cr Go (\code{TRUE}), Stop (\code{FALSE}) or Gray Zone (\code{NA}) decisions of all trials.}
 
 \item{nnrE}{(\code{numeric}):\cr Looks with random distance, if applied on \code{nnE}.}
 
