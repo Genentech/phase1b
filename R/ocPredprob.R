@@ -193,7 +193,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   )
 }
 
-#' Creating list for operating characteristics
+#' Creating list for operating characteristics of `ocPredprob`
 #'
 #' @inherit h_get_decision_one_predprob
 #' @typed all_sizes : numeric
