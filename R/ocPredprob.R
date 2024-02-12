@@ -218,7 +218,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - `PrEarlyFut`: probability of for Early Stop decision
 #' - `PrEfficacy`: probability of Go decision
 #' - `PrFutility`: probability of Stop decision
-#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+#' - `PrGrayZone`: probability of Gray Zone decision
 #'
 #' @keywords internal
 h_get_oc_predprob <- function(all_sizes, nnr, decision, nnrE, nnrF) {
