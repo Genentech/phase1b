@@ -233,133 +233,161 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
   )
 }
 
-#' Calculate operating characteristics for predictive probability method
-#' (gray zone allowed in the final analysis)
+#' Operating Characteristics for Predictive Probability method
 #'
-#' Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
-#' successful trial is larger than phiU, and stopped for futility if it is below
-#' phiL. A trial is successful if after the maximum number of patients the
-#' posterior probability of the treatment having more than p0 response rate is
-#' above tT. Otherwise the decision is "failure". In this case, there is no gray zone.
+#' @description `r lifecycle::badge("experimental")`
 #'
-#' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-#' p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
-#' probability of an unsuccessful trial is larger than phiFu. In this case, the
-#' decision is "failure" when the posterior probability of having the treatment
-#' response rate at most p1 is above tFu at the maximum number of patients.
+#' Calculate operating characteristics for predictive probability method.
 #'
-#' Returned operating characteristics in a matrix include:
-#' ExpectedN: expected number of patients in the trials
-#' PrStopEarly: probability to stop the trial early (before reaching the
+#' It is assumed that the true response rate is `truep`. Trials can stop for Futility
+#' or Efficacy. Trials can also stop at Interim or Final for Futility or Efficacy.
+#'
+#' There are two variations of decision rule, Decision 1 and Decision 2, to
+#' evaluate decision at Interim or Final, for Futility or Efficacy. Decision 1 is
+#' used when `decision1 == TRUE` which is the default setting.
+#'
+#' The criteria for Decision 1 for Interim looks are :
+#' - interim GO =  P(successful trial at final) > phiU
+#' - interim STOP = P(successful trial at final) < phiL
+#'
+#' The criteria for Decision 1 for Final looks are:
+#' - final GO = P(truep > p0 | data) => tT
+#' - final STOP = P(truep > p0 | data ) < tT
+#'
+#' The criteria for Decision 2 for Interim looks are :
+#' - Interim GO : P ( success at final) > phiU
+#' - Interim STOP : P (failure at final ) > phiFu
+#'
+#' The criteria for Decision 2 for Futility looks are :
+#' - Final GO = P(truep > p0) > tT
+#' - Final STOP = P(truep < p1) > tF
+#'
+#' Resulting operating characteristics include the following:
+#'
+#' - `ExpectedN`: expected number of patients in the trials
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
 #' maximum sample size)
-#' PrEarlyEff: probability to decide for efficacy early
-#' PrEarlyFut: probability to decide for futility early
-#' PrEfficacy: probability to decide for efficacy
-#' PrFutility: probability to decide for futility
-#' PrGrayZone: probability of no decision at the end ("gray zone")
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of for Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #'
-#' @param nn vector of look locations for efficacy
-#' (if futility looks should be different, please specify also \code{nnF})
-#' @param p true rate (scenario)
-#' @param p0 threshold on the response rate
-#' @param p1 futility threshold on the response rate. Specify only when decision rule 2 is used.
-#' @param tT threshold for the probability to be above the response rate p0
-#' at the end of the trial
-#' @param tFu threshold for the probability to be under the response rate p1
-#' at the end of the trial. Specify only when decision rule 2 is used.
-#' @param phiL lower threshold on the predictive probability
-#' @param phiU upper threshold on the predictive probability
-#' @param phiFu threshold on the predictive probability for futility. Specify only
-#' when decision rule 2 is used. phiL argument should be skipped in this case.
-#' @param parE beta parameters for the prior on the treatment proportion
-#' @param ns number of simulations
-#' @param nr generate random look locations? (not default)
-#' @param d distance for random looks around the look locations in \code{nn}
-#' @param nnF vector of look locations for futility
-#' (default: same as efficacy)
+#' @inheritParams h_get_decision_one_predprob
+#' @inheritParams h_get_decision_two_predprob
+#' @typed wiggle : flag
+#'  generate random look locations (not default).
+#'  if `TRUE`, optional to specify `dist` (see @details).
+#' @typed decision1 : flag
+#'  Flag if `decision1 = TRUE` then Decision 1 will be used.
+#'
+#' @details
+#' `ExpectedN` is an average of the simulated sample sizes.
+#'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`.
+#'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
+#'  As default, `nnF` is set to the identical looks of `nnE`, and if `wiggle = TRUE`, all looks are the same, e.g.
+#'  `nnE = nnF` when wiggle and distance is applied.
+#'
 #' @return A list with the following elements:
-#' oc: matrix with operating characteristics (see Details section)
-#' Decision: vector of the decisions made in the simulated trials
-#' (\code{TRUE} for success, \code{FALSE} for failure)
-#' SampleSize: vector of the sample sizes in the simulated trials
-#' nn: vector of look locations
-#' nnE: vector of efficacy look locations
-#' nnF: vector of futility look locations
-#' params: multiple parameters
 #'
-#' @example examples/ocPredprob.r
-#' @export
-ocPredprob <- function(nn, p, p0, p1 = p0, tT, tFu = 1 - tT, phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
+#' - `oc`: matrix with operating characteristics (see @details section)
+#' - `nn`: vector of look locations that was supplied
+#' - `nnE`: vector of Efficacy look locations
+#' - `nnF`: vector of Futility look locations
+#' - `params`: multiple parameters
+#' - `decision1` : flag `TRUE` to indicate that Decision 1 was used
+#'
+#' @export examples/ocPredprob.R
+#'
+ocPredprob <- function(nnE,
+                       truep,
+                       p0,
+                       p1 = p0,
+                       tT = 1 - tF,
+                       tF = 1 - tT,
+                       phiL = 1 - phiFu,
+                       phiU,
+                       phiFu = 1 - phiL,
                        parE = c(1, 1),
-                       ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  # Calculate operating characteristics via simulation
-  # nn: vector of look locations
-  # s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  #    during trial if continuing (NA)
+                       sim = 50000,
+                       wiggle = FALSE,
+                       nnF = nnE,
+                       decision1 = TRUE) {
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiFu, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_flag(decision1)
 
-  if (phiL + phiFu != 1) {
-    warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
-  }
-
-  nnE <- sort(nn)
-  nnF <- sort(nnF)
-  s <- rep(NA, ns)
-  n <- s
   nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn)
-  Nstart <- nn[1]
-  Nmax <- nn[nL]
-
-
-  if (nr && is.null(d)) {
-    # set parameter d for randomly generating look locations
-    d <- floor(min(nn - c(0, nn[-nL])) / 2)
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  nnr <- nn
-  nnrE <- nnE
-  nnrF <- nnF
-  for (k in 1:ns) {
-    # simulate a clinical trial ns times
-    if (nr && (d > 0)) {
-      # randomly generate look locations
-      dd <- sample(-d:d,
-        size = nL - 1, replace = TRUE,
-        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      # if we have more than one look in nnF and nnE, we don't wiggle
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      dist <- 0
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- if (decision1) {
+      h_get_decision_one_predprob(
+        nnr = nnr,
+        truep = truep,
+        p0 = p0,
+        parE = parE,
+        nnE = nnrE,
+        nnF = nnrF,
+        tT = tT,
+        phiU = phiU,
+        phiL = phiL
       )
-      nnr <- nn + c(dd, 0)
-      nnrE <- nnr[nn %in% nnE]
-      nnrF <- nnr[nn %in% nnF]
+    } else {
+      h_get_decision_two_predprob(
+        nnr = nnr,
+        truep = truep,
+        p0 = p0,
+        p1 = p1,
+        parE = parE,
+        nnE = nnrE,
+        nnF = nnrF,
+        tT = tT,
+        tF = tF,
+        phiFu = phiFu,
+        phiU = phiU
+      )
     }
-    x <- stats::rbinom(Nmax, 1, p)
-    j <- 1
-    i <- nnr[j]
-    while (is.na(s[k]) && (j <= length(nnr))) {
-      if (i %in% nnrF) {
-        qL <- 1 - predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p1, thetaT = 1 - tFu, parE = parE)$result
-
-        s[k] <- ifelse(qL > phiFu, FALSE, NA)
-      }
-      if (i %in% nnrE) {
-        q <- predprob(x = sum(x[1:i]), n = i, Nmax = Nmax, p = p0, thetaT = tT, parE = parE)$result
-
-        s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), TRUE, s[k])
-      }
-      n[k] <- i
-      j <- j + 1
-      i <- nnr[j]
-    }
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
   }
-  oc <- cbind(
-    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
-    PrEfficacy = sum(s, na.rm = TRUE) / ns,
-    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
-    PrGrayZone = sum(is.na(s) / ns)
-  )
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
-    nn = nn, nnE = nnE, nnF = nnF,
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
-  ))
+  )
 }
