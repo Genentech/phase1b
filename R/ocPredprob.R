@@ -193,6 +193,46 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   )
 }
 
+#' Creating list for operating characteristics of `ocPredprob`
+#'
+#' @inherit h_get_decision_one_predprob
+#' @typed all_sizes : numeric
+#'  Sample sizes of all trials.
+#' @typed decision : numeric
+#'  Go (`TRUE`), Stop (`FALSE`) or Gray Zone (`NA`) decisions of all trials.
+#'
+#' @return A list of results containing :
+#'
+#' - `ExpectedN`: expected number of patients in the trials
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of for Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability of Gray Zone decision
+#'
+#' @keywords internal
+h_get_oc_predprob <- function(all_sizes, nnr, decision) {
+  assert_numeric(all_sizes, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1)
+  assert_logical(decision, len = length(all_sizes))
+  assert_true(length(all_sizes) == length(decision))
+
+  Nmax <- max(nnr)
+  sim <- length(all_sizes)
+  data.frame(
+    ExpectedN = mean(all_sizes, na.rm = TRUE),
+    PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
+    # Note: Below we use `sum` instead of `mean` because we also count trials with a decision `NA` outcome.
+    PrEarlyEff = sum(decision * (all_sizes < Nmax), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < Nmax), na.rm = TRUE) / sim,
+    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
+    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
+    PrGrayZone = sum(is.na(decision) / sim)
+  )
+}
+
 #' Calculate operating characteristics for predictive probability method
 #' (gray zone allowed in the final analysis)
 #'

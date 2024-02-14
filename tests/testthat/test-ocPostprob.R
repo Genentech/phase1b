@@ -75,11 +75,15 @@ test_that("the probability results of h_get_oc are less than 1", {
   set.seed(1989)
   oc <- h_get_oc(
     all_sizes = sample(c(11, 14, 20), size = 10000, replace = TRUE),
+    nnr = c(11, 14, 20),
     decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)
   )
-  expect_true(oc$PrStopEarly && oc$PrFutility && oc$PrEarlyEff && oc$PrEfficacy < 1)
+  expect_true(oc$PrStopEarly < 1)
+  expect_true(oc$PrFutility < 1)
+  expect_true(oc$PrEarlyEff < 1)
+  expect_true(oc$PrEfficacy < 1)
 })
 
 test_that("the ExpectedN is within range based on vector of looks", {
@@ -87,6 +91,7 @@ test_that("the ExpectedN is within range based on vector of looks", {
   all_sizes <- sample(c(11, 14, 20), size = 10000, replace = TRUE)
   oc <- h_get_oc(
     all_sizes = all_sizes,
+    nnr = c(11, 14, 20),
     decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
     nnrE = c(11, 14, 20),
     nnrF = c(11, 14, 20)

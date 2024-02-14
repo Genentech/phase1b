@@ -59,11 +59,11 @@ h_get_distance <- function(nn) {
 #' @keywords internal
 #'
 h_get_looks <- function(dist, nnE, nnF) {
+  assert_numeric(dist)
   assert_numeric(nnE)
   assert_numeric(nnF)
+
   nn <- unique(c(nnE, nnF))
-  assert_numeric(nn)
-  assert_numeric(dist)
   nnr <- nn + c(dist, 0)
   list(
     nnrE = nnr[nn %in% nnE],
@@ -100,12 +100,22 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @keywords internal
 #'
 h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
-  index_look <- 1
   assert_numeric(nnr)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+
+  Nmax <- max(nnr)
+  index_look <- 1
   size_look <- nnr[index_look]
   all_sizes <- decision <- NA
-  assert_number(truep, lower = 0, upper = 1)
-  response <- stats::rbinom(max(nnr), size = 1, truep)
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+
   while (is.na(decision) && index_look <= length(nnr)) {
     if (size_look %in% nnF) {
       qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
@@ -154,16 +164,19 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #' @keywords internal
 #'
 h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
-  sim <- length(all_sizes)
-  assert_logical(decision, len = sim)
   assert_numeric(all_sizes)
+  assert_numeric(nnr, any.missing = FALSE)
+  assert_logical(decision, len = length(all_sizes))
   assert_numeric(nnrE, lower = 0, upper = max(nnrE))
   assert_numeric(nnrF, lower = 0, upper = max(nnrF))
+
+  sim <- length(all_sizes)
+  Nmax <- max(nnr)
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
-    PrStopEarly = mean(all_sizes < max(nnrF), na.rm = TRUE),
-    PrEarlyEff = sum(decision * (all_sizes < max(nnrE)), na.rm = TRUE) / sim,
-    PrEarlyFut = sum((1 - decision) * (all_sizes < max(nnrF)), na.rm = TRUE) / sim,
+    PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
+    PrEarlyEff = sum(decision * (all_sizes < Nmax), na.rm = TRUE) / sim,
+    PrEarlyFut = sum((1 - decision) * (all_sizes < Nmax), na.rm = TRUE) / sim,
     PrEfficacy = sum(decision, na.rm = TRUE) / sim,
     PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
     PrGrayZone = sum(is.na(decision)) / sim
