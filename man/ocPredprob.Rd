@@ -118,3 +118,173 @@ If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note tha
 As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
 \code{nnE = nnF} when wiggle and distance is applied.
 }
+\examples{
+# For three looks of 10, 20 and 30 we have the following assumptions :
+# True response rate or truep of the treatment group = 40\%
+# The following are the Final Stop rules respectively :
+# Final look for Efficacy: Pr( response rate > 25\% )> 60\%
+# Final look for Futility: Pr( response rate < 25\% )< 60\%
+# Prior of treatment arm parE = Beta(1,1).
+
+set.seed(20)
+result <- ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.4,
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 100,
+  wiggle = FALSE,
+  decision1 = TRUE
+)
+result$oc
+
+# For when random distance is allowed, i.e. `wiggle = TRUE` :
+ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.6,
+  p0 = 0.2, # no p1 as this is decision 1
+  tT = 0.6, # no tF as it's for decision 2
+  phiL = 0.5,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 20),
+  decision1 = TRUE
+)
+
+# For Decision 2, where the Futility stop rules in interim and final are
+# P(failure at final) > PhiFu
+# P(response rate > p1) > tF
+ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  tF = 0.4,
+  phiL = 0.5,
+  phiFu = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20),
+  decision1 = FALSE
+)
+
+# Separate Futility and Efficacy looks at interim and final can be performed:
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.5,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 15, 20),
+  decision1 = TRUE
+)
+
+# Separate Futility and Efficacy looks at interim and final can be performed:
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.5,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 15, 20),
+  decision1 = TRUE
+)
+
+# Separate Futility and Efficacy looks at interim and final can be performed:
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.5,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = 30,
+  decision1 = TRUE
+)
+
+
+
+# nnE,
+# truep,
+# p0,
+# p1 = p0,
+# tT = 1 - tF,
+# tF = 1 - tT,
+# phiL = 1 - phiFu,
+# phiU,
+# phiFu = 1 - phiL,
+# parE = c(1, 1),
+# sim = 50000,
+# wiggle = FALSE,
+# nnF = nnE,
+# decision1 = TRUE)
+
+
+# this call will generate d (distance for random looks around the look locations)
+# based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
+
+res2 <- ocPredprob(c(10, 20, 30), 0.4,
+  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
+  parE = c(1, 1), ns = 100, nr = TRUE
+)
+res2$oc
+
+# now d is specified. note that d has to be a positive value;
+res3 <- ocPredprob(c(10, 20, 30), 0.4,
+  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
+  parE = c(1, 1), ns = 100, nr = TRUE, d = 5
+)
+res3$oc
+
+
+# finally, we can also have separate specification of efficacy and futility analyses. E.g.
+# here have futility decisions only at the final analysis:
+
+
+res4 <- ocPredprob(c(10, 20, 30), 0.4,
+  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
+  parE = c(1, 1), ns = 100, nr = TRUE, d = 5, nnF = c(30)
+)
+res4$oc
+# compared to res3, we see that there is no early futility stopping anymore,
+# and the overall probability for stopping for futility (which is the type II error here)
+# is much lower.
+
+# 2)
+# to examine operating characteristics of a phase Ib design with a seperate
+# rule for futility at final analysis
+# denote treatment response rate as RRS
+# trial success is defined as: P(RRS>p0)>tT
+# trial failure is defined as: P(RRS<p1)>tFu
+# (gray zone could occur in the final analysis)
+
+# when tFu=1-tT and phiFu=1-phiL, this decision rule (res5) is the same as the res1
+
+set.seed(20)
+res5 <- ocPredprob(c(10, 20, 30),
+  p = 0.4, p0 = 0.25, tT = 0.6, tFu = 0.4, phiFu = 0.8,
+  phiU = 0.8, parE = c(1, 1), ns = 100
+)
+res5$oc
+}

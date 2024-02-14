@@ -301,8 +301,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - `params`: multiple parameters
 #' - `decision1` : flag `TRUE` to indicate that Decision 1 was used
 #'
-#' @export examples/ocPredprob.R
-#'
+#' @example examples/ocPredprob.R
+#' @export
 ocPredprob <- function(nnE,
                        truep,
                        p0,
@@ -350,7 +350,7 @@ ocPredprob <- function(nnE,
       nnrE <- nnE
       nnrF <- nnF
     }
-    nnr <- unique(c(nnrE, nnrF))
+    nnr <- unique(sort(c(nnrE, nnrF)))
     tmp <- if (decision1) {
       h_get_decision_one_predprob(
         nnr = nnr,
@@ -381,7 +381,7 @@ ocPredprob <- function(nnE,
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision)
   list(
     oc = oc,
     Decision = decision,
