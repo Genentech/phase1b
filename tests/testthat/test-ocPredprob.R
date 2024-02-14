@@ -45,9 +45,7 @@ test_that("h_get_oc_predprob gives correct results", {
   oc <- h_get_oc_predprob(
     all_sizes = sample(c(11, 14, 20), size = 1000, replace = TRUE),
     nnr = c(10, 20, 30),
-    decision = sample(c(NA, TRUE, FALSE), size = 1000, replace = TRUE),
-    nnrE = c(11, 14, 20),
-    nnrF = c(11, 14, 20)
+    decision = sample(c(NA, TRUE, FALSE), size = 1000, replace = TRUE)
   )
   expect_equal(oc$PrStopEarly, 1, tolerance = 1e-4)
   expect_true(oc$PrFutility < 1)

@@ -216,7 +216,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 h_get_oc_predprob <- function(all_sizes, nnr, decision) {
   assert_numeric(all_sizes, any.missing = FALSE)
   assert_numeric(nnr, lower = 1)
-  assert_logical(decision, length = all_sizes)
+  assert_logical(decision, len = length(all_sizes))
   assert_true(length(all_sizes) == length(decision))
 
   Nmax <- max(nnr)
