@@ -32,12 +32,18 @@ ocPredprob(
 
 \item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
+
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
+
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
+
+\item{sim}{(\code{number}):\cr number of simulations.}
 
 \item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
 if \code{TRUE}, optional to specify \code{dist} (see @details).}
@@ -77,8 +83,8 @@ The criteria for Decision 1 for Interim looks are :
 
 The criteria for Decision 1 for Final looks are:
 \itemize{
-\item final GO = P(truep > p0 | data) => tT
-\item final STOP = P(truep > p0 | data ) < tT
+\item Final GO = P(truep > p0 | data) => tT
+\item Final STOP = P(truep > p0 | data ) < tT
 }
 
 The criteria for Decision 2 for Interim looks are :

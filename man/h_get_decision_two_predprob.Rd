@@ -36,6 +36,10 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
+
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
+
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 }
 \value{

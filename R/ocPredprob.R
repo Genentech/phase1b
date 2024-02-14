@@ -106,10 +106,12 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 #' random looks `all_sizes` for `decision1 == FALSE`.
 #'
 #' @inheritParams h_get_decision_one_predprob
-#' @typed phiU : number
+#' @typed phiFu : number
 #'  upper threshold on the predictive probability.
 #' @typed p1 : number
 #'  upper Futility threshold of response rate.
+#' @typed tF : number
+#'  threshold of which assumed `truep` does not exceed threshold of `p1`.
 #'
 #' @return A list with the following elements:
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -251,8 +253,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - interim STOP = P(successful trial at final) < phiL
 #'
 #' The criteria for Decision 1 for Final looks are:
-#' - final GO = P(truep > p0 | data) => tT
-#' - final STOP = P(truep > p0 | data ) < tT
+#' - Final GO = P(truep > p0 | data) => tT
+#' - Final STOP = P(truep > p0 | data ) < tT
 #'
 #' The criteria for Decision 2 for Interim looks are :
 #' - Interim GO : P ( success at final) > phiU
@@ -275,6 +277,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #'
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_get_decision_two_predprob
+#' @typed sim : number
+#'  number of simulations.
 #' @typed wiggle : flag
 #'  generate random look locations (not default).
 #'  if `TRUE`, optional to specify `dist` (see @details).
