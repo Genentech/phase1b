@@ -5,13 +5,13 @@ date: "2024-01-08"
 editor_options:
   chunk_output_type: console
 ---
-
 ## Rule 1
 "Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
 successful trial is larger than phiU, and stopped for futility if it is below
 phiL. A trial is successful if after the maximum number of patients the
 posterior probability of the treatment having more than p0 response rate is
 above tT. Otherwise the decision is "failure". In this case, there is no gray zone."
+
 
 Translation:
 * Decision 1 says:
