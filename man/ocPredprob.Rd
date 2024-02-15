@@ -45,12 +45,11 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
-if \code{TRUE}, optional to specify \code{dist} (see @details).}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision.}
 
-\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 will be used.}
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \value{
 A list with the following elements:
@@ -84,8 +83,8 @@ The criteria for Decision 1 for Interim looks are :
 
 The criteria for Decision 1 for Final looks are:
 \itemize{
-\item Final GO = P(truep > p0 | data) => tT
-\item Final STOP = P(truep > p0 | data ) < tT
+\item Final GO = P(p > p0 | data) => tT
+\item Final STOP = P(p > p0 | data ) < tT
 }
 }
 
