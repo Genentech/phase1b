@@ -48,7 +48,7 @@ A list with the following elements:
 \item \code{nn}: vector of look locations that was supplied
 \item \code{nnE}: vector of Efficacy look locations
 \item \code{nnF}: vector of Futility look locations
-\item \code{params}: multiple parameters
+\item \code{params}: user input arguments.
 }
 }
 \description{
@@ -80,13 +80,6 @@ maximum sample size)
 \item \code{PrFutility}: probability of Stop decision
 \item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
 }
-}
-\details{
-\code{ExpectedN} is an average of the simulated sample sizes.
-If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
-If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
-As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
-\code{nnE = nnF} when wiggle and distance is applied.
 }
 \examples{
 # For three looks of 10, 20 and 30 we have the following assumptions :

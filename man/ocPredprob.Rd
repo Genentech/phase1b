@@ -8,11 +8,11 @@ ocPredprob(
   nnE,
   truep,
   p0,
+  phiU,
   p1 = p0,
   tT = 1 - tF,
   tF = 1 - tT,
   phiL = 1 - phiFu,
-  phiU,
   phiFu = 1 - phiL,
   parE = c(1, 1),
   sim = 50000,
@@ -22,11 +22,14 @@ ocPredprob(
 )
 }
 \arguments{
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision.}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnE) = 1} then no Efficacy looks are performed.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
+
+\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{p1}{(\code{number}):\cr upper Futility threshold of response rate.}
 
@@ -36,8 +39,6 @@ ocPredprob(
 
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
-\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
-
 \item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
@@ -45,22 +46,36 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
-if \code{TRUE}, optional to specify \code{dist} (see @details).}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default). If \code{wiggle = TRUE} and \code{nnE = nnF}, then all wiggled
+looks are the same between \code{nnE} and \code{nnF}.}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnF) = 1} then no Futility looks are performed.}
 
-\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 will be used.}
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \value{
 A list with the following elements:
 \itemize{
-\item \code{oc}: matrix with operating characteristics (see @details section)
-\item \code{nn}: vector of look locations that was supplied
-\item \code{nnE}: vector of Efficacy look locations
-\item \code{nnF}: vector of Futility look locations
-\item \code{params}: multiple parameters
-\item \code{decision1} : flag \code{TRUE} to indicate that Decision 1 was used
+\item \code{oc}: matrix with operating characteristics with the following details:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
+maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of for Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
+\item \code{Decision} : numeric of results with \code{TRUE} as Go decision, \code{FALSE} as Stop and \code{NA} as gray zone.
+\item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{input_nnE} : user input for \code{nnE}.
+\item \code{input_nnF} : user input for \code{nnF}.
+\item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
+\item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
+\item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
+\item \code{params} : all user input arguments.
 }
 }
 \description{
@@ -84,8 +99,8 @@ The criteria for Decision 1 for Interim looks are :
 
 The criteria for Decision 1 for Final looks are:
 \itemize{
-\item Final GO = P(truep > p0 | data) => tT
-\item Final STOP = P(truep > p0 | data ) < tT
+\item Final GO = P(p > p0 | data) => tT
+\item Final STOP = P(p > p0 | data ) < tT
 }
 }
 
@@ -102,24 +117,120 @@ The criteria for Decision 2 for Futility looks are :
 \item Final GO = P(truep > p0) > tT
 \item Final STOP = P(truep < p1) > tF
 }
+}
+}
+\examples{
+# Here we illustrate an example for Decision 1 with the following assumptions :
+# True response rate or truep of the treatment group = 40\%
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( response rate > 25\% ) > 60\%
+# - Final look for Futility: Pr( response rate < 25\% ) < 60\%
+# - Interim look for Efficacy: Pr( success at final ) > 80\%
+# - Interim look for Futility: Pr( failure at final ) < 20\%, or > 80 \% for Decision 2
+# We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
-Resulting operating characteristics include the following:
-\itemize{
-\item \code{ExpectedN}: expected number of patients in the trials
-\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
-maximum sample size)
-\item \code{PrEarlyEff}: probability of Early Go decision
-\item \code{PrEarlyFut}: probability of for Early Stop decision
-\item \code{PrEfficacy}: probability of Go decision
-\item \code{PrFutility}: probability of Stop decision
-\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
-}
-}
-}
-\details{
-\code{ExpectedN} is an average of the simulated sample sizes.
-If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
-If \code{nnF = NULL}, no Futility or decision to Stop will be analysed. Note that \code{nnF = c(0)} is equivalent.
-As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code{wiggle = TRUE}, all looks are the same, e.g.
-\code{nnE = nnF} when wiggle and distance is applied.
+# Decision 1 with no wiggle.
+set.seed(20)
+result <- ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.4,
+  p0 = 0.25,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 100,
+  wiggle = FALSE,
+  decision1 = TRUE
+)
+result$oc
+
+# Deision 1 with wiggle.
+ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.6,
+  p0 = 0.2,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 20),
+  decision1 = TRUE
+)
+
+# Decision 1 with separate Futility and Efficacy looks at interim and final without wiggle.
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 15, 20),
+  decision1 = TRUE
+)
+
+# Decision 1 with separate Futility and Efficacy looks at interim and final with wiggle.
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 15, 20),
+  decision1 = TRUE
+)
+
+# Here we illustrate an example for Decision 2 with the following assumptions :
+# True response rate or truep of the treatment group = 40\%
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( response rate > 25\% ) > 60\%
+# - Final look for Futility: Pr( response rate < 25\% ) < 60\%
+# - Interim look for Efficacy: Pr( success at final ) > 80\%
+# - Interim look for Futility: Pr( failure at final ) > 80 \% for Decision 2
+# We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
+
+# Decision 2 without wiggle.
+ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  tF = 0.4, # Futility rule at Final: P(response rate > p1) > tF
+  phiU = 0.2, # Futility rule at Interim P(failure at final) > PhiFu
+  phiFu = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20),
+  decision1 = FALSE
+)
+
+# Decision 2 with wiggle and with Futility only at final with non-uniform beta prior parE.
+ocPredprob(
+  nnE = c(10, 25, 30),
+  truep = 0.6,
+  p0 = 0.2,
+  p1 = 0.2,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(11, 19),
+  sim = 50,
+  wiggle = TRUE,
+  nnF = 30,
+  decision1 = FALSE
+)
 }

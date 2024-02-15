@@ -227,14 +227,8 @@ h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 #' - `nn`: vector of look locations that was supplied
 #' - `nnE`: vector of Efficacy look locations
 #' - `nnF`: vector of Futility look locations
-#' - `params`: multiple parameters
-#'
-#' @details
-#' `ExpectedN` is an average of the simulated sample sizes.
-#'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`.
-#'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
-#'  As default, `nnF` is set to the identical looks of `nnE`, and if `wiggle = TRUE`, all looks are the same, e.g.
-#'  `nnE = nnF` when wiggle and distance is applied.
+#' - `params`: user input arguments.
+#
 #'
 #' @example examples/ocPostprob.R
 #' @export
@@ -275,11 +269,9 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     Decision = decision,
     SampleSize = all_sizes,
     union_nn = nnr,
-    input_nnE = nnE,
-    input_nnF = nnF,
-    wiggled_nnE = nnrE,
-    wiggled_nnF = nnrF,
-    wiggle_dist = dist,
+    wiggled_nnrE = nnrE,
+    wiggled_nnrF = nnrF,
+    dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }

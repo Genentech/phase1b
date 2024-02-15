@@ -55,7 +55,7 @@ test_that("h_get_oc_predprob gives correct results", {
   expect_number(oc$ExpectedN, lower = 11, upper = 20)
 })
 
-# oc_Predprob
+# oc_Predprob ----
 test_that("the sum of Eff, Fut, Gray zone probability is 1", {
   set.seed(1989)
   expect_warning(results <- ocPredprob(
@@ -89,7 +89,6 @@ test_that("the PrFutility increases with increase futility looks", {
     wiggle = FALSE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_one_fut$oc$PrFutility
   expect_warning(result_three_fut <- ocPredprob(
     nnE = c(10, 20),
     truep = 0.4,
@@ -103,7 +102,6 @@ test_that("the PrFutility increases with increase futility looks", {
     wiggle = FALSE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_three_fut$oc$PrFutility
   expect_true(result_three_fut$oc$PrFutility > result_one_fut$oc$PrFutility)
 })
 
@@ -124,8 +122,6 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     nnF = c(10, 20),
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
-
-  result_eff$oc$PrEfficacy
   expect_warning(result_more_eff <- ocPredprob(
     nnE = c(10, 20, 40),
     truep = 0.6,
@@ -141,6 +137,5 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     nnF = c(10, 20),
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_more_eff$oc$PrEfficacy
   expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
 })

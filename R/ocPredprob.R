@@ -13,9 +13,11 @@
 #'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
 #' @typed nnE : numeric
-#'  sample size or sizes where study can be stopped for Efficacy decision.
+#'  sample size or sizes where study can be stopped for Efficacy decision. If `0` or `NULL` and
+#'  `length(nnE) = 1` then no Efficacy looks are performed.
 #' @typed nnF : numeric
-#'  sample size or sizes where study can be stopped for Efficacy decision.
+#'  sample size or sizes where study can be stopped for Efficacy decision. If `0` or `NULL` and
+#'  `length(nnF) = 1` then no Futility looks are performed.
 #' @typed tT : number
 #'  threshold of which assumed `truep` exceeds acceptable threshold of `p0`.
 #' @typed phiU : number
@@ -266,52 +268,45 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - Final GO = P(truep > p0) > tT
 #' - Final STOP = P(truep < p1) > tF
 #'
-#' Resulting operating characteristics include the following:
-#'
-#' - `ExpectedN`: expected number of patients in the trials
-#' - `PrStopEarly`: probability to stop the trial early (before reaching the
-#' maximum sample size)
-#' - `PrEarlyEff`: probability of Early Go decision
-#' - `PrEarlyFut`: probability of for Early Stop decision
-#' - `PrEfficacy`: probability of Go decision
-#' - `PrFutility`: probability of Stop decision
-#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
-#'
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_get_decision_two_predprob
 #' @typed sim : number
 #'  number of simulations.
 #' @typed wiggle : flag
-#'  generate random look locations (not default).
+#'  generate random look locations (not default). If `wiggle = TRUE` and `nnE = nnF`, then all wiggled
+#'  looks are the same between `nnE` and `nnF`.
 #' @typed decision1 : flag
 #'  Flag if `decision1 = TRUE` then Decision 1 rules will be used, otherwise Decision 2 rules will be used.
 #'
-#' @details
-#' `ExpectedN` is an average of the simulated sample sizes.
-#'  If `wiggle = TRUE`, one can specify `dist`, though the algorithm will generate it if `dist = NULL`.
-#'  If `nnF = NULL`, no Futility or decision to Stop will be analysed. Note that `nnF = c(0)` is equivalent.
-#'  As default, `nnF` is set to the identical looks of `nnE`, and if `wiggle = TRUE`, all looks are the same, e.g.
-#'  `nnE = nnF` when wiggle and distance is applied.
-#'
 #' @return A list with the following elements:
-#'
-#' - `oc`: matrix with operating characteristics (see @details section)
-#' - `nn`: vector of look locations that was supplied
-#' - `nnE`: vector of Efficacy look locations
-#' - `nnF`: vector of Futility look locations
-#' - `params`: multiple parameters
-#' - `decision1` : flag `TRUE` to indicate that Decision 1 was used
+#' - `oc`: matrix with operating characteristics with the following details:
+#'    - `ExpectedN`: expected number of patients in the trials
+#'    - `PrStopEarly`: probability to stop the trial early (before reaching the
+#'                    maximum sample size)
+#'    - `PrEarlyEff`: probability of Early Go decision
+#'    - `PrEarlyFut`: probability of for Early Stop decision
+#'    - `PrEfficacy`: probability of Go decision
+#'    - `PrFutility`: probability of Stop decision
+#'    - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+#' - `Decision` : numeric of results with `TRUE` as Go decision, `FALSE` as Stop and `NA` as gray zone.
+#' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+#' - `input_nnE` : user input for `nnE`.
+#' - `input_nnF` : user input for `nnF`.
+#' - `wiggled_nnE` : user input for `nnE` with random distance applied.
+#' - `wiggled_nnF` : user input for `nnF` with random distance applied.
+#' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
+#' - `params` : all user input arguments.
 #'
 #' @example examples/ocPredprob.R
 #' @export
 ocPredprob <- function(nnE,
                        truep,
                        p0,
+                       phiU,
                        p1 = p0,
                        tT = 1 - tF,
                        tF = 1 - tT,
                        phiL = 1 - phiFu,
-                       phiU,
                        phiFu = 1 - phiL,
                        parE = c(1, 1),
                        sim = 50000,
@@ -387,12 +382,9 @@ ocPredprob <- function(nnE,
     oc = oc,
     Decision = decision,
     SampleSize = all_sizes,
-    union_nn = nnr,
-    input_nnE = nnE,
-    input_nnF = nnF,
-    wiggled_nnE = nnrE,
-    wiggled_nnF = nnrF,
-    wiggle_dist = dist,
+    wiggled_nnrE = nnrE,
+    wiggled_nnrF = nnrF,
+    dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
