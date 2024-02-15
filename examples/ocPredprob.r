@@ -6,6 +6,7 @@
 # - Interim look for Efficacy: Pr( success at final ) > 80%
 # - Interim look for Futility: Pr( failure at final ) < 20%, or > 80 % for Decision 2
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
+
 set.seed(20)
 result <- ocPredprob(
   nnE = c(10, 20),
