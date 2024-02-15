@@ -284,7 +284,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' @typed wiggle : flag
 #'  generate random look locations (not default).
 #' @typed decision1 : flag
-#'  Flag if `decision1 = TRUE` then Decision 1 will be used.
+#'  Flag if `decision1 = TRUE` then Decision 1 rules will be used, otherwise Decision 2 rules will be used.
 #'
 #' @details
 #' `ExpectedN` is an average of the simulated sample sizes.
