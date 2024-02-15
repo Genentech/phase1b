@@ -256,8 +256,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - interim STOP = P(successful trial at final) < phiL
 #'
 #' The criteria for Decision 1 for Final looks are:
-#' - Final GO = P(p > p0 | data) => tT
-#' - Final STOP = P(p > p0 | data ) < tT
+#' - Final GO = P( response rate > p0 | data) => tT
+#' - Final STOP = P( response rate > p0 | data ) < tT
 #'
 #' ## Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
@@ -265,8 +265,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - Interim STOP : P (failure at final ) > phiFu
 #'
 #' The criteria for Decision 2 for Futility looks are :
-#' - Final GO = P(truep > p0) > tT
-#' - Final STOP = P(truep < p1) > tF
+#' - Final GO = P( response rate > p0) > tT
+#' - Final STOP = P( response rate  < p1) > tF
 #'
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_get_decision_two_predprob
