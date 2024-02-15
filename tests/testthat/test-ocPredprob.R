@@ -76,7 +76,7 @@ test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
 
 test_that("the PrFutility increases with increase futility looks", {
   set.seed(1989)
-  expect_warning(res_one_fut <- ocPredprob(
+  expect_warning(result_one_fut <- ocPredprob(
     nnE = c(10, 20),
     truep = 0.4,
     p0 = 0.25,
@@ -89,8 +89,8 @@ test_that("the PrFutility increases with increase futility looks", {
     wiggle = FALSE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  res_one_fut$oc$PrFutility
-  expect_warning(res_three_fut <- ocPredprob(
+  result_one_fut$oc$PrFutility
+  expect_warning(result_three_fut <- ocPredprob(
     nnE = c(10, 20),
     truep = 0.4,
     p0 = 0.25,
@@ -103,13 +103,13 @@ test_that("the PrFutility increases with increase futility looks", {
     wiggle = FALSE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  res_three_fut$oc$PrFutility
-  expect_true(res_three_fut$oc$PrFutility > res_one_fut$oc$PrFutility)
+  result_three_fut$oc$PrFutility
+  expect_true(result_three_fut$oc$PrFutility > result_one_fut$oc$PrFutility)
 })
 
 test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
-  expect_warning(res_eff <- ocPredprob(
+  expect_warning(result_eff <- ocPredprob(
     nnE = c(10, 20),
     truep = 0.6,
     p0 = 0.2,
@@ -125,8 +125,8 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
 
-  res_eff$oc$PrEfficacy
-  expect_warning(res_more_eff <- ocPredprob(
+  result_eff$oc$PrEfficacy
+  expect_warning(result_more_eff <- ocPredprob(
     nnE = c(10, 20, 40),
     truep = 0.6,
     p0 = 0.2,
@@ -141,6 +141,6 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     nnF = c(10, 20),
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  res_more_eff$oc$PrEfficacy
-  expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
+  result_more_eff$oc$PrEfficacy
+  expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
 })

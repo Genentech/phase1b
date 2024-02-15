@@ -248,6 +248,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' evaluate decision at Interim or Final, for Futility or Efficacy. Decision 1 is
 #' used when `decision1 == TRUE` which is the default setting.
 #'
+#' ## Decision 1:
 #' The criteria for Decision 1 for Interim looks are :
 #' - interim GO =  P(successful trial at final) > phiU
 #' - interim STOP = P(successful trial at final) < phiL
@@ -256,6 +257,7 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - Final GO = P(truep > p0 | data) => tT
 #' - Final STOP = P(truep > p0 | data ) < tT
 #'
+#' ## Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
 #' - Interim GO : P ( success at final) > phiU
 #' - Interim STOP : P (failure at final ) > phiFu

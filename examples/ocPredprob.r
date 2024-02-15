@@ -6,7 +6,6 @@
 # - Interim look for Efficacy: Pr( success at final ) > 80%
 # - Interim look for Futility: Pr( failure at final ) < 20%, or > 80 % for Decision 2
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
-
 set.seed(20)
 result <- ocPredprob(
   nnE = c(10, 20),
@@ -22,7 +21,7 @@ result <- ocPredprob(
 )
 result$oc
 
-# For when random distance is allowed, i.e. `wiggle = TRUE` :
+# For when random distance is allowed, i.e. `wiggle = TRUE`.
 ocPredprob(
   nnE = c(10, 20),
   truep = 0.6,
@@ -56,7 +55,7 @@ ocPredprob(
   decision1 = FALSE
 )
 
-# Separate Futility and Efficacy looks at interim and final can be performed:
+# Separate Futility and Efficacy looks at interim and final.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,
@@ -72,7 +71,7 @@ ocPredprob(
   decision1 = TRUE
 )
 
-# Separate Futility and Efficacy looks at interim and final can be performed:
+# Separate Futility and Efficacy looks at interim and final with wiggle.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,
@@ -88,7 +87,7 @@ ocPredprob(
   decision1 = TRUE
 )
 
-# Futility only at final with non-uniform beta prior parE:
+# Futility only at final with non-uniform beta prior parE.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,

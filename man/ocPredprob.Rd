@@ -74,6 +74,7 @@ or Efficacy. Trials can also stop at Interim or Final for Futility or Efficacy.
 There are two variations of decision rule, Decision 1 and Decision 2, to
 evaluate decision at Interim or Final, for Futility or Efficacy. Decision 1 is
 used when \code{decision1 == TRUE} which is the default setting.
+\subsection{Decision 1:}{
 
 The criteria for Decision 1 for Interim looks are :
 \itemize{
@@ -86,6 +87,9 @@ The criteria for Decision 1 for Final looks are:
 \item Final GO = P(truep > p0 | data) => tT
 \item Final STOP = P(truep > p0 | data ) < tT
 }
+}
+
+\subsection{Decision 2:}{
 
 The criteria for Decision 2 for Interim looks are :
 \itemize{
@@ -111,6 +115,7 @@ maximum sample size)
 \item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
 }
 }
+}
 \details{
 \code{ExpectedN} is an average of the simulated sample sizes.
 If \code{wiggle = TRUE}, one can specify \code{dist}, though the algorithm will generate it if \code{dist = NULL}.
@@ -127,7 +132,6 @@ As default, \code{nnF} is set to the identical looks of \code{nnE}, and if \code
 # - Interim look for Efficacy: Pr( success at final ) > 80\%
 # - Interim look for Futility: Pr( failure at final ) < 20\%, or > 80 \% for Decision 2
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
-
 set.seed(20)
 result <- ocPredprob(
   nnE = c(10, 20),
@@ -143,7 +147,7 @@ result <- ocPredprob(
 )
 result$oc
 
-# For when random distance is allowed, i.e. `wiggle = TRUE` :
+# For when random distance is allowed, i.e. `wiggle = TRUE`.
 ocPredprob(
   nnE = c(10, 20),
   truep = 0.6,
@@ -177,7 +181,7 @@ ocPredprob(
   decision1 = FALSE
 )
 
-# Separate Futility and Efficacy looks at interim and final can be performed:
+# Separate Futility and Efficacy looks at interim and final.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,
@@ -193,7 +197,7 @@ ocPredprob(
   decision1 = TRUE
 )
 
-# Separate Futility and Efficacy looks at interim and final can be performed:
+# Separate Futility and Efficacy looks at interim and final with wiggle.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,
@@ -209,7 +213,7 @@ ocPredprob(
   decision1 = TRUE
 )
 
-# Futility only at final with non-uniform beta prior parE:
+# Futility only at final with non-uniform beta prior parE.
 ocPredprob(
   nnE = c(10, 25, 30),
   truep = 0.6,
