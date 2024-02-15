@@ -254,8 +254,8 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #' - interim STOP = P(successful trial at final) < phiL
 #'
 #' The criteria for Decision 1 for Final looks are:
-#' - Final GO = P(truep > p0 | data) => tT
-#' - Final STOP = P(truep > p0 | data ) < tT
+#' - Final GO = P(p > p0 | data) => tT
+#' - Final STOP = P(p > p0 | data ) < tT
 #'
 #' ## Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
