@@ -56,7 +56,7 @@ test_that("h_get_oc_predprob gives correct results", {
 })
 
 # oc_Predprob
-test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
+test_that("the sum of Eff, Fut, Gray zone probability is 1", {
   set.seed(1989)
   expect_warning(results <- ocPredprob(
     nnE = c(10, 20),
