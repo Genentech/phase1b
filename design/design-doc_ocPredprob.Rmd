@@ -152,7 +152,6 @@ h_get_decision_one_predprob(
 )
 # (nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL)
 ```
-
 ## 2 Helper function for Decision 2
     * Decision 2 says:
     * Final GO = P(truep > p0) > tT =  when the prob of good response is high, then we have a successful trial
