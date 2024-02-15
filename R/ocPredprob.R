@@ -283,7 +283,6 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #'  number of simulations.
 #' @typed wiggle : flag
 #'  generate random look locations (not default).
-#'  if `TRUE`, optional to specify `dist` (see @details).
 #' @typed decision1 : flag
 #'  Flag if `decision1 = TRUE` then Decision 1 will be used.
 #'
