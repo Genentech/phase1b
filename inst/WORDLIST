@@ -133,6 +133,7 @@ ocPostProb
 ocPostprob
 ocPostprobDist
 ocPredprob
+ocPredprobDist
 params
 parX
 parY
