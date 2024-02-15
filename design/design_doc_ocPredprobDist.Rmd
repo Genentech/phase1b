@@ -170,6 +170,109 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
 
 # helper function for decision 2
 ```{r}
+h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) { # xS, nS, relativeDelta, deltaE, deltaF
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  index_look <- 1
+  Nmax <- max(nnr)
+  decision <- NA
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+  #' ## Decision 1:
+  #' The criteria for Decision 1 for Interim looks are :
+  #' - interim GO =  P(successful trial at final) > phiU
+  #' - interim STOP = P(successful trial at final) < phiL
+  while (is.na(decision) && index_look < length(nnr)) {
+    size_look <- nnr[index_look]
+    # x, n,
+    # xS = 0,
+    # nS = 0,
+    # Nmax,
+    # NmaxControl = 0,
+    # delta = 0,
+    # relativeDelta = FALSE,
+    # parE = c(a = 1, b = 1),
+    # weights,
+    # parS = c(a = 1, b = 1),
+    # weightsS,
+    # thetaT
+    if (size_look %in% nnE) {
+      interim_qU <- predprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = nS,
+        Nmax = Nmax,
+        NmaxControl = NmaxControl,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        thetaT = tT,
+      )$result
+      decision <- ifelse(interim_qU > phiU, FALSE, decision)
+    }
+    if (size_look %in% nnF) {
+      interim_qU <- predprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = nS,
+        Nmax = Nmax,
+        NmaxControl = NmaxControl,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        thetaT = tT,
+      )$result
+      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+    }
+    index_look <- index_look + 1
+  }
+  #' The criteria for Decision 1 for Final looks are:
+  #' - Final GO = P( RR <U+00B1> deltaE > p0 | data) => tT
+  #' - Final STOP = P(RR <U+00B1> deltaF > p0 | data ) < tT
+  if (is.na(decision)) {
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      final_eff_qU <- postprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = sum(response[1:size_look]),
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+    }
+    decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+  }
+  if (size_look %in% nnF) {
+    final_fu_qU <- 1 - postprobDist(
+      x = sum(response[1:size_look]),
+      n = size_look,
+      xS = xS,
+      nS = sum(response[1:size_look]),
+      delta = deltaE,
+      relativeDelta = relativeDelta,
+      parE = parE,
+      parS = parS
+    )
+    decision <- ifelse(final_fu_qU > tF, FALSE, decision)
+  }
+  list(
+    decision = decision,
+    all_sizes = size_look
+  )
+}
 ```
 
 
