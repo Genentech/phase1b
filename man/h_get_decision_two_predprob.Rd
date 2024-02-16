@@ -30,11 +30,17 @@ h_get_decision_two_predprob(
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision.}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnE) = 1} then no Efficacy looks are performed.}
 
-\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision.}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnF) = 1} then no Futility looks are performed.}
 
 \item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
+
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
+
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 }

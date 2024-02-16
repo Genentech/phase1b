@@ -2,158 +2,118 @@
 % Please edit documentation in R/ocPredprob.R
 \name{ocPredprob}
 \alias{ocPredprob}
-\title{Calculate operating characteristics for predictive probability method
-(gray zone allowed in the final analysis)}
+\title{Operating Characteristics for Predictive Probability method}
 \usage{
 ocPredprob(
-  nn,
-  p,
+  nnE,
+  truep,
   p0,
-  p1 = p0,
-  tT,
-  tFu = 1 - tT,
-  phiL = 1 - phiFu,
   phiU,
+  p1 = p0,
+  tT = 1 - tF,
+  tF = 1 - tT,
+  phiL = 1 - phiFu,
   phiFu = 1 - phiL,
   parE = c(1, 1),
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  sim = 50000,
+  wiggle = FALSE,
+  nnF = nnE,
+  decision1 = TRUE
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy
-(if futility looks should be different, please specify also \code{nnF})}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnE) = 1} then no Efficacy looks are performed.}
 
-\item{p}{true rate (scenario)}
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{p0}{threshold on the response rate}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p1}{futility threshold on the response rate. Specify only when decision rule 2 is used.}
+\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{tT}{threshold for the probability to be above the response rate p0
-at the end of the trial}
+\item{p1}{(\code{number}):\cr upper Futility threshold of response rate.}
 
-\item{tFu}{threshold for the probability to be under the response rate p1
-at the end of the trial. Specify only when decision rule 2 is used.}
+\item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
-\item{phiL}{lower threshold on the predictive probability}
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
 
-\item{phiU}{upper threshold on the predictive probability}
+\item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
-\item{phiFu}{threshold on the predictive probability for futility. Specify only
-when decision rule 2 is used. phiL argument should be skipped in this case.}
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{parE}{beta parameters for the prior on the treatment proportion}
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{ns}{number of simulations}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{nr}{generate random look locations? (not default)}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default). If \code{wiggle = TRUE} and \code{nnE = nnF}, then all wiggled
+looks are the same between \code{nnE} and \code{nnF}.}
 
-\item{d}{distance for random looks around the look locations in \code{nn}}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnF) = 1} then no Futility looks are performed.}
 
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \value{
 A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure)
-SampleSize: vector of the sample sizes in the simulated trials
-nn: vector of look locations
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-params: multiple parameters
+\itemize{
+\item \code{oc}: matrix with operating characteristics with the following details:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
+maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of for Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
+\item \code{Decision} : numeric of results with \code{TRUE} as Go decision, \code{FALSE} as Stop and \code{NA} as gray zone.
+\item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
+\item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
+\item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
+\item \code{params} : all user input arguments.
+}
 }
 \description{
-Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
-successful trial is larger than phiU, and stopped for futility if it is below
-phiL. A trial is successful if after the maximum number of patients the
-posterior probability of the treatment having more than p0 response rate is
-above tT. Otherwise the decision is "failure". In this case, there is no gray zone.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Calculate operating characteristics for predictive probability method.
+
+It is assumed that the true response rate is \code{truep}. Trials can stop for Futility
+or Efficacy. Trials can also stop at Interim or Final for Futility or Efficacy.
+
+There are two variations of decision rule, Decision 1 and Decision 2, to
+evaluate decision at Interim or Final, for Futility or Efficacy. Decision 1 is
+used when \code{decision1 == TRUE} which is the default setting.
+\subsection{Decision 1:}{
+
+The criteria for Decision 1 for Interim looks are :
+\itemize{
+\item interim GO =  P(successful trial at final) > phiU
+\item interim STOP = P(successful trial at final) < phiL
 }
-\details{
-Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
-probability of an unsuccessful trial is larger than phiFu. In this case, the
-decision is "failure" when the posterior probability of having the treatment
-response rate at most p1 is above tFu at the maximum number of patients.
 
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-PrStopEarly: probability to stop the trial early (before reaching the
-maximum sample size)
-PrEarlyEff: probability to decide for efficacy early
-PrEarlyFut: probability to decide for futility early
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+The criteria for Decision 1 for Final looks are:
+\itemize{
+\item Final GO = P( response rate > p0 | data) > tT
+\item Final STOP = P( response rate > p0 | data ) < tT
 }
-\examples{
-## to examine operating characteristics of a phase Ib design with 2 interim analyses
-## (sample size @ 10, 20 using predictive probability) and one final analysis (sample size @ 30);
+}
 
-# design details
-# multiple looks @ 10, 20, 30 patients
-# True response rate of the treatment group = 40\%
-# control response rate = 25\%
+\subsection{Decision 2:}{
 
-# denote treatment response rate as RRS
-# trial success is defined as: P(RRS > control) > tT
-set.seed(20)
-res1 <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, phiL = 0.2,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-res1$oc
+The criteria for Decision 2 for Interim looks are :
+\itemize{
+\item Interim GO : P ( success at final) > phiU
+\item Interim STOP : P (failure at final ) > phiFu
+}
 
-
-# this call will generate d (distance for random looks around the look locations)
-# based on "floor(min(nn - c(0,nn[-length(nn)]))/2)" as d is missing:
-
-res2 <- ocPredprob(c(10, 20, 30), 0.4,
-  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(1, 1), ns = 100, nr = TRUE
-)
-res2$oc
-
-# now d is specified. note that d has to be a positive value;
-res3 <- ocPredprob(c(10, 20, 30), 0.4,
-  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(1, 1), ns = 100, nr = TRUE, d = 5
-)
-res3$oc
-
-
-# finally, we can also have separate specification of efficacy and futility analyses. E.g.
-# here have futility decisions only at the final analysis:
-
-
-res4 <- ocPredprob(c(10, 20, 30), 0.4,
-  p0 = 0.25, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(1, 1), ns = 100, nr = TRUE, d = 5, nnF = c(30)
-)
-res4$oc
-# compared to res3, we see that there is no early futility stopping anymore,
-# and the overall probability for stopping for futility (which is the type II error here)
-# is much lower.
-
-# 2)
-# to examine operating characteristics of a phase Ib design with a seperate
-# rule for futility at final analysis
-# denote treatment response rate as RRS
-# trial success is defined as: P(RRS>p0)>tT
-# trial failure is defined as: P(RRS<p1)>tFu
-# (gray zone could occur in the final analysis)
-
-# when tFu=1-tT and phiFu=1-phiL, this decision rule (res5) is the same as the res1
-
-set.seed(20)
-res5 <- ocPredprob(c(10, 20, 30),
-  p = 0.4, p0 = 0.25, tT = 0.6, tFu = 0.4, phiFu = 0.8,
-  phiU = 0.8, parE = c(1, 1), ns = 100
-)
-res5$oc
+The criteria for Decision 2 for Futility looks are :
+\itemize{
+\item Final GO = P( response rate > p0) > tT
+\item Final STOP = P( response rate  < p1) > tF
+}
+}
 }
