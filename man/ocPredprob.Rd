@@ -211,8 +211,8 @@ result <- ocPredprob(
   p0 = 0.25,
   p1 = 0.25,
   tT = 0.6,
-  tF = 0.6, # Futility rule at Final: P(response rate > p1) > tF
-  phiU = 0.8, # Futility rule at Interim P(failure at final) > PhiFu
+  tF = 0.6,
+  phiU = 0.8,
   phiFu = 0.8,
   parE = c(1, 1),
   sim = 50,
