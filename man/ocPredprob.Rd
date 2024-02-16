@@ -70,8 +70,6 @@ maximum sample size)
 }
 \item \code{Decision} : numeric of results with \code{TRUE} as Go decision, \code{FALSE} as Stop and \code{NA} as gray zone.
 \item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
-\item \code{input_nnE} : user input for \code{nnE}.
-\item \code{input_nnF} : user input for \code{nnF}.
 \item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
 \item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
 \item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
