@@ -290,8 +290,6 @@ h_get_oc_predprob <- function(all_sizes, nnr, decision) {
 #'    - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
 #' - `Decision` : numeric of results with `TRUE` as Go decision, `FALSE` as Stop and `NA` as gray zone.
 #' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
-#' - `input_nnE` : user input for `nnE`.
-#' - `input_nnF` : user input for `nnF`.
 #' - `wiggled_nnE` : user input for `nnE` with random distance applied.
 #' - `wiggled_nnF` : user input for `nnF` with random distance applied.
 #' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
