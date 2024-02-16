@@ -12,6 +12,7 @@ phiL. A trial is successful if after the maximum number of patients the
 posterior probability of the treatment having more than p0 response rate is
 above tT. Otherwise the decision is "failure". In this case, there is no gray zone."
 
+
 Translation:
 * Decision 1 says:
     * Final GO = P(p > p0 | data) => tT, by the way P(truep > p0) > tT = qU
