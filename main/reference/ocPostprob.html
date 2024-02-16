@@ -76,12 +76,6 @@ PrGrayZone: probability between Go and Stop ,"Evaluate" or Gray decision zone
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -193,16 +187,8 @@ if <code>TRUE</code>, optional to specify <code>dist</code> (see @details).</p><
 <li><p><code>nn</code>: vector of look locations that was supplied</p></li>
 <li><p><code>nnE</code>: vector of Efficacy look locations</p></li>
 <li><p><code>nnF</code>: vector of Futility look locations</p></li>
-<li><p><code>params</code>: multiple parameters</p></li>
+<li><p><code>params</code>: user input arguments.</p></li>
 </ul></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>ExpectedN</code> is an average of the simulated sample sizes.
-If <code>wiggle = TRUE</code>, one can specify <code>dist</code>, though the algorithm will generate it if <code>dist = NULL</code>.
-If <code>nnF = NULL</code>, no Futility or decision to Stop will be analysed. Note that <code>nnF = c(0)</code> is equivalent.
-As default, <code>nnF</code> is set to the identical looks of <code>nnE</code>, and if <code>wiggle = TRUE</code>, all looks are the same, e.g.
-<code>nnE = nnF</code> when wiggle and distance is applied.</p>
-    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

@@ -38,12 +38,6 @@ random looks all_sizes for decision1 == FALSE."><!-- mathjax --><script src="htt
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -111,15 +105,25 @@ Default set at alpha = 1, beta = 1, or uniform prior.</p></dd>
 
 
 <dt>nnE</dt>
-<dd><p>(<code>numeric</code>):<br> sample size or sizes where study can be stopped for Efficacy decision.</p></dd>
+<dd><p>(<code>numeric</code>):<br> sample size or sizes where study can be stopped for Efficacy decision. If <code>0</code> or <code>NULL</code> and
+<code>length(nnE) = 1</code> then no Efficacy looks are performed.</p></dd>
 
 
 <dt>nnF</dt>
-<dd><p>(<code>numeric</code>):<br> sample size or sizes where study can be stopped for Efficacy decision.</p></dd>
+<dd><p>(<code>numeric</code>):<br> sample size or sizes where study can be stopped for Efficacy decision. If <code>0</code> or <code>NULL</code> and
+<code>length(nnF) = 1</code> then no Futility looks are performed.</p></dd>
 
 
 <dt>tT</dt>
 <dd><p>(<code>number</code>):<br> threshold of which assumed <code>truep</code> exceeds acceptable threshold of <code>p0</code>.</p></dd>
+
+
+<dt>tF</dt>
+<dd><p>(<code>number</code>):<br> threshold of which assumed <code>truep</code> does not exceed threshold of <code>p1</code>.</p></dd>
+
+
+<dt>phiFu</dt>
+<dd><p>(<code>number</code>):<br> upper threshold on the predictive probability.</p></dd>
 
 
 <dt>phiU</dt>
