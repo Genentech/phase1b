@@ -4,16 +4,20 @@ output: html_document
 date: "2024-02-15"
 ---
 Success means that at the end of the trial the posterior probability is:
-`Pr(P_E > P_S + delta_0 | data) >= thetaT`.
+  `Pr(P_E > P_S + delta_0 | data) >= thetaT`.
 
 Where `P_E` is the response rate of the treatment or `E`group and
-`P_S` is the response rate of the standard of care of `S` group.
+  `P_S` is the response rate of the standard of care of `S` group.
+  `delta` is the desired improvement from the standard of care.
+ There are two evaluations of delta as desired improvement from standard of care:
+    1. The absolute case when `relativeDelta = FALSE`
+    2. relative as when `relativeDelta = TRUE`.
+  Please see note in [postprobDist()] for elaborate definition of `delta` and `relativeDelta`.
 
 Then the predictive probability for success is:
-`pp = sum over i: Pr(Y = i | x , n)*I{Pr(P_E > P_S + delta | x,Y=i) >= thetaT}`,
+  `pp = sum over i: Pr(Y = i | x , n)*I{Pr(P_E > P_S + delta | x,Y=i) >= thetaT}`,
 where `Y` is the number of future responses in the treatment group and `x` is
 the current number of responses in the treatment group out of `n`.
-Please see note in [postprobDist()] for definition of `delta` and `relativeDelta`.
 Prior is `P_E ~ beta(a, b)` and uniform is a `beta(1,1)`.
 However, a beta mixture prior can also be specified. Analogously
 for `P_S` either a uniform beta prior or a beta mixture prior can be
@@ -21,14 +25,13 @@ specified.
 
 Also data on the `S` might be available. Then the predictive probability is
 more generally defined as :
-`pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT}`
+  `pp = sum over i, j: Pr(Y = i | x, n)*Pr(Z = j | xS, nS )*I{Pr(P_E > P_S + delta | x,xS, Y=i, Z=j ) >= thetaT}`
 where `Z` is the future number of responses in the `S` group, and `xS` is the
 current number of responses in the `S` group.
 
 # Stop criteria for Efficacy and Futility are further defined.
 As a start, for single arm or two-arm study are as follows, trial success or not is defined as follows.
-If `relativeDelta = TRUE`then a non-zero
-(but maximum 1) `deltaE`or `deltaF` is applied :
+If `relativeDelta = TRUE` then a non-zero (but maximum 1) `deltaE`or `deltaF` is applied :
 
 # A trial will be successful at final if :
 
@@ -47,8 +50,8 @@ They have two variations, Decision 1 and Decision 2 as follows:
 #' - interim STOP = P(successful trial at final) < phiL
 #'
 #' The criteria for Decision 1 for Final looks are:
-#' - Final GO = P( RR > p0 | data) => tT
-#' - Final STOP = P(RR > p0 | data ) < tT
+#' - Final GO = P( RR > p0 + delta | data) => tT
+#' - Final STOP = P(RR > p0 - delta | data ) < tT
 #'
 #' ## Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
@@ -56,8 +59,8 @@ They have two variations, Decision 1 and Decision 2 as follows:
 #' - Interim STOP : P ( unsuccessful at final ) > phiFu
 #'
 #' The criteria for Decision 2 for Futility looks are :
-#' - Final GO = P( RR > p0) > tT
-#' - Final STOP = P( RR < p1) > tF
+#' - Final GO = P( RR > p0 + delta ) > tT
+#' - Final STOP = P( RR < p1 - delta ) > tF
 
 # helper function for decision 1
 
@@ -82,18 +85,6 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
   #' - interim STOP = P(successful trial at final) < phiL
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
-    # x, n,
-    # xS = 0,
-    # nS = 0,
-    # Nmax,
-    # NmaxControl = 0,
-    # delta = 0,
-    # relativeDelta = FALSE,
-    # parE = c(a = 1, b = 1),
-    # weights,
-    # parS = c(a = 1, b = 1),
-    # weightsS,
-    # thetaT
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
         x = sum(response[1:size_look]),
@@ -108,7 +99,7 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
         weights = weights,
         thetaT = tT,
       )$result
-      decision <- ifelse(interim_qU > phiU, FALSE, decision)
+      decision <- ifelse(interim_qU > phiU, TRUE, decision)
     }
     if (size_look %in% nnF) {
       interim_qU <- predprobDist(
@@ -129,8 +120,8 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
     index_look <- index_look + 1
   }
   #' The criteria for Decision 1 for Final looks are:
-  #' - Final GO = P( RR <U+00B1> deltaE > p0 | data) => tT
-  #' - Final STOP = P(RR <U+00B1> deltaF > p0 | data ) < tT
+  #' - Final GO = P( RR > p0 + delta | data) => tT
+  #' - Final STOP = P(RR > p0 - delta | data ) < tT
   if (is.na(decision)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -142,7 +133,9 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
         delta = deltaF,
         relativeDelta = relativeDelta,
         parE = parE,
-        parS = parS
+        weights = weights, # for activeBetamixPost
+        parS = parS,
+        weights = weightsS # for controlBetamixPost
       )
     }
     decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
@@ -156,7 +149,9 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
       delta = deltaE,
       relativeDelta = relativeDelta,
       parE = parE,
-      parS = parS
+      weights = weights, # for activeBetamixPost
+      parS = parS,
+      weights = weightsS # for controlBetamixPost
     )
     decision <- ifelse(final_fu_qU < tT, FALSE, decision)
   }
@@ -169,6 +164,15 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
 
 
 # helper function for decision 2
+
+#' Decision 2:
+#' The criteria for Decision 2 for Interim looks are :
+#' - Interim GO : P ( successful at final) > phiU
+#' - Interim STOP : P ( unsuccessful at final ) > phiFu
+#'
+#' The criteria for Decision 2 for Futility looks are :
+#' - Final GO = P( RR > p0 + delta ) > tT
+#' - Final STOP = P( RR < p1 - delta ) > tF
 ```{r}
 h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) { # xS, nS, relativeDelta, deltaE, deltaF
   assert_numeric(nnr, lower = 1, sorted = TRUE)
@@ -184,10 +188,9 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
   Nmax <- max(nnr)
   decision <- NA
   response <- stats::rbinom(Nmax, size = 1, prob = truep)
-  #' ## Decision 1:
-  #' The criteria for Decision 1 for Interim looks are :
-  #' - interim GO =  P(successful trial at final) > phiU
-  #' - interim STOP = P(successful trial at final) < phiL
+  #' The criteria for Decision 2 for Interim looks are :
+  #' - Interim GO : P ( successful at final) > phiU
+  #' - Interim STOP : P ( unsuccessful at final ) > phiFu
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     # x, n,
@@ -219,7 +222,7 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
       decision <- ifelse(interim_qU > phiU, FALSE, decision)
     }
     if (size_look %in% nnF) {
-      interim_qU <- predprobDist(
+      interim_qU <- 1 - predprobDist(
         x = sum(response[1:size_look]),
         n = size_look,
         xS = xS,
@@ -236,9 +239,9 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
     }
     index_look <- index_look + 1
   }
-  #' The criteria for Decision 1 for Final looks are:
-  #' - Final GO = P( RR <U+00B1> deltaE > p0 | data) => tT
-  #' - Final STOP = P(RR <U+00B1> deltaF > p0 | data ) < tT
+  #' The criteria for Decision 2 for Futility looks are :
+  #' - Final GO = P( RR > p0 + delta ) > tT
+  #' - Final STOP = P( RR < p1 - delta ) > tF
   if (is.na(decision)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -253,7 +256,7 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
         parS = parS
       )
     }
-    decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+    decision <- ifelse(final_eff_qU > tT, TRUE, NA)
   }
   if (size_look %in% nnF) {
     final_fu_qU <- 1 - postprobDist(
@@ -274,8 +277,6 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
   )
 }
 ```
-
-
 
 # vintage call for `h_get_decisionDist` used in `ocPostprobDist`:
 ```{r}
@@ -345,12 +346,116 @@ h_get_decisionDist <- function(nnr,
 }
 ```
 
+# new user facing function
+
+```{r}
+ocPredprobDist <- function(nnE,
+                           p,
+                           deltaE = 0,
+                           deltaF = deltaE,
+                           relativeDelta = FALSE,
+                           tT,
+                           tFu = 1 - tT,
+                           phiL = 1 - phiFu,
+                           phiU,
+                           phiFu = 1 - phiL,
+                           parE = c(a = 1, b = 1),
+                           parS = c(a = 1, b = 1),
+                           sim = 10000,
+                           wiggle = FALSE,
+                           nnF = nnE) {
+  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
+  assert_number(p, upper = 1, finite = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 100, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 0, any.missing = FALSE)
+
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+
+  nnE <- sort(nnE)
+  nnF <- sort(nnF)
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+  # simulate a clinical trial sim times
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      # randomly generate look locations
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- h_get_decisionDist(
+      nnr = nnr,
+      nnrE = nnrE,
+      nnrF = nnrF,
+      truep = truep,
+      parE = c(1, 1),
+      tL = tL,
+      tU = tU,
+      deltaE = deltaE,
+      deltaF = deltaF,
+      relativeDelta = relativeDelta
+    )
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
+  }
+  oc <- h_get_ocDist(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    union_nn = nnr,
+    input_nnE = nnE,
+    input_nnF = nnF,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
+
+
+
+
+
 # vintage function
 ```{r}
 ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FALSE, tT, tFu = 1 - tT,
                            phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                            parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
                            ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+  # nnr,
+  #                              nnrE,
+  #                              nnrF,
+  #                              truep,
+  #                              parE = c(1, 1),
+  #                              parS = c(1, 1),
+  #                              tL,
+  #                              tU,
+  #                              deltaE,
+  #                              deltaF,
+  #                              relativeDelta
   ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   if (phiL + phiFu != 1) {
