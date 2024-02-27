@@ -62,10 +62,24 @@ They have two variations, Decision 1 and Decision 2 as follows:
 #' - Final GO = P( RR > p0 + delta ) > tT
 #' - Final STOP = P( RR < p1 - delta ) > tF
 
-# helper function for decision 1
+## helper function for decision 1
 
 ```{r}
-h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) { # xS, nS, relativeDelta, deltaE, deltaF
+h_get_decision_one_predprobDist <- function(
+    nnr,
+    truep,
+    p0,
+    parE = c(1, 1),
+    nnE,
+    nnF,
+    tT,
+    phiU,
+    phiL,
+    xS,
+    nS,
+    relativeDelta,
+    deltaE,
+    deltaF) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
@@ -163,7 +177,7 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
 ```
 
 
-# helper function for decision 2
+## helper function for decision 2
 
 #' Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
@@ -174,7 +188,21 @@ h_get_decision_one_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
 #' - Final GO = P( RR > p0 + delta ) > tT
 #' - Final STOP = P( RR < p1 - delta ) > tF
 ```{r}
-h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) { # xS, nS, relativeDelta, deltaE, deltaF
+h_get_decision_two_predprobDist <- function(
+    nnr,
+    truep,
+    p0,
+    parE = c(1, 1),
+    nnE,
+    nnF,
+    tT,
+    phiU,
+    phiL,
+    xS,
+    nS,
+    relativeDelta,
+    deltaE,
+    deltaF) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
@@ -278,27 +306,25 @@ h_get_decision_two_predprobDist <- function(nnr, truep, p0, parE = c(1, 1), nnE,
 }
 ```
 
-# vintage call for `h_get_decisionDist` used in `ocPostprobDist`:
+# Adapted from vintage helper `h_get_decisionDist` used in `ocPostprobDist`
 ```{r}
-h_get_decisionDist <- function(nnr,
-                               nnrE,
-                               nnrF,
-                               truep,
-                               parE = c(1, 1),
-                               parS = c(1, 1),
-                               tL,
-                               tU,
-                               deltaE,
-                               deltaF,
-                               relativeDelta) {
+h_get_decisionPredProbDist <- function(nnr,
+                                       nnrE,
+                                       nnrF,
+                                       truep,
+                                       parE = c(1, 1),
+                                       parS = c(1, 1),
+                                       tT,
+                                       deltaE,
+                                       deltaF,
+                                       relativeDelta) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
   assert_number(truep, lower = 0, upper = 1)
   assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_number(tL, lower = 0, upper = 1)
-  assert_number(tU, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
   assert_number(deltaE, finite = TRUE)
   assert_number(deltaF, finite = TRUE)
   assert_flag(relativeDelta)
@@ -349,115 +375,150 @@ h_get_decisionDist <- function(nnr,
 # new user facing function
 
 ```{r}
-ocPredprobDist <- function(nnE,
-                           p,
-                           deltaE = 0,
-                           deltaF = deltaE,
-                           relativeDelta = FALSE,
-                           tT,
-                           tFu = 1 - tT,
-                           phiL = 1 - phiFu,
-                           phiU,
-                           phiFu = 1 - phiL,
-                           parE = c(a = 1, b = 1),
-                           parS = c(a = 1, b = 1),
-                           sim = 10000,
-                           wiggle = FALSE,
-                           nnF = nnE) {
-  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
-  assert_number(p, upper = 1, finite = TRUE)
+new_ocPredprobDist <- function(
+    nnE,
+    truep,
+    p0,
+    p1 = p0,
+    deltaE = 0.1,
+    deltaF = 0.1,
+    relativeDelta = FALSE,
+    tT = 1 - tF,
+    tF = 1 - tT,
+    phiU,
+    phiL = 1 - phiFu,
+    phiFu = 1 - phiL,
+    parE = c(1, 1),
+    parS = c(1, 1),
+    sim = 50000,
+    wiggle = FALSE,
+    nnF = nnE,
+    decision1 = TRUE) {
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sort = TRUE)
   assert_number(truep, lower = 0, upper = 1)
-  assert_number(deltaE, upper = 1, finite = TRUE)
-  assert_number(deltaF, upper = 1, finite = TRUE)
-  assert_flag(relativeDelta)
-  assert_number(tL, lower = 0, upper = 1)
-  assert_number(tU, lower = 0, upper = 1)
-  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_number(sim, lower = 100, finite = TRUE)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiFu, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
-  assert_numeric(nnF, min.len = 0, any.missing = FALSE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_flag(decision1)
 
+  nn <- sort(unique(c(nnF, nnE)))
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
-
-  nnE <- sort(nnE)
-  nnF <- sort(nnF)
-  nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn)
-  Nstart <- nn[1]
-  Nmax <- nn[nL]
-
-  # simulate a clinical trial sim times
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
-      # randomly generate look locations
+      # if we have more than one look in nnF and nnE, we don't wiggle
       dist <- h_get_distance(nn = nn)
-      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
     } else {
+      dist <- 0
       nnrE <- nnE
       nnrF <- nnF
     }
-    nnr <- unique(c(nnrE, nnrF))
-    tmp <- h_get_decisionDist(
-      nnr = nnr,
-      nnrE = nnrE,
-      nnrF = nnrF,
-      truep = truep,
-      parE = c(1, 1),
-      tL = tL,
-      tU = tU,
-      deltaE = deltaE,
-      deltaF = deltaF,
-      relativeDelta = relativeDelta
-    )
+    nnr <- unique(sort(c(nnrE, nnrF)))
+    tmp <- if (decision1) {
+      h_get_decision_one_predprobDist(
+        nnr = nnr,
+        truep = truep,
+        p0 = p0,
+        parE = parE,
+        nnE = nnrE,
+        nnF = nnrF,
+        tT = tT,
+        phiU = phiU,
+        phiL = phiL,
+        xS = xS,
+        nS = nS,
+        relativeDelta = relativeDelta,
+        deltaE = deltaE,
+        deltaF = deltaF
+      )
+    } else {
+      h_get_decision_two_predprobDist(
+        nnr = nnr,
+        truep = truep,
+        p0 = p0,
+        parE = parE,
+        nnE = nnrE,
+        nnF = nnrF,
+        tT = tT,
+        phiFu = phiFu,
+        phiU = phiU
+      )
+    }
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_ocDist(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision)
   list(
     oc = oc,
     Decision = decision,
     SampleSize = all_sizes,
-    union_nn = nnr,
-    input_nnE = nnE,
-    input_nnF = nnF,
-    wiggled_nnE = nnrE,
-    wiggled_nnF = nnrF,
-    wiggle_dist = dist,
+    wiggled_nnrE = nnrE,
+    wiggled_nnrF = nnrF,
+    dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
 ```
 
 
+# Examples to compare with vintage function
+```{r}
+set.seed(20)
+res1 <- ocPredprobDist( # is this decision 1 or 2, and is delta absolute or relative ?
+  nn = c(10, 20, 30),
+  p = 0.4,
+  delta = 0.1,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  ns = 10
+)
+res1$oc
 
-
-
+res2 <- new_ocPredprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  p0 = 0.6,
+  p1 = 0.6,
+  deltaE = 0.1,
+  deltaF = 0.1,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  tF = 1 - 0.6,
+  # tFu = 1 - tT,
+  phiL = 0.2,
+  phiU = 0.8,
+  # phiFu = 1 - phiL,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  sim = 10000,
+  wiggle = FALSE,
+  nnF = nnE,
+  decision1 = TRUE
+)
+```
 # vintage function
 ```{r}
 ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FALSE, tT, tFu = 1 - tT,
                            phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
                            parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
                            ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  # nnr,
-  #                              nnrE,
-  #                              nnrF,
-  #                              truep,
-  #                              parE = c(1, 1),
-  #                              parS = c(1, 1),
-  #                              tL,
-  #                              tU,
-  #                              deltaE,
-  #                              deltaF,
-  #                              relativeDelta
-  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  ##    during trial if continuing (NA)
   if (phiL + phiFu != 1) {
     warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
   }
@@ -523,7 +584,6 @@ ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FA
       i <- nnr[j]
     }
   }
-
   oc <- cbind(
     ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
     PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
