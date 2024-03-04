@@ -158,6 +158,7 @@ PrEarlyEff
 PrEarlyFut
 Pred
 predprob
+predprobDis
 predprobDist
 PrEfficacy
 PrFutility
