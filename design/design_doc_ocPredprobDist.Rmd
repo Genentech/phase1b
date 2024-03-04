@@ -8,7 +8,7 @@ For formulas and expressions for predictive probability, refer to [predprobDist(
 
 The rules for Stop, Go and Grey Zone (where applicable) are the same as in [ocPredprob()].
 There is no variation from [ocPredprob()] with respect to the rules.
-However when compared to ocPredprob, where the `response rate > p0`,
+However when compared to [ocPredprob()], where the predictive probability of `response rate > p0` was used to reach decisions, here
 the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`, and the reason is that `p0` is now also uncertain.
 
 
