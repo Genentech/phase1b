@@ -6,10 +6,9 @@ date: "2024-02-15"
 
 For formulas and expressions for predictive probability, refer to [predprobDist()].
 
-The rules for Stop, Go and Grey Zone (where applicable) is the same as in [ocPredprob()].
-However when compared to ocPredprob, where the `response rate > p0`,
-the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`,
-and the reason is that `p0` is now also uncertain.
+The rules for Stop, Go and Grey Zone (where applicable) are the same as in [ocPredprob()].
+However when compared to [ocPredprob()], where the predictive probability of `response rate > p0` was used to reach decisions, here
+the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`, and the reason is that `p0` is now also uncertain, which is quantified by a posterior distribution.
 
 To therefore understand the margin of difference between the experimental and control group, refer
 to the two ways of calculating delta in [postprobDist()].
@@ -26,8 +25,8 @@ A trial will be successful at FINAL if : (Go rule)
 A trial will be successful at INTERIM if : (Go rule)
 
 `Pr(success at final| data) > phiU` where success is:
-   - `Pr(P_E > p0 + deltaE | data) > tT ` for the absolute case
-   - `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
+  - `Pr(P_E > p0 + deltaE | data) > tT ` for the absolute case
+- `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
 
 A trial will be unsuccessful at FINAL if : (Stop rule)
 
@@ -37,8 +36,8 @@ A trial will be unsuccessful at FINAL if : (Stop rule)
 A trial will be unsuccessful at INTERIM if : (Stop rule)
 
 `Pr(unsuccessful at final| data) < phiL` where unsuccess is
-  - `Pr(P_E > p0 + deltaF | data) > tT` for the absolute case
-  - `Pr(P_E > (1-p0)*deltaF | data) > tT` for the relative case
+- `Pr(P_E > p0 + deltaF | data) > tT` for the absolute case
+- `Pr(P_E > (1-p0)*deltaF | data) > tT` for the relative case
 
 # For Decision 2: ----
 A trial will be successful at FINAL if : (Go rule)
@@ -48,9 +47,9 @@ A trial will be successful at FINAL if : (Go rule)
 
 A trial will be successful at INTERIM if : (Go rule)
 
-`Pr(successful at final| data) > phiU` where unsuccessful is
-  - `Pr(P_E > p0 + deltaE | data) > tT` for the absolute case
-  - `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
+`Pr(success at final| data) > phiU` where success is
+- `Pr(P_E > p0 + deltaE | data) > tT` for the absolute case
+- `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
 
 A trial will be unsuccessful at FINAL if, note `p1` is used : (Stop rule)
 
@@ -60,8 +59,8 @@ A trial will be unsuccessful at FINAL if, note `p1` is used : (Stop rule)
 A trial will be unsuccessful at INTERIM if : (Stop rule)
 
 `Pr(unsuccessful at final| data) > _phiFu_` where unsuccessful is
- - `Pr(P_E > p0 + deltaF | data) > tT` for the absolute case
- - `Pr(P_E > (1-p0)*deltaF | data) > tT` for the relative case
+- `Pr(P_E > p0 + deltaF | data) > tT` for the absolute case
+- `Pr(P_E > (1-p0)*deltaF | data) > tT` for the relative case
 
 
 # input
