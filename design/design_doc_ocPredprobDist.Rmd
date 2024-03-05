@@ -10,7 +10,7 @@ However when compared to [ocPredprob()], where the predictive probability of `re
 the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`, and the reason is that `p0` is now also uncertain, which is quantified by a posterior distribution.
 
 To therefore understand the margin of difference between the experimental and control group, refer
-to the two ways of calculating delta in [postprobDist()]. The margin `delta` from [postprobDist()] is no longer used however where a Go decision is evaluated, the margin `deltaE` is instead employed, and where a Stop decision is evaluated, the margin `deltaF` is instead employed in lieu of `delta`. Decision 1 and Decision 2 shares the same Go rule for interim and final, with the margin of difference is accounted for in the following manner for the final looks:
+to the two ways of calculating delta in [postprobDist()]. The margin `delta` from [postprobDist()] is no longer used however where a Go decision is evaluated, the margin `deltaE` is instead employed, and where a Stop decision is evaluated, the margin `deltaF` is instead employed in lieu of `delta`. Decision 1 and Decision 2 share the same Go rule for interim and final, with the margin of difference is accounted for in the following manner for the final looks:
 - `Pr(P_E > p0 + deltaE | data) > tT ` for the absolute case
 - `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
 
