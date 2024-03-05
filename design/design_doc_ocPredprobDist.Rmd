@@ -12,7 +12,7 @@ the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`, and th
 To therefore understand the margin of difference between the experimental and control group, refer
 to the two ways of calculating delta in [postprobDist()]. The margin `delta` from [postprobDist()] is no longer used however where a Go decision is evaluated, the margin `deltaE` is instead employed, and where a Stop decision is evaluated, the margin `deltaF` is employed.
 
-As mentioned the rules of [ocPredprobDist()] and [ocPredprob()] for both Decision 1 and Decision 2 are the same, and the margin of difference differ depending on whether it is a Go or Stop decision. We highlight here another distinction between [ocPredprob()] and [ocPredprobDist()], seen in the evaluation for the final futility look in [ocPredprobDist()] :
+As mentioned, the rules of [ocPredprobDist()] and [ocPredprob()] for both Decision 1 and Decision 2 are the same, and the margin of difference differ depending on whether it is a Go or Stop decision. We highlight here another distinction between [ocPredprob()] and [ocPredprobDist()], seen in the evaluation for the final futility look in [ocPredprobDist()] :
 
 - `Pr(P_E < p1 + deltaF | data) > tF` for the absolute case
 - `Pr(P_E < (1-p1)*deltaF | data) > tF` for the relative case
