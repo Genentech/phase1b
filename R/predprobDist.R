@@ -294,7 +294,7 @@ predprobDist <- function(x, n,
       parS = parS,
       weights = weights,
       weightsS = weightsS,
-      thetaT = thetaT
+      thetaT = thetaT # check what is missing here
     )
   } else {
     ret <- h_predprobdist(
