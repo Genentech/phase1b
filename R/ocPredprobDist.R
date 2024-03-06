@@ -8,11 +8,10 @@
 #' @typed deltaE : number
 #' margin by which the response rate in the treatment group should
 #' be better than in the standard of care or control or `S` group in Efficacy looks only.
-#' Note that this can also be negative, e.g. when non-inferiority is being assessed.
 #' @typed deltaF : number
 #' margin by which the response rate in the treatment group should
 #' be better than in the standard of care or control or `S` group in Futility looks only.
-#' Note that this can also be negative, e.g. when non-inferiority is being assessed.
+#' Note that this can also be negative as well.
 #'
 #' @return A list with the following elements:
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
