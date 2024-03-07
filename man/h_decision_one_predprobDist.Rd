@@ -51,7 +51,8 @@ and each row corresponds to each component of a beta-mixture distribution for th
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
 \item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
-be better than in the standard of care or control or \code{S} group in Efficacy looks only.}
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
 
 \item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
 be better than in the standard of care or control or \code{S} group in Futility looks only.
