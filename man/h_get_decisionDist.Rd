@@ -38,11 +38,13 @@ for the \code{S} group. See details.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group} in Efficacy looks.}
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
 
-\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should be better
-than in the standard of care of \code{group} in Futility looks.}
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Futility looks only.
+Note that this can also be negative as well.}
 
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients

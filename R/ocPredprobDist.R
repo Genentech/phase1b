@@ -1,5 +1,142 @@
-#' @include predprobDist.R
-NULL
+#' Generating random decision and sample size looks for `decision1 == TRUE` or default option
+#'
+#' A helper function for [ocPredprobDist()] to generate numeric of decisions `decisions` and
+#' random looks `all_sizes` for `decision1 == TRUE`.
+#'
+#' @inheritParams h_get_decision_one_predprob
+#' @inheritParams h_predprobdist
+#' @inheritParams h_get_decisionDist
+#' @return A list with the following elements:
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'
+#' @keywords internal
+h_decision_one_predprobDist <- function(
+    nnE,
+    nnF,
+    nnr,
+    truep,
+    xS,
+    nS,
+    parE = c(1, 1),
+    parS = c(1, 1),
+    tT,
+    phiU,
+    phiL,
+    deltaE,
+    deltaF,
+    weights,
+    weightsS,
+    relativeDelta = FALSE) {
+  assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(xS, finite = TRUE)
+  assert_number(nS, finite = TRUE)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(parS, min.len = 2, any.missing = FALSE)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  assert_number(deltaE, lower = 0, upper = 1)
+  assert_number(deltaF, lower = 0, upper = 1)
+  assert_number(weights, lower = 1, finite = TRUE)
+  assert_number(weightsS, lower = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+
+  index_look <- 1
+  Nmax <- max(nnr)
+  NmaxControl <- max(nnF)
+  decision <- NA
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+
+  ### Decision 1:
+  # The criteria for Decision 1 for Interim looks are :
+  # interim GO =  P(successful trial at final) > phiU
+  # interim STOP = P(successful trial at final) < phiL
+  while (is.na(decision) && index_look < length(nnr)) {
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      interim_qU <- predprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = nS,
+        Nmax = Nmax,
+        NmaxControl = NmaxControl,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        parS = parS,
+        weightsS = weightsS,
+        thetaT = tT
+      )$result
+      decision <- ifelse(interim_qU > phiU, TRUE, decision)
+    }
+    if (size_look %in% nnF) {
+      interim_qU <- predprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = nS,
+        Nmax = Nmax,
+        NmaxControl = NmaxControl,
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        parS = parS,
+        weightsS = weightsS,
+        thetaT = tT
+      )$result
+      decision <- ifelse(interim_qU < phiL, FALSE, decision)
+    }
+    index_look <- index_look + 1
+  }
+  # The criteria for Decision 1 for Final looks are:
+  #- Final GO = P( RR > p0 + delta | data) => tT
+  #- Final STOP = P(RR > p0 - delta | data ) < tT
+  if (is.na(decision)) {
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      final_eff_qU <- postprobDist(
+        x = sum(response[1:size_look]),
+        n = size_look,
+        xS = xS,
+        nS = nS,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights, # for activeBetamixPost
+        parS = parS,
+        weightsS = weightsS # for controlBetamixPost
+      )
+    }
+    decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+  }
+  if (size_look %in% nnF) {
+    final_fu_qU <- postprobDist(
+      x = sum(response[1:size_look]),
+      n = size_look,
+      xS = xS,
+      nS = nS,
+      delta = deltaF,
+      relativeDelta = relativeDelta,
+      parE = parE,
+      weights = weights, # for activeBetamixPost
+      parS = parS,
+      weightsS = weightsS # for controlBetamixPost
+    )
+    decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+  }
+  list(
+    decision = decision,
+    all_sizes = size_look
+  )
+}
 
 #' Calculate operating characteristics for predictive probability method
 #' with beta prior on SOC response rate (gray zone allowed in the final analysis)
