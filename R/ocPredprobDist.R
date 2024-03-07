@@ -5,21 +5,14 @@
 #'
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_predprobdist
-#' @typed deltaE : number
-#' margin by which the response rate in the treatment group should
-#' be better than in the standard of care or control or `S` group in Efficacy looks only.
-#' @typed deltaF : number
-#' margin by which the response rate in the treatment group should
-#' be better than in the standard of care or control or `S` group in Futility looks only.
-#' Note that this can also be negative as well.
-#'
+#' @inheritParams h_get_decisionDist
 #' @return A list with the following elements:
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
 #'
 #' @keywords internal
-h_get_decision1_predprobDist <- function(
+h_decision_one_predprobDist <- function(
     nnE,
     nnF,
     nnr,

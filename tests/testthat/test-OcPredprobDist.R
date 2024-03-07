@@ -1,12 +1,12 @@
 # h_get_decision_one_predprobDist ----
 
-test_that("h_get_decision1_predprobDist gives correct result and list", {
+test_that("h_decision_one_predprobDist gives correct result and list", {
   set.seed(1989)
   example_dist <- h_get_distance(nn = c(10, 20, 30))
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
-  result <- h_get_decision1_predprobDist(
+  result <- h_decision_one_predprobDist(
     nnE = looks$nnrE,
     nnF = looks$nnrF,
     nnr = c(10, 20, 30),

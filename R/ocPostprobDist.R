@@ -11,11 +11,12 @@ NULL
 #' @inheritParams postprobDist
 #' @inheritParams h_get_oc
 #' @typed deltaE : number
-#'  margin by which the response rate in the treatment group should be better
-#'  than in the standard of care of `group` in Efficacy looks.
+#' margin by which the response rate in the treatment group should
+#' be better than in the standard of care or control or `S` group in Efficacy looks only.
 #' @typed deltaF : number
-#'  margin by which the response rate in the treatment group should be better
-#'  than in the standard of care of `group` in Futility looks.
+#' margin by which the response rate in the treatment group should
+#' be better than in the standard of care or control or `S` group in Futility looks only.
+#' Note that this can also be negative as well.
 #'
 #' @keywords internal
 #'
