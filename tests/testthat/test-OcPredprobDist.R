@@ -37,7 +37,7 @@ test_that("h_get_decision_two_predprobDist gives correct result and list", {
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
-  result <- h_get_decision_two_predprobDist(
+  result <- h_get_decision1_predprobDist(
     nnE = looks$nnrE,
     nnF = looks$nnrF,
     nnr = c(10, 20, 30),
@@ -47,7 +47,7 @@ test_that("h_get_decision_two_predprobDist gives correct result and list", {
     parE = c(1, 1),
     parS = c(1, 1),
     tT = 0.6,
-    phiFu = 0.8,
+    phiU = 0.8,
     phiL = 0.6,
     deltaE = 0.1,
     deltaF = 0.1,

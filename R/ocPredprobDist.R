@@ -54,8 +54,8 @@ h_decision_one_predprobDist <- function(
 
   ### Decision 1:
   # The criteria for Decision 1 for Interim looks are :
-  # interim GO =  P(successful trial at final) > phiU
-  # interim STOP = P(successful trial at final) < phiL
+  # Interim GO =  P(successful trial at final) > phiU
+  # Interim STOP = P(successful trial at final) < phiL
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -97,8 +97,8 @@ h_decision_one_predprobDist <- function(
     index_look <- index_look + 1
   }
   # The criteria for Decision 1 for Final looks are:
-  #- Final GO = P( RR > p0 + delta | data) => tT
-  #- Final STOP = P(RR > p0 - delta | data ) < tT
+  # Final GO = P( RR > p0 + delta | data) => tT
+  # Final STOP = P(RR > p0 - delta | data ) < tT
   if (is.na(decision)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -145,7 +145,7 @@ h_decision_one_predprobDist <- function(
 #'
 #' @inheritParams h_get_decision_two_predprob
 #' @inheritParams h_predprobdist
-#' @inheritParams h_get_decision_one_predprobDist
+#' @inheritParams h_decision_one_predprobDist
 #'
 #' @return A list with the following elements:
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -165,7 +165,6 @@ h_decision_two_predprobDist <- function(
     tT,
     tF,
     phiU,
-    phiL,
     phiFu,
     deltaE,
     deltaF,
@@ -181,8 +180,8 @@ h_decision_two_predprobDist <- function(
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_numeric(parS, min.len = 2, any.missing = FALSE)
   assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
-  assert_number(phiL, lower = 0, upper = 1)
   assert_number(phiFu, lower = 0, upper = 1)
   assert_number(deltaE, lower = 0, upper = 1)
   assert_number(deltaF, lower = 0, upper = 1)
@@ -196,8 +195,8 @@ h_decision_two_predprobDist <- function(
   decision <- NA
   response <- stats::rbinom(Nmax, size = 1, prob = truep)
   # The criteria for Decision 2 for Interim looks are :
-  #- Interim GO : P ( successful at final) > phiU
-  #- Interim STOP : P ( unsuccessful at final ) > phiFu
+  # Interim GO : P ( successful at final) > phiU
+  # Interim STOP : P ( unsuccessful at final ) > phiFu
   while (is.na(decision) && index_look < length(nnr)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -239,8 +238,8 @@ h_decision_two_predprobDist <- function(
     index_look <- index_look + 1
   }
   # The criteria for Decision 2 for Futility looks are :
-  #- Final GO = P( RR > p0 + delta ) > tT
-  #- Final STOP = P( RR < p1 - delta ) > tF
+  # Final GO = P( RR > p0 + delta ) > tT
+  # Final STOP = P( RR < p1 - delta ) > tF
   if (is.na(decision)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {

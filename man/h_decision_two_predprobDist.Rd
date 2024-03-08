@@ -16,7 +16,6 @@ h_decision_two_predprobDist(
   tT,
   tF,
   phiU,
-  phiL,
   phiFu,
   deltaE,
   deltaF,
@@ -53,6 +52,14 @@ and each row corresponds to each component of a beta-mixture distribution for th
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
+
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
+
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Futility looks only.
+Note that this can also be negative as well.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 
