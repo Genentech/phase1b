@@ -1,7 +1,3 @@
-#' @include dbetabinom.R
-#' @include postprobDist.R
-NULL
-
 #' The predictive probability of success in single arm studies.
 #'
 #' The helper function to generate the predictive probability of success based only on treatment group (`E`)

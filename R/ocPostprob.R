@@ -1,6 +1,3 @@
-#' @include postprob.R
-NULL
-
 #' Generating random distance for [h_get_distance()] helper function
 #'
 #' A helper function for [h_get_distance()] by first calculating non-overlapping
