@@ -1,7 +1,3 @@
-#' @include dbetabinom.R
-#' @include postprob.R
-NULL
-
 #' Predictive probability of trial success
 #'
 #' @description `r lifecycle::badge("experimental")`

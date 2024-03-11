@@ -1,6 +1,3 @@
-#' @include postprob.R
-NULL
-
 #' Decision cutpoints for boundary (based on posterior probability)
 #'
 #' This function is used to identify the efficacy and futility

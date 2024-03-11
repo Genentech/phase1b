@@ -1,7 +1,3 @@
-#' @include dbetabinom.R
-#' @include postprob.R
-NULL
-
 #' The Posterior Beta Mixture Integrand when `delta` is relative
 #'
 #' The helper function to generate Integrand function when `relativeDelta = TRUE`.
