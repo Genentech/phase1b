@@ -6,7 +6,7 @@
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_predprobdist
 #' @inheritParams h_get_decisionDist
-#' @return A list with the following elements:
+#' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
@@ -19,8 +19,8 @@ h_decision_one_predprobDist <- function(
     truep,
     xS,
     nS,
-    parE = c(1, 1),
-    parS = c(1, 1),
+    parE,
+    parS,
     tT,
     phiU,
     phiL,
@@ -160,8 +160,8 @@ h_decision_two_predprobDist <- function(
     truep,
     xS,
     nS,
-    parE = c(1, 1),
-    parS = c(1, 1),
+    parE,
+    parS,
     tT,
     tF,
     phiU,

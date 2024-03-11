@@ -11,8 +11,8 @@ h_decision_one_predprobDist(
   truep,
   xS,
   nS,
-  parE = c(1, 1),
-  parS = c(1, 1),
+  parE,
+  parS,
   tT,
   phiU,
   phiL,
@@ -66,7 +66,7 @@ Note that this can also be negative as well.}
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \code{\link[=postprobDist]{postprobDist()}}.}
 }
 \value{
-A list with the following elements:
+A list with the following elements :
 \itemize{
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum

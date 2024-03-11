@@ -29,7 +29,7 @@ test_that("h_decision_one_predprobDist gives correct result and list", {
   expect_list(result)
 })
 
-# h_get_decision12_predprobDist ----
+# h_get_decision_two_predprobDist ----
 
 test_that("h_decision_two_predprobDist gives correct result and list", {
   set.seed(1989)
