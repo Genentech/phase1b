@@ -1,7 +1,3 @@
-#' @include boundsPredprob.R
-#' @include boundsPostprob.R
-NULL
-
 #' Plot the boundary decision cutpoints
 #'
 #' This function will plot the response rate on the futility and efficacy

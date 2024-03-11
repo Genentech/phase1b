@@ -1,6 +1,3 @@
-#' @include sumTable.R
-NULL
-
 #' Plot a summary plot corresponding to the sumTable output
 #'
 #' This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
