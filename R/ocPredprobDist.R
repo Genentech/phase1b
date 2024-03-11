@@ -276,149 +276,166 @@ h_decision_two_predprobDist <- function(
 }
 
 #' Calculate operating characteristics for predictive probability method
-#' with beta prior on SOC response rate (gray zone allowed in the final analysis)
+#' with beta prior on SOC response rate (gray zone allowed in the final analysis for Decision 2)
 #'
-#' Decision rule 1: The trial is stopped for efficacy if the predictive probability of a
-#' successful trial is larger than phiU, and stopped for futility if it is below
-#' phiL. A trial is successful if after the maximum number of patients the
-#' posterior probability of the treatment being at least delta better than the
-#' control is above tT. Otherwise the decision is "failure". In this case, there is no
-#' gray zone.
+#' For formulas and expressions for predictive probability, refer to [predprobDist()].
 #'
-#' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-#' DeltaFu, tFu & PhiFu. The trial can be stopped for futility if the predictive
-#' probability of an unsuccessful trial is larger than phiFu. In this case, the
-#' decision is "failure" when the posterior probability of the treatment being
-#' at most deltaFu better than the control is above tFu at the maximum number of
-#' patients.
+#' The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPredprob()].
+#' However when compared to [ocPredprob()], where the predictive probability of `response rate > p0`
+#' was used to reach decisions, here the `response rate - p0 > 0` is replaced by `response rate - p0 > delta`,
+#' and the reason is that `p0` is now also uncertain, which is quantified by a posterior distribution.
+#' To therefore understand the margin of difference between the experimental and control group, refer
+#' to the two ways of calculating delta in [postprobDist()].
 #'
-#' Returned operating characteristics in a matrix include:
-#' ExpectedN: expected number of patients in the trials
-#' PrStopEarly: probability to stop the trial early (before reaching the
-#' maximum sample size)
-#' PrEarlyEff: probability to decide for efficacy early
-#' PrEarlyFut: probability to decide for futility early
-#' PrEfficacy: probability to decide for efficacy
-#' PrFutility: probability to decide for futility
-#' PrGrayZone: probability of no decision at the end ("gray zone")
+#' The margin `delta` from [postprobDist()] is no longer used however where a Go decision is evaluated,
+#' the margin `deltaE` is instead employed, and where a Stop decision is evaluated,
+#' the margin `deltaF` is instead employed in lieu of `delta`.
+#' Decision 1 and Decision 2 share the same Go rule for interim and final,
+#' with the margin of difference is accounted for in the following manner for the final looks:
+#' - `Pr(P_E > p0 + deltaE | data) > tT ` for the absolute case
+#' - `Pr(P_E > (1-p0)*deltaE | data) > tT` for the relative case
 #'
-#' @param nn vector of look locations
-#' @param p true rate (scenario)
-#' @param delta We want to be better than the control + delta (default: 0)
-#' @param deltaFu declare futility when worse than the control + deltaW.
-#' Specify only when decision rule 2 is used.
-#' @param relativeDelta see \code{\link{postprobDist}}
-#' @param tT threshold for the probability to be above control + delta
-#' at the end of the trial
-#' @param tFu threshold for the probability to be under control + deltaFu
-#' at the end of the trial. Specify only when decision rule 2 is used.
-#' @param phiL lower threshold on the predictive probability
-#' @param phiU upper threshold on the predictive probability
-#' @param phiFu threshold on the predictive probability for futility. Specify only
-#' when decision rule 2 is used. phiL argument should be skipped in this case.
-#' @param parE beta parameters for the prior on the treatment proportion
-#' @param parS beta parameters for the prior on the control proportion
-#' @param ns number of simulations
-#' @param nr generate random look locations? (not default)
-#' @param d distance for random looks around the look locations in \code{nn}
-#' @param nnF vector of look locations for futility
-#' (default: same as efficacy)
+#' As mentioned, the rules of [ocPredprobDist()] and [ocPredprob()] for both Decision 1 and Decision 2 are the same,
+#' and the margin of difference differ depending on whether it is a Go or Stop decision
+#' (`deltaE` and `deltaF` is employed instead of `delta`).
+#' We highlight here another distinction between [ocPredprob()] and [ocPredprobDist()],
+#' seen in the evaluation for the final futility look in [ocPredprobDist()] where `p1` is used instead of `p0` :
+#' - `Pr(P_E < p1 + deltaF | data) > tF` for the absolute case
+#' - `Pr(P_E < (1-p1)*deltaF | data) > tF` for the relative case
+#'
 #' @return A list with the following elements:
-#' oc: matrix with operating characteristics (see Details section)
-#' Decision: vector of the decisions made in the simulated trials
-#' (\code{TRUE} for success, \code{FALSE} for failure)
-#' SampleSize: vector of the sample sizes in the simulated trials
-#' nn: vector of look locations
-#' nnE: vector of efficacy look locations
-#' nnF: vector of futility look locations
-#' params: input parameters of this function
+#' - `oc`: matrix with operating characteristics with the following details:
+#'    - `ExpectedN`: expected number of patients in the trials
+#'    - `PrStopEarly`: probability to stop the trial early (before reaching the
+#'                    maximum sample size)
+#'    - `PrEarlyEff`: probability of Early Go decision
+#'    - `PrEarlyFut`: probability of for Early Stop decision
+#'    - `PrEfficacy`: probability of Go decision
+#'    - `PrFutility`: probability of Stop decision
+#'    - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+#' - `Decision` : numeric of results with `TRUE` as Go decision, `FALSE` as Stop and `NA` as gray zone.
+#' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+#' - `wiggled_nnE` : user input for `nnE` with random distance applied.
+#' - `wiggled_nnF` : user input for `nnF` with random distance applied.
+#' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
+#' - `params` : all user input arguments.
 #'
 #' @example examples/ocPredprobDist.R
 #' @export
-ocPredprobDist <- function(nn, p, delta = 0, deltaFu = delta, relativeDelta = FALSE, tT, tFu = 1 - tT,
-                           phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
-                           parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
-                           ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  ##    during trial if continuing (NA)
-  if (phiL + phiFu != 1) {
-    warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
-  }
+#' @inheritParams h_get_looks
+#' @inheritParams h_get_decision1_predprobDist
+#' @inheritParams ocPredprob
+ocPredprobDist <- function(
+    xS = 0,
+    nS = 0,
+    nnE,
+    truep,
+    deltaE,
+    deltaF,
+    relativeDelta = FALSE,
+    tT = 1 - tF,
+    tF = 1 - tT,
+    phiU,
+    phiL = 1 - phiFu,
+    phiFu = 1 - phiL,
+    parE = c(1, 1),
+    parS = c(1, 1),
+    weights = weights,
+    weightsS = weightsS,
+    sim = 50000,
+    wiggle = FALSE,
+    nnF = nnE,
+    decision1 = TRUE) {
+  Nmax <- max(unique(nnE, nnF))
 
-  nnE <- sort(nn)
-  nnF <- sort(nnF)
-  s <- rep(NA, ns)
-  n <- s
+  assert_number(xS, finite = TRUE)
+  assert_number(nS, finite = TRUE)
+  assert_numeric(nnE, any.missing = FALSE, sort = TRUE)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(deltaE, lower = 0, upper = 1)
+  assert_number(deltaF, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiFu, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(parS, min.len = 2, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_flag(decision1)
+
   nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn)
-  Nstart <- nn[1]
-  Nmax <- nn[nL]
-  if (nr && is.null(d)) {
-    ## set parameter d for randomly generating look locations
-    d <- floor(min(nn - c(0, nn[-nL])) / 2)
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  nnr <- nn
-  nnrE <- nnE
-  nnrF <- nnF
-
-  for (k in 1:ns) {
-    ## simulate a clinical trial ns times
-    if (nr && (d > 0)) {
-      ## randomly generate look locations
-      dd <- sample(-d:d,
-        size = nL - 1, replace = TRUE,
-        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+  decision <- vector(length = sim)
+  all_sizes <- vector(length = sim)
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      # if we have more than one look in nnF and nnE, we don't wiggle
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      dist <- 0
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(sort(c(nnrE, nnrF)))
+    tmp <- if (decision1) {
+      h_decision_one_predprobDist(
+        nnE = nnE,
+        nnF = nnF,
+        nnr = nnr,
+        truep = truep,
+        xS = xS,
+        nS = nS,
+        parE = parE,
+        parS = parS,
+        tT = tT,
+        phiU = phiU,
+        phiL = phiL,
+        deltaE = deltaE,
+        deltaF = deltaF,
+        weights = weights,
+        weightsS = weightsS,
+        relativeDelta = relativeDelta
       )
-      nnr <- nn + c(dd, 0)
-
-
-      nnrE <- nnr[nn %in% nnE]
-      nnrF <- nnr[nn %in% nnF]
+    } else {
+      h_decision_two_predprobDist(
+        nnE = nnE,
+        nnF = nnF,
+        nnr = nnr,
+        truep = truep,
+        xS = xS,
+        nS = nS,
+        parE = parE,
+        parS = parS,
+        tT = tT,
+        tF = tF,
+        phiU = phiU,
+        phiFu = phiFu,
+        deltaE = deltaE,
+        deltaF = deltaF,
+        weights = weights,
+        weightsS = weightsS,
+        relativeDelta = relativeDelta
+      )
     }
-    x <- stats::rbinom(Nmax, 1, p)
-    j <- 1
-    i <- nnr[j]
-    while (is.na(s[k]) && (j <= length(nnr))) {
-      if (i %in% nnrF) {
-        qL <- 1 - predprobDist(
-          x = sum(x[1:i]), n = i, Nmax = Nmax, delta = deltaFu,
-          relativeDelta = relativeDelta,
-          thetaT = 1 - tFu,
-          parE = parE, parS = parS
-        )$result
-
-        s[k] <- ifelse(qL >= phiFu, FALSE, NA)
-      }
-
-      if (i %in% nnrE) {
-        qU <- predprobDist(
-          x = sum(x[1:i]), n = i, Nmax = Nmax, delta = delta,
-          relativeDelta = relativeDelta,
-          thetaT = tT,
-          parE = parE, parS = parS
-        )$result
-        s[k] <- ifelse(qU < phiU, s[k], TRUE)
-      }
-
-
-      n[k] <- i
-      j <- j + 1
-      i <- nnr[j]
-    }
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
   }
-
-  oc <- cbind(
-    ExpectedN = mean(n), PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
-    PrEfficacy = sum(s, na.rm = TRUE) / ns,
-    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
-    PrGrayZone = sum(is.na(s) / ns)
-  )
-
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
-    nn = nn, nnE = nnE, nnF = nnF,
+  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision)
+  list(
+    oc = oc,
+    Decision = decision,
+    SampleSize = all_sizes,
+    wiggled_nnrE = nnrE,
+    wiggled_nnrF = nnrF,
+    dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
-  ))
+  )
 }

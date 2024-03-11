@@ -3,126 +3,217 @@
 \name{ocPredprobDist}
 \alias{ocPredprobDist}
 \title{Calculate operating characteristics for predictive probability method
-with beta prior on SOC response rate (gray zone allowed in the final analysis)}
+with beta prior on SOC response rate (gray zone allowed in the final analysis for Decision 2)}
 \usage{
 ocPredprobDist(
-  nn,
-  p,
-  delta = 0,
-  deltaFu = delta,
+  xS = 0,
+  nS = 0,
+  nnE,
+  truep,
+  deltaE,
+  deltaF,
   relativeDelta = FALSE,
-  tT,
-  tFu = 1 - tT,
-  phiL = 1 - phiFu,
+  tT = 1 - tF,
+  tF = 1 - tT,
   phiU,
+  phiL = 1 - phiFu,
   phiFu = 1 - phiL,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  parE = c(1, 1),
+  parS = c(1, 1),
+  weights = weights,
+  weightsS = weightsS,
+  sim = 50000,
+  wiggle = FALSE,
+  nnF = nnE,
+  decision1 = TRUE
 )
 }
 \arguments{
-\item{nn}{vector of look locations}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
+specify in \code{nnF}.}
 
-\item{p}{true rate (scenario)}
+\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
-\item{delta}{We want to be better than the control + delta (default: 0)}
+\item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
-\item{deltaFu}{declare futility when worse than the control + deltaW.
-Specify only when decision rule 2 is used.}
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
 
-\item{relativeDelta}{see \code{\link{postprobDist}}}
+\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{tT}{threshold for the probability to be above control + delta
-at the end of the trial}
+\item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
-\item{tFu}{threshold for the probability to be under control + deltaFu
-at the end of the trial. Specify only when decision rule 2 is used.}
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{phiL}{lower threshold on the predictive probability}
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{phiU}{upper threshold on the predictive probability}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{phiFu}{threshold on the predictive probability for futility. Specify only
-when decision rule 2 is used. phiL argument should be skipped in this case.}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default). If \code{wiggle = TRUE} and \code{nnE = nnF}, then all wiggled
+looks are the same between \code{nnE} and \code{nnF}.}
 
-\item{parE}{beta parameters for the prior on the treatment proportion}
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
 
-\item{parS}{beta parameters for the prior on the control proportion}
-
-\item{ns}{number of simulations}
-
-\item{nr}{generate random look locations? (not default)}
-
-\item{d}{distance for random looks around the look locations in \code{nn}}
-
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \value{
 A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure)
-SampleSize: vector of the sample sizes in the simulated trials
-nn: vector of look locations
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-params: input parameters of this function
+\itemize{
+\item \code{oc}: matrix with operating characteristics with the following details:
+\itemize{
+\item \code{ExpectedN}: expected number of patients in the trials
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the
+maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of for Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability between Go and Stop ,"Evaluate" or Gray decision zone
+}
+\item \code{Decision} : numeric of results with \code{TRUE} as Go decision, \code{FALSE} as Stop and \code{NA} as gray zone.
+\item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
+\item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
+\item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
+\item \code{params} : all user input arguments.
+}
 }
 \description{
-Decision rule 1: The trial is stopped for efficacy if the predictive probability of a
-successful trial is larger than phiU, and stopped for futility if it is below
-phiL. A trial is successful if after the maximum number of patients the
-posterior probability of the treatment being at least delta better than the
-control is above tT. Otherwise the decision is "failure". In this case, there is no
-gray zone.
+For formulas and expressions for predictive probability, refer to \code{\link[=predprobDist]{predprobDist()}}.
 }
 \details{
-Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-DeltaFu, tFu & PhiFu. The trial can be stopped for futility if the predictive
-probability of an unsuccessful trial is larger than phiFu. In this case, the
-decision is "failure" when the posterior probability of the treatment being
-at most deltaFu better than the control is above tFu at the maximum number of
-patients.
+The rules for Stop, Go and Gray Zone (where applicable) are the same as in \code{\link[=ocPredprob]{ocPredprob()}}.
+However when compared to \code{\link[=ocPredprob]{ocPredprob()}}, where the predictive probability of \verb{response rate > p0}
+was used to reach decisions, here the \verb{response rate - p0 > 0} is replaced by \verb{response rate - p0 > delta},
+and the reason is that \code{p0} is now also uncertain, which is quantified by a posterior distribution.
+To therefore understand the margin of difference between the experimental and control group, refer
+to the two ways of calculating delta in \code{\link[=postprobDist]{postprobDist()}}.
 
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-PrStopEarly: probability to stop the trial early (before reaching the
-maximum sample size)
-PrEarlyEff: probability to decide for efficacy early
-PrEarlyFut: probability to decide for futility early
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+The margin \code{delta} from \code{\link[=postprobDist]{postprobDist()}} is no longer used however where a Go decision is evaluated,
+the margin \code{deltaE} is instead employed, and where a Stop decision is evaluated,
+the margin \code{deltaF} is instead employed in lieu of \code{delta}.
+Decision 1 and Decision 2 share the same Go rule for interim and final,
+with the margin of difference is accounted for in the following manner for the final looks:
+\itemize{
+\item \code{Pr(P_E > p0 + deltaE | data) > tT } for the absolute case
+\item \code{Pr(P_E > (1-p0)*deltaE | data) > tT} for the relative case
+}
+
+As mentioned, the rules of \code{\link[=ocPredprobDist]{ocPredprobDist()}} and \code{\link[=ocPredprob]{ocPredprob()}} for both Decision 1 and Decision 2 are the same,
+and the margin of difference differ depending on whether it is a Go or Stop decision
+(\code{deltaE} and \code{deltaF} is employed instead of \code{delta}).
+We highlight here another distinction between \code{\link[=ocPredprob]{ocPredprob()}} and \code{\link[=ocPredprobDist]{ocPredprobDist()}},
+seen in the evaluation for the final futility look in \code{\link[=ocPredprobDist]{ocPredprobDist()}} where \code{p1} is used instead of \code{p0} :
+\itemize{
+\item \code{Pr(P_E < p1 + deltaF | data) > tF} for the absolute case
+\item \code{Pr(P_E < (1-p1)*deltaF | data) > tF} for the relative case
+}
 }
 \examples{
-## to examine operating characteristics of a phase Ib design with 2 interim analyses
-## (sample size @ 10, 20 using predictive probability) and one final analysis
-## (sample size @ 30);
-
-# design details
-# multiple looks @ 10, 20, 30 patients
-# True response rate of the treatment group=0.4
-# response rate improvement (delta)=10\%  as an absolute value (default)
-# 1)
-# denote treatment response rate as RRS
-# trial success is defined as: P(RRS>control+delta)>tT
-# note: ns is suggested to be a larger value than 10 in a real study in order to
-# achieve correct results
-
+# Here we illustrate an example for Decision 1 with the following assumptions :
+# Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30.
+# True response rate or truep of the treatment group = 40\%
+# Desired difference to Standard of Care for Efficacy and Futility = 10\%
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( response rate + deltaE > 25\% ) > 60\% or P(response rate + deltaE > p0) > tT
+# - Final look for Futility: Pr( response rate - deltaF < 25\% ) < 60\% or P(response rate + deltaF > p0) < tT
+# - Interim look for Efficacy: Pr( success at final ) > 80\% or P(success at final) > phiU
+# - Interim look for Futility: Pr( failure at final ) < 20\% or P(success at final) < phiL
+# We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(c(10, 20, 30), 0.4,
-  delta = 0.1, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(1, 1), parS = c(5, 25), ns = 10
+res1 <- ocPredprobDist(
+  xS = 0,
+  nS = 0,
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  deltaE = 0.10,
+  deltaF = 0.10,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  phiU = 0.80,
+  phiL = 0.20,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  wiggle = FALSE,
+  decision1 = TRUE
 )
 res1$oc
 
 
+# Here we illustrate an example for Decision 1 with the following assumptions :
+# Efficacy Looks are at sample size of 10, 20 and 30.Futility is only at sample size of 10.
+# Wiggle = TRUE
+# True response rate or truep of the treatment group = 40\%
+# Desired difference to Standard of Care for Efficacy and Futility = 10\%
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( response rate + deltaE > 25\% ) > 60\% or P(response rate + deltaE > p0) > tT
+# - Final look for Futility: Pr( response rate - deltaF < 25\% ) < 60\% or P(response rate + deltaF > p0) < tT
+# - Interim look for Efficacy: Pr( success at final ) > 80\% or P(success at final) > phiU
+# - Interim look for Futility: Pr( failure at final ) < 20\% or P(success at final) < phiL
+# We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
+
+set.seed(20)
+res1 <- ocPredprobDist( # we're not suppose to have grey zone here
+  xS = 0,
+  nS = 0,
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  deltaE = 0.10,
+  deltaF = 0.10,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  phiU = 0.80,
+  phiL = 0.20,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  nnF = 20,
+  wiggle = TRUE,
+  decision1 = TRUE
+)
+res1$oc
+
+
+# Here we illustrate an example for Decision 2 with the following assumptions :
+# Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30.
+# Wiggle = TRUE
+# True response rate or truep of the treatment group = 40\%
+# Desired difference to Standard of Care for Efficacy and Futility = 10\%
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( response rate + deltaE > 25\% ) > 60\% or P(response rate + deltaE > p0) > tT
+# - Final look for Futility: Pr( response rate - deltaF < 25\% ) < 60\% or P(response rate + deltaF > p0) < tT
+# - Interim look for Efficacy: Pr( success at final ) > 80\% or P(success at final) > phiU
+# - Interim look for Futility: Pr( failure at final ) < 20\% or P(success at final) < phiL
+# We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
+
+set.seed(20)
+res1 <- ocPredprobDist( # we're not suppose to have grey zone here
+  xS = 0,
+  nS = 0,
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  deltaE = 0.10,
+  deltaF = 0.10,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  phiU = 0.80,
+  phiFu = 0.7,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  nnF = c(10, 20, 30),
+  wiggle = TRUE,
+  decision1 = FALSE
+)
+res1$oc
 
 # this function will generate d based on "floor(min(nn - c(0,nn[-length(nn)]))/2)"
 # if d is missing

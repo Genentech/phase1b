@@ -143,7 +143,7 @@ result <- ocPredprob(
 )
 result$oc
 
-# Deision 1 with wiggle.
+# Decision 1 with wiggle.
 result <- ocPredprob(
   nnE = c(10, 20),
   truep = 0.4,
