@@ -76,7 +76,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed nnr : numeric
 #'  union of `nnE`and `nnF`.
 #' @typed truep : number
-#'  assumed true response rate or true rate (scenario).
+#'  assumed true response rate.
 #' @typed p0 : number
 #'  lower Futility threshold of response rate.
 #' @typed p1 : number

@@ -40,8 +40,8 @@ h_decision_one_predprobDist <- function(
   assert_number(tT, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)
-  assert_number(deltaE, lower = 0, upper = 1)
-  assert_number(deltaF, lower = 0, upper = 1)
+  assert_number(deltaE, finite = TRUE, upper = 1)
+  assert_number(deltaF, finite = TRUE, upper = 1)
   assert_number(weights, lower = 1, finite = TRUE)
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
@@ -97,8 +97,8 @@ h_decision_one_predprobDist <- function(
     index_look <- index_look + 1
   }
   # The criteria for Decision 1 for Final looks are:
-  # Final GO = P( RR > p0 + delta | data) => tT
-  # Final STOP = P(RR > p0 - delta | data ) < tT
+  # Final GO = P( RR > p0 + deltaE | data) => tT
+  # Final STOP = P(RR > p0 + deltaF | data ) < tT
   if (is.na(decision)) {
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
@@ -183,8 +183,8 @@ h_decision_two_predprobDist <- function(
   assert_number(tF, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiFu, lower = 0, upper = 1)
-  assert_number(deltaE, lower = 0, upper = 1)
-  assert_number(deltaF, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1)
+  assert_number(deltaF, upper = 1)
   assert_number(weights, lower = 1, finite = TRUE)
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
@@ -326,16 +326,16 @@ h_decision_two_predprobDist <- function(
 #' @inheritParams h_get_decision1_predprobDist
 #' @inheritParams ocPredprob
 ocPredprobDist <- function(
-    xS = 0,
-    nS = 0,
     nnE,
     truep,
     deltaE,
     deltaF,
+    phiU,
+    xS = 0,
+    nS = 0,
     relativeDelta = FALSE,
     tT = 1 - tF,
     tF = 1 - tT,
-    phiU,
     phiL = 1 - phiFu,
     phiFu = 1 - phiL,
     parE = c(1, 1),
@@ -352,8 +352,8 @@ ocPredprobDist <- function(
   assert_number(nS, finite = TRUE)
   assert_numeric(nnE, any.missing = FALSE, sort = TRUE)
   assert_number(truep, lower = 0, upper = 1)
-  assert_number(deltaE, lower = 0, upper = 1)
-  assert_number(deltaF, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
   assert_number(tT, lower = 0, upper = 1)
   assert_number(tF, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)

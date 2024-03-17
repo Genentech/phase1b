@@ -19,7 +19,7 @@ test_that("h_decision_one_predprobDist gives correct result and list", {
     phiU = 0.8,
     phiL = 0.6,
     deltaE = 0.1,
-    deltaF = 0.1,
+    deltaF = -0.1,
     weights = 1,
     weightsS = 1,
     relativeDelta = FALSE
@@ -59,4 +59,136 @@ test_that("h_decision_two_predprobDist gives correct result and list", {
   expect_flag(result$decision, FALSE)
   expect_equal(result$all_sizes, 30)
   expect_list(result)
+})
+
+# ocPredprobDist ----
+
+test_that("ocPredprobDist gives correct result and list when relative_delta = TRUE", {
+  set.seed(1989)
+  result <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = c(10, 20, 30),
+    wiggle = TRUE,
+    decision1 = FALSE
+  )
+  result_sum <- sum(result$oc[5:7])
+  expect_equal(result_sum, 1)
+})
+
+test_that("ocPredprobDist gives correct result and list when relative_delta = TRUE", {
+  set.seed(20)
+  expect_warning(result <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = c(10, 20, 30),
+    wiggle = TRUE,
+    decision1 = FALSE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  result_sum <- sum(result$oc[5:7])
+  expect_equal(result_sum, 1)
+})
+
+test_that("the PrFutility increases with increase futility looks", {
+  set.seed(1989)
+  expect_warning(result_one_fut <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = 10,
+    wiggle = TRUE,
+    decision1 = FALSE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(result_three_fut <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = c(10, 20, 30),
+    wiggle = TRUE,
+    decision1 = FALSE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_true(result_three_fut$oc$PrFutility > result_one_fut$oc$PrFutility)
+})
+
+test_that("the PrEfficacy increases with increase efficacy looks", {
+  set.seed(1989)
+  expect_warning(result_one_eff <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = 10,
+    wiggle = TRUE,
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(result_three_eff <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = c(10, 20, 30),
+    wiggle = TRUE,
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_true(result_three_eff$oc$PrEfficacy > result_one_eff$oc$PrEfficacy)
 })
