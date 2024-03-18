@@ -10,7 +10,7 @@
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.10,
@@ -27,7 +27,7 @@ res1 <- ocPredprobDist(
   wiggle = FALSE,
   decision1 = TRUE
 )
-res1$oc
+result$oc
 
 
 # Here we illustrate an example for Decision 1 with the following assumptions :
@@ -44,7 +44,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 #
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.10,
@@ -62,7 +62,7 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = TRUE
 )
-res1$oc
+result$oc
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
@@ -77,7 +77,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.5,
@@ -95,7 +95,7 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = FALSE
 )
-res1$oc
+result$oc
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
@@ -110,7 +110,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.5,
@@ -128,4 +128,4 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = FALSE
 )
-res1$oc
+result$oc
