@@ -1029,10 +1029,10 @@ Before the Phase 1b trial starts, users may want to evaluate the design operatin
 characteristics at an assumed true PET-CR rate of the combo trial.
 The `ocPredprobDist()` function will allow such an evaluation under a
 single scenario of true response rate. The following code assumes a true PET-CR
-rate of 75%. The planed interim and final looks are at 25, 40 and 80 patients
-which is entered as a vector in the `nn` argument. `p` is the true PET-CR rate
-we assumed, and we are targeting for a `delta` improvement over control
-(`delta` ranges from 0 to 1). `tT` is the threshold for the probability to be
+rate of 75%. The planned interim and final looks are at 25, 40 and 80 patients
+which is entered as a vector in the `nnE` argument. `truep` is the true PET-CR rate
+we assumed, and we are targeting for a `deltaE` improvement over control
+(`deltaE` and `deltaF` ranges from 0 to 1). `tT` is the threshold for the probability to be
 above control + delta at the end of the trial, and `phiL` and `phiU` are the lower
 and upper thresholds on the predictive probability, respectively. Same as the
 notations in the `predprobDist()` function, `parE` and `parS` are the place to
@@ -1043,8 +1043,22 @@ respectively.
 # with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%
 set.seed(4)
 res1 <- ocPredprobDist(
-  nn = c(25, 40, 80), p = 0.75, delta = 0.15, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+  nnE = c(25, 40, 80),
+  truep = 0.75,
+  deltaE = 0.15,
+  deltaF = 0.15,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75),
+  weights = 1,
+  weightsS = 1,
+  sim = 50, # advised to use > 50000 for better convergence
+  nnF = c(25, 40, 80),
+  wiggle = TRUE,
+  decision1 = TRUE
 )
 
 res1$oc
