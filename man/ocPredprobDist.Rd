@@ -177,7 +177,8 @@ res1 <- ocPredprobDist(
 res1$oc
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
-# Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30 where sample looks are allowed to wiggle.
+# Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
+# where sample looks are allowed to wiggle.
 # True response rate or truep of the treatment group = 40\%
 # Desired difference to Standard of Care for Efficacy and Futility = 50\%
 # Delta calculation is absolute case. The following are the Final Stop rules respectively :
