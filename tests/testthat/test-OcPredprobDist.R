@@ -63,7 +63,7 @@ test_that("h_decision_two_predprobDist gives correct result and list", {
 
 # ocPredprobDist ----
 
-test_that("ocPredprobDist gives correct result and list when relative_delta = TRUE", {
+test_that("ocPredprobDist gives correct result and list when relative_delta = FALSE", {
   set.seed(1989)
   result <- ocPredprobDist(
     nnE = c(10, 20, 30),
@@ -154,15 +154,15 @@ test_that("the PrFutility increases with increase futility looks", {
 
 test_that("the PrEfficacy increases with increase efficacy looks", {
   set.seed(1989)
-  expect_warning(result_one_eff <- ocPredprobDist(
-    nnE = c(10, 20, 30),
+  expect_warning(result_two_eff <- ocPredprobDist(
+    nnE = c(20, 30),
     truep = 0.40,
     deltaE = 0.5,
     deltaF = 0.5,
     relativeDelta = TRUE,
     tT = 0.6,
     phiU = 0.80,
-    phiFu = 0.7,
+    phiL = 0.20,
     parE = c(1, 1),
     parS = c(5, 25),
     weights = 1,
@@ -180,15 +180,15 @@ test_that("the PrEfficacy increases with increase efficacy looks", {
     relativeDelta = TRUE,
     tT = 0.6,
     phiU = 0.80,
-    phiFu = 0.7,
+    phiL = 0.20,
     parE = c(1, 1),
     parS = c(5, 25),
     weights = 1,
     weightsS = 1,
     sim = 50,
-    nnF = c(10, 20, 30),
+    nnF = 10,
     wiggle = TRUE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_true(result_three_eff$oc$PrEfficacy > result_one_eff$oc$PrEfficacy)
+  expect_true(result_three_eff$oc$PrEfficacy > result_two_eff$oc$PrEfficacy)
 })
