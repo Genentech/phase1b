@@ -34,7 +34,22 @@ specify in \code{nnF}.}
 
 \item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
 
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
+
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Futility looks only.
+Note that this can also be negative as well.}
+
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
+
+\item{xS}{(\code{number}):\cr number of successes in the \code{S} group at interim.}
+
+\item{nS}{(\code{number}):\cr number of patients in the \code{E} group at interim.}
+
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \code{\link[=postprobDist]{postprobDist()}}.}
 
 \item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
@@ -46,6 +61,13 @@ specify in \code{nnF}.}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
+
+\item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution for the \code{S} group.}
+
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
+
+\item{weightsS}{(\code{numeric}):\cr weights for the \code{S} group.}
 
 \item{sim}{(\code{number}):\cr number of simulations.}
 
@@ -122,7 +144,7 @@ seen in the evaluation for the final futility look in \code{\link[=ocPredprobDis
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.10,
@@ -139,7 +161,7 @@ res1 <- ocPredprobDist(
   wiggle = FALSE,
   decision1 = TRUE
 )
-res1$oc
+result$oc
 
 
 # Here we illustrate an example for Decision 1 with the following assumptions :
@@ -156,7 +178,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 #
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.10,
@@ -174,7 +196,7 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = TRUE
 )
-res1$oc
+result$oc
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
@@ -189,7 +211,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.5,
@@ -207,7 +229,7 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = FALSE
 )
-res1$oc
+result$oc
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
@@ -222,7 +244,7 @@ res1$oc
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
-res1 <- ocPredprobDist(
+result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
   deltaE = 0.5,
@@ -240,5 +262,5 @@ res1 <- ocPredprobDist(
   wiggle = TRUE,
   decision1 = FALSE
 )
-res1$oc
+result$oc
 }

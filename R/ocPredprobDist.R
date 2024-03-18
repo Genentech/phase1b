@@ -323,7 +323,7 @@ h_decision_two_predprobDist <- function(
 #' @example examples/ocPredprobDist.R
 #' @export
 #' @inheritParams h_get_looks
-#' @inheritParams h_get_decision1_predprobDist
+#' @inheritParams h_decision_one_predprobDist
 #' @inheritParams ocPredprob
 ocPredprobDist <- function(
     nnE,
