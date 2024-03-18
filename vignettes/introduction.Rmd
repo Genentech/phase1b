@@ -1055,7 +1055,7 @@ res1 <- ocPredprobDist(
   parS = c(75, 75),
   weights = 1,
   weightsS = 1,
-  sim = 50, # advise to use > 50000 for better convergence
+  sim = 50, # advise to use > 50000 to achieve convergence
   nnF = c(25, 40, 80),
   wiggle = TRUE,
   decision1 = TRUE
@@ -1103,7 +1103,7 @@ Mysim <- sapply(p_par, function(x) {
     parS = c(75, 75),
     weights = 1,
     weightsS = 1,
-    sim = 10, # advise to use > 50000 for better convergence
+    sim = 10, # advise to use > 50000 to achieve convergence
     nnF = c(25, 40, 80),
     wiggle = TRUE,
     decision1 = TRUE
