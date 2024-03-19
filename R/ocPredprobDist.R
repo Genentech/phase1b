@@ -114,8 +114,8 @@ h_decision_one_predprobDist <- function(
         parS = parS,
         weightsS = weightsS # for controlBetamixPost
       )
+      decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
     }
-    decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
   }
   if (size_look %in% nnF) {
     final_fu_qU <- postprobDist(

@@ -155,7 +155,7 @@ test_that("the PrFutility increases with increase futility looks", {
 test_that("the PrEfficacy increases with increase efficacy looks", {
   set.seed(1989)
   expect_warning(result_two_eff <- ocPredprobDist(
-    nnE = c(20, 30),
+    nnE = c(15, 30),
     truep = 0.40,
     deltaE = 0.5,
     deltaF = 0.5,
@@ -167,7 +167,7 @@ test_that("the PrEfficacy increases with increase efficacy looks", {
     parS = c(5, 25),
     weights = 1,
     weightsS = 1,
-    sim = 5,
+    sim = 50,
     nnF = 10,
     wiggle = TRUE,
     decision1 = TRUE
