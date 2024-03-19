@@ -185,7 +185,7 @@ test_that("the PrEfficacy increases with increase efficacy looks", {
     parS = c(5, 25),
     weights = 1,
     weightsS = 1,
-    sim = 5,
+    sim = 50,
     nnF = 10,
     wiggle = TRUE,
     decision1 = TRUE
