@@ -97,7 +97,7 @@ h_decision_one_predprobDist <- function(
     index_look <- index_look + 1
   }
   # The criteria for Decision 1 for Final looks are:
-  # Final GO = P( RR > p0 + deltaE | data) => tT
+  # Final GO = P(RR > p0 + deltaE | data) => tT
   # Final STOP = P(RR > p0 + deltaF | data ) < tT
   if (is.na(decision)) {
     size_look <- nnr[index_look]
