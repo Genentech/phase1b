@@ -24,7 +24,7 @@ ocPostprobDist(
 \item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
 specify in \code{nnF}.}
 
-\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
+\item{truep}{(\code{number}):\cr assumed true response rate.}
 
 \item{deltaE}{(\code{number}):\cr margin of which the response rate in the treatment group should be better
 than in the standard of care of \code{group}. Delta for Efficacy is used to
@@ -80,7 +80,7 @@ Stop criteria for Efficacy :
 
 Stop criteria for Futility :
 
-\code{Pr(truep < P_S - deltaF) > tL}
+\code{Pr(truep < P_S + deltaF) > tL}
 
 Where \code{truep} is the assumed true rate of response and \code{p1} and \code{p0} respectively are
 the thresholds for Efficacy and Futility respectively.

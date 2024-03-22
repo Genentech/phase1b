@@ -25,7 +25,7 @@ h_get_decisionDist(
 
 \item{nnrF}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnF}.}
 
-\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
+\item{truep}{(\code{number}):\cr assumed true response rate.}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
 Default set at alpha = 1, beta = 1, or uniform prior.}
