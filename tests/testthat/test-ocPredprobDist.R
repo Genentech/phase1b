@@ -111,7 +111,7 @@ test_that("ocPredprobDist gives correct result and list when relativeDelta = TRU
   expect_equal(result_sum, 1)
 })
 
-test_that("the PrFutility increases with increase futility looks", {
+test_that("ocPredprobDist gives higher PrFutility with more futility looks", {
   set.seed(1989)
   expect_warning(result_one_fut <- ocPredprobDist(
     nnE = c(10, 20, 30),
