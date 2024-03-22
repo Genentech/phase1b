@@ -53,12 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -1061,34 +1055,48 @@ exceed 80% nor fall below 20%.</p>
 design operating characteristics at an assumed true PET-CR rate of the
 combo trial. The <code><a href="../reference/ocPredprobDist.html">ocPredprobDist()</a></code> function will allow such
 an evaluation under a single scenario of true response rate. The
-following code assumes a true PET-CR rate of 75%. The planed interim and
-final looks are at 25, 40 and 80 patients which is entered as a vector
-in the <code>nn</code> argument. <code>p</code> is the true PET-CR rate
-we assumed, and we are targeting for a <code>delta</code> improvement
-over control (<code>delta</code> ranges from 0 to 1). <code>tT</code> is
-the threshold for the probability to be above control + delta at the end
-of the trial, and <code>phiL</code> and <code>phiU</code> are the lower
-and upper thresholds on the predictive probability, respectively. Same
-as the notations in the <code><a href="../reference/predprobDist.html">predprobDist()</a></code> function,
-<code>parE</code> and <code>parS</code> are the place to enter beta
-parameters for the prior on the treatment and control proportion,
-respectively.</p>
+following code assumes a true PET-CR rate of 75%. The planned interim
+and final looks are at 25, 40 and 80 patients which is entered as a
+vector in the <code>nnE</code> argument. <code>truep</code> is the true
+PET-CR rate we assumed, and we are targeting for a <code>deltaE</code>
+improvement over control (<code>deltaE</code> and <code>deltaF</code>
+ranges from 0 to 1). <code>tT</code> is the threshold for the
+probability to be above control + delta at the end of the trial, and
+<code>phiL</code> and <code>phiU</code> are the lower and upper
+thresholds on the predictive probability, respectively. Same as the
+notations in the <code><a href="../reference/predprobDist.html">predprobDist()</a></code> function, <code>parE</code>
+and <code>parS</code> are the place to enter beta parameters for the
+prior on the treatment and control proportion, respectively.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPredprobDist.html">ocPredprobDist</a></span><span class="op">(</span></span>
-<span>  nn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.75</span>, delta <span class="op">=</span> <span class="fl">0.15</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.2</span>, phiU <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>, parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">1e1</span></span>
+<span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  truep <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  deltaE <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>  deltaF <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>  relativeDelta <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  tT <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  phiL <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  phiU <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
+<span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weightsS <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sim <span class="op">=</span> <span class="fl">50</span>, <span class="co"># advise to use &gt; 50000 to achieve convergence</span></span>
+<span>  nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  wiggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  decision1 <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = 0.75, deltaE = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
 <span></span>
 <span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span>
-<span><span class="co">#&gt;      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span></span>
-<span><span class="co">#&gt; [1,]      59.5         0.4        0.4          0        0.9        0.1</span></span>
-<span><span class="co">#&gt;      PrGrayZone</span></span>
-<span><span class="co">#&gt; [1,]          0</span></span></code></pre></div>
+<span><span class="co">#&gt;   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span></span>
+<span><span class="co">#&gt; 1      66.5         0.3        0.3          0          1          0          0</span></span></code></pre></div>
 <p>The number of simulation is 10 in this case, just to speed up the
-example. However, the user needs to increase the number to 10,000 or
-higher to generate a correct result.</p>
+example. However, the user needs to increase the number to 50,000 or
+higher to generate better convergence.</p>
 <p>According to the simulation result, the expected sample size of the
 trial is 44.4. 87% of the simulated trials declare efficacy and the rest
 13% of trials declare futility. In terms of early stopping, 71% of the
@@ -1108,12 +1116,52 @@ type II error.</p>
 <span><span class="va">p_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">Mysim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">p_par</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPredprobDist.html">ocPredprobDist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>, <span class="va">x</span>,</span>
-<span>    delta <span class="op">=</span> <span class="fl">0.15</span>, tT <span class="op">=</span> <span class="fl">0.6</span>, phiL <span class="op">=</span> <span class="fl">0.8</span>, phiU <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>    parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>, parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">1e1</span></span>
+<span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPredprobDist.html">ocPredprobDist</a></span><span class="op">(</span></span>
+<span>    nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>    truep <span class="op">=</span> <span class="va">x</span>,</span>
+<span>    delta <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>    deltaF <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>    relativeDelta <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    tT <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>    phiL <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>    phiU <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>    parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
+<span>    parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>,</span>
+<span>    weights <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    weightsS <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    sim <span class="op">=</span> <span class="fl">10</span>, <span class="co"># advise to use &gt; 50000 to achieve convergence</span></span>
+<span>    nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>    wiggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    decision1 <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">oc</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nnE = c(25, 40, 80), truep = x, delta = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
 <span></span>
 <span><span class="va">peffbp</span> <span class="op">&lt;-</span> <span class="va">Mysim</span><span class="op">[</span><span class="fl">5</span>, <span class="op">]</span></span>
 <span><span class="va">pfutbp</span> <span class="op">&lt;-</span> <span class="va">Mysim</span><span class="op">[</span><span class="fl">6</span>, <span class="op">]</span></span>
@@ -1233,18 +1281,28 @@ can be used:</p>
 <code class="sourceCode R"><span><span class="co"># with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="co"># Used for reproducibility</span></span>
 <span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPredprobDist.html">ocPredprobDist</a></span><span class="op">(</span></span>
-<span>  nn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">0.75</span>,</span>
-<span>  delta <span class="op">=</span> <span class="fl">0.15</span>, deltaFu <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  tT <span class="op">=</span> <span class="fl">0.6</span>, tFu <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  phiU <span class="op">=</span> <span class="fl">0.8</span>, phiFu <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>, parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>, ns <span class="op">=</span> <span class="fl">1e1</span></span>
+<span>  nn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  truep <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>  deltaE <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>  deltaF <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  tT <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  tF <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  phiU <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  phiFu <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span><span class="op">)</span>,</span>
+<span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weightsS <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sim <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  wiggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  decision1 <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">#&gt; Warning in ocPredprobDist(nn = c(25, 40, 80), truep = 0.75, deltaE = 0.15, :</span></span>
+<span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
 <span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span>
-<span><span class="co">#&gt;      ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility</span></span>
-<span><span class="co">#&gt; [1,]      59.5         0.4        0.4          0        0.9          0</span></span>
-<span><span class="co">#&gt;      PrGrayZone</span></span>
-<span><span class="co">#&gt; [1,]        0.1</span></span></code></pre></div>
+<span><span class="co">#&gt;   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span></span>
+<span><span class="co">#&gt; 1      70.3        0.22          0       0.22        0.7       0.22       0.08</span></span></code></pre></div>
 <p>The number of simulation is 10 here to reduce the computational time
 of the code. However, user must increase the number to 10,000 or higher
 to generate a correct result.</p>

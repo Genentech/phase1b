@@ -38,12 +38,6 @@ with Beta Prior on the Control or Standard of Care Arm — ocPostprobDist"><meta
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -96,7 +90,7 @@ specify in <code>nnF</code>.</p></dd>
 
 
 <dt>truep</dt>
-<dd><p>(<code>number</code>):<br> assumed true response rate or true rate (scenario).</p></dd>
+<dd><p>(<code>number</code>):<br> assumed true response rate.</p></dd>
 
 
 <dt>deltaE</dt>
@@ -167,7 +161,7 @@ respectively.</p>
 <p>Stop criteria for Efficacy :</p>
 <p><code>Pr(truep &gt; P_S + deltaE) &gt; tU</code></p>
 <p>Stop criteria for Futility :</p>
-<p><code>Pr(truep &lt; P_S - deltaF) &gt; tL</code></p>
+<p><code>Pr(truep &lt; P_S + deltaF) &gt; tL</code></p>
 <p>Where <code>truep</code> is the assumed true rate of response and <code>p1</code> and <code>p0</code> respectively are
 the thresholds for Efficacy and Futility respectively.</p>
 <p>Resulting operating characteristics include the following:</p><ul><li><p><code>ExpectedN</code>: expected number of patients in the trials</p></li>
