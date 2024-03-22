@@ -152,7 +152,7 @@ test_that("ocPredprobDist gives higher PrFutility with more futility looks", {
   expect_true(result_three_fut$oc$PrFutility > result_one_fut$oc$PrFutility)
 })
 
-test_that("the PrEfficacy increases with increase efficacy looks", {
+test_that("ocPredprobDist gives higher PrEfficacy with more efficacy looks", {
   set.seed(1989)
   expect_warning(result_two_eff <- ocPredprobDist(
     nnE = c(15, 30),
