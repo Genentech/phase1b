@@ -63,7 +63,7 @@ test_that("h_decision_two_predprobDist gives correct result and list", {
 
 # ocPredprobDist ----
 
-test_that("ocPredprobDist gives correct result and list when relative_delta = FALSE", {
+test_that("ocPredprobDist gives correct result and list when relativeDelta = FALSE", {
   set.seed(1989)
   result <- ocPredprobDist(
     nnE = c(10, 20, 30),
