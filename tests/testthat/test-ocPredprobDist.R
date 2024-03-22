@@ -87,7 +87,7 @@ test_that("ocPredprobDist gives correct result and list when relativeDelta = FAL
   expect_equal(result_sum, 1)
 })
 
-test_that("ocPredprobDist gives correct result and list when relative_delta = TRUE", {
+test_that("ocPredprobDist gives correct result and list when relativeDelta = TRUE", {
   set.seed(20)
   expect_warning(result <- ocPredprobDist(
     nnE = c(10, 20, 30),
