@@ -80,7 +80,7 @@ Stop criteria for Efficacy :
 
 Stop criteria for Futility :
 
-\code{Pr(truep < P_S - deltaF) > tL}
+\code{Pr(truep < P_S + deltaF) > tL}
 
 Where \code{truep} is the assumed true rate of response and \code{p1} and \code{p0} respectively are
 the thresholds for Efficacy and Futility respectively.

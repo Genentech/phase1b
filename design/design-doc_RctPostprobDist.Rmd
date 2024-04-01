@@ -17,11 +17,10 @@ Interim looks are for sample sizes below that of the final sample size.
 Final looks are only performed at the maximum sample size,
 At each interim or final look, a futility or efficacy or both can be performed.
 
-The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPredprob()] however
-as with [ocPredprobDist()], the margin of difference differ depending on whether it is a Go or Stop decision
-(`deltaE` and `deltaF` is employed instead of `delta`)
+The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPostprobDist()] where
+the only difference is to emulate a randomized-controlled trial setting.
 
- @return A list with the following elements:
+A list with the following elements:
  - `oc`: matrix with operating characteristics with the following details:
     - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
     - `ExpectedNactive` : the mean of the number of patients in treatment arm
@@ -274,7 +273,6 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision, nnrE, nnr
   )
 }
 ```
-
 # Example for h_get_oc_rct
 ```{r}
 set.seed(2000)
@@ -430,7 +428,6 @@ ocRctPostprobDist(
   nnF = input$nnF
 )
 ```
-
 # Example of new_ocRctPostProbDist when `relativeDelta = FALSE`.
 ```{r}
 set.seed(1090)
@@ -455,7 +452,7 @@ new_RctPostProbDist(
 # Example of ocRctPostProbDist when `relativeDelta = FALSE`.
 ```{r}
 set.seed(1090)
-oc <- ocRctPostprobDist(
+ocRctPostprobDist(
   nn = input$nn,
   pE = input$pE,
   pS = input$pS,
@@ -472,164 +469,4 @@ oc <- ocRctPostprobDist(
   d = NULL,
   nnF = input$nnF
 )
-oc
 ```
-# annotation of steps of vintage function
-
-Initially we set certain parameters through establishing too the randomization ratio
-Then we simulate `sim` number of times the possible sample sizes for all looks with random distance applied if `wiggle = TRUE`.
-```{r}
-ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
-                              tL = 0.8, tU = 0.8,
-                              parE = c(a = 1, b = 1),
-                              parS = c(a = 1, b = 1),
-                              randRatio = 1,
-                              ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  ## checks
-  stopifnot(
-    is.probability(pE),
-    is.probability(pS),
-    is.probability(deltaE),
-    is.bool(relativeDelta),
-    is.probability(tL),
-    is.probability(tU),
-    randRatio > 0,
-    is.scalar(ns),
-    is.bool(nr)
-  )
-
-  if (!is.null(deltaF)) {
-    stopifnot(is.probability(abs(deltaF)))
-  }
-  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  ##    during trial if continuing (NA)
-  nnE <- sort(nn)
-  nnF <- sort(nnF)
-  s <- rep(NA, ns)
-  n <- nActive <- nControl <- integer(length(s))
-  ns <- as.integer(ns)
-  nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn) # 3rd
-  Nstart <- nn[1] # first element 10
-  Nmax <- nn[nL] # third element  30
-
-  ## proportion of active patients:
-  activeProp <- randRatio / (randRatio + 1) # 0.5
-
-  ## determine number of active and control patients
-  NmaxActive <- ceiling(activeProp * Nmax) # 15 patients max that active can have
-  NmaxControl <- Nmax - NmaxActive # 15 patients max that control patients can have
-
-  if (nr && is.null(d)) { # if no distance given, distance is measured. So this is get_distance
-    ## set parameter d for randomly generating look locations
-    d <- floor(min(nn - c(0, nn[-nL])) / 2) # 3, c(10, 20, 30)
-  }
-  nnr <- nn # c(10, 20, 30)
-  nnrE <- nnE # c(10, 20, 30)
-  nnrF <- nnF # c(10, 20, 30)
-  ## simulate a clinical trial ns times
-
-  for (k in 1:ns) {
-    if (nr && (d > 0)) { # if distance given, then distance will be calculated as wiggled distance
-      ## randomly generate look locations
-      dd <- sample(-d:d,
-        size = nL - 1, replace = TRUE,
-        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
-      )
-      nnr <- nn + c(dd, 0)
-      nnrE <- nnr[nn %in% nnE]
-      nnrF <- nnr[nn %in% nnF]
-    }
-    ## simulate sequence of patients
-    isActive <- sample(
-      x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)), # active pts have an NmaxActive counts
-      size = Nmax,
-      replace = FALSE
-    )
-    #  [1]  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
-    # [15] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE
-    # [29] FALSE  TRUE
-    ## simulate sequence of responses. So for each above, generate a 1 or 0 according to pE and pS
-    x <- stats::rbinom(Nmax, 1,
-      prob = ifelse(isActive, pE, pS) # out of all patients, if isActive == TRUE, the prob of success is pE, otherwise pS
-    )
-    # [1] 0 0 0 0 1 0 0 0 0 0 0 1 0 1 1 1 0 0 0 1 1 0 0 1 0 1 0 0 0 1
-    ## start trial
-    j <- 1
-    i <- nnr[j]
-
-    while (is.na(s[k]) && (j <= length(nnr))) { # when there is no decision and we are look 1, 2, 3.
-      ## current data in both arms:
-      xActive <- x[which(isActive[1:i])] # [1] 0 0 1 0 4 patients here
-      xControl <- x[which(!isActive[1:i])] # [1] 0 0 0 0 0 0 6 patients here
-
-      ## compute the two probabilities
-      if (!is.null(deltaF) && i %in% nnrF) { # if there is an nnF, and a size look that is in nnrF
-        qL <- postprobDist(
-          x = sum(xControl), n = length(xControl),
-          xS = sum(xActive), nS = length(xActive),
-          delta = deltaF,
-          relativeDelta = relativeDelta,
-          parE = parS, parS = parE
-        )
-      }
-
-      qU <- postprobDist(
-        x = sum(xActive), n = length(xActive),
-        xS = sum(xControl), nS = length(xControl),
-        delta = deltaE,
-        relativeDelta = relativeDelta,
-        parE = parE, parS = parS
-      )
-
-      if (!is.null(deltaF)) { # if there is a deltaF
-        if (i %in% nnrF) {
-          s[k] <- ifelse(qL >= tL, FALSE, NA)
-        }
-
-        if (i %in% nnrE) { # if size look is in nnrE
-          s[k] <- ifelse(qU < tU, s[k], TRUE)
-        }
-      }
-      # else {
-      #   if (i %in% nnrF) {
-      #     s[k] <- ifelse(qU <= 1 - tL, FALSE, NA)
-      #   }
-      #
-      #   if (i %in% nnrE) {
-      #     s[k] <- ifelse(qU < tU, s[k], TRUE)
-      #   }
-      # }
-
-      ## sample sizes: total and in both arms
-      n[k] <- i
-      nActive[k] <- length(xActive)
-      nControl[k] <- length(xControl)
-
-      j <- j + 1
-      i <- nnr[j]
-    }
-  }
-
-  oc <- cbind(
-    ExpectedN = mean(n),
-    ExpectedNactive = mean(nActive),
-    ExpectedNcontrol = mean(nControl),
-    PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
-    PrEfficacy = sum(s, na.rm = TRUE) / ns,
-    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
-    PrGrayZone = sum(is.na(s) / ns)
-  )
-
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
-    SampleSizeActive = nActive,
-    SampleSizeControl = nControl,
-    nn = nn, nnE = nnE, nnF = nnF,
-    params = as.list(match.call(expand.dots = FALSE))
-  ))
-}
-```
-Comparing vintage and new user facing functions
