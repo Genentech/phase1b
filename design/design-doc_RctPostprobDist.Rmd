@@ -141,13 +141,16 @@ h_get_decisionDist_rct <- function(nnr,
   index_look <- 1
   size_look <- nnr[index_look]
   all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
 
   isActive <- sample(
     x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
     size = Nmax,
     replace = FALSE
   )
-  response <- rbinom(Nmax, size = 1, prob = ifelse(rct, pE, pS))
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
 
   activeProp <- randRatio / (randRatio + 1)
   NmaxActive <- ceiling(activeProp * Nmax)
@@ -248,15 +251,16 @@ h_get_decisionDist_rct(
 # h_get_oc_rct
 
 ```{r}
-h_get_oc_rct <- function(all_sizes, nActive, nControl, decision, nnrE, nnrF) {
+h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision, nnrE, nnrF) {
   assert_numeric(all_sizes)
-  assert_numeric(nnr, any.missing = FALSE)
+  # assert_numeric(nnr, any.missing = FALSE)
   assert_logical(decision, len = length(all_sizes))
   assert_numeric(nnrE, lower = 0, upper = max(nnrE))
   assert_numeric(nnrF, lower = 0, upper = max(nnrF))
 
   sim <- length(all_sizes)
-  Nmax <- max(nnr)
+
+  # Nmax <- max(nnr)
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE), # but there should not be na at all
     ExpectedNactive = mean(nActive),
@@ -294,6 +298,7 @@ result <- ocRctPostprobDist(
 
 oc <- h_get_oc_rct(
   all_sizes = result$SampleSize,
+  Nmax = max(input$nn),
   nActive = result$SampleSizeActive,
   nControl = result$SampleSizeControl,
   decision = result$Decision,
@@ -365,7 +370,7 @@ new_RctPostProbDist <- function(nnE,
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
   }
-  oc <- h_get_oc_rct(all_sizes = all_sizes, nActive = nActive, nControl = nControl, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_rct(all_sizes = all_sizes, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision, nnrE = nnrE, nnrF = nnrF)
   list(
     oc = oc,
     ExpectedN = mean(all_sizes),
@@ -462,44 +467,24 @@ oc <- ocRctPostprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 50,
+  ns = 100,
   nr = FALSE,
   d = NULL,
   nnF = input$nnF
 )
-```
-
-```{r}
-set.seed(1090)
-oc <- diff_ocRctPostprobDist(
-  nn = input$nn,
-  pE = input$pE,
-  pS = input$pS,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  relativeDelta = FALSE,
-  tL = input$tL,
-  tU = input$tU,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
-  randRatio = 1,
-  ns = 50,
-  nr = FALSE,
-  d = NULL,
-  nnF = input$nnF
-)
+oc
 ```
 # annotation of steps of vintage function
 
 Initially we set certain parameters through establishing too the randomization ratio
 Then we simulate `sim` number of times the possible sample sizes for all looks with random distance applied if `wiggle = TRUE`.
 ```{r}
-diff_ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
-                                   tL = 0.8, tU = 0.8,
-                                   parE = c(a = 1, b = 1),
-                                   parS = c(a = 1, b = 1),
-                                   randRatio = 1,
-                                   ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
+                              tL = 0.8, tU = 0.8,
+                              parE = c(a = 1, b = 1),
+                              parS = c(a = 1, b = 1),
+                              randRatio = 1,
+                              ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   ## checks
   stopifnot(
     is.probability(pE),
