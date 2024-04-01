@@ -122,7 +122,7 @@ or \code{Pr(truep > P_S + (1 - P_S) * deltaF | data)} for Futility looks.
 # The following are the Go and Stop rules respectively :
 # Prior of treatment arm parE= Beta(1,1).
 # stop for efficacy (deltaE): Pr(truep > P_S + deltaE) > tU
-# stop for futility (deltaF): Pr(truep < P_S - deltaF) > tL
+# stop for futility (deltaF): Pr(truep < P_S + deltaF) > tL
 # Without random distance allowed for Futility and Efficacy Looks.
 res1 <- ocPostprobDist(
   nnE = c(10, 20, 30),
