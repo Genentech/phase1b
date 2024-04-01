@@ -6,13 +6,13 @@ output: html_notebook
 Calculate operating characteristics for RCT against SOC,
 using the posterior probability method with beta priors
 
-
 We emulate a randomized-controlled trial setting where at any given sample size,
 there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
 a treatment or experimental arm. The allocation of patients will depend on the
-randomization ratio set by the patients and is rounded to the next higher integer.
+randomization ratio set by the user and is rounded to the next higher integer.
 Therefore the sequence of patients is determined from the start, such that the number of
-patients in both arms is constant across trial simulations.
+patients in both arms is constant across trial simulations, however the number of patients
+within the control and treatment arm is determined by the randomisation ratio.
 Interim looks are for sample sizes below that of the final sample size.
 Final looks are only performed at the maximum sample size,
 At each interim or final look, a futility or efficacy or both can be performed.
@@ -62,6 +62,7 @@ as with [ocPredprobDist()], the margin of difference differ depending on whether
 ```{r}
 input <- list(
   nn = c(10, 20, 30),
+  nnE = c(10, 20, 30),
   pE = 0.4,
   pS = 0.3,
   deltaE = 0.2,
@@ -79,18 +80,14 @@ input <- list(
   truep = 0.4,
   sim = 5,
   Nmax = 15,
-  NmaxControl = 15
+  NmaxControl = 15,
+  decision <- rep(NA, 5)
 )
-sim <- 10
-nnE <- sort(input$nn)
-nnF <- sort(input$nnF)
-decision <- rep(NA, sim)
-n <- nActive <- nControl <- integer(length(decision)) # initiate n
-ns <- as.integer(input$sim) # sim
-nn <- sort(unique(c(nnF, nnE)))
-nL <- length(nn) # the max of nn or we can do Nmax
-Nstart <- nn[1]
-Nmax <- nn[nL]
+n <- nActive <- nControl <- integer(5) # initiate n
+ns <- as.integer(5) # sim
+nL <- length(input$nn) # the max of nn or we can do Nmax
+Nstart <- input$nn[1]
+Nmax <- input$nn[nL]
 ```
 # Example of vintage function
 ```{r}
@@ -106,7 +103,7 @@ ocRctPostprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 1,
+  ns = 100,
   nr = FALSE,
   d = NULL,
   nnF = input$nnF
@@ -141,20 +138,21 @@ h_get_decisionDist_rct <- function(nnr,
   assert_number(deltaF, finite = TRUE)
   assert_flag(relativeDelta)
 
-
   index_look <- 1
   size_look <- nnr[index_look]
   all_sizes <- decision <- nActive <- nControl <- NA
-  response <- rbinom(Nmax, size = 1, prob = ifelse(rct == TRUE, pE, pS))
 
-  activeProp <- randRatio / (randRatio + 1)
-  NmaxActive <- ceiling(activeProp * Nmax)
-  NmaxControl <- Nmax - NmaxActive
   isActive <- sample(
     x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
     size = Nmax,
     replace = FALSE
   )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(rct, pE, pS))
+
+  activeProp <- randRatio / (randRatio + 1)
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
 
   while (is.na(decision) && index_look <= length(nnr)) {
     ## current data in both arms:
@@ -197,7 +195,7 @@ h_get_decisionDist_rct <- function(nnr,
     decision = decision,
     all_sizes = all_sizes,
     nActive = nActive,
-    nControl = xControl
+    nControl = nControl
   )
 }
 ```
@@ -250,7 +248,7 @@ h_get_decisionDist_rct(
 # h_get_oc_rct
 
 ```{r}
-h_get_oc_rct <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+h_get_oc_rct <- function(all_sizes, nActive, nControl, decision, nnrE, nnrF) {
   assert_numeric(all_sizes)
   assert_numeric(nnr, any.missing = FALSE)
   assert_logical(decision, len = length(all_sizes))
@@ -275,14 +273,34 @@ h_get_oc_rct <- function(all_sizes, nnr, decision, nnrE, nnrF) {
 
 # Example for h_get_oc_rct
 ```{r}
-set.seed(1989)
-h_get_oc_rct(
-  all_sizes = sample(c(11, 14, 20), size = 10000, replace = TRUE),
-  nnr = c(11, 14, 20),
-  decision = sample(c(NA, TRUE, FALSE), size = 10000, replace = TRUE),
-  nnrE = c(11, 14, 20),
-  nnrF = c(11, 14, 20)
+set.seed(2000)
+result <- ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 100,
+  nr = FALSE,
+  d = NULL,
+  nnF = input$nnF
 )
+
+oc <- h_get_oc_rct(
+  all_sizes = result$SampleSize,
+  nActive = result$SampleSizeActive,
+  nControl = result$SampleSizeControl,
+  decision = result$Decision,
+  nnrE = input$nnE,
+  nnrF = input$nnF
+)
+oc
 ```
 # User facing function
 ```{r}
@@ -347,7 +365,7 @@ new_RctPostProbDist <- function(nnE,
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
   }
-  oc <- h_get_oc_rct(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_rct(all_sizes = all_sizes, nActive = nActive, nControl = nControl, decision = decision, nnrE = nnrE, nnrF = nnrF)
   list(
     oc = oc,
     ExpectedN = mean(all_sizes),
@@ -355,9 +373,9 @@ new_RctPostProbDist <- function(nnE,
     ExpectedNcontrol = mean(nControl),
     Decision = decision,
     SampleSize = all_sizes,
+    SampleSizeActive = nActive,
+    SampleSizeControl = nControl,
     union_nn = nnr,
-    input_nnE = nnE,
-    input_nnF = nnF,
     wiggled_nnE = nnrE,
     wiggled_nnF = nnrF,
     wiggle_dist = dist,
@@ -365,9 +383,9 @@ new_RctPostProbDist <- function(nnE,
   )
 }
 ```
-
-# Example of new_RctPostProbDist when `relativeDelta = TRUE`.
+# Example of new_RctPostProbDist when `relativeDelta = TRUE` and comparing with vintage function below:
 ```{r}
+set.seed(2000)
 new_RctPostProbDist(
   nnE = input$nn,
   pE = input$pE,
@@ -379,15 +397,38 @@ new_RctPostProbDist(
   tU = input$tU,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
-  rct = FALSE,
+  rct = TRUE,
   randRatio = 1,
-  sim = 5,
+  sim = 50,
   wiggle = FALSE,
   nnF = input$nnF
 )
 ```
-# Example of new_RctPostProbDist when `relativeDelta = FALSE`.
+
 ```{r}
+set.seed(2000)
+ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 50,
+  nr = FALSE,
+  d = NULL,
+  nnF = input$nnF
+)
+```
+
+# Example of new_ocRctPostProbDist when `relativeDelta = FALSE`.
+```{r}
+set.seed(1090)
 new_RctPostProbDist(
   nnE = input$nn,
   pE = input$pE,
@@ -401,8 +442,50 @@ new_RctPostProbDist(
   parS = c(a = 1, b = 1),
   rct = FALSE,
   randRatio = 1,
-  sim = 5,
+  sim = 100,
   wiggle = FALSE,
+  nnF = input$nnF
+)
+```
+# Example of ocRctPostProbDist when `relativeDelta = FALSE`.
+```{r}
+set.seed(1090)
+oc <- ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = FALSE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 50,
+  nr = FALSE,
+  d = NULL,
+  nnF = input$nnF
+)
+```
+
+```{r}
+set.seed(1090)
+oc <- diff_ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = FALSE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 50,
+  nr = FALSE,
+  d = NULL,
   nnF = input$nnF
 )
 ```
@@ -411,12 +494,12 @@ new_RctPostProbDist(
 Initially we set certain parameters through establishing too the randomization ratio
 Then we simulate `sim` number of times the possible sample sizes for all looks with random distance applied if `wiggle = TRUE`.
 ```{r}
-ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
-                              tL = 0.8, tU = 0.8,
-                              parE = c(a = 1, b = 1),
-                              parS = c(a = 1, b = 1),
-                              randRatio = 1,
-                              ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
+diff_ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
+                                   tL = 0.8, tU = 0.8,
+                                   parE = c(a = 1, b = 1),
+                                   parS = c(a = 1, b = 1),
+                                   randRatio = 1,
+                                   ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
   ## checks
   stopifnot(
     is.probability(pE),
@@ -433,8 +516,6 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
   if (!is.null(deltaF)) {
     stopifnot(is.probability(abs(deltaF)))
   }
-
-
   ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
   ##    during trial if continuing (NA)
   nnE <- sort(nn)
@@ -524,15 +605,16 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
         if (i %in% nnrE) { # if size look is in nnrE
           s[k] <- ifelse(qU < tU, s[k], TRUE)
         }
-      } else {
-        if (i %in% nnrF) {
-          s[k] <- ifelse(qU <= 1 - tL, FALSE, NA)
-        }
-
-        if (i %in% nnrE) {
-          s[k] <- ifelse(qU < tU, s[k], TRUE)
-        }
       }
+      # else {
+      #   if (i %in% nnrF) {
+      #     s[k] <- ifelse(qU <= 1 - tL, FALSE, NA)
+      #   }
+      #
+      #   if (i %in% nnrE) {
+      #     s[k] <- ifelse(qU < tU, s[k], TRUE)
+      #   }
+      # }
 
       ## sample sizes: total and in both arms
       n[k] <- i
@@ -565,3 +647,4 @@ ocRctPostprobDist <- function(nn, pE, pS, deltaE, deltaF, relativeDelta = FALSE,
   ))
 }
 ```
+Comparing vintage and new user facing functions

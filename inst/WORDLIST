@@ -135,6 +135,7 @@ ocPostprobDist
 ocPredprob
 ocPredprobDist
 ocRctPostprobDist
+ocRctPostProbDist
 params
 parX
 parY
@@ -173,6 +174,7 @@ pU
 py
 pyz
 qU
+randomisation
 RCT
 rct
 RctPostProbDist
