@@ -133,7 +133,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     nnE = 30,
     truep = 0.4,
     deltaE = 0.1,
-    deltaF = -0.1,
+    deltaF = 0.1,
     tL = 0.6,
     tU = 0.6,
     parE = c(1, 1),
@@ -145,10 +145,10 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
 
   res_eff$oc$PrEfficacy
   expect_warning(res_more_eff <- ocPostprobDist(
-    nnE = c(10, 20, 31),
+    nnE = c(10, 20, 30),
     truep = 0.4,
     deltaE = 0.1,
-    deltaF = -0.1,
+    deltaF = 0.1,
     tL = 0.6,
     tU = 0.6,
     parE = c(1, 1),

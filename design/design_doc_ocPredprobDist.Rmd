@@ -22,15 +22,16 @@ As mentioned, the rules of [ocPredprobDist()] and [ocPredprob()] for both Decisi
 ```{r}
 input <- list(
   nnr = c(10, 20, 30),
-  nnE = c(10, 20, 30),
-  nnF = c(10, 20, 30),
+  nnE = c(20, 30),
+  nnF = 10,
   x = 16,
   n = 23,
   xS = 5,
   nS = 10,
   Nmax = 40,
   NmaxControl = 20,
-  delta = 0,
+  deltaE = 0,
+  deltaF = 0,
   thetaT = 0.6,
   parE = t(c(1, 1)),
   parS = t(c(1, 1)),
@@ -52,22 +53,22 @@ input <- list(
 ## h_get_decision_one...helper function for decision 1
 
 ```{r}
-h_get_decision_one_predprobDist <- function(nnE,
-                                            nnF,
-                                            nnr,
-                                            truep,
-                                            xS,
-                                            nS,
-                                            parE = c(1, 1),
-                                            parS = c(1, 1),
-                                            tT,
-                                            phiU,
-                                            phiL,
-                                            deltaE,
-                                            deltaF,
-                                            weights,
-                                            weightsS,
-                                            relativeDelta = FALSE) {
+h_decision_one_predprobDist <- function(nnE,
+                                        nnF,
+                                        nnr,
+                                        truep,
+                                        xS,
+                                        nS,
+                                        parE = c(1, 1),
+                                        parS = c(1, 1),
+                                        tT,
+                                        phiU,
+                                        phiL,
+                                        deltaE,
+                                        deltaF,
+                                        weights,
+                                        weightsS,
+                                        relativeDelta = FALSE) {
   assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, sorted = TRUE)
@@ -186,7 +187,7 @@ looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
 # input values from above arguments
-h_get_decision_one_predprobDist(
+h_decision_one_predprobDist(
   nnE = looks$nnrE,
   nnF = looks$nnrF,
   nnr = input$nnr,

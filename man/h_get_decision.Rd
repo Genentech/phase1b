@@ -9,7 +9,7 @@ h_get_decision(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
-\item{truep}{(\code{number}):\cr assumed true response rate or true rate (scenario).}
+\item{truep}{(\code{number}):\cr assumed true response rate.}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 

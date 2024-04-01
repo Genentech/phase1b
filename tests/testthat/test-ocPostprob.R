@@ -129,7 +129,7 @@ test_that("the PrFutility increases with increase futility looks", {
 test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   expect_warning(result_eff <- ocPostprob(
-    nnE = c(30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+    nnE = 30, truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
     sim = 10000, wiggle = FALSE, nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
 
