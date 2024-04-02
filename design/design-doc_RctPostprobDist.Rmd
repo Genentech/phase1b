@@ -361,7 +361,7 @@ new_RctPostProbDist <- function(nnE,
       deltaE = deltaE,
       deltaF = deltaF,
       relativeDelta = relativeDelta,
-      rct = rct,
+      rct = rct
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
