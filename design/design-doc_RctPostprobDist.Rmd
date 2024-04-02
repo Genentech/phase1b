@@ -20,7 +20,7 @@ At each interim or final look, a futility or efficacy or both can be performed.
 The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPostprobDist()] where
 the only difference is to emulate a randomized-controlled trial setting.
 
-A list with the following elements:
+The returned value is a list with the following elements:
  - `oc`: matrix with operating characteristics with the following details:
     - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
     - `ExpectedNactive` : the mean of the number of patients in treatment arm
