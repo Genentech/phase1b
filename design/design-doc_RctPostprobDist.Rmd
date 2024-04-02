@@ -96,7 +96,7 @@ ocRctPostprobDist(
   pS = input$pS,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = FALSE,
+  relativeDelta = input$relativeDelta,
   tL = 0.8,
   tU = 0.8,
   parE = c(a = 1, b = 1),
