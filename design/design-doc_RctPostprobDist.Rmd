@@ -31,7 +31,7 @@ The returned value is a list with the following elements:
     - `PrEarlyFut`: probability of Early Stop decision
     - `PrEfficacy`: probability of Go decision
     - `PrFutility`: probability of Stop decision
-    - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+    - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
  - `Decision` : numeric of results with `TRUE` as Go decision, `FALSE` as Stop and `NA` as gray zone.
  - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
  - `wiggled_nnE` : user input for `nnE` with random distance applied.
