@@ -39,24 +39,6 @@ The returned value is a list with the following elements:
  - `wiggled_dist` : magnitude of random distance applied in order of input looks.
  - `params` : all user input arguments.
 
- <!-- The randomization works as follows. According to the randomization ratio and -->
- <!-- the maximum sample size, patients are allocated to the treatment and SOC -->
- <!-- arms. The number of patients in the active treatment arm is rounded to the -->
- <!-- next higher integer. That is, the sequence of patients is determined from -->
- <!-- the start, such that the number of patients in both arms is constant across -->
- <!-- trial simulations. -->
-
- <!-- The randomized controlled trial (RCT) is stopped for efficacy if the -->
- <!-- posterior probability to be at least deltaE better than the control is -->
- <!-- larger than tU, and stopped for futility if the posterior probability to be -->
- <!-- at least deltaF worse than the control is larger than tL. Otherwise the -->
- <!-- trial is continued, and at the maximum sample size it may happen that no -->
- <!-- decision is made ("gray zone"). -->
-
- <!-- A variation can be requested when \code{deltaF} is set to \code{NULL}. Then -->
- <!-- the futility decision is made when the probability to be deltaE better than -->
- <!-- the control is lower than 1 - tL.  -->
-
 # Input parameters
 ```{r}
 input <- list(
@@ -122,8 +104,7 @@ h_get_decisionDist_rct <- function(nnr,
                                    deltaE,
                                    deltaF,
                                    relativeDelta,
-                                   randRatio = 1,
-                                   rct = FALSE) {
+                                   randRatio = 1) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -136,6 +117,7 @@ h_get_decisionDist_rct <- function(nnr,
   assert_number(deltaE, finite = TRUE)
   assert_number(deltaF, finite = TRUE)
   assert_flag(relativeDelta)
+  assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
 
   index_look <- 1
   size_look <- nnr[index_look]
@@ -220,8 +202,7 @@ h_get_decisionDist_rct(
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = input$relativeDelta,
-  rct = TRUE
+  relativeDelta = input$relativeDelta
 )
 ```
 # helper also works when `relativeDelta = FALSE`
@@ -243,23 +224,21 @@ h_get_decisionDist_rct(
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = TRUE,
-  rct = TRUE
+  relativeDelta = TRUE
 )
 ```
 # h_get_oc_rct
 
 ```{r}
-h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision, nnrE, nnrF) {
-  assert_numeric(all_sizes)
-  # assert_numeric(nnr, any.missing = FALSE)
+h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
+  assert_numeric(all_sizes, any.missing = FALSE)
+  assert_number(Nmax, lower = 1)
+  assert_numeric(nActive, any.missing = FALSE)
+  assert_numeric(nControl, any.missing = FALSE)
   assert_logical(decision, len = length(all_sizes))
-  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
-  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
-
+  assert_true(length(all_sizes) == length(decision))
   sim <- length(all_sizes)
 
-  # Nmax <- max(nnr)
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE), # but there should not be na at all
     ExpectedNactive = mean(nActive),
@@ -299,11 +278,8 @@ oc <- h_get_oc_rct(
   Nmax = max(input$nn),
   nActive = result$SampleSizeActive,
   nControl = result$SampleSizeControl,
-  decision = result$Decision,
-  nnrE = input$nnE,
-  nnrF = input$nnF
+  decision = result$Decision
 )
-oc
 ```
 # User facing function
 ```{r}
@@ -317,7 +293,6 @@ new_RctPostProbDist <- function(nnE,
                                 tU,
                                 parE = c(a = 1, b = 1),
                                 parS = c(a = 1, b = 1),
-                                rct = FALSE,
                                 randRatio = 1,
                                 sim,
                                 wiggle = FALSE,
@@ -360,15 +335,14 @@ new_RctPostProbDist <- function(nnE,
       tU = tU,
       deltaE = deltaE,
       deltaF = deltaF,
-      relativeDelta = relativeDelta,
-      rct = rct
+      relativeDelta = relativeDelta
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
   }
-  oc <- h_get_oc_rct(all_sizes = all_sizes, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc_rct(all_sizes = all_sizes, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision)
   list(
     oc = oc,
     ExpectedN = mean(all_sizes),
@@ -400,7 +374,6 @@ new_RctPostProbDist(
   tU = input$tU,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
-  rct = TRUE,
   randRatio = 1,
   sim = 50,
   wiggle = FALSE,
@@ -442,7 +415,6 @@ new_RctPostProbDist(
   tU = input$tU,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
-  rct = FALSE,
   randRatio = 1,
   sim = 100,
   wiggle = FALSE,
