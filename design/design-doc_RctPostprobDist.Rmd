@@ -283,7 +283,7 @@ oc <- h_get_oc_rct(
 ```
 # User facing function
 ```{r}
-new_RctPostProbDist <- function(nnE,
+new_RctPostprobDist <- function(nnE,
                                 pE, # truep
                                 pS,
                                 deltaE,
@@ -363,7 +363,7 @@ new_RctPostProbDist <- function(nnE,
 # Example of new_RctPostProbDist when `relativeDelta = TRUE` and comparing with vintage function below:
 ```{r}
 set.seed(2000)
-new_RctPostProbDist(
+new_RctPostprobDist(
   nnE = input$nn,
   pE = input$pE,
   pS = input$pS,
@@ -401,10 +401,10 @@ ocRctPostprobDist(
   nnF = input$nnF
 )
 ```
-# Example of new_ocRctPostProbDist when `relativeDelta = FALSE`.
+# Example of new_ocRctPostprobDist when `relativeDelta = FALSE`.
 ```{r}
 set.seed(1090)
-new_RctPostProbDist(
+new_RctPostprobDist(
   nnE = input$nn,
   pE = input$pE,
   pS = input$pS,
@@ -421,7 +421,7 @@ new_RctPostProbDist(
   nnF = input$nnF
 )
 ```
-# Example of ocRctPostProbDist when `relativeDelta = FALSE`.
+# Example of ocRctPostprobDist when `relativeDelta = FALSE`.
 ```{r}
 set.seed(1090)
 ocRctPostprobDist(
