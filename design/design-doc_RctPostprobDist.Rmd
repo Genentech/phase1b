@@ -28,7 +28,7 @@ A list with the following elements:
     - `PrStopEarly`: probability to stop the trial early (before reaching the
                     maximum sample size)
     - `PrEarlyEff`: probability of Early Go decision
-    - `PrEarlyFut`: probability of for Early Stop decision
+    - `PrEarlyFut`: probability of Early Stop decision
     - `PrEfficacy`: probability of Go decision
     - `PrFutility`: probability of Stop decision
     - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
