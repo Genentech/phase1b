@@ -79,14 +79,14 @@ ocRctPostprobDist(
   deltaE = input$deltaE,
   deltaF = input$deltaF,
   relativeDelta = input$relativeDelta,
-  tL = 0.8,
-  tU = 0.8,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = input$parS,
   randRatio = 1,
-  ns = 100,
-  nr = FALSE,
-  d = NULL,
+  ns = input$sim,
+  nr = input$nr,
+  d = input$d,
   nnF = input$nnF
 )
 ```
@@ -196,13 +196,13 @@ h_get_decisionDist_rct(
   nnrF = looks$nnrF,
   pE = input$pE,
   pS = input$pS,
-  parE = c(1, 1),
-  parS = c(1, 1),
+  parE = input$parE,
+  parS = input$parS,
   tL = input$tL,
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = input$relativeDelta
+  relativeDelta = TRUE
 )
 ```
 # helper also works when `relativeDelta = FALSE`
@@ -224,7 +224,7 @@ h_get_decisionDist_rct(
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = TRUE
+  relativeDelta = FALSE
 )
 ```
 # h_get_oc_rct
@@ -240,7 +240,7 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
   sim <- length(all_sizes)
 
   data.frame(
-    ExpectedN = mean(all_sizes, na.rm = TRUE), # but there should not be na at all
+    ExpectedN = mean(all_sizes), # but there should not be na at all
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
     PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
@@ -264,12 +264,12 @@ result <- ocRctPostprobDist(
   relativeDelta = TRUE,
   tL = input$tL,
   tU = input$tU,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
+  parE = input$parE,
+  parS = input$parS,
   randRatio = 1,
   ns = 100,
-  nr = FALSE,
-  d = NULL,
+  nr = input$nr,
+  d = input$d,
   nnF = input$nnF
 )
 
@@ -372,7 +372,7 @@ new_RctPostprobDist(
   relativeDelta = TRUE,
   tL = input$tL,
   tU = input$tU,
-  parE = c(a = 1, b = 1),
+  parE = input$parE,
   parS = c(a = 1, b = 1),
   randRatio = 1,
   sim = 50,
@@ -392,8 +392,8 @@ ocRctPostprobDist(
   relativeDelta = TRUE,
   tL = input$tL,
   tU = input$tU,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
+  parE = input$parE,
+  parS = input$parS,
   randRatio = 1,
   ns = 50,
   nr = FALSE,
@@ -403,7 +403,7 @@ ocRctPostprobDist(
 ```
 # Example of new_ocRctPostprobDist when `relativeDelta = FALSE`.
 ```{r}
-set.seed(1090)
+set.seed(2000)
 new_RctPostprobDist(
   nnE = input$nn,
   pE = input$pE,
@@ -413,10 +413,10 @@ new_RctPostprobDist(
   relativeDelta = FALSE,
   tL = input$tL,
   tU = input$tU,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
+  parE = input$parE,
+  parS = input$parE,
   randRatio = 1,
-  sim = 100,
+  sim = 50,
   wiggle = FALSE,
   nnF = input$nnF
 )
@@ -436,7 +436,7 @@ ocRctPostprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 100,
+  ns = 50,
   nr = FALSE,
   d = NULL,
   nnF = input$nnF
