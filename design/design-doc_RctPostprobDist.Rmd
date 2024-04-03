@@ -228,10 +228,10 @@ h_get_decisionDist_rct(
 )
 ```
 # h_get_oc_rct
-
 ```{r}
-h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
+h_get_oc_rct <- function(all_sizes, nnr, Nmax, nActive, nControl, decision) {
   assert_numeric(all_sizes, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1)
   assert_number(Nmax, lower = 1)
   assert_numeric(nActive, any.missing = FALSE)
   assert_numeric(nControl, any.missing = FALSE)
@@ -239,16 +239,21 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
   assert_true(length(all_sizes) == length(decision))
   sim <- length(all_sizes)
 
+  tmp <- h_get_oc_predprob(
+    all_sizes = all_sizes,
+    nnr = nnr,
+    decision = decision
+  )
   data.frame(
-    ExpectedN = mean(all_sizes), # but there should not be na at all
+    ExpectedN = tmp$ExpectedN,
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
-    PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
-    PrEarlyEff = sum(decision * (all_sizes < Nmax), na.rm = TRUE) / sim,
-    PrEarlyFut = sum((1 - decision) * (all_sizes < Nmax), na.rm = TRUE) / sim,
-    PrEfficacy = sum(decision, na.rm = TRUE) / sim,
-    PrFutility = sum(1 - decision, na.rm = TRUE) / sim,
-    PrGrayZone = sum(is.na(decision)) / sim
+    PrStopEarly = tmp$PrStopEarly,
+    PrEarlyEff = tmp$PrEarlyEff,
+    PrEarlyFut = tmp$PrEarlyFut,
+    PrEfficacy = tmp$PrEfficacy,
+    PrFutility = tmp$PrFutility,
+    PrGrayZone = tmp$PrGrayZone
   )
 }
 ```
@@ -275,11 +280,13 @@ result <- ocRctPostprobDist(
 
 oc <- h_get_oc_rct(
   all_sizes = result$SampleSize,
+  nnr = input$nn,
   Nmax = max(input$nn),
   nActive = result$SampleSizeActive,
   nControl = result$SampleSizeControl,
   decision = result$Decision
 )
+oc
 ```
 # User facing function
 ```{r}
@@ -342,7 +349,7 @@ new_RctPostprobDist <- function(nnE,
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
   }
-  oc <- h_get_oc_rct(all_sizes = all_sizes, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision)
+  oc <- h_get_oc_rct(all_sizes = all_sizes, nnr = nnr, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision)
   list(
     oc = oc,
     ExpectedN = mean(all_sizes),
