@@ -160,15 +160,12 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #'
 #' @keywords internal
 #'
-h_get_oc <- function(all_sizes, nnr, decision, nnrE, nnrF) {
+h_get_oc <- function(all_sizes, Nmax, decision) {
   assert_numeric(all_sizes)
-  assert_numeric(nnr, any.missing = FALSE)
+  assert_numeric(Nmax, lower = 1)
   assert_logical(decision, len = length(all_sizes))
-  assert_numeric(nnrE, lower = 0, upper = max(nnrE))
-  assert_numeric(nnrF, lower = 0, upper = max(nnrF))
 
   sim <- length(all_sizes)
-  Nmax <- max(nnr)
   data.frame(
     ExpectedN = mean(all_sizes, na.rm = TRUE),
     PrStopEarly = mean(all_sizes < Nmax, na.rm = TRUE),
@@ -260,7 +257,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_oc(all_sizes = all_sizes, nnr = nnr, decision = decision, nnrE = nnrE, nnrF = nnrF)
+  oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
