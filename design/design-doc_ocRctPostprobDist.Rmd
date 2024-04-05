@@ -1,0 +1,451 @@
+---
+title: "Design document for ocRctPostprobDist"
+output: html_notebook
+---
+
+Calculate operating characteristics for RCT against SOC,
+using the posterior probability method with beta priors
+
+We emulate a randomized-controlled trial setting where at any given sample size,
+there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
+a treatment or experimental arm. The allocation of patients will depend on the
+randomization ratio set by the user and is rounded to the next higher integer.
+Therefore the sequence of patients is determined from the start, such that the number of
+patients in both arms is constant across trial simulations, however the number of patients
+within the control and treatment arm is determined by the randomisation ratio.
+Interim looks are for sample sizes below that of the final sample size.
+Final looks are only performed at the maximum sample size,
+At each interim or final look, a futility or efficacy or both can be performed.
+
+The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPostprobDist()] where
+the only difference is to emulate a randomized-controlled trial setting.
+
+The returned value is a list with the following elements:
+ - `oc`: matrix with operating characteristics with the following details:
+    - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
+    - `ExpectedNactive` : the mean of the number of patients in treatment arm
+    - `ExpectedNcontrol`: the mean of the number of patients in control arm
+    - `PrStopEarly`: probability to stop the trial early (before reaching the
+                    maximum sample size)
+    - `PrEarlyEff`: probability of Early Go decision
+    - `PrEarlyFut`: probability of Early Stop decision
+    - `PrEfficacy`: probability of Go decision
+    - `PrFutility`: probability of Stop decision
+    - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+ - `Decision` : numeric of results with `TRUE` as Go, `FALSE` as Stop and `NA` as Evaluate decision.
+ - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+ - `wiggled_nnE` : user input for `nnE` with random distance applied.
+ - `wiggled_nnF` : user input for `nnF` with random distance applied.
+ - `wiggled_dist` : magnitude of random distance applied in order of input looks.
+ - `params` : all user input arguments.
+
+# Input parameters
+```{r}
+input <- list(
+  nn = c(10, 20, 30),
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  relativeDelta = FALSE,
+  tL = 0.8,
+  tU = 0.8,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 10000,
+  nr = FALSE,
+  d = NULL,
+  nnF = c(10, 20, 30),
+  truep = 0.4,
+  sim = 5,
+  Nmax = 15,
+  NmaxControl = 15,
+  decision <- rep(NA, 5)
+)
+n <- nActive <- nControl <- integer(5) # initiate n
+ns <- as.integer(5) # sim
+nL <- length(input$nn) # the max of nn or we can do Nmax
+Nstart <- input$nn[1]
+Nmax <- input$nn[nL]
+```
+# Example of vintage function
+```{r}
+ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = input$relativeDelta,
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = input$parS,
+  randRatio = 1,
+  ns = input$sim,
+  nr = input$nr,
+  d = input$d,
+  nnF = input$nnF
+)
+```
+# h_get_decisionDist_rct
+```{r}
+h_get_decisionDist_rct <- function(nnr,
+                                   nnrE,
+                                   nnrF,
+                                   pE,
+                                   pS,
+                                   parE = c(1, 1),
+                                   parS = c(1, 1),
+                                   tL,
+                                   tU,
+                                   deltaE,
+                                   deltaF,
+                                   relativeDelta,
+                                   randRatio = 1) {
+  assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
+  assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
+  assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
+  assert_number(pE, lower = 0, upper = 1)
+  assert_number(pS, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_number(deltaE, finite = TRUE)
+  assert_number(deltaF, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
+
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+  isActive <- sample(
+    x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
+    size = Nmax,
+    replace = FALSE
+  )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
+
+  activeProp <- randRatio / (randRatio + 1)
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+
+  while (is.na(decision) && index_look <= length(nnr)) {
+    ## current data in both arms:
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+
+    if (size_look %in% nnrF) {
+      qL <- postprobDist(
+        x = sum(xControl),
+        n = length(xControl),
+        xS = sum(xActive),
+        nS = length(xActive),
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parS,
+        parS = parE
+      )
+      decision <- ifelse(qL >= tL, FALSE, NA)
+    }
+    if (size_look %in% nnrE) {
+      qU <- postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    nActive <- length(xActive)
+    nControl <- length(xControl)
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes,
+    nActive = nActive,
+    nControl = nControl
+  )
+}
+```
+# Example of running `h_get_decisionDist_rct`
+```{r}
+example_dist <- h_get_distance(nn = c(10, 20, 30))
+looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+looks_nnrE <- looks$nnrE
+looks_nnrF <- looks$nnrF
+
+h_get_decisionDist_rct(
+  nnr = input$nn,
+  nnrE = looks$nnrE,
+  nnrF = looks$nnrF,
+  pE = input$pE,
+  pS = input$pS,
+  parE = input$parE,
+  parS = input$parS,
+  tL = input$tL,
+  tU = input$tU,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE
+)
+```
+# helper also works when `relativeDelta = FALSE`
+```{r}
+example_dist <- h_get_distance(nn = c(10, 20, 30))
+looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+looks_nnrE <- looks$nnrE
+looks_nnrF <- looks$nnrF
+
+h_get_decisionDist_rct(
+  nnr = input$nn,
+  nnrE = looks$nnrE,
+  nnrF = looks$nnrF,
+  pE = input$pE,
+  pS = input$pS,
+  parE = c(1, 1),
+  parS = c(1, 1),
+  tL = input$tL,
+  tU = input$tU,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = FALSE
+)
+```
+# h_get_oc_rct
+```{r}
+h_get_oc_rct <- function(all_sizes, nnr, Nmax, nActive, nControl, decision) {
+  assert_numeric(nActive, any.missing = FALSE)
+  assert_numeric(nControl, any.missing = FALSE)
+
+  tmp <- h_get_oc_predprob(
+    all_sizes = all_sizes,
+    nnr = nnr,
+    decision = decision
+  )
+  tmp$ExpectedNactive <- mean(nActive)
+  tmp$ExpectedNcontrol <- mean(nControl)
+  tmp
+}
+```
+# Example for h_get_oc_rct
+```{r}
+set.seed(2000)
+result <- ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = input$parS,
+  randRatio = 1,
+  ns = 100,
+  nr = input$nr,
+  d = input$d,
+  nnF = input$nnF
+)
+
+oc <- h_get_oc_rct(
+  all_sizes = result$SampleSize,
+  nnr = input$nn,
+  Nmax = max(input$nn),
+  nActive = result$SampleSizeActive,
+  nControl = result$SampleSizeControl,
+  decision = result$Decision
+)
+oc
+```
+# User facing function
+```{r}
+new_RctPostprobDist <- function(nnE,
+                                pE, # truep
+                                pS,
+                                deltaE,
+                                deltaF,
+                                relativeDelta = FALSE,
+                                tL,
+                                tU,
+                                parE = c(a = 1, b = 1),
+                                parS = c(a = 1, b = 1),
+                                randRatio = 1,
+                                sim,
+                                wiggle = FALSE,
+                                nnF = nnE) {
+  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
+  assert_number(pE, lower = 0, upper = 1)
+  assert_number(pS, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 0, any.missing = FALSE)
+
+  # some starting initiation ocRctPostprobDist
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- all_sizes <- vector(length = sim)
+  nnE <- sort(nnE)
+  nnF <- sort(nnF)
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  nn <- sort(unique(c(nnF, nnE)))
+
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- h_get_decisionDist_rct(
+      nnr = nnr,
+      nnrE = nnrE,
+      nnrF = nnrF,
+      pE = pE,
+      pS = pS,
+      parE = c(1, 1),
+      parS = c(1, 1),
+      tL = tL,
+      tU = tU,
+      deltaE = deltaE,
+      deltaF = deltaF,
+      relativeDelta = relativeDelta
+    )
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
+    nActive[k] <- tmp$nActive
+    nControl[k] <- tmp$nControl
+  }
+  oc <- h_get_oc_rct(all_sizes = all_sizes, nnr = nnr, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision)
+  list(
+    oc = oc,
+    ExpectedN = mean(all_sizes),
+    ExpectedNactive = mean(nActive),
+    ExpectedNcontrol = mean(nControl),
+    Decision = decision,
+    SampleSize = all_sizes,
+    SampleSizeActive = nActive,
+    SampleSizeControl = nControl,
+    union_nn = nnr,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
+}
+```
+# Example of new_RctPostProbDist when `relativeDelta = TRUE` and comparing with vintage function below:
+```{r}
+set.seed(2000)
+new_RctPostprobDist(
+  nnE = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = input$nnF
+)
+```
+
+```{r}
+set.seed(2000)
+ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = TRUE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = input$parS,
+  randRatio = 1,
+  ns = 50,
+  nr = FALSE,
+  d = NULL,
+  nnF = input$nnF
+)
+```
+# Example of new_ocRctPostprobDist when `relativeDelta = FALSE`.
+```{r}
+set.seed(2000)
+new_RctPostprobDist(
+  nnE = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = FALSE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = input$parE,
+  parS = input$parE,
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = input$nnF
+)
+```
+# Example of ocRctPostprobDist when `relativeDelta = FALSE`.
+```{r}
+set.seed(1090)
+ocRctPostprobDist(
+  nn = input$nn,
+  pE = input$pE,
+  pS = input$pS,
+  deltaE = input$deltaE,
+  deltaF = input$deltaF,
+  relativeDelta = FALSE,
+  tL = input$tL,
+  tU = input$tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 50,
+  nr = FALSE,
+  d = NULL,
+  nnF = input$nnF
+)
+```

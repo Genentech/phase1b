@@ -168,7 +168,7 @@ postprobDist <- function(x,
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_number(nS, lower = 0, finite = TRUE)
   assert_number(xS, lower = 0, upper = nS, finite = TRUE)
-  assert_number(delta, finite = TRUE)
+  assert_number(delta, upper = 1, finite = TRUE)
   assert_flag(relativeDelta)
   assert_numeric(weights, lower = 0, finite = TRUE)
   assert_numeric(weightsS, lower = 0, finite = TRUE)
