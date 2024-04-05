@@ -38,12 +38,6 @@ with Beta Prior on the Control or Standard of Care Arm — ocPostprobDist"><meta
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -208,7 +202,7 @@ or <code>Pr(truep &gt; P_S + (1 - P_S) * deltaF | data)</code> for Futility look
 <span class="r-in"><span><span class="co"># The following are the Go and Stop rules respectively :</span></span></span>
 <span class="r-in"><span><span class="co"># Prior of treatment arm parE= Beta(1,1).</span></span></span>
 <span class="r-in"><span><span class="co"># stop for efficacy (deltaE): Pr(truep &gt; P_S + deltaE) &gt; tU</span></span></span>
-<span class="r-in"><span><span class="co"># stop for futility (deltaF): Pr(truep &lt; P_S - deltaF) &gt; tL</span></span></span>
+<span class="r-in"><span><span class="co"># stop for futility (deltaF): Pr(truep &lt; P_S + deltaF) &gt; tL</span></span></span>
 <span class="r-in"><span><span class="co"># Without random distance allowed for Futility and Efficacy Looks.</span></span></span>
 <span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">ocPostprobDist</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
