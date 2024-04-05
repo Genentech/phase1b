@@ -134,6 +134,7 @@ ocPostprob
 ocPostprobDist
 ocPredprob
 ocPredprobDist
+ocRctPostprobDist
 params
 parX
 parY
@@ -172,7 +173,10 @@ pU
 py
 pyz
 qU
+randomisation
 RCT
+rct
+RctPostProbDist
 rearrangingWeightedBayes
 refering
 renewcommand

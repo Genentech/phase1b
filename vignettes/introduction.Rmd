@@ -1029,10 +1029,10 @@ Before the Phase 1b trial starts, users may want to evaluate the design operatin
 characteristics at an assumed true PET-CR rate of the combo trial.
 The `ocPredprobDist()` function will allow such an evaluation under a
 single scenario of true response rate. The following code assumes a true PET-CR
-rate of 75%. The planed interim and final looks are at 25, 40 and 80 patients
-which is entered as a vector in the `nn` argument. `p` is the true PET-CR rate
-we assumed, and we are targeting for a `delta` improvement over control
-(`delta` ranges from 0 to 1). `tT` is the threshold for the probability to be
+rate of 75%. The planned interim and final looks are at 25, 40 and 80 patients
+which is entered as a vector in the `nnE` argument. `truep` is the true PET-CR rate
+we assumed, and we are targeting for a `deltaE` improvement over control
+(`deltaE` and `deltaF` ranges from 0 to 1). `tT` is the threshold for the probability to be
 above control + delta at the end of the trial, and `phiL` and `phiU` are the lower
 and upper thresholds on the predictive probability, respectively. Same as the
 notations in the `predprobDist()` function, `parE` and `parS` are the place to
@@ -1043,16 +1043,30 @@ respectively.
 # with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%
 set.seed(4)
 res1 <- ocPredprobDist(
-  nn = c(25, 40, 80), p = 0.75, delta = 0.15, tT = 0.6, phiL = 0.2, phiU = 0.8,
-  parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+  nnE = c(25, 40, 80),
+  truep = 0.75,
+  deltaE = 0.15,
+  deltaF = 0.15,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  phiL = 0.2,
+  phiU = 0.8,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75),
+  weights = 1,
+  weightsS = 1,
+  sim = 50, # advise to use > 50000 to achieve convergence
+  nnF = c(25, 40, 80),
+  wiggle = TRUE,
+  decision1 = TRUE
 )
 
 res1$oc
 ```
 
 The number of simulation is 10 in this case, just to speed up the example.
-However, the user needs to increase the number to 10,000 or higher to
-generate a correct result.
+However, the user needs to increase the number to 50,000 or higher to
+generate better convergence.
 
 According to the simulation result, the expected sample size of the trial is
 44.4. 87% of the simulated trials declare efficacy and the rest 13% of trials
@@ -1076,9 +1090,23 @@ set.seed(4) # Used for reproducibility
 p_par <- seq(0.1, 0.9, by = 0.1)
 
 Mysim <- sapply(p_par, function(x) {
-  res <- ocPredprobDist(c(25, 40, 80), x,
-    delta = 0.15, tT = 0.6, phiL = 0.8, phiU = 0.2,
-    parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+  res <- ocPredprobDist(
+    nnE = c(25, 40, 80),
+    truep = x,
+    delta = 0.15,
+    deltaF = 0.15,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiL = 0.8,
+    phiU = 0.2,
+    parE = c(5.75, 4.25),
+    parS = c(75, 75),
+    weights = 1,
+    weightsS = 1,
+    sim = 10, # advise to use > 50000 to achieve convergence
+    nnF = c(25, 40, 80),
+    wiggle = TRUE,
+    decision1 = TRUE
   )
   return(res$oc)
 })
@@ -1187,13 +1215,23 @@ To evaluate a scenario with a true response rate of $75\%$, the following code c
 # with 100 simulated trials, assume true PET-CR rate of the combo trial is 40%
 set.seed(4) # Used for reproducibility
 res1 <- ocPredprobDist(
-  nn = c(25, 40, 80), p = 0.75,
-  delta = 0.15, deltaFu = 0.05,
-  tT = 0.6, tFu = 0.6,
-  phiU = 0.8, phiFu = 0.8,
-  parE = c(5.75, 4.25), parS = c(75, 75), ns = 1e1
+  nn = c(25, 40, 80),
+  truep = 0.75,
+  deltaE = 0.15,
+  deltaF = 0.05,
+  tT = 0.6,
+  tF = 0.6,
+  phiU = 0.8,
+  phiFu = 0.8,
+  parE = c(5.75, 4.25),
+  parS = c(75, 75),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  nnF = c(25, 40, 80),
+  wiggle = TRUE,
+  decision1 = FALSE
 )
-
 res1$oc
 ```
 The number of simulation is 10 here to reduce the computational time of the code.
