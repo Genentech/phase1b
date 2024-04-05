@@ -230,31 +230,17 @@ h_get_decisionDist_rct(
 # h_get_oc_rct
 ```{r}
 h_get_oc_rct <- function(all_sizes, nnr, Nmax, nActive, nControl, decision) {
-  assert_numeric(all_sizes, any.missing = FALSE)
-  assert_numeric(nnr, lower = 1)
-  assert_number(Nmax, lower = 1)
   assert_numeric(nActive, any.missing = FALSE)
   assert_numeric(nControl, any.missing = FALSE)
-  assert_logical(decision, len = length(all_sizes))
-  assert_true(length(all_sizes) == length(decision))
-  sim <- length(all_sizes)
 
   tmp <- h_get_oc_predprob(
     all_sizes = all_sizes,
     nnr = nnr,
     decision = decision
   )
-  data.frame(
-    ExpectedN = tmp$ExpectedN,
-    ExpectedNactive = mean(nActive),
-    ExpectedNcontrol = mean(nControl),
-    PrStopEarly = tmp$PrStopEarly,
-    PrEarlyEff = tmp$PrEarlyEff,
-    PrEarlyFut = tmp$PrEarlyFut,
-    PrEfficacy = tmp$PrEfficacy,
-    PrFutility = tmp$PrFutility,
-    PrGrayZone = tmp$PrGrayZone
-  )
+  tmp$ExpectedNactive <- mean(nActive)
+  tmp$ExpectedNcontrol <- mean(nControl)
+  tmp
 }
 ```
 # Example for h_get_oc_rct
@@ -314,7 +300,7 @@ new_RctPostprobDist <- function(nnE,
   assert_number(tU, lower = 0, upper = 1)
   assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_number(sim, lower = 100, finite = TRUE)
+  assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
   assert_numeric(nnF, min.len = 0, any.missing = FALSE)
 
