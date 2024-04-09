@@ -34,6 +34,8 @@ A list with the following elements :
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
 \item \code{all_sizes} : resulting number of look size, anything below maximum
 look size is an indicated interim, Futility or Efficacy or both.
+\item \code{nActive} : mean of look size for Active arm.
+\item \code{nControl} : mean of look size for Control arm.
 }
 }
 \description{

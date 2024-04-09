@@ -12,7 +12,8 @@
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
 #'   look size is an indicated interim, Futility or Efficacy or both.
-#'
+#'  - `nActive` : mean of look size for Active arm.
+#'  - `nControl` : mean of look size for Control arm.
 #' @keywords internal
 h_get_decisionDist_rct <- function(nnr,
                                    nnrE,
