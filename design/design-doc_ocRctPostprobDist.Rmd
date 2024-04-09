@@ -14,7 +14,7 @@ Therefore the sequence of patients is determined from the start, such that the n
 patients in both arms is constant across trial simulations, however the number of patients
 within the control and treatment arm is determined by the randomisation ratio.
 Interim looks are for sample sizes below that of the final sample size.
-Final looks are only performed at the maximum sample size,
+Final looks are only performed at the maximum sample size.
 At each interim or final look, a futility or efficacy or both can be performed.
 
 The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPostprobDist()] where
