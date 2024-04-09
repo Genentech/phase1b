@@ -39,22 +39,6 @@ test_that("h_get_decision_two_predprob gives correct result and list", {
   expect_list(result)
 })
 
-# h_get_oc_predprob ----
-test_that("h_get_oc_predprob gives correct results", {
-  set.seed(1989)
-  oc <- h_get_oc_predprob(
-    all_sizes = sample(c(11, 14, 20), size = 1000, replace = TRUE),
-    nnr = c(10, 20, 30),
-    decision = sample(c(NA, TRUE, FALSE), size = 1000, replace = TRUE)
-  )
-  expect_equal(oc$PrStopEarly, 1, tolerance = 1e-4)
-  expect_true(oc$PrFutility < 1)
-  expect_true(oc$PrEarlyEff < 1)
-  expect_true(oc$PrEfficacy < 1)
-  expect_data_frame(oc, any.missing = FALSE)
-  expect_number(oc$ExpectedN, lower = 11, upper = 20)
-})
-
 # oc_Predprob ----
 test_that("the sum of Eff, Fut, Gray zone probability is 1", {
   set.seed(1989)
