@@ -1,5 +1,4 @@
 # h_get_decision_one_predprob ----
-
 test_that("h_get_decision_one_predprob gives correct result and list", {
   set.seed(1989)
   result <- h_get_decision_one_predprob(
