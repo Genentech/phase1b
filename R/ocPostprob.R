@@ -229,6 +229,7 @@ h_get_oc <- function(all_sizes, Nmax, decision) {
 ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
                        sim = 50000, wiggle = FALSE, nnF = nnE) {
   nn <- sort(unique(c(nnF, nnE)))
+  Nmax <- max(nn)
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
   if (sim < 50000) {
