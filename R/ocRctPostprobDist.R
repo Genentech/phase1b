@@ -1,6 +1,105 @@
-#' @include postprobDist.R
-#' @include helpers.R
-NULL
+#' Generating random decision and sample size looks
+#'
+#' A helper function for [ocRctPostprobDist()] to generate numeric of decisions `decisions` and
+#' random looks `all_sizes`.
+#'
+#' @inheritParams h_get_decision_one_predprob
+#' @inheritParams h_get_decision_two_predprob
+#'
+#' @typed randRatio : numeric
+#'  The randomisation ratio between treatment and control.
+#' @return A list with the following elements :
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'  - `nActive` : mean of look size for Active arm.
+#'  - `nControl` : mean of look size for Control arm.
+#' @keywords internal
+h_get_decisionDist_rct <- function(nnr,
+                                   nnrE,
+                                   nnrF,
+                                   pE,
+                                   pS,
+                                   parE = c(1, 1),
+                                   parS = c(1, 1),
+                                   tL,
+                                   tU,
+                                   deltaE,
+                                   deltaF,
+                                   relativeDelta,
+                                   randRatio = 1) {
+  assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
+  assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
+  assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
+  assert_number(pE, lower = 0, upper = 1)
+  assert_number(pS, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_number(deltaE, finite = TRUE)
+  assert_number(deltaF, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
+
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+  isActive <- sample(
+    x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
+    size = Nmax,
+    replace = FALSE
+  )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
+
+  while (is.na(decision) && index_look <= length(nnr)) {
+    ## current data in both arms:
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+
+    if (size_look %in% nnrF) {
+      qL <- postprobDist(
+        x = sum(xControl),
+        n = length(xControl),
+        xS = sum(xActive),
+        nS = length(xActive),
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parS,
+        parS = parE
+      )
+      decision <- ifelse(qL >= tL, FALSE, NA)
+    }
+    if (size_look %in% nnrE) {
+      qU <- postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    nActive <- length(xActive)
+    nControl <- length(xControl)
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes,
+    nActive = nActive,
+    nControl = nControl
+  )
+}
 
 #' Calculate operating characteristics for RCT against SOC,
 #' using the posterior probability method with beta priors
