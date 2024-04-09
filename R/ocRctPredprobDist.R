@@ -56,11 +56,6 @@ h_get_decisionDist_rct <- function(nnr,
   )
   response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
 
-  activeProp <- randRatio / (randRatio + 1)
-  NmaxActive <- ceiling(activeProp * Nmax)
-  NmaxControl <- Nmax - NmaxActive
-
-
   while (is.na(decision) && index_look <= length(nnr)) {
     ## current data in both arms:
     xActive <- response[which(isActive[1:size_look])]
