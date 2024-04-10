@@ -53,12 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -792,8 +786,16 @@ simulated trials, we issue the following command:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ocPostprob.html">ocPostprob</a></span><span class="op">(</span></span>
-<span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.4</span>, p0 <span class="op">=</span> <span class="fl">0.2</span>, p1 <span class="op">=</span> <span class="fl">0.3</span>, tL <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  tU <span class="op">=</span> <span class="fl">0.8</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, sim <span class="op">=</span> <span class="fl">10000</span>, wiggle <span class="op">=</span> <span class="cn">FALSE</span>, nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>,</span>
+<span>  truep <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>  p0 <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  p1 <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  tL <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  tU <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  sim <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>  wiggle <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in ocPostprob(nnE = c(10, 20, 30), truep = 0.4, p0 = 0.2, p1 = 0.3, :</span></span>
 <span><span class="co">#&gt; Advise to use sim &gt;= 50000 to achieve convergence</span></span>
