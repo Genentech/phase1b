@@ -4,12 +4,10 @@
 \alias{h_get_oc}
 \title{Creating list for operating characteristics}
 \usage{
-h_get_oc(all_sizes, nnr, decision, nnrE, nnrF)
+h_get_oc(all_sizes, Nmax, decision)
 }
 \arguments{
 \item{all_sizes}{(\code{numeric}):\cr sample sizes of all looks simulated \code{length(sim)} times if \code{dist} applied.}
-
-\item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
 \item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zone decisions of all looks simulated \code{length(sim)} times.}
 
