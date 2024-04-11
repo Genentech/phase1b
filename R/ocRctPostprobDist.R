@@ -7,7 +7,9 @@
 #' @inheritParams h_get_decision_two_predprob
 #'
 #' @typed randRatio : numeric
-#'  The randomisation ratio between treatment and control.
+#'  The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.
+#' @typed : Nmax : number
+#' The max sample size or the sample size of final look.
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
@@ -27,7 +29,8 @@ h_get_decisionDist_rct <- function(nnr,
                                    deltaE,
                                    deltaF,
                                    relativeDelta,
-                                   randRatio = 1) {
+                                   randRatio = 1,
+                                   Nmax) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -41,6 +44,7 @@ h_get_decisionDist_rct <- function(nnr,
   assert_number(deltaF, finite = TRUE)
   assert_flag(relativeDelta)
   assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
+  assert_number(Nmax, lower = 1)
 
   index_look <- 1
   size_look <- nnr[index_look]

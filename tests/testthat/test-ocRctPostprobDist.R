@@ -6,6 +6,7 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
+  Nmax <- max(nn)
   result <- h_get_decisionDist_rct(
     nnr = nn,
     nnrE = looks$nnrE,
@@ -18,7 +19,8 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
     tU = 0.8,
     deltaE = 0.2,
     deltaF = 0.1,
-    relativeDelta = TRUE
+    relativeDelta = TRUE,
+    Nmax = Nmax
   )
   expect_flag(result$decision, TRUE)
   expect_equal(result$all_sizes, 30)
@@ -34,6 +36,7 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
+  Nmax <- max(nn)
   result <- h_get_decisionDist_rct(
     nnr = nn,
     nnrE = looks$nnrE,
@@ -46,7 +49,8 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
     tU = 0.8,
     deltaE = 0.2,
     deltaF = 0.1,
-    relativeDelta = FALSE
+    relativeDelta = FALSE,
+    Nmax = Nmax
   )
   expect_flag(result$decision, TRUE)
   expect_equal(result$all_sizes, 30)
