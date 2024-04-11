@@ -428,7 +428,7 @@ ocPredprobDist <- function(
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
   }
-  oc <- h_get_oc_predprob(all_sizes = all_sizes, nnr = nnr, decision = decision)
+  oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,

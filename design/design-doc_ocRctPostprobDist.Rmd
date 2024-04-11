@@ -15,7 +15,8 @@ patients in both arms is constant across trial simulations, however the number o
 within the control and treatment arm is determined by the randomisation ratio.
 Interim looks are for sample sizes below that of the final sample size.
 
-Final looks are only performed at the maximum sample size,
+Final looks are only performed at the maximum sample size.
+
 At each interim or final look, a futility or efficacy or both can be performed.
 
 The rules for Stop, Go and Gray Zone (where applicable) are the same as in [ocPostprobDist()] where
@@ -232,13 +233,13 @@ h_get_decisionDist_rct(
 ```
 # h_get_oc_rct
 ```{r}
-h_get_oc_rct <- function(all_sizes, nnr, Nmax, nActive, nControl, decision) {
+h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
   assert_numeric(nActive, any.missing = FALSE)
   assert_numeric(nControl, any.missing = FALSE)
 
-  tmp <- h_get_oc_predprob(
+  tmp <- h_get_oc(
     all_sizes = all_sizes,
-    nnr = nnr,
+    Nmax = Nmax,
     decision = decision
   )
   tmp$ExpectedNactive <- mean(nActive)
@@ -269,7 +270,6 @@ result <- ocRctPostprobDist(
 
 oc <- h_get_oc_rct(
   all_sizes = result$SampleSize,
-  nnr = input$nn,
   Nmax = max(input$nn),
   nActive = result$SampleSizeActive,
   nControl = result$SampleSizeControl,
