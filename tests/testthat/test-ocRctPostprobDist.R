@@ -66,10 +66,27 @@ test_that("the ExpectedN is within range based on vector of looks", {
   oc <- h_get_oc_rct(
     all_sizes = all_sizes,
     Nmax = 20,
-    nActive = c(6, 10, 15),
+    nActive = c(4, 10, 15),
     nControl = c(6, 10, 15),
     decision = c(TRUE, TRUE, FALSE)
   )
+  expect_true(oc$PrStopEarly < 1)
+  expect_true(oc$PrFutility < 1)
+  expect_true(oc$PrEarlyEff < 1)
+  expect_true(oc$PrEfficacy < 1)
+  expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes))
+})
+
+test_that("the ExpectedN is within range based on vector of looks", {
+  set.seed(1989)
+  all_sizes <- c(10, 20, 30)
+  expect_error(oc <- h_get_oc_rct(
+    all_sizes = all_sizes,
+    Nmax = 20,
+    nActive = c(6, 10, 15),
+    nControl = c(6, 10, 15),
+    decision = c(TRUE, TRUE, FALSE)
+  ), "Assertion on")
   expect_true(oc$PrStopEarly < 1)
   expect_true(oc$PrFutility < 1)
   expect_true(oc$PrEarlyEff < 1)
