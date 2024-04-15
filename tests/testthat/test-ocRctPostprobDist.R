@@ -70,5 +70,9 @@ test_that("the ExpectedN is within range based on vector of looks", {
     nControl = c(6, 10, 15),
     decision = c(TRUE, TRUE, FALSE)
   )
+  expect_true(oc$PrStopEarly < 1)
+  expect_true(oc$PrFutility < 1)
+  expect_true(oc$PrEarlyEff < 1)
+  expect_true(oc$PrEfficacy < 1)
   expect_number(oc$ExpectedN, lower = min(all_sizes), upper = max(all_sizes))
 })
