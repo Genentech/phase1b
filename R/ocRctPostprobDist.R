@@ -126,9 +126,10 @@ h_get_decisionDist_rct <- function(nnr,
 #' @keywords internal
 #'
 h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
-  assert_numeric(nActive, any.missing = FALSE)
-  assert_numeric(nControl, any.missing = FALSE)
+  assert_numeric(nActive, any.missing = FALSE, len = length(all_sizes))
+  assert_numeric(nControl, any.missing = FALSE, len = length(all_sizes))
   assert_true(all(nActive + nControl == all_sizes))
+
   tmp <- h_get_oc(
     all_sizes = all_sizes,
     Nmax = Nmax,
