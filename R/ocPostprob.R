@@ -162,7 +162,7 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #'
 h_get_oc <- function(all_sizes, Nmax, decision) {
   assert_numeric(all_sizes)
-  assert_true(Nmax >= max(all_sizes))
+  assert_true(Nmax <= max(all_sizes))
   assert_numeric(Nmax, lower = 1)
   assert_logical(decision, len = length(all_sizes))
 
