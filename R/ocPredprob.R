@@ -271,7 +271,7 @@ ocPredprob <- function(nnE,
                        wiggle = FALSE,
                        nnF = nnE,
                        decision1 = TRUE) {
-  assert_numeric(nnE, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(p1, lower = 0, upper = 1)
@@ -283,7 +283,7 @@ ocPredprob <- function(nnE,
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
-  assert_numeric(nnF, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_flag(decision1)
 
   nn <- sort(unique(c(nnF, nnE)))
