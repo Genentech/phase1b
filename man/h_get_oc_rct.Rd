@@ -6,6 +6,9 @@
 \usage{
 h_get_oc_rct(all_sizes, Nmax, nActive, nControl, decision)
 }
+\arguments{
+\item{Nmax}{(\code{number}):\cr The max sample size or the sample size of final look.}
+}
 \value{
 A list of results containing :
 \itemize{
