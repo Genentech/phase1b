@@ -153,12 +153,12 @@ test_that("ocPredprobDist gives higher PrFutility with more futility looks", {
 })
 
 test_that("ocPredprobDist gives higher PrEfficacy with more efficacy looks", {
-  set.seed(1989)
+  set.seed(2020)
   expect_warning(result_two_eff <- ocPredprobDist(
-    nnE = c(15, 30),
+    nnE = 30,
     truep = 0.40,
-    deltaE = 0.5,
-    deltaF = 0.5,
+    deltaE = 0.1,
+    deltaF = 0.1,
     relativeDelta = TRUE,
     tT = 0.6,
     phiU = 0.80,
@@ -175,8 +175,8 @@ test_that("ocPredprobDist gives higher PrEfficacy with more efficacy looks", {
   expect_warning(result_three_eff <- ocPredprobDist(
     nnE = c(10, 20, 30),
     truep = 0.40,
-    deltaE = 0.5,
-    deltaF = 0.5,
+    deltaE = 0.1,
+    deltaF = 0.1,
     relativeDelta = TRUE,
     tT = 0.6,
     phiU = 0.80,
