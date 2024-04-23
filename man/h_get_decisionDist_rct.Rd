@@ -29,7 +29,7 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 
 \item{randRatio}{(\code{numeric}):\cr The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.}
 
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
+\item{Nmax}{(\code{number}):\cr The max sample size or the sample size of final look.}
 }
 \value{
 A list with the following elements :
