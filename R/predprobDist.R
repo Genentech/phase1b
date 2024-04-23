@@ -174,11 +174,11 @@ h_predprobdist <- function(x,
     result = sum(density_yz * (posterior_yz > thetaT)),
     table = data.frame(
       counts = c(0:mE),
-      cumul_counts = x + (0:mE)
-    ),
-    density = density_yz,
-    posterior = posterior_yz,
-    success = (posterior_yz > thetaT)
+      cumul_counts = x + (0:mE),
+      density = density_yz,
+      posterior = posterior_yz,
+      success = (posterior_yz > thetaT)
+    )
   )
   ret
 }
