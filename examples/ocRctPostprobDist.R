@@ -36,7 +36,7 @@ ocRctPostprobDist(
   nnF = c(10, 20, 30)
 )
 
-# When `wigge = TRUE` is negative
+# When `wiggle = TRUE` is negative
 set.seed(2000)
 ocRctPostprobDist(
   nnE = c(10, 20, 30),
