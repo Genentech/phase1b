@@ -187,8 +187,9 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
 #'  Response rate in Control group.
 #' @example examples/ocRctPostprobDist.R
 #' @export
+#'
 ocRctPostprobDist <- function(nnE,
-                              pE, # truep
+                              pE,
                               pS,
                               deltaE,
                               deltaF,
@@ -219,7 +220,7 @@ ocRctPostprobDist <- function(nnE,
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  decision <- all_sizes <- vector(length = sim)
+  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
   nnE <- sort(nnE)
   nnF <- sort(nnF)
   nn <- sort(unique(c(nnF, nnE)))
@@ -254,6 +255,7 @@ ocRctPostprobDist <- function(nnE,
       deltaE = deltaE,
       deltaF = deltaF,
       relativeDelta = relativeDelta,
+      randRatio = randRatio,
       Nmax = Nmax
     )
     decision[k] <- tmp$decision
@@ -263,7 +265,6 @@ ocRctPostprobDist <- function(nnE,
   }
   oc <- h_get_oc_rct(
     all_sizes = all_sizes,
-    nnr = nnr,
     Nmax = Nmax,
     nActive = nActive,
     nControl = nControl,
