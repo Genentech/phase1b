@@ -10,7 +10,7 @@
 #'  The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.
 #' @typed Nmax : number
 #' The max sample size or the sample size of final look.
-
+#'
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
