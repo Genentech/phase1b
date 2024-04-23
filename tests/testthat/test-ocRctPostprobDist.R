@@ -58,3 +58,5 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   expect_equal(result$nControl, 15)
   expect_list(result)
 })
+
+# ocRctPostprobDist ----
