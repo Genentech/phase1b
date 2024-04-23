@@ -350,7 +350,7 @@ ocPredprobDist <- function(
 
   assert_number(xS, finite = TRUE)
   assert_number(nS, finite = TRUE)
-  assert_numeric(nnE, any.missing = FALSE, sort = TRUE)
+  assert_numeric(nnE, any.missing = FALSE, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(deltaE, upper = 1, finite = TRUE)
   assert_number(deltaF, upper = 1, finite = TRUE)
@@ -363,7 +363,7 @@ ocPredprobDist <- function(
   assert_numeric(parS, min.len = 2, any.missing = FALSE)
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
-  assert_numeric(nnF, lower = 1, any.missing = FALSE, sort = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_flag(decision1)
 
   nn <- sort(unique(c(nnF, nnE)))

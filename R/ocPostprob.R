@@ -60,7 +60,7 @@ h_get_looks <- function(dist, nnE, nnF) {
   assert_numeric(nnE)
   assert_numeric(nnF)
 
-  nn <- unique(c(nnE, nnF))
+  nn <- sort(unique(c(nnE, nnF)))
   nnr <- nn + c(dist, 0)
   list(
     nnrE = nnr[nn %in% nnE],
@@ -162,6 +162,7 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #'
 h_get_oc <- function(all_sizes, Nmax, decision) {
   assert_numeric(all_sizes)
+  assert_true(Nmax >= max(all_sizes))
   assert_numeric(Nmax, lower = 1)
   assert_logical(decision, len = length(all_sizes))
 

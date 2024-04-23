@@ -58,3 +58,21 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   expect_equal(result$nControl, 15)
   expect_list(result)
 })
+
+# h_get_oc_rct ----
+test_that("the ExpectedN is within range based on vector of looks", {
+  all_sizes <- c(10, 20, 30)
+  oc <- h_get_oc_rct(
+    all_sizes = all_sizes,
+    Nmax = 30,
+    nActive = c(4, 10, 15),
+    nControl = c(6, 10, 15),
+    decision = c(TRUE, TRUE, FALSE)
+  )
+  expect_equal(oc$PrGrayZone, 0, tolerance = 1e-7)
+  expect_equal(oc$PrStopEarly, 0.6666667, tolerance = 1e-7)
+  expect_equal(oc$PrFutility, 0.3333333, tolerance = 1e-6)
+  expect_equal(oc$PrEarlyEff, 0.6666667, tolerance = 1e-7)
+  expect_equal(oc$PrEfficacy, 0.6666667, tolerance = 1e-7)
+  expect_true(oc$ExpectedN == 20)
+})

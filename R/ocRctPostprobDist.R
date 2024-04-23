@@ -105,6 +105,41 @@ h_get_decisionDist_rct <- function(nnr,
   )
 }
 
+#' Creating list for operating characteristics
+#'
+#' Generates operating characteristics for [ocRctPostprobDist()].
+#'
+#' @inheritParams h_get_decisionDist_rct
+#'
+#' @return A list of results containing :
+#' - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the
+#' maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of for Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability between Go and Stop ,"Evaluate" or Gray decision zone
+#' - `ExpectedNactive` : the mean of the number of patients in treatment arm
+#' - `ExpectedNcontrol`: the mean of the number of patients in control arm
+#'
+#' @keywords internal
+#'
+h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
+  assert_numeric(nActive, any.missing = FALSE, len = length(all_sizes))
+  assert_numeric(nControl, any.missing = FALSE, len = length(all_sizes))
+  assert_true(all(nActive + nControl == all_sizes))
+
+  tmp <- h_get_oc(
+    all_sizes = all_sizes,
+    Nmax = Nmax,
+    decision = decision
+  )
+  tmp$ExpectedNactive <- mean(nActive)
+  tmp$ExpectedNcontrol <- mean(nControl)
+  tmp
+}
+
 #' Calculate operating characteristics for RCT against SOC,
 #' using the posterior probability method with beta priors
 #'
