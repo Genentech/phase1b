@@ -115,7 +115,7 @@ test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
   expect_equal(results, 1)
 })
 
-test_that("ocRctPostprobDist gives higher PrFutility with decreased truep", {
+test_that("ocRctPostprobDist gives higher PrFutility with decreased pE", {
   set.seed(1989)
   input <- list(
     nnE = c(10, 20, 30),
@@ -167,7 +167,7 @@ test_that("ocRctPostprobDist gives higher PrFutility with decreased truep", {
   expect_true(res$oc$PrFutility < res_low_truep$oc$PrFutility)
 })
 
-test_that("ocRctPostprobDist gives higher PrEfficacy with increased truep", {
+test_that("ocRctPostprobDist gives higher PrEfficacy with increased pE", {
   set.seed(1989)
   input <- list(
     nnE = c(10, 20, 30),

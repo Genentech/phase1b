@@ -189,7 +189,7 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
 #' @example examples/ocRctPostprobDist.R
 #' @export
 ocRctPostprobDist <- function(nnE,
-                              pE, # truep
+                              pE,
                               pS,
                               deltaE,
                               deltaF,
@@ -216,7 +216,6 @@ ocRctPostprobDist <- function(nnE,
   assert_flag(wiggle)
   assert_numeric(nnF, min.len = 0, any.missing = FALSE)
 
-  # some starting initiation ocRctPostprobDist
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }

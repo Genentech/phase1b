@@ -60,7 +60,7 @@ h_get_looks <- function(dist, nnE, nnF) {
   assert_numeric(nnE)
   assert_numeric(nnF)
 
-  nn <- unique(c(nnE, nnF))
+  nn <- sort(unique(c(nnE, nnF)))
   nnr <- nn + c(dist, 0)
   list(
     nnrE = nnr[nn %in% nnE],
