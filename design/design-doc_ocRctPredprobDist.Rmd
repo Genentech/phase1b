@@ -41,7 +41,7 @@ The returned value is a list with the following elements:
  - `wiggled_dist` : magnitude of random distance applied in order of input looks.
  - `params` : all user input arguments.
 
-# Input parameters
+## Input parameters
 ```{r}
 input <- list(
   xS = 0,
@@ -80,7 +80,9 @@ nL <- length(input$nn) # the max of nn or we can do Nmax
 Nstart <- input$nn[1]
 Nmax <- input$nn[nL]
 ```
-# Example of vintage function
+
+## Example of vintage function
+
 ```{r}
 ocRctPredprobDist(
   nn = input$nn,
@@ -90,11 +92,8 @@ ocRctPredprobDist(
   deltaFu = input$deltaF,
   relativeDelta = input$relativeDelta,
   tT = 0.6,
-  # tL = input$tL,
-  # tU = input$tU,
   phiL = 0.2,
   phiU = 0.6,
-  # phiFu = ,
   parE = input$parE,
   parS = input$parS,
   randRatio = 1,
@@ -104,15 +103,17 @@ ocRctPredprobDist(
   nnF = input$nnF
 )
 ```
+
 # h_decision_one_rct_predprobDist
 ```{r}
 h_decision_one_rct_predprobDist <- function(
+    nnr,
     nnE,
     nnF,
-    nnr,
-    truep,
     xS,
     nS,
+    pE,
+    pS,
     parE,
     parS,
     tT,
@@ -122,13 +123,11 @@ h_decision_one_rct_predprobDist <- function(
     deltaF,
     weights,
     weightsS,
-    relativeDelta = FALSE) {
+    relativeDelta = FALSE,
+    randRatio = 1) {
   assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, sorted = TRUE)
-  assert_number(truep, lower = 0, upper = 1)
-  assert_number(xS, finite = TRUE)
-  assert_number(nS, finite = TRUE)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_numeric(parS, min.len = 2, any.missing = FALSE)
   assert_number(tT, lower = 0, upper = 1)
@@ -140,24 +139,38 @@ h_decision_one_rct_predprobDist <- function(
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
 
-  index_look <- 1
   Nmax <- max(nnr)
   NmaxControl <- max(nnF)
-  decision <- NA
-  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+  isActive <- sample(
+    x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
+    size = Nmax,
+    replace = FALSE
+  )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
 
   ### Decision 1:
   # The criteria for Decision 1 for Interim looks are :
   # Interim GO =  P(successful trial at final) > phiU
   # Interim STOP = P(successful trial at final) < phiL
   while (is.na(decision) && index_look < length(nnr)) {
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
+        x = sum(xActive),
+        n = length(xControl),
+        xS = sum(xControl),
+        nS = length(xControl),
         Nmax = Nmax,
         NmaxControl = NmaxControl,
         delta = deltaE,
@@ -172,10 +185,10 @@ h_decision_one_rct_predprobDist <- function(
     }
     if (size_look %in% nnF) {
       interim_qU <- predprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
+        x = sum(xActive),
+        n = length(xControl),
+        xS = sum(xControl),
+        nS = length(xControl),
         Nmax = Nmax,
         NmaxControl = NmaxControl,
         delta = deltaF,
@@ -189,51 +202,52 @@ h_decision_one_rct_predprobDist <- function(
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
     }
     index_look <- index_look + 1
-  }
-  # The criteria for Decision 1 for Final looks are:
-  # Final GO = P(RR > p0 + deltaE | data) => tT
-  # Final STOP = P(RR > p0 + deltaF | data ) < tT
-  if (is.na(decision)) {
-    size_look <- nnr[index_look]
-    if (size_look %in% nnE) {
-      final_eff_qU <- postprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
-        delta = deltaE,
-        relativeDelta = relativeDelta,
-        parE = parE,
-        weights = weights, # for activeBetamixPost
-        parS = parS,
-        weightsS = weightsS # for controlBetamixPost
-      )
-      decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+    # The criteria for Decision 1 for Final looks are:
+    # Final GO = P(RR > p0 + deltaE | data) => tT
+    # Final STOP = P(RR > p0 + deltaF | data ) < tT
+    if (is.na(decision)) {
+      size_look <- nnr[index_look]
+      if (size_look %in% nnE) {
+        final_eff_qU <- postprobDist(
+          x = sum(xActive),
+          n = length(xControl),
+          xS = sum(xControl),
+          nS = length(xControl),
+          delta = deltaE,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          weights = weights, # for activeBetamixPost
+          parS = parS,
+          weightsS = weightsS # for controlBetamixPost
+        )
+        decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+      }
+      if (size_look %in% nnF) {
+        final_fu_qU <- postprobDist(
+          x = sum(xActive),
+          n = length(xControl),
+          xS = sum(xControl),
+          nS = length(xControl),
+          delta = deltaF,
+          relativeDelta = relativeDelta,
+          parE = parE,
+          weights = weights, # for activeBetamixPost
+          parS = parS,
+          weightsS = weightsS # for controlBetamixPost
+        )
+        decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+      }
     }
   }
-  if (size_look %in% nnF) {
-    final_fu_qU <- postprobDist(
-      x = sum(response[1:size_look]),
-      n = size_look,
-      xS = xS,
-      nS = nS,
-      delta = deltaF,
-      relativeDelta = relativeDelta,
-      parE = parE,
-      weights = weights, # for activeBetamixPost
-      parS = parS,
-      weightsS = weightsS # for controlBetamixPost
-    )
-    decision <- ifelse(final_fu_qU < tT, FALSE, decision)
-  }
   list(
+    nActive = length(xActive),
+    nControl = length(xControl),
     decision = decision,
-    all_sizes = size_look,
-    nActive = nActive
+    all_sizes = size_look
   )
 }
 ```
-# h_decision_one_rct_predprobDist
+## h_decision_one_rct_predprobDist
 ```{r}
 example_dist <- h_get_distance(nn = c(10, 20, 30))
 looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
@@ -241,22 +255,22 @@ looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
 h_decision_one_rct_predprobDist(
-  nnr = input$nn,
+  nnr = c(10, 20, 30),
   nnE = looks$nnrE,
   nnF = looks$nnrF,
-  truep = input$truep,
-  xS = input$xS,
-  nS = input$nS,
-  parE = input$parE,
-  parS = input$parS,
-  phiU = input$phiU,
-  phiL = input$phiL,
-  tT = input$tT,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  weights = input$weights,
-  weightsS = input$weightS,
-  relativeDelta = TRUE
+  pE = 0.6,
+  pS = 0.3,
+  parE = c(1, 1),
+  parS = c(1, 1),
+  tT = 0.7,
+  phiU = 0.3,
+  phiL = 0.7,
+  deltaE = 0.1,
+  deltaF = 0.1,
+  weights = 1,
+  weightsS = 1,
+  relativeDelta = FALSE,
+  randRatio = 1
 )
 ```
 # h_decision_two_rct_predprobDist
@@ -265,26 +279,23 @@ h_decision_two_rct_predprobDist <- function(
     nnE,
     nnF,
     nnr,
-    truep,
-    xS,
-    nS,
+    pE,
+    pS,
     parE,
     parS,
-    tT,
     tF,
+    tT,
     phiU,
     phiFu,
     deltaE,
     deltaF,
     weights,
     weightsS,
-    relativeDelta) {
-  assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE, )
-  assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE, )
-  assert_numeric(nnr, lower = 1, sorted = TRUE, any.missing = FALSE, )
-  assert_number(truep, lower = 0, upper = 1)
-  assert_numeric(xS, sorted = TRUE)
-  assert_numeric(nS, sorted = TRUE)
+    relativeDelta,
+    randRatio) {
+  assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_numeric(parS, min.len = 2, any.missing = FALSE)
   assert_number(tT, lower = 0, upper = 1)
@@ -297,22 +308,37 @@ h_decision_two_rct_predprobDist <- function(
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
 
-  index_look <- 1
   Nmax <- max(nnr)
   NmaxControl <- max(nnF)
-  decision <- NA
-  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+  isActive <- sample(
+    x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
+    size = Nmax,
+    replace = FALSE
+  )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
+
   # The criteria for Decision 2 for Interim looks are :
   # Interim GO : P ( successful at final) > phiU
   # Interim STOP : P ( unsuccessful at final ) > phiFu
   while (is.na(decision) && index_look < length(nnr)) {
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
         Nmax = Nmax,
         NmaxControl = NmaxControl,
         delta = deltaE,
@@ -327,10 +353,10 @@ h_decision_two_rct_predprobDist <- function(
     }
     if (size_look %in% nnF) {
       interim_qU <- 1 - predprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
         Nmax = Nmax,
         NmaxControl = NmaxControl,
         delta = deltaF,
@@ -352,10 +378,10 @@ h_decision_two_rct_predprobDist <- function(
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       final_eff_qU <- postprobDist(
-        x = sum(response[1:size_look]),
-        n = size_look,
-        xS = xS,
-        nS = nS,
+        x = sum(xActive),
+        n = length(xControl),
+        xS = sum(xControl),
+        nS = length(xControl),
         delta = deltaE,
         relativeDelta = relativeDelta,
         parE = parE,
@@ -366,10 +392,10 @@ h_decision_two_rct_predprobDist <- function(
   }
   if (size_look %in% nnF) {
     final_fu_qU <- 1 - postprobDist(
-      x = sum(response[1:size_look]),
-      n = size_look,
-      xS = xS,
-      nS = nS,
+      x = sum(xActive),
+      n = length(xControl),
+      xS = sum(xControl),
+      nS = length(xControl),
       delta = deltaF,
       relativeDelta = relativeDelta,
       parE = parE,
@@ -380,7 +406,8 @@ h_decision_two_rct_predprobDist <- function(
   list(
     decision = decision,
     all_sizes = size_look,
-    nActive = nActive
+    nActive = length(xActive),
+    nControl = length(xControl)
   )
 }
 ```
@@ -390,9 +417,8 @@ h_decision_two_rct_predprobDist(
   nnE = input$nnE,
   nnF = input$nnF,
   nnr = input$nn,
-  truep = input$truep,
-  xS = input$xS,
-  nS = input$nS,
+  pE = 0.6,
+  pS = 0.3,
   parE = input$parE,
   parS = input$parS,
   tT = input$tT,
@@ -403,7 +429,8 @@ h_decision_two_rct_predprobDist(
   deltaF = input$deltaF,
   weights = input$weights,
   weightsS = input$weightS,
-  relativeDelta = TRUE
+  relativeDelta = TRUE,
+  randRatio = 1
 )
 ```
 # h_decision_two_rct_predprobDist example when `relativeDelta = FALSE`
@@ -412,9 +439,8 @@ h_decision_two_rct_predprobDist(
   nnE = input$nnE,
   nnF = input$nnF,
   nnr = input$nn,
-  truep = input$truep,
-  xS = input$xS,
-  nS = input$nS,
+  pE = 0.6,
+  pS = 0.3,
   parE = input$parE,
   parS = input$parS,
   tT = input$tT,
@@ -425,51 +451,8 @@ h_decision_two_rct_predprobDist(
   deltaF = input$deltaF,
   weights = input$weights,
   weightsS = input$weightS,
-  relativeDelta = FALSE
-)
-```
-# Example of running `h_get_decisionDist_rct`
-```{r}
-example_dist <- h_get_distance(nn = c(10, 20, 30))
-looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
-looks_nnrE <- looks$nnrE
-looks_nnrF <- looks$nnrF
-
-h_get_decisionDist_rct(
-  nnr = input$nn,
-  nnrE = looks$nnrE,
-  nnrF = looks$nnrF,
-  pE = input$pE,
-  pS = input$pS,
-  parE = input$parE,
-  parS = input$parS,
-  tL = input$tL,
-  tU = input$tU,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  relativeDelta = TRUE
-)
-```
-# helper also works when `relativeDelta = FALSE`
-```{r}
-example_dist <- h_get_distance(nn = c(10, 20, 30))
-looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
-looks_nnrE <- looks$nnrE
-looks_nnrF <- looks$nnrF
-
-h_get_decisionDist_rct(
-  nnr = input$nn,
-  nnrE = looks$nnrE,
-  nnrF = looks$nnrF,
-  pE = input$pE,
-  pS = input$pS,
-  parE = c(1, 1),
-  parS = c(1, 1),
-  tL = input$tL,
-  tU = input$tU,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  relativeDelta = FALSE
+  relativeDelta = FALSE,
+  randRatio = 1
 )
 ```
 # h_get_oc_rct can be used from `ocRctPostprobDist()`
@@ -506,13 +489,12 @@ h_get_oc_rct(
 # new user facing function
 ```{r}
 new_ocRctPredprobDist <- function(nnE,
-                                  truep,
+                                  pE,
+                                  pS,
                                   deltaE,
                                   deltaF,
                                   phiU,
                                   phiL,
-                                  xS = 0,
-                                  nS = 0,
                                   relativeDelta = FALSE,
                                   tT,
                                   tF,
@@ -543,15 +525,13 @@ new_ocRctPredprobDist <- function(nnE,
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  nActive <- nControl <- NA
-  decision <- all_sizes <- vector(length = sim)
+  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
   nnE <- sort(nnE)
   nnF <- sort(nnF)
   nn <- sort(unique(c(nnF, nnE)))
   nL <- length(nn)
   nn <- sort(unique(c(nnF, nnE)))
 
-  nL <- length(nn)
   Nstart <- nn[1]
   Nmax <- nn[nL]
 
@@ -571,9 +551,10 @@ new_ocRctPredprobDist <- function(nnE,
         nnE = nnE,
         nnF = nnF,
         nnr = nnr,
-        truep = truep,
         xS = xS,
         nS = nS,
+        pE = pE,
+        pS = pS,
         parE = parE,
         parS = parS,
         tT = tT,
@@ -590,9 +571,10 @@ new_ocRctPredprobDist <- function(nnE,
         nnE = nnE,
         nnF = nnF,
         nnr = nnr,
-        truep = truep,
         xS = xS,
         nS = nS,
+        pE = pE,
+        pS = pS,
         parE = parE,
         parS = parS,
         tT = tT,
@@ -603,7 +585,8 @@ new_ocRctPredprobDist <- function(nnE,
         deltaF = deltaF,
         weights = weights,
         weightsS = weightsS,
-        relativeDelta = relativeDelta
+        relativeDelta = relativeDelta,
+        randRatio = randRatio
       )
     }
     decision[k] <- tmp$decision
@@ -613,7 +596,6 @@ new_ocRctPredprobDist <- function(nnE,
   }
   oc <- h_get_oc_rct(
     all_sizes = all_sizes,
-    nnr = nnr,
     Nmax = Nmax,
     nActive = nActive,
     nControl = nControl,
@@ -621,6 +603,8 @@ new_ocRctPredprobDist <- function(nnE,
   )
   list(
     oc = oc,
+    nActive = nActive,
+    nControl = nControl,
     ExpectedN = mean(all_sizes),
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
@@ -650,15 +634,13 @@ new_ocRctPredprobDist <- function(nnE,
 ```{r}
 set.seed(2000)
 new_ocRctPredprobDist(
-  nnE = input$nn,
-  truep = input$pE,
-  # pS = input$pS,
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.2,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
   phiU = 0.2,
-  phiL = 0.4,
-  xS = 0,
-  nS = 0,
+  phiL = 0.8,
   relativeDelta = TRUE,
   tT = 0.6,
   parE = input$parE,
@@ -666,9 +648,9 @@ new_ocRctPredprobDist(
   weights = 1,
   weightsS = 1,
   randRatio = 1,
-  sim = 50,
+  sim = 20,
   wiggle = FALSE,
-  nnF = input$nnF,
+  nnF = c(10, 20, 30),
   decision1 = TRUE
 )
 ```
