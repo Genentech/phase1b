@@ -1,6 +1,8 @@
 ---
 title: "Design document for ocRctPredprobDist"
 output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
 
 Calculate operating characteristics for RCT against SOC,
@@ -43,6 +45,7 @@ The returned value is a list with the following elements:
 
 ## Input parameters
 ```{r}
+devtools::load_all()
 input <- list(
   xS = 0,
   nS = 0,
@@ -168,7 +171,7 @@ h_decision_one_rct_predprobDist <- function(
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
         x = sum(xActive),
-        n = length(xControl),
+        n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
         Nmax = Nmax,
@@ -247,7 +250,9 @@ h_decision_one_rct_predprobDist <- function(
   )
 }
 ```
+
 ## h_decision_one_rct_predprobDist
+
 ```{r}
 example_dist <- h_get_distance(nn = c(10, 20, 30))
 looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
@@ -273,7 +278,9 @@ h_decision_one_rct_predprobDist(
   randRatio = 1
 )
 ```
+
 # h_decision_two_rct_predprobDist
+
 ```{r}
 h_decision_two_rct_predprobDist <- function(
     nnE,
@@ -487,6 +494,7 @@ h_get_oc_rct(
 
 
 # new user facing function
+
 ```{r}
 new_ocRctPredprobDist <- function(nnE,
                                   pE,
@@ -619,8 +627,13 @@ new_ocRctPredprobDist <- function(nnE,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
+
+# Daniel: runs ok until here, afterwards need to still work on the design, because here you don't develop new_RctPostProbDist but new_ocRctPredprobDist
 ```
+
+
 # Example of new_RctPostProbDist when `relativeDelta = TRUE` and `decision1 = TRUE` comparing with vintage function below:
+
 <!--  -->
 <!-- Go interim: -->
 <!-- P(success at final) > phiU -->
@@ -631,6 +644,7 @@ new_ocRctPredprobDist <- function(nnE,
 <!-- P(failure at final) > phiU -->
 <!-- Stop final: -->
 <!-- P(P_S < p1 + deltaF) > tFu -->
+
 ```{r}
 set.seed(2000)
 new_ocRctPredprobDist(
@@ -656,26 +670,31 @@ new_ocRctPredprobDist(
 ```
 
 ```{r}
-set.seed(2000)
-ocRctPredprobDist(
-  nn = input$nn,
-  pE = input$pE,
-  pS = input$pS,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  relativeDelta = TRUE,
-  tL = input$tL,
-  tU = input$tU,
-  parE = input$parE,
-  parS = input$parS,
-  randRatio = 1,
-  ns = 50,
-  nr = FALSE,
-  d = NULL,
-  nnF = input$nnF
-)
+# set.seed(2000)
+# ocRctPredprobDist(
+#   nn = input$nn,
+#   pE = input$pE,
+#   pS = input$pS,
+#   # Daniel: this does not work
+#   deltaE = input$deltaE,
+#   deltaF = input$deltaF,
+#   delta = input$deltaE,
+#   deltaFu = input$deltaF,
+#   relativeDelta = TRUE,
+#   tL = input$tL,
+#   tU = input$tU,
+#   parE = input$parE,
+#   parS = input$parS,
+#   randRatio = 1,
+#   ns = 50,
+#   nr = FALSE,
+#   d = NULL,
+#   nnF = input$nnF
+# )
 ```
+
 # Example of new_ocRctPostprobDist when `relativeDelta = FALSE`.
+
 ```{r}
 set.seed(2000)
 new_RctPostprobDist(
@@ -695,7 +714,9 @@ new_RctPostprobDist(
   nnF = input$nnF
 )
 ```
+
 # Example of ocRctPostprobDist when `relativeDelta = FALSE`.
+
 ```{r}
 set.seed(1090)
 ocRctPostprobDist(
@@ -719,6 +740,7 @@ ocRctPostprobDist(
 
 
 # vintage function
+
 ```{r}
 ocRctPredprobDist <- function(nn, pE, pS, delta = 0, deltaFu = delta, relativeDelta = FALSE,
                               tT, tFu = 1 - tT,
