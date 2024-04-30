@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.585210577864838" branch-rate="0" lines-covered="1195" lines-valid="2042" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-04-25 08:57:58.342396">
+<coverage line-rate="0.585616438356164" branch-rate="0" lines-covered="1197" lines-valid="2044" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-04-30 17:02:17.319914">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.585210577864838" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.585616438356164" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -1437,7 +1437,7 @@
                 <line number="208" hits="400" branch="false"/>
                 <line number="210" hits="1000" branch="false"/>
                 <line number="211" hits="1000" branch="false"/>
-                <line number="213" hits="1400" branch="false"/>
+                <line number="212" hits="1000" branch="false"/>
                 <line number="214" hits="1400" branch="false"/>
                 <line number="215" hits="1400" branch="false"/>
                 <line number="216" hits="1400" branch="false"/>
@@ -1452,7 +1452,7 @@
                 <line number="225" hits="1400" branch="false"/>
                 <line number="226" hits="1400" branch="false"/>
                 <line number="227" hits="1400" branch="false"/>
-                <line number="229" hits="5" branch="false"/>
+                <line number="228" hits="1400" branch="false"/>
                 <line number="230" hits="5" branch="false"/>
                 <line number="231" hits="5" branch="false"/>
                 <line number="232" hits="5" branch="false"/>
@@ -1465,6 +1465,7 @@
                 <line number="239" hits="5" branch="false"/>
                 <line number="240" hits="5" branch="false"/>
                 <line number="241" hits="5" branch="false"/>
+                <line number="242" hits="5" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1549,7 +1550,7 @@
             <line number="208" hits="400" branch="false"/>
             <line number="210" hits="1000" branch="false"/>
             <line number="211" hits="1000" branch="false"/>
-            <line number="213" hits="1400" branch="false"/>
+            <line number="212" hits="1000" branch="false"/>
             <line number="214" hits="1400" branch="false"/>
             <line number="215" hits="1400" branch="false"/>
             <line number="216" hits="1400" branch="false"/>
@@ -1564,7 +1565,7 @@
             <line number="225" hits="1400" branch="false"/>
             <line number="226" hits="1400" branch="false"/>
             <line number="227" hits="1400" branch="false"/>
-            <line number="229" hits="5" branch="false"/>
+            <line number="228" hits="1400" branch="false"/>
             <line number="230" hits="5" branch="false"/>
             <line number="231" hits="5" branch="false"/>
             <line number="232" hits="5" branch="false"/>
@@ -1577,6 +1578,7 @@
             <line number="239" hits="5" branch="false"/>
             <line number="240" hits="5" branch="false"/>
             <line number="241" hits="5" branch="false"/>
+            <line number="242" hits="5" branch="false"/>
           </lines>
         </class>
         <class name="ocPredprob.R" filename="R/ocPredprob.R" line-rate="0.979591836734694" branch-rate="0" complexity="0">
@@ -2551,7 +2553,7 @@
             <line number="440" hits="6" branch="false"/>
           </lines>
         </class>
-        <class name="ocRctPostprobDist.R" filename="R/ocRctPostprobDist.R" line-rate="0.973684210526316" branch-rate="0" complexity="0">
+        <class name="ocRctPostprobDist.R" filename="R/ocRctPostprobDist.R" line-rate="0.973856209150327" branch-rate="0" complexity="0">
           <methods>
             <method name="h_get_decisionDist_rct" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -2639,7 +2641,7 @@
                 <line number="141" hits="6" branch="false"/>
               </lines>
             </method>
-            <method name="ocRctPostprobDist" signature="" line-rate="0.945945945945946" branch-rate="0" complexity="0">
+            <method name="ocRctPostprobDist" signature="" line-rate="0.946666666666667" branch-rate="0" complexity="0">
               <lines>
                 <line number="205" hits="5" branch="false"/>
                 <line number="206" hits="5" branch="false"/>
@@ -2673,7 +2675,7 @@
                 <line number="238" hits="0" branch="false"/>
                 <line number="240" hits="250" branch="false"/>
                 <line number="241" hits="250" branch="false"/>
-                <line number="243" hits="250" branch="false"/>
+                <line number="242" hits="250" branch="false"/>
                 <line number="244" hits="250" branch="false"/>
                 <line number="245" hits="250" branch="false"/>
                 <line number="246" hits="250" branch="false"/>
@@ -2693,7 +2695,7 @@
                 <line number="260" hits="250" branch="false"/>
                 <line number="261" hits="250" branch="false"/>
                 <line number="262" hits="250" branch="false"/>
-                <line number="264" hits="5" branch="false"/>
+                <line number="263" hits="250" branch="false"/>
                 <line number="265" hits="5" branch="false"/>
                 <line number="266" hits="5" branch="false"/>
                 <line number="267" hits="5" branch="false"/>
@@ -2715,6 +2717,7 @@
                 <line number="283" hits="5" branch="false"/>
                 <line number="284" hits="5" branch="false"/>
                 <line number="285" hits="5" branch="false"/>
+                <line number="286" hits="5" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2829,7 +2832,7 @@
             <line number="238" hits="0" branch="false"/>
             <line number="240" hits="250" branch="false"/>
             <line number="241" hits="250" branch="false"/>
-            <line number="243" hits="250" branch="false"/>
+            <line number="242" hits="250" branch="false"/>
             <line number="244" hits="250" branch="false"/>
             <line number="245" hits="250" branch="false"/>
             <line number="246" hits="250" branch="false"/>
@@ -2849,7 +2852,7 @@
             <line number="260" hits="250" branch="false"/>
             <line number="261" hits="250" branch="false"/>
             <line number="262" hits="250" branch="false"/>
-            <line number="264" hits="5" branch="false"/>
+            <line number="263" hits="250" branch="false"/>
             <line number="265" hits="5" branch="false"/>
             <line number="266" hits="5" branch="false"/>
             <line number="267" hits="5" branch="false"/>
@@ -2871,6 +2874,7 @@
             <line number="283" hits="5" branch="false"/>
             <line number="284" hits="5" branch="false"/>
             <line number="285" hits="5" branch="false"/>
+            <line number="286" hits="5" branch="false"/>
           </lines>
         </class>
         <class name="ocRctPredprobDist.R" filename="R/ocRctPredprobDist.R" line-rate="0" branch-rate="0" complexity="0">
