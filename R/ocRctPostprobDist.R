@@ -237,6 +237,7 @@ ocRctPostprobDist <- function(nnE,
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
     } else {
+      dist <- 0
       nnrE <- nnE
       nnrF <- nnF
     }
@@ -280,7 +281,7 @@ ocRctPostprobDist <- function(nnE,
     union_nn = nnr,
     wiggled_nnE = nnrE,
     wiggled_nnF = nnrF,
-    wiggle_dist = ifelse(is.numeric(dist), dist, NA),
+    wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
