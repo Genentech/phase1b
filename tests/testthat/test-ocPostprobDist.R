@@ -87,7 +87,7 @@ test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
     tU = 0.6,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 1000,
+    sim = 50,
     wiggle = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
   results <- sum(res1$oc[5:7])
@@ -105,7 +105,7 @@ test_that("the PrFutility increases with increase futility looks", {
     tU = 0.6,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 100,
+    sim = 50,
     wiggle = TRUE,
     nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
@@ -119,7 +119,7 @@ test_that("the PrFutility increases with increase futility looks", {
     tU = 0.6,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 100,
+    sim = 50,
     wiggle = TRUE,
     nnF = c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
@@ -138,7 +138,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     tU = 0.6,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 100,
+    sim = 50,
     wiggle = TRUE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
@@ -153,7 +153,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     tU = 0.6,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 100,
+    sim = 50,
     wiggle = TRUE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")

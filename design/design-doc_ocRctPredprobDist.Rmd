@@ -1,7 +1,7 @@
 ---
 title: "Design document for ocRctPredprobDist"
 output: html_notebook
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -85,31 +85,31 @@ Nmax <- input$nn[nL]
 ```
 
 ## Example of vintage function
-
+# big title 2
 ```{r}
 ocRctPredprobDist(
-  nn = input$nn,
-  pE = input$pE,
-  pS = input$pS,
-  delta = input$deltaE,
-  deltaFu = input$deltaF,
-  relativeDelta = input$relativeDelta,
+  nn = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  delta = 0.2,
+  deltaFu = 0.1,
+  relativeDelta = FALSE,
   tT = 0.6,
   phiL = 0.2,
-  phiU = 0.6,
-  parE = input$parE,
-  parS = input$parS,
+  phiU = 0.8,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = input$sim,
-  nr = input$nr,
-  d = input$d,
-  nnF = input$nnF
+  ns = 5,
+  nr = TRUE,
+  d = NULL,
+  nnF = c(10, 20, 30)
 )
 ```
 
 # h_decision_one_rct_predprobDist
 ```{r}
-h_decision_one_rct_predprobDist <- function(
+h_decision_one_RctpredprobDist <- function(
     nnr,
     nnE,
     nnF,
@@ -141,24 +141,20 @@ h_decision_one_rct_predprobDist <- function(
   assert_number(weights, lower = 1, finite = TRUE)
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
-
   Nmax <- max(nnr)
   NmaxControl <- max(nnF)
   index_look <- 1
   size_look <- nnr[index_look]
   all_sizes <- decision <- nActive <- nControl <- NA
   activeProp <- randRatio / (randRatio + 1)
-
   NmaxActive <- ceiling(activeProp * Nmax)
   NmaxControl <- Nmax - NmaxActive
-
   isActive <- sample(
     x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
     size = Nmax,
     replace = FALSE
   )
   response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
-
   ### Decision 1:
   # The criteria for Decision 1 for Interim looks are :
   # Interim GO =  P(successful trial at final) > phiU
@@ -166,7 +162,6 @@ h_decision_one_rct_predprobDist <- function(
   while (is.na(decision) && index_look < length(nnr)) {
     xActive <- response[which(isActive[1:size_look])]
     xControl <- response[which(!isActive[1:size_look])]
-
     size_look <- nnr[index_look]
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
@@ -189,7 +184,7 @@ h_decision_one_rct_predprobDist <- function(
     if (size_look %in% nnF) {
       interim_qU <- predprobDist(
         x = sum(xActive),
-        n = length(xControl),
+        n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
         Nmax = Nmax,
@@ -204,49 +199,51 @@ h_decision_one_rct_predprobDist <- function(
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
     }
+    all_sizes <- size_look
     index_look <- index_look + 1
-    # The criteria for Decision 1 for Final looks are:
-    # Final GO = P(RR > p0 + deltaE | data) => tT
-    # Final STOP = P(RR > p0 + deltaF | data ) < tT
-    if (is.na(decision)) {
-      size_look <- nnr[index_look]
-      if (size_look %in% nnE) {
-        final_eff_qU <- postprobDist(
-          x = sum(xActive),
-          n = length(xControl),
-          xS = sum(xControl),
-          nS = length(xControl),
-          delta = deltaE,
-          relativeDelta = relativeDelta,
-          parE = parE,
-          weights = weights, # for activeBetamixPost
-          parS = parS,
-          weightsS = weightsS # for controlBetamixPost
-        )
-        decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
-      }
-      if (size_look %in% nnF) {
-        final_fu_qU <- postprobDist(
-          x = sum(xActive),
-          n = length(xControl),
-          xS = sum(xControl),
-          nS = length(xControl),
-          delta = deltaF,
-          relativeDelta = relativeDelta,
-          parE = parE,
-          weights = weights, # for activeBetamixPost
-          parS = parS,
-          weightsS = weightsS # for controlBetamixPost
-        )
-        decision <- ifelse(final_fu_qU < tT, FALSE, decision)
-      }
+    size_look <- nnr[index_look]
+  }
+  # The criteria for Decision 1 for Final looks are:
+  # Final GO = P(RR > p0 + deltaE | data) => tT
+  # Final STOP = P(RR > p0 + deltaF | data ) < tT
+  if (is.na(decision)) {
+    size_look <- nnr[index_look]
+    if (size_look %in% nnE) {
+      final_eff_qU <- postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights, # for activeBetamixPost
+        parS = parS,
+        weightsS = weightsS # for controlBetamixPost
+      )
+      decision <- ifelse(final_eff_qU >= tT, TRUE, decision)
+    }
+    if (size_look %in% nnF) {
+      final_fu_qU <- postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights, # for activeBetamixPost
+        parS = parS,
+        weightsS = weightsS # for controlBetamixPost
+      )
+      decision <- ifelse(final_fu_qU < tT, FALSE, decision)
     }
   }
   list(
     nActive = length(xActive),
     nControl = length(xControl),
     decision = decision,
-    all_sizes = size_look
+    all_sizes = sum(length(xActive), length(xControl))
   )
 }
 ```
@@ -279,10 +276,36 @@ h_decision_one_rct_predprobDist(
 )
 ```
 
+```{r}
+example_dist <- h_get_distance(nn = c(10, 20, 30))
+looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+looks_nnrE <- looks$nnrE
+looks_nnrF <- looks$nnrF
+
+h_decision_one_rct_predprobDist(
+  nnr = c(10, 20, 30),
+  nnE = looks$nnrE,
+  nnF = looks$nnrF,
+  pE = 0.6,
+  pS = 0.3,
+  parE = c(1, 1),
+  parS = c(1, 1),
+  tT = 0.7,
+  phiU = 0.3,
+  phiL = 0.7,
+  deltaE = 0.1,
+  deltaF = 0.1,
+  weights = 1,
+  weightsS = 1,
+  relativeDelta = TRUE,
+  randRatio = 1
+)
+```
+
 # h_decision_two_rct_predprobDist
 
 ```{r}
-h_decision_two_rct_predprobDist <- function(
+h_decision_two_RctpredprobDist <- function(
     nnE,
     nnF,
     nnr,
@@ -386,7 +409,7 @@ h_decision_two_rct_predprobDist <- function(
     if (size_look %in% nnE) {
       final_eff_qU <- postprobDist(
         x = sum(xActive),
-        n = length(xControl),
+        n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
         delta = deltaE,
@@ -400,7 +423,7 @@ h_decision_two_rct_predprobDist <- function(
   if (size_look %in% nnF) {
     final_fu_qU <- 1 - postprobDist(
       x = sum(xActive),
-      n = length(xControl),
+      n = length(xActive),
       xS = sum(xControl),
       nS = length(xControl),
       delta = deltaF,
@@ -412,9 +435,9 @@ h_decision_two_rct_predprobDist <- function(
   }
   list(
     decision = decision,
-    all_sizes = size_look,
     nActive = length(xActive),
-    nControl = length(xControl)
+    nControl = length(xControl),
+    all_sizes = sum(length(xActive), length(xControl))
   )
 }
 ```
@@ -516,13 +539,11 @@ new_ocRctPredprobDist <- function(nnE,
                                   nnF = nnE,
                                   decision1 = TRUE) {
   assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
-  # assert_number(pE, lower = 0, upper = 1)
-  # assert_number(pS, lower = 0, upper = 1)
   assert_number(deltaE, upper = 1, finite = TRUE)
   assert_number(deltaF, upper = 1, finite = TRUE)
   assert_flag(relativeDelta)
-  # assert_number(tL, lower = 0, upper = 1)
-  # assert_number(tU, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
   assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_number(sim, lower = 1, finite = TRUE)
@@ -552,6 +573,7 @@ new_ocRctPredprobDist <- function(nnE,
     } else {
       nnrE <- nnE
       nnrF <- nnF
+      dist <- NA
     }
     nnr <- unique(c(nnrE, nnrF))
     tmp <- if (decision1) {
@@ -575,7 +597,7 @@ new_ocRctPredprobDist <- function(nnE,
         relativeDelta = relativeDelta
       )
     } else {
-      tmp <- h_decision_two_rct_predprobDist(
+      h_decision_two_rct_predprobDist(
         nnE = nnE,
         nnF = nnF,
         nnr = nnr,
@@ -627,117 +649,191 @@ new_ocRctPredprobDist <- function(nnE,
     params = as.list(match.call(expand.dots = FALSE))
   )
 }
-
-# Daniel: runs ok until here, afterwards need to still work on the design, because here you don't develop new_RctPostProbDist but new_ocRctPredprobDist
 ```
 
 
-# Example of new_RctPostProbDist when `relativeDelta = TRUE` and `decision1 = TRUE` comparing with vintage function below:
+# Example of new_RctPostProbDist when `relativeDelta = FALSE` and `decision1 = TRUE` comparing with vintage function below:
 
-<!--  -->
-<!-- Go interim: -->
-<!-- P(success at final) > phiU -->
-<!-- Go final: -->
-<!-- P(P_E > p0 + deltaE) > tT -->
+Go interim:
+P(success at final) > phiU
+Go final:
+P(P_E > p0 + deltaE) > tT
 
-<!-- Stop interim: -->
-<!-- P(failure at final) > phiU -->
-<!-- Stop final: -->
-<!-- P(P_S < p1 + deltaF) > tFu -->
+Stop interim:
+P(failure at final) > phiU
+Stop final:
+P(P_S < p1 + deltaF) > tFu
 
 ```{r}
 set.seed(2000)
-new_ocRctPredprobDist(
+new_res <- new_ocRctPredprobDist(
   nnE = c(10, 20, 30),
   pE = 0.4,
-  pS = 0.2,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  phiU = 0.2,
-  phiL = 0.8,
-  relativeDelta = TRUE,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiL = 0.2,
+  relativeDelta = FALSE,
   tT = 0.6,
-  parE = input$parE,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   weights = 1,
   weightsS = 1,
   randRatio = 1,
-  sim = 20,
+  sim = 100,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
   decision1 = TRUE
 )
+new_res$oc
 ```
 
 ```{r}
-# set.seed(2000)
-# ocRctPredprobDist(
-#   nn = input$nn,
-#   pE = input$pE,
-#   pS = input$pS,
-#   # Daniel: this does not work
-#   deltaE = input$deltaE,
-#   deltaF = input$deltaF,
-#   delta = input$deltaE,
-#   deltaFu = input$deltaF,
-#   relativeDelta = TRUE,
-#   tL = input$tL,
-#   tU = input$tU,
-#   parE = input$parE,
-#   parS = input$parS,
-#   randRatio = 1,
-#   ns = 50,
-#   nr = FALSE,
-#   d = NULL,
-#   nnF = input$nnF
-# )
-```
-
-# Example of new_ocRctPostprobDist when `relativeDelta = FALSE`.
-
-```{r}
-set.seed(2000)
-new_RctPostprobDist(
-  nnE = input$nn,
-  pE = input$pE,
-  pS = input$pS,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
+## Example of vintage function
+vin_res <- ocRctPredprobDist(
+  nn = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  delta = 0.2,
+  deltaFu = 0.1,
   relativeDelta = FALSE,
-  tL = input$tL,
-  tU = input$tU,
-  parE = input$parE,
-  parS = input$parE,
-  randRatio = 1,
-  sim = 50,
-  wiggle = FALSE,
-  nnF = input$nnF
-)
-```
-
-# Example of ocRctPostprobDist when `relativeDelta = FALSE`.
-
-```{r}
-set.seed(1090)
-ocRctPostprobDist(
-  nn = input$nn,
-  pE = input$pE,
-  pS = input$pS,
-  deltaE = input$deltaE,
-  deltaF = input$deltaF,
-  relativeDelta = FALSE,
-  tL = input$tL,
-  tU = input$tU,
+  tT = 0.6,
+  phiU = 0.8,
+  phiL = 0.2,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 50,
-  nr = FALSE,
+  ns = 500,
+  nr = TRUE,
   d = NULL,
-  nnF = input$nnF
+  nnF = c(10, 20, 30)
 )
+vin_res$oc
 ```
 
+
+# Example of new_RctPostProbDist when `relativeDelta =  TRUE` and `decision1 = TRUE` comparing with vintage function below:
+
+Go interim:
+P(success at final) > phiU
+Go final:
+P(P_E > p0 + (1-p0)*deltaE) > tT
+
+Stop interim:
+P(failure at final) > phiU
+Stop final:
+P(P_S < p1 + (1-p0)*deltaF) > tFu
+```{r}
+set.seed(2000)
+new_res <- new_ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiL = 0.2,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 5,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+new_res$oc
+```
+
+```{r}
+## Example of vintage function
+vin_res <- ocRctPredprobDist(
+  nn = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  delta = 0.2,
+  deltaFu = 0.1,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  phiU = 0.8,
+  phiL = 0.2,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 5,
+  nr = TRUE,
+  d = NULL,
+  nnF = c(10, 20, 30)
+)
+vin_res$oc
+```
+
+# Example of new_RctPostProbDist when `relativeDelta =  FALSE` and `decision1 = FALSE` comparing with vintage function below:
+
+Go interim:
+P(success at final) > phiU
+Go final:
+P(P_E > p0 + (1-p0)*deltaE) > tT
+
+Stop interim:
+P(failure at final) > phiFu
+Stop final:
+P(P_S < p1 + (1-p0)*deltaF) > tF
+
+```{r}
+set.seed(2000)
+new_res <- new_ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiL = 0.2,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 5,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+new_res$oc
+```
+
+```{r}
+## Example of vintage function
+vin_res <- ocRctPredprobDist(
+  nn = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  delta = 0.2,
+  deltaFu = 0.1,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  phiU = 0.8,
+  phiL = 0.2,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  ns = 5,
+  nr = TRUE,
+  d = NULL,
+  nnF = c(10, 20, 30)
+)
+vin_res$oc
+```
 
 # vintage function
 
