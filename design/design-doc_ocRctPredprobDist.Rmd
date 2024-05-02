@@ -248,7 +248,7 @@ h_decision_one_RctpredprobDist <- function(
 }
 ```
 
-## h_decision_one_rct_predprobDist
+## h_decision_one_rct_predprobDist when ` relativeDelta = FALSE`.
 
 ```{r}
 example_dist <- h_get_distance(nn = c(10, 20, 30))
@@ -276,6 +276,7 @@ h_decision_one_rct_predprobDist(
 )
 ```
 
+## h_decision_one_rct_predprobDist when ` relativeDelta = TRUE`.
 ```{r}
 example_dist <- h_get_distance(nn = c(10, 20, 30))
 looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
