@@ -135,6 +135,7 @@ ocPostprobDist
 ocPredprob
 ocPredprobDist
 ocRctPostprobDist
+ocRctPredprobDist
 params
 parX
 parY
