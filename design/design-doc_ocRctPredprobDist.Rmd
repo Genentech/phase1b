@@ -256,7 +256,7 @@ looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 3
 looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
-h_decision_one_rct_predprobDist(
+h_decision_one_RctpredprobDist(
   nnr = c(10, 20, 30),
   nnE = looks$nnrE,
   nnF = looks$nnrF,
@@ -283,7 +283,7 @@ looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 3
 looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
-h_decision_one_rct_predprobDist(
+h_decision_one_RctpredprobDist(
   nnr = c(10, 20, 30),
   nnE = looks$nnrE,
   nnF = looks$nnrF,
@@ -444,7 +444,7 @@ h_decision_two_RctpredprobDist <- function(
 ```
 # h_decision_two_rct_predprobDist example when `relativeDelta = TRUE`
 ```{r}
-h_decision_two_rct_predprobDist(
+h_decision_two_RctpredprobDist(
   nnE = input$nnE,
   nnF = input$nnF,
   nnr = input$nn,
@@ -466,7 +466,7 @@ h_decision_two_rct_predprobDist(
 ```
 # h_decision_two_rct_predprobDist example when `relativeDelta = FALSE`
 ```{r}
-h_decision_two_rct_predprobDist(
+h_decision_two_RctpredprobDist(
   nnE = input$nnE,
   nnF = input$nnF,
   nnr = input$nn,
@@ -578,7 +578,7 @@ new_ocRctPredprobDist <- function(nnE,
     }
     nnr <- unique(c(nnrE, nnrF))
     tmp <- if (decision1) {
-      h_decision_one_rct_predprobDist(
+      h_decision_one_RctpredprobDist(
         nnE = nnE,
         nnF = nnF,
         nnr = nnr,
@@ -598,7 +598,7 @@ new_ocRctPredprobDist <- function(nnE,
         relativeDelta = relativeDelta
       )
     } else {
-      h_decision_two_rct_predprobDist(
+      h_decision_two_RctpredprobDist(
         nnE = nnE,
         nnF = nnF,
         nnr = nnr,
@@ -683,7 +683,7 @@ new_res <- new_ocRctPredprobDist(
   weights = 1,
   weightsS = 1,
   randRatio = 1,
-  sim = 100,
+  sim = 15,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
   decision1 = TRUE

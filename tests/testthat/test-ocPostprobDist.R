@@ -134,29 +134,26 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     truep = 0.4,
     deltaE = 0.1,
     deltaF = 0.1,
-    tL = 0.6,
-    tU = 0.6,
+    tL = 0.7,
+    tU = 0.3,
     parE = c(1, 1),
     parS = c(5, 25),
-    sim = 50,
+    sim = 100,
     wiggle = TRUE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
-
-  res_eff$oc$PrEfficacy
   expect_warning(res_more_eff <- ocPostprobDist(
     nnE = c(10, 20, 30),
     truep = 0.4,
     deltaE = 0.1,
     deltaF = 0.1,
-    tL = 0.6,
-    tU = 0.6,
+    tL = 0.7,
+    tU = 0.3,
     parE = c(1, 1),
     parS = c(5, 25),
     sim = 50,
     wiggle = TRUE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
-  res_more_eff$oc$PrEfficacy
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
