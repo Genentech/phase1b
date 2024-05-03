@@ -181,7 +181,7 @@ ocPostprobDist <- function(nnE,
   assert_number(tU, lower = 0, upper = 1)
   assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_number(sim, lower = 100, finite = TRUE)
+  assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
   assert_numeric(nnF, min.len = 0, any.missing = FALSE)
 
@@ -207,6 +207,7 @@ ocPostprobDist <- function(nnE,
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
     } else {
+      dist <- NULL
       nnrE <- nnE
       nnrF <- nnF
     }
