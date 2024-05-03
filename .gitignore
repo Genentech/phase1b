@@ -29,7 +29,7 @@ vignettes/*.R
 coverage.*
 .vscode/
 .rds
-
+node_modules
 tests/testthat/junit-result.xml
 
 tests/unit_testing_results.rds
