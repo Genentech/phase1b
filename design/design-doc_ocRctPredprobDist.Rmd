@@ -141,20 +141,21 @@ h_decision_one_RctpredprobDist <- function(
   assert_number(weights, lower = 1, finite = TRUE)
   assert_number(weightsS, lower = 1, finite = TRUE)
   assert_flag(relativeDelta)
+
   Nmax <- max(nnr)
-  NmaxControl <- max(nnF)
-  index_look <- 1
-  size_look <- nnr[index_look]
   all_sizes <- decision <- nActive <- nControl <- NA
   activeProp <- randRatio / (randRatio + 1)
   NmaxActive <- ceiling(activeProp * Nmax)
   NmaxControl <- Nmax - NmaxActive
+
   isActive <- sample(
     x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
     size = Nmax,
     replace = FALSE
   )
   response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
+  index_look <- 1
+  size_look <- nnr[index_look]
   ### Decision 1:
   # The criteria for Decision 1 for Interim looks are :
   # Interim GO =  P(successful trial at final) > phiU
@@ -162,14 +163,14 @@ h_decision_one_RctpredprobDist <- function(
   while (is.na(decision) && index_look < length(nnr)) {
     xActive <- response[which(isActive[1:size_look])]
     xControl <- response[which(!isActive[1:size_look])]
-    size_look <- nnr[index_look]
+
     if (size_look %in% nnE) {
       interim_qU <- predprobDist(
         x = sum(xActive),
         n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
-        Nmax = Nmax,
+        Nmax = NmaxActive,
         NmaxControl = NmaxControl,
         delta = deltaE,
         relativeDelta = relativeDelta,
@@ -187,7 +188,7 @@ h_decision_one_RctpredprobDist <- function(
         n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
-        Nmax = Nmax,
+        Nmax = NmaxActive,
         NmaxControl = NmaxControl,
         delta = deltaF,
         relativeDelta = relativeDelta,
@@ -370,7 +371,7 @@ h_decision_two_RctpredprobDist <- function(
         n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
-        Nmax = Nmax,
+        Nmax = NmaxActive,
         NmaxControl = NmaxControl,
         delta = deltaE,
         relativeDelta = relativeDelta,
@@ -388,7 +389,7 @@ h_decision_two_RctpredprobDist <- function(
         n = length(xActive),
         xS = sum(xControl),
         nS = length(xControl),
-        Nmax = Nmax,
+        Nmax = NmaxActive,
         NmaxControl = NmaxControl,
         delta = deltaF,
         relativeDelta = relativeDelta,
@@ -663,9 +664,9 @@ P(P_E > p0 + deltaE) > tT
 Stop interim:
 P(failure at final) > phiU
 Stop final:
-P(P_S < p1 + deltaF) > tFu
 
 ```{r}
+# debugonce(new_ocRctPredprobDist)
 set.seed(2000)
 new_res <- new_ocRctPredprobDist(
   nnE = c(10, 20, 30),
@@ -683,7 +684,7 @@ new_res <- new_ocRctPredprobDist(
   weights = 1,
   weightsS = 1,
   randRatio = 1,
-  sim = 15,
+  sim = 150,
   wiggle = FALSE,
   nnF = c(10, 20, 30),
   decision1 = TRUE
@@ -691,8 +692,10 @@ new_res <- new_ocRctPredprobDist(
 new_res$oc
 ```
 
-```{r}
 ## Example of vintage function
+```{r}
+debugonce(ocRctPredprobDist)
+set.seed(2000)
 vin_res <- ocRctPredprobDist(
   nn = c(10, 20, 30),
   pE = 0.4,
@@ -706,8 +709,8 @@ vin_res <- ocRctPredprobDist(
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 500,
-  nr = TRUE,
+  ns = 150,
+  nr = FALSE,
   d = NULL,
   nnF = c(10, 20, 30)
 )
