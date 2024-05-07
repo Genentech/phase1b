@@ -5,6 +5,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Intro
+
 Calculate operating characteristics for RCT against SOC,
 using the predictive probability method with beta priors
 
@@ -44,6 +46,7 @@ The returned value is a list with the following elements:
  - `params` : all user input arguments.
 
 ## Input parameters
+
 ```{r}
 devtools::load_all()
 input <- list(
@@ -85,7 +88,7 @@ Nmax <- input$nn[nL]
 ```
 
 ## Example of vintage function
-# big title 2
+
 ```{r}
 ocRctPredprobDist(
   nn = c(10, 20, 30),
@@ -107,7 +110,12 @@ ocRctPredprobDist(
 )
 ```
 
-# h_decision_one_rct_predprobDist
+# Prototypes
+
+## `h_decision_one_rct_predprobDist`
+
+This simulates one trial with decision rule no. 1.
+
 ```{r}
 h_decision_one_RctpredprobDist <- function(
     nnr,
@@ -143,7 +151,7 @@ h_decision_one_RctpredprobDist <- function(
   assert_flag(relativeDelta)
 
   Nmax <- max(nnr)
-  all_sizes <- decision <- nActive <- nControl <- NA
+  decision <- NA
   activeProp <- randRatio / (randRatio + 1)
   NmaxActive <- ceiling(activeProp * Nmax)
   NmaxControl <- Nmax - NmaxActive
@@ -199,25 +207,6 @@ h_decision_one_RctpredprobDist <- function(
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, decision)
     }
-    # if (size_look %in% nnF) {
-    #   interim_qU <- predprobDist(
-    #     x = sum(xActive),
-    #     n = length(xActive),
-    #     xS = sum(xControl),
-    #     nS = length(xControl),
-    #     Nmax = NmaxActive,
-    #     NmaxControl = NmaxControl,
-    #     delta = deltaF,
-    #     relativeDelta = relativeDelta,
-    #     parE = parE,
-    #     weights = weights,
-    #     parS = parS,
-    #     weightsS = weightsS,
-    #     thetaT = tT
-    #   )$result
-    #   decision <- ifelse(interim_qU < phiL, FALSE, decision)
-    # }
-    all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
   }
@@ -226,6 +215,8 @@ h_decision_one_RctpredprobDist <- function(
   # Final STOP = P(RR > p0 + deltaF | data ) < tT
   if (is.na(decision)) {
     size_look <- nnr[index_look]
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
     if (size_look %in% nnE) {
       final_eff_qU <- postprobDist(
         x = sum(xActive),
@@ -266,7 +257,7 @@ h_decision_one_RctpredprobDist <- function(
 }
 ```
 
-## h_decision_one_rct_predprobDist when ` relativeDelta = FALSE`.
+### Example: `h_decision_one_rct_predprobDist` when `relativeDelta = FALSE`.
 
 ```{r}
 example_dist <- h_get_distance(nn = c(10, 20, 30))
@@ -275,16 +266,16 @@ looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
 h_decision_one_RctpredprobDist(
-  nnr = c(10, 20, 30),
+  nnr = c(8, 20, 30),
   nnE = looks$nnrE,
   nnF = looks$nnrF,
-  pE = 0.6,
-  pS = 0.3,
+  pE = 0.4,
+  pS = 0.4,
   parE = c(1, 1),
   parS = c(1, 1),
   tT = 0.7,
-  phiU = 0.3,
-  phiL = 0.7,
+  phiU = 0.999,
+  phiL = 0.001,
   deltaE = 0.1,
   deltaF = 0.1,
   weights = 1,
@@ -310,8 +301,8 @@ h_decision_one_RctpredprobDist(
   parE = c(1, 1),
   parS = c(1, 1),
   tT = 0.7,
-  phiU = 0.3,
-  phiL = 0.7,
+  phiU = 1,
+  phiL = 0,
   deltaE = 0.1,
   deltaF = 0.1,
   weights = 1,
