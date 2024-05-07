@@ -182,24 +182,7 @@ h_decision_one_RctpredprobDist <- function(
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, decision)
     }
-    if (size_look %in% nnF) {
-      interim_qU <- predprobDist(
-        x = sum(xActive),
-        n = length(xActive),
-        xS = sum(xControl),
-        nS = length(xControl),
-        Nmax = NmaxActive,
-        NmaxControl = NmaxControl,
-        delta = deltaF,
-        relativeDelta = relativeDelta,
-        parE = parE,
-        weights = weights,
-        parS = parS,
-        weightsS = weightsS,
-        thetaT = tT
-      )$result
-      decision <- ifelse(interim_qU < phiL, FALSE, decision)
-    }
+
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
@@ -666,7 +649,7 @@ P(failure at final) > phiU
 Stop final:
 
 ```{r}
-# debugonce(new_ocRctPredprobDist)
+debugonce(new_ocRctPredprobDist)
 set.seed(2000)
 new_res <- new_ocRctPredprobDist(
   nnE = c(10, 20, 30),
