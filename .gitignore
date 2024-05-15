@@ -30,6 +30,10 @@ coverage.*
 .vscode/
 .rds
 node_modules
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10ea9d1a467d630268c3e40ff5419d03bbd34da6
 tests/testthat/junit-result.xml
 
 tests/unit_testing_results.rds

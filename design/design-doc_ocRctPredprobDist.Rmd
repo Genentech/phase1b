@@ -676,7 +676,6 @@ P(failure at final) > phiU
 Stop final:
 
 ```{r}
-# debugonce(new_ocRctPredprobDist)
 set.seed(2000)
 new_res <- new_ocRctPredprobDist(
   nnE = c(10, 20, 30),
@@ -704,7 +703,6 @@ new_res$oc
 
 ## Example with vintage function to check for reproducibility
 ```{r}
-# debugonce(ocRctPredprobDist)
 set.seed(2000)
 vin_res <- ocRctPredprobDist(
   nn = c(10, 20, 30),
@@ -742,7 +740,6 @@ Stop final:
 P(P_S < p1 + (1-p0)*deltaF) > tFu
 ```{r}
 set.seed(2000)
-# debug(ocRctPredprobDist)
 new_res <- new_ocRctPredprobDist(
   nnE = c(10, 20, 30),
   pE = 0.4,

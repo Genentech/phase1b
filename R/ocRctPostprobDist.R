@@ -9,7 +9,8 @@
 #' @typed randRatio : numeric
 #'  The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.
 #' @typed Nmax : number
-#'  The max sample size or the sample size of final look.
+#' The max sample size or the sample size of final look.
+#'
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting number of look size, anything below maximum
@@ -138,4 +139,149 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
   tmp$ExpectedNactive <- mean(nActive)
   tmp$ExpectedNcontrol <- mean(nControl)
   tmp
+}
+
+#' Calculate operating characteristics for RCT against SOC,
+#' using the posterior probability method with beta priors
+#'
+#' We emulate a randomized-controlled trial setting where at any given sample size,
+#' there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
+#' a treatment or experimental arm. The allocation of patients will depend on the
+#' randomization ratio set by the user and is rounded to the next higher integer.
+#' Therefore the sequence of patients is determined from the start, such that the number of
+#' patients in both arms is constant across trial simulations, however the number of patients
+#' within the control and treatment arm is determined by the randomisation ratio.
+#' Interim looks are for sample sizes below that of the final sample size.
+#'
+#' Final looks are only performed at the maximum sample size.
+#'
+#' At each interim or final look, a futility or efficacy or both can be performed.
+#'
+#' The rules for Stop, Go and Gray Zone (where applicable), and use of beta priors are the same
+#' as in [ocPostprobDist()] where the only difference here is to emulate a
+#' randomized-controlled trial setting.
+#'
+#' The returned value is a list with the following elements:
+#' - `oc`: matrix with operating characteristics with the following details:
+#' - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
+#' - `ExpectedNactive` : the mean of the number of patients in treatment arm
+#' - `ExpectedNcontrol`: the mean of the number of patients in control arm
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+#' - `Decision` : numeric of results with `TRUE` as Go, `FALSE` as Stop and `NA` as Evaluate decision.
+#' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+#' - `wiggled_nnE` : user input for `nnE` with random distance applied.
+#' - `wiggled_nnF` : user input for `nnF` with random distance applied.
+#' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
+#' - `params` : all user input arguments.
+#'
+#' @inheritParams h_get_decisionDist
+#' @inheritParams h_get_decisionDist_rct
+#' @inheritParams ocPostprobDist
+#' @typed pE : number
+#'  Response rate in Treatment group.
+#' @typed pS : number
+#'  Response rate in Control group.
+#' @example examples/ocRctPostprobDist.R
+#' @export
+ocRctPostprobDist <- function(nnE,
+                              pE,
+                              pS,
+                              deltaE,
+                              deltaF,
+                              relativeDelta = FALSE,
+                              tL,
+                              tU,
+                              parE = c(a = 1, b = 1),
+                              parS = c(a = 1, b = 1),
+                              randRatio = 1,
+                              sim,
+                              wiggle = FALSE,
+                              nnF = nnE) {
+  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
+  assert_number(pE, lower = 0, upper = 1)
+  assert_number(pS, lower = 0, upper = 1)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 0, any.missing = FALSE)
+
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
+  }
+  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
+  nnE <- sort(nnE)
+  nnF <- sort(nnF)
+  nn <- sort(unique(c(nnF, nnE)))
+  nL <- length(nn)
+  nn <- sort(unique(c(nnF, nnE)))
+
+  nL <- length(nn)
+  Nstart <- nn[1]
+  Nmax <- nn[nL]
+
+  for (k in seq_len(sim)) {
+    if (length(nn) != 1 && wiggle) {
+      dist <- h_get_distance(nn = nn)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      dist <- 0
+      nnrE <- nnE
+      nnrF <- nnF
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- h_get_decisionDist_rct(
+      nnr = nnr,
+      nnrE = nnrE,
+      nnrF = nnrF,
+      pE = pE,
+      pS = pS,
+      parE = c(1, 1),
+      parS = c(1, 1),
+      tL = tL,
+      tU = tU,
+      deltaE = deltaE,
+      deltaF = deltaF,
+      relativeDelta = relativeDelta,
+      Nmax = Nmax
+    )
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
+    nActive[k] <- tmp$nActive
+    nControl[k] <- tmp$nControl
+  }
+  oc <- h_get_oc_rct(
+    all_sizes = all_sizes,
+    Nmax = Nmax,
+    nActive = nActive,
+    nControl = nControl,
+    decision = decision
+  )
+  list(
+    oc = oc,
+    ExpectedN = mean(all_sizes),
+    ExpectedNactive = mean(nActive),
+    ExpectedNcontrol = mean(nControl),
+    Decision = decision,
+    SampleSize = all_sizes,
+    SampleSizeActive = nActive,
+    SampleSizeControl = nControl,
+    union_nn = nnr,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
+    params = as.list(match.call(expand.dots = FALSE))
+  )
 }

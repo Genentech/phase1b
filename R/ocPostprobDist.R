@@ -207,6 +207,7 @@ ocPostprobDist <- function(nnE,
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
     } else {
+      dist <- NULL
       nnrE <- nnE
       nnrF <- nnF
     }
