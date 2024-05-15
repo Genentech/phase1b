@@ -444,16 +444,16 @@ h_decision_two_RctpredprobDist <- function(
     }
   }
   list(
-    decision = decision,
     nActive = length(xActive),
     nControl = length(xControl),
+    decision = decision,
     all_sizes = sum(length(xActive), length(xControl))
   )
 }
 ```
 ### Example:  h_decision_two_rct_predprobDist example when `relativeDelta = TRUE`
 ```{r}
-# debugonce(h_decision_two_RctpredprobDist)
+debugonce(h_decision_two_RctpredprobDist)
 example_dist <- h_get_distance(nn = c(10, 20, 30))
 looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
 looks_nnrE <- looks$nnrE
@@ -466,10 +466,10 @@ h_decision_two_RctpredprobDist(
   pS = 0.3,
   parE = c(1, 1),
   parS = c(1, 1),
-  tT = 0.999,
-  tF = 0.001,
-  phiU = 0.8,
-  phiFu = 0.3,
+  tT = 0.5,
+  tF = 0.5,
+  phiU = 0.5,
+  phiFu = 0.5,
   deltaE = 0.1,
   deltaF = 0.1,
   weights = 1,
@@ -538,9 +538,9 @@ new_ocRctPredprobDist <- function(nnE,
                                   pS,
                                   deltaE,
                                   deltaF,
+                                  phiL = 1 - phiFu,
+                                  phiFu = 1 - phiL,
                                   phiU,
-                                  phiL,
-                                  phiFu,
                                   relativeDelta = FALSE,
                                   tT,
                                   tF,
@@ -685,7 +685,7 @@ new_res <- new_ocRctPredprobDist(
   deltaE = 0.2,
   deltaF = 0.1,
   phiU = 0.8,
-  phiL = 0.2,
+  phiFu = 0.2,
   relativeDelta = FALSE,
   tT = 0.6,
   tF = 0.4,
@@ -714,8 +714,9 @@ vin_res <- ocRctPredprobDist(
   deltaFu = 0.1,
   relativeDelta = FALSE,
   tT = 0.6,
+  tF = 0.4,
   phiU = 0.8,
-  phiL = 0.2,
+  phiFu = 0.2,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
@@ -749,7 +750,7 @@ new_res <- new_ocRctPredprobDist(
   deltaE = 0.1,
   deltaF = 0.1,
   phiU = 0.6,
-  phiFu = 0.2,
+  phiFu = 0.6,
   relativeDelta = FALSE,
   tT = 0.6,
   tF = 0.4,
@@ -775,10 +776,11 @@ vin_res <- ocRctPredprobDist(
   pS = 0.3,
   delta = 0.1,
   deltaFu = 0.1,
+  phiU = 0.6,
+  phiFu = 0.6,
   relativeDelta = FALSE,
   tT = 0.6,
-  phiU = 0.6,
-  phiFu = 0.2,
+  tF = 0.4,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
