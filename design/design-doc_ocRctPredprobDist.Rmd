@@ -250,7 +250,7 @@ h_decision_one_RctpredprobDist <- function(
     nActive = length(xActive),
     nControl = length(xControl),
     decision = decision,
-    all_sizes = sum(length(xActive), length(xControl))
+    all_sizes = length(xActive) + length(xControl)
   )
 }
 ```
