@@ -499,7 +499,7 @@ h_decision_two_RctpredprobDist(
   randRatio = 1
 )
 ```
-## `h_get_oc_rct` can be used from `ocRctPostprobDist()`
+## `h_get_oc_rct` can be used from `ocRctPredprobDist()`
 ```{r}
 h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
   assert_numeric(nActive, any.missing = FALSE, len = length(all_sizes))
