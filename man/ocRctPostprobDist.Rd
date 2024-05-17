@@ -6,164 +6,175 @@
 using the posterior probability method with beta priors}
 \usage{
 ocRctPostprobDist(
-  nn,
+  nnE,
   pE,
   pS,
   deltaE,
   deltaF,
   relativeDelta = FALSE,
-  tL = 0.8,
+  tL,
+  tU,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  sim,
+  wiggle = FALSE,
+  nnF = nnE
+)
+}
+\arguments{
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If different for Futility decision,
+specify in \code{nnF}.}
+
+\item{pE}{(\code{number}):\cr Response rate in Treatment group.}
+
+\item{pS}{(\code{number}):\cr Response rate in Control group.}
+
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
+
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Futility looks only.
+Note that this can also be negative as well.}
+
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients
+is included as the margin between treatment and control group. See note.}
+
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
+
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
+
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
+Default set at alpha = 1, beta = 1, or uniform prior.}
+
+\item{parS}{(\code{numeric} or \code{matrix}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution
+for the \code{S} group. See details.}
+
+\item{randRatio}{(\code{numeric}):\cr The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.}
+
+\item{sim}{(\code{number}):\cr number of simulations.}
+
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
+if \code{TRUE}, optional to specify \code{dist} (see @details).}
+
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Futility decision if different from Efficacy decision.}
+}
+\description{
+We emulate a randomized-controlled trial setting where at any given sample size,
+there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
+a treatment or experimental arm. The allocation of patients will depend on the
+randomization ratio set by the user and is rounded to the next higher integer.
+Therefore the sequence of patients is determined from the start, such that the number of
+patients in both arms is constant across trial simulations, however the number of patients
+within the control and treatment arm is determined by the randomisation ratio.
+Interim looks are for sample sizes below that of the final sample size.
+}
+\details{
+Final looks are only performed at the maximum sample size.
+
+At each interim or final look, a futility or efficacy or both can be performed.
+
+The rules for Stop, Go and Gray Zone (where applicable), and use of beta priors are the same
+as in \code{\link[=ocPostprobDist]{ocPostprobDist()}} where the only difference here is to emulate a
+randomized-controlled trial setting.
+
+The returned value is a list with the following elements:
+\itemize{
+\item \code{oc}: matrix with operating characteristics with the following details:
+\item \code{ExpectedN}: expected number of patients in the trials in both treatment and SOC group
+\item \code{ExpectedNactive} : the mean of the number of patients in treatment arm
+\item \code{ExpectedNcontrol}: the mean of the number of patients in control arm
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+\item \code{Decision} : numeric of results with \code{TRUE} as Go, \code{FALSE} as Stop and \code{NA} as Evaluate decision.
+\item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
+\item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
+\item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
+\item \code{params} : all user input arguments.
+}
+}
+\examples{
+# When `relativeDelta = TRUE`:
+set.seed(2000)
+ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0.05,
+  relativeDelta = TRUE,
+  tL = 0.2,
   tU = 0.8,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30)
 )
-}
-\arguments{
-\item{nn}{vector of look locations for efficacy. Note that the maximum sample size is
-derived as the maximum value (latest look) in this vector.
-(if futility looks should be different, please specify also \code{nnF})}
 
-\item{pE}{true rate in the treatment population}
-
-\item{pS}{true rate in the standard of care population}
-
-\item{deltaE}{delta for efficacy: P(pE > pS + deltaE) should be large
-to stop for efficacy. Must be non-negative value between 0 and 1.}
-
-\item{deltaF}{delta for futility: P(pE < pS - deltaF) should be large to
-stop for futility. Must be numeric value between -1 and 1.
-Can also be \code{NULL}. (see details)}
-
-\item{relativeDelta}{see \code{\link{postprobDist}}}
-
-\item{tL}{probability threshold for being below control - deltaF (default: 0.8)}
-
-\item{tU}{probability threshold for being above control + deltaE (default: 0.8)}
-
-\item{parE}{beta parameters for the prior on the control proportion}
-
-\item{parS}{beta parameters for the prior on the treatment proportion}
-
-\item{randRatio}{the randomization ratio (active vs. control) to be used.
-default: 1.}
-
-\item{ns}{number of simulations}
-
-\item{nr}{generate random look locations? (not default)}
-
-\item{d}{distance for random looks around the look locations in \code{nn}}
-
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
-}
-\value{
-A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure, \code{NA} for no
-decision)
-SampleSize: vector of the sample sizes in the simulated trials
-SampleSizeActive: vector of the patients with treatment in the simulated trials
-SampleSizeControl: vector of the patients with control in the simulated trials
-nn: vector of look locations
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-todo: would we like to return nnr instead, the actual look locations?
-params: input parameters for this function
-}
-\description{
-The randomization works as follows. According to the randomization ratio and
-the maximum sample size, patients are allocated to the treatment and SOC
-arms. The number of patients in the active treatment arm is rounded to the
-next higher integer. That is, the sequence of patients is determined from
-the start, such that the number of patients in both arms is constant across
-trial simulations.
-}
-\details{
-The randomized controlled trial (RCT) is stopped for efficacy if the
-posterior probability to be at least deltaE better than the control is
-larger than tU, and stopped for futility if the posterior probability to be
-at least deltaF worse than the control is larger than tL. Otherwise the
-trial is continued, and at the maximum sample size it may happen that no
-decision is made ("gray zone").
-
-A variation can be requested when \code{deltaF} is set to \code{NULL}. Then
-the futility decision is made when the probability to be deltaE better than
-the control is lower than 1 - tL.
-
-Returned operating characteristics in a matrix include:
-ExpectedN: expected total number of patients in the trials
-ExpectedNactive: expected number of patients with treatment
-ExpectedNcontrol: expected number of patients with SOC
-PrStopEarly: probability to stop the trial early (before reaching the
-maximum sample size)
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
-}
-\examples{
-# note, deltaF has to be a value between 0 and 1 including the bounds, or NULL.
-
-res <- ocRctPostprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, deltaE = 0.15, deltaF = 0.05,
+# When `relativeDelta = FALSE`:
+set.seed(2000)
+ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0.05,
   relativeDelta = FALSE,
-  tL = 0.8, tU = 0.8,
+  tL = 0.2,
+  tU = 0.8,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 100, nr = FALSE, d = NULL
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30)
 )
 
-res$oc
-
-
-# separate specification of efficacy and futility analyses can be performed. E.g.
-# here have futility decisions only at the final analysis:
-
-res2 <- ocRctPostprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, deltaE = 0.15, deltaF = 0.05,
+# Only one Futility look:
+set.seed(2000)
+ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0.05,
   relativeDelta = FALSE,
-  tL = 0.8, tU = 0.8,
+  tL = 0.2,
+  tU = 0.8,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 100, nr = FALSE, d = NULL, nnF = c(30)
+  sim = 50,
+  wiggle = FALSE,
+  nnF = 30
 )
-res2$oc
-# compared to res3, we see that there is no early futility stopping anymore,
-# and the overall probability for stopping for futility (which is the type II error here)
-# is much lower.
 
-# Also, when deltaF is set to NULL, the futility decision is made when the probability to
-# be deltaE better than the control is lower than 1 - tL. i.e. Pr(pE-pS>deltaE)<1-tL
-res3 <- ocRctPostprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, deltaE = 0.15, deltaF = NULL,
+# When `deltaF = 0`:
+set.seed(2000)
+ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0,
   relativeDelta = FALSE,
-  tL = 0.2, tU = 0.8,
+  tL = 0.2,
+  tU = 0.8,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
   randRatio = 1,
-  ns = 100, nr = FALSE, d = NULL
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30)
 )
-res3$oc
-
-# As when deltaF is set to null, it sometimes makes sense for a futility decision
-# to be made even when the treatment is better than the control, e.g. when that difference
-# is small. This can be accomplished by specifying a negative value for deltaF.
-res4 <- ocRctPostprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3,
-  deltaE = 0.15, deltaF = -0.05,
-  relativeDelta = FALSE,
-  tL = 0.2, tU = 0.8,
-  parE = c(a = 1, b = 1),
-  parS = c(a = 1, b = 1),
-  randRatio = 1,
-  ns = 100, nr = FALSE, d = NULL
-)
-res4$oc
 }
