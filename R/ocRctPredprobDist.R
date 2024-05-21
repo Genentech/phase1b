@@ -1,17 +1,15 @@
 #' Generating random decision and sample size looks
 #'
-#' A helper function for [ocRctPredprobDist()] to generate numeric of decisions `decisions` and
-#' random looks `all_sizes`.
+#' A helper function for [ocRctPredprobDist()] to generate a single trial decision and sample size.
 #'
 #' @inheritParams h_get_decisionDist
 #' @inheritParams ocPredprobDist
 #'
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
-#'  - `all_sizes` : resulting number of look size, anything below maximum
-#'   look size is an indicated interim, Futility or Efficacy or both.
-#'  - `nActive` : mean of look size for Active arm.
-#'  - `nControl` : mean of look size for Control arm.
+#'  - `all_sizes` : resulting sample size.
+#'  - `nActive` : number of patients in the active arm.
+#'  - `nControl` : number of patients in the control arm.
 #' @keywords internal
 h_decision_one_RctpredprobDist <- function(
     nnr,

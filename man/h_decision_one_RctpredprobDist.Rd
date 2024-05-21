@@ -64,14 +64,12 @@ is included as the margin between treatment and control group. See note.}
 A list with the following elements :
 \itemize{
 \item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
-\item \code{all_sizes} : resulting number of look size, anything below maximum
-look size is an indicated interim, Futility or Efficacy or both.
-\item \code{nActive} : mean of look size for Active arm.
-\item \code{nControl} : mean of look size for Control arm.
+\item \code{all_sizes} : resulting sample size.
+\item \code{nActive} : number of patients in the active arm.
+\item \code{nControl} : number of patients in the control arm.
 }
 }
 \description{
-A helper function for \code{\link[=ocRctPredprobDist]{ocRctPredprobDist()}} to generate numeric of decisions \code{decisions} and
-random looks \code{all_sizes}.
+A helper function for \code{\link[=ocRctPredprobDist]{ocRctPredprobDist()}} to generate a single trial decision and sample size.
 }
 \keyword{internal}
