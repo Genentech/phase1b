@@ -36,12 +36,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -216,14 +210,14 @@ or <code>Pr(truep &gt; P_S + (1 - P_S) * deltaF | data)</code> for Futility look
 <span class="r-in"><span>  tU <span class="op">=</span> <span class="fl">0.6</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">5000</span>,</span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>  wiggle <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Advise to use sim &gt;= 50000 to achieve convergence</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    15.248       0.831     0.0154     0.8156     0.0154     0.8888     0.0958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        16        0.72          0       0.72          0       0.84       0.16</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Allow random distance for Efficacy and Futility looks.</span></span></span>
 <span class="r-in"><span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu">ocPostprobDist</span><span class="op">(</span></span></span>
@@ -235,14 +229,14 @@ or <code>Pr(truep &gt; P_S + (1 - P_S) * deltaF | data)</code> for Futility look
 <span class="r-in"><span>  tU <span class="op">=</span> <span class="fl">0.6</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>  wiggle <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Advise to use sim &gt;= 50000 to achieve convergence</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res2</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     14.82        0.85       0.02       0.83       0.02       0.93       0.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     14.18         0.9       0.06       0.84       0.06       0.88       0.06</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Allow Futility analysis only at the end.</span></span></span>
 <span class="r-in"><span><span class="va">res4</span> <span class="op">&lt;-</span> <span class="fu">ocPostprobDist</span><span class="op">(</span></span></span>
@@ -254,7 +248,7 @@ or <code>Pr(truep &gt; P_S + (1 - P_S) * deltaF | data)</code> for Futility look
 <span class="r-in"><span>  tU <span class="op">=</span> <span class="fl">0.6</span>,</span></span>
 <span class="r-in"><span>  parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  sim <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>  wiggle <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  nnF <span class="op">=</span> <span class="fl">30</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -262,7 +256,7 @@ or <code>Pr(truep &gt; P_S + (1 - P_S) * deltaF | data)</code> for Futility look
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res4</span><span class="op">$</span><span class="va">oc</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     29.83        0.01       0.01          0       0.01       0.77       0.22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        30           0          0          0          0       0.82       0.18</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
