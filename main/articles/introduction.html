@@ -53,12 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -1101,7 +1095,7 @@ prior on the treatment and control proportion, respectively.</p>
 <span>  parS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span><span class="op">)</span>,</span>
 <span>  weights <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weightsS <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  sim <span class="op">=</span> <span class="fl">50</span>, <span class="co"># advise to use &gt; 50000 to achieve convergence</span></span>
+<span>  sim <span class="op">=</span> <span class="fl">5</span>, <span class="co"># advise to use &gt; 50000 to achieve convergence</span></span>
 <span>  nnF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">40</span>, <span class="fl">80</span><span class="op">)</span>,</span>
 <span>  wiggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  decision1 <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -1112,7 +1106,7 @@ prior on the treatment and control proportion, respectively.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="va">res1</span><span class="op">$</span><span class="va">oc</span></span>
 <span><span class="co">#&gt;   ExpectedN PrStopEarly PrEarlyEff PrEarlyFut PrEfficacy PrFutility PrGrayZone</span></span>
-<span><span class="co">#&gt; 1      66.5         0.3        0.3          0          1          0          0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        64         0.4        0.4          0          1          0          0</span></span></code></pre></div>
 <p>The number of simulation is 10 in this case, just to speed up the
 example. However, the user needs to increase the number to 50,000 or
 higher to generate better convergence.</p>
