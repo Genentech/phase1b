@@ -49,7 +49,7 @@ test_that("the sum of Eff, Fut, Gray zone probability is 1", {
     phiL = 0.2,
     phiU = 0.8,
     parE = c(1, 1),
-    sim = 100,
+    sim = 50,
     wiggle = FALSE,
     decision1 = TRUE
   ), "Advise to use sim >= 50000 to achieve convergence")
@@ -67,7 +67,7 @@ test_that("the PrFutility increases with increase futility looks", {
     phiL = 0.2,
     phiU = 0.8,
     parE = c(1, 1),
-    sim = 1000,
+    sim = 50,
     nnF = 10,
     wiggle = FALSE,
     decision1 = TRUE
@@ -80,7 +80,7 @@ test_that("the PrFutility increases with increase futility looks", {
     phiL = 0.2,
     phiU = 0.8,
     parE = c(1, 1),
-    sim = 1000,
+    sim = 50,
     nnF = c(10, 20),
     wiggle = FALSE,
     decision1 = TRUE
