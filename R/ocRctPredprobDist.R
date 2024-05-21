@@ -1,7 +1,6 @@
 #' Generating random decision and sample size looks
 #'
-#' A helper function for [ocRctPredprobDist()] to generate numeric of decisions `decisions` and
-#' random looks `all_sizes`.
+#' A helper function for [ocRctPredprobDist()] to generate a single trial decision and sample size.
 #'
 #' @inheritParams h_get_decisionDist
 #' @inheritParams ocPredprobDist
