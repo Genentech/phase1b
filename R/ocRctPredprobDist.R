@@ -8,8 +8,8 @@
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
 #'  - `all_sizes` : resulting sample size.
-#'  - `nActive` : mean of look size for Active arm.
-#'  - `nControl` : mean of look size for Control arm.
+#'  - `nActive` : number of patients in the active arm.
+#'  - `nControl` : number of patients in the control arm.
 #' @keywords internal
 h_decision_one_RctpredprobDist <- function(
     nnr,
