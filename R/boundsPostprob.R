@@ -5,6 +5,9 @@
 #' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
 #' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
 #'
+#' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+#' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+#'
 #' @inheritParams postprob
 #' @inheritParams ocPostprob
 #' @typed nvec : numeric
@@ -22,20 +25,18 @@
 #' A matrix for each same size in `nvec`. For each sample size, the following is returned:
 #' - `xL` : the maximum number of responses that meet the futility.
 #'          threshold
-#' - `pL` : posterior probability corresponding to `xL`.
-#' - `postL`: posterior probability.
+#' - `pL` : response rate corresponding to `xL`.
+#' - `postL`: posterior probability corresponding to `xL`.
 #' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
-#' - `pU` : the corresponding response rate.
-#' - `postU` : posterior probability.
+#' - `pU` : response rate corresponding to `xU`.
+#' - `postU` : posterior probability corresponding to `xU`.
 #' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
 #'
-#'
 #' @example examples/boundsPostprob.R
 #' @export
-#' @keywords graphics
 boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
   z <- matrix(NA, length(nvec), 6)
   dimnames(z) <- list(nvec, c(

@@ -32,13 +32,13 @@ A matrix for each same size in \code{nvec}. For each sample size, the following 
 \itemize{
 \item \code{xL} : the maximum number of responses that meet the futility.
 threshold
-\item \code{pL} : posterior probability corresponding to \code{xL}.
-\item \code{postL}: posterior probability.
+\item \code{pL} : response rate corresponding to \code{xL}.
+\item \code{postL}: posterior probability corresponding to \code{xL}.
 \item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
-\item \code{pU} : the corresponding response rate.
-\item \code{postU} : posterior probability.
+\item \code{pU} : response rate corresponding to \code{xU}.
+\item \code{postU} : posterior probability corresponding to \code{xU}.
 \item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
 binomial test.
 }
@@ -46,6 +46,10 @@ binomial test.
 \description{
 This function is used to identify the efficacy and futility
 boundaries based on posterior probabilities, i.e.:
+Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+}
+\details{
 Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
 Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
 }
@@ -61,4 +65,3 @@ boundsPostprob(
 ## From this we see e.g. that at the third IA at 30 pts, we would stop for futility
 ## if 5 or less patients responded, and for efficacy if 9 or more pts responded.
 }
-\keyword{graphics}
