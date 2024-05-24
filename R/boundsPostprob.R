@@ -5,6 +5,9 @@
 #' Efficacy boundary: find minimum x (xU) where Pr(P > p1 |x, n, a, b) >= tU and
 #' Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
 #'
+#' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+#' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+#'
 #' @inheritParams postprob
 #' @inheritParams ocPostprob
 #' @typed nvec : numeric
@@ -15,11 +18,13 @@
 #' - `pL` : response rate corresponding to `xL`.
 #' - `postL`: posterior probability corresponding to `xL`.
 #' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate `pL` based on an
+#' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
 #' - `postU` : posterior probability corresponding to `xU`.
 #' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate `pU` based on exact
+#' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
 #'
 #' @example examples/boundsPostprob.R

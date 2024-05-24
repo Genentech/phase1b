@@ -24,12 +24,20 @@ A matrix for each same size in \code{nvec}. For each sample size, the following 
 threshold
 \item \code{pL} : response rate corresponding to \code{xL}.
 \item \code{postL}: posterior probability corresponding to \code{xL}.
+<<<<<<< HEAD
 \item \code{pL_upper_ci} : upper bound of one sided 95\% CI for the response rate \code{pL} based on an
+=======
+\item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
+>>>>>>> 008502d (clean)
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
 \item \code{pU} : response rate corresponding to \code{xU}.
 \item \code{postU} : posterior probability corresponding to \code{xU}.
+<<<<<<< HEAD
 \item \code{pU_lower_ci} : lower bound of one sided 95\% CI for the response rate \code{pU} based on exact
+=======
+\item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
+>>>>>>> 008502d (clean)
 binomial test.
 }
 }
@@ -38,6 +46,10 @@ This function is used to identify the efficacy and futility
 boundaries based on the following rules:
 Efficacy boundary: find minimum x (xU) where Pr(P > p1 |x, n, a, b) >= tU and
 Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
+}
+\details{
+Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
 }
 \examples{
 # 40 pts trial with interim looks after each 10 pts.,
