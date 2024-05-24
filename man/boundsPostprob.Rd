@@ -7,20 +7,15 @@
 boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
 }
 \arguments{
-\item{nvec}{a vector of number of patients}
+\item{nvec}{(\code{numeric}):\cr a vector of number of patients in each look.}
 
-\item{p0}{the efficacy threshold parameter in the postprob function}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p1}{the futility threshold parameter in the postprob function
-(default = p0)}
+\item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
 
-\item{tL}{futility boundary probability threshold}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
-\item{tU}{efficacy boundary probability threshold}
-
-\item{a}{the alpha parameter of the beta prior of treatment group}
-
-\item{b}{the beta parameter of the beta prior of treatment group}
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 }
 \value{
 A matrix where for each sample size in \code{nvec}, this function
@@ -32,6 +27,21 @@ the minimal number of responses that meet the efficacy threshold (xU),
 the corresponding response rate (pU), posterior probability (postU) and
 the lower bound of one sided 95\% CI for the response rate based on exact
 binomial test (LciU).
+
+A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
+\itemize{
+\item \code{xL} : the maximum number of responses that meet the futility.
+threshold
+\item \code{pL} : posterior probability corresponding to \code{xL}.
+\item \code{postL}: posterior probability.
+\item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
+exact binomial test.
+\item \code{xU} : the minimal number of responses that meet the efficacy threshold.
+\item \code{pU} : the corresponding response rate.
+\item \code{postU} : posterior probability.
+\item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
+binomial test.
+}
 }
 \description{
 This function is used to identify the efficacy and futility

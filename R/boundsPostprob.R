@@ -5,15 +5,11 @@
 #' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
 #' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
 #'
-#' @param nvec a vector of number of patients
-#' @param p0 the efficacy threshold parameter in the postprob function
-#' @param p1 the futility threshold parameter in the postprob function
-#' (default = p0)
-#' @param tL futility boundary probability threshold
-#' @param tU efficacy boundary probability threshold
-#' @param a  the alpha parameter of the beta prior of treatment group
-#' @param b  the beta parameter of the beta prior of treatment group
-#' @return A matrix where for each sample size in \code{nvec}, this function
+#' @inheritParams postprob
+#' @inheritParams ocPostprob
+#' @typed nvec : numeric
+#'  a vector of number of patients in each look.
+#' @return A matrix where for each sample size in `nvec`, this function
 #' returns the maximum number of responses that meet the futility
 #' threshold (xL), its corresponding response rate (pL), posterior probability
 #' (postL), upper bound of one sided 95% CI for the response rate based on an
@@ -23,7 +19,19 @@
 #' the lower bound of one sided 95% CI for the response rate based on exact
 #' binomial test (LciU).
 #'
-#' @importFrom stats binom.test
+#' A matrix for each same size in `nvec`. For each sample size, the following is returned:
+#' - `xL` : the maximum number of responses that meet the futility.
+#'          threshold
+#' - `pL` : posterior probability corresponding to `xL`.
+#' - `postL`: posterior probability.
+#' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
+#'            exact binomial test.
+#' - `xU` : the minimal number of responses that meet the efficacy threshold.
+#' - `pU` : the corresponding response rate.
+#' - `postU` : posterior probability.
+#' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
+#'            binomial test.
+#'
 #'
 #' @example examples/boundsPostprob.R
 #' @export
@@ -43,30 +51,36 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
   k <- 0
   for (n in nvec) {
     k <- k + 1
-    # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
     xU <- NA
     for (x in 0:n) {
       postp <- postprob(x, n, p1, parE = c(a, b))
       if (postp <= tL) {
         xL <- x
+        postL <- postp
       }
       if (p0 != p1) {
         postp <- postprob(x, n, p0, parE = c(a, b))
       }
       if (postp >= tU) {
         xU <- x
-        # done: leave innermost for loop
-        break
+        postU <- postp
+        break # needed ?
       }
     }
-    # calculate posterior probabilities at boundaries
-    postL <- postprob(xL, n, p1, parE = c(a, b))
-    postU <- postprob(xU, n, p0, parE = c(a, b))
     # calculate lower CI at boundaries
     UciL <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
     LciU <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
-    z[k, ] <- c(xL, xL / n, postL, UciL, xU, xU / n, postU, LciU)
+    z[k, ] <- c(
+      xL,
+      xL / n,
+      postL,
+      UciL,
+      xU,
+      xU / n,
+      postU,
+      LciU
+    )
   }
   return(round(data.frame(nvec, z), 4))
 }
