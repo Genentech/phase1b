@@ -1,5 +1,5 @@
 # boundsPostProb ----
-test_that("h_decision_one_RctPredProbDist gives correct result and list when relativeDelta = TRUE", {
+test_that("boundsPostProb gives correct result and list", {
   result <- boundsPostprob(
     nvec = c(10, 20, 30, 40),
     p0 = 0.2,
