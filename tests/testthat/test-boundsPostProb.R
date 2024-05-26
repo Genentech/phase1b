@@ -4,25 +4,30 @@ test_that("h_decision_one_RctPredProbDist gives correct result and list when rel
     nvec = c(10, 20, 30, 40),
     p0 = 0.2,
     p1 = 0.2,
-    tL = 0.10,
-    tU = 0.90,
+    tL = 0.60,
+    tU = 0.60,
     a = 1,
     b = 1
   )
   expected <- data.frame(
     list(
       nvec = c(10, 20, 30, 40),
-      xL = c(0, 1, 2, 4),
-      pL = c(0, 0.05, 0.0667, 0.1),
-      postL = c(0.0859, 0.0576, 0.0374, 0.0664),
-      UciL = c(0.2589, 0.2161, 0.1953, 0.2144),
-      xU = c(4, 7, 9, 12),
-      pU = c(0.4, 0.35, 0.3, 0.3),
-      postU = c(0.9496, 0.9569, 0.9254, 0.9479),
-      LciU = c(0.15, 0.1773, 0.1663, 0.1831)
+      xL = c(1, 3, 5, 6),
+      pL = c(0.1, 0.15, 0.1667, 0.15),
+      postL = c(0.6779, 0.6296, 0.6069, 0.739),
+      UciL = c(0.3942, 0.3437, 0.319, 0.2747),
+      xU = c(2, 5, 7, 9),
+      pU = c(0.2, 0.25, 0.2333, 0.225),
+      postU = c(0.6174, 0.7693, 0.73, 0.704),
+      LciU = c(0.0368, 0.1041, 0.115, 0.1227)
     )
   )
-  expect_equal(result$xL, c(0, 1, 2, 4))
-  expect_equal(result$pL, c(0.0000, 0.0500, 0.0667, 0.1000))
-  expect_equal(result$UciL, c(0.2589, 0.2161, 0.1953, 0.2144))
+  expect_equal(result$xL, c(1, 3, 5, 6))
+  expect_equal(result$pL, c(0.1, 0.15, 0.1667, 0.15))
+  expect_equal(result$postL, c(0.6779, 0.6296, 0.6069, 0.739))
+  expect_equal(result$UciL, c(0.3942, 0.3437, 0.319, 0.2747))
+  expect_equal(result$xU, c(2, 5, 7, 9))
+  expect_equal(result$pU, c(0.2, 0.25, 0.2333, 0.225))
+  expect_equal(result$postU, c(0.6174, 0.7693, 0.73, 0.704))
+  expect_equal(result$LciU, c(0.0368, 0.1041, 0.115, 0.1227))
 })
