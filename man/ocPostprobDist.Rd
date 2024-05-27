@@ -133,7 +133,7 @@ res1 <- ocPostprobDist(
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  sim = 5000,
+  sim = 50,
   wiggle = FALSE
 )
 
@@ -149,7 +149,7 @@ res2 <- ocPostprobDist(
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  sim = 100,
+  sim = 50,
   wiggle = TRUE
 )
 
@@ -165,7 +165,7 @@ res4 <- ocPostprobDist(
   tU = 0.6,
   parE = c(1, 1),
   parS = c(5, 25),
-  sim = 100,
+  sim = 50,
   wiggle = TRUE,
   nnF = 30
 )
