@@ -6,54 +6,44 @@
 using the predictive probability method with beta priors}
 \usage{
 ocRctPredprobDist(
-  nn,
+  nnE,
   pE,
   pS,
-  delta = 0,
-  deltaFu = delta,
+  deltaE,
+  deltaF,
+  phiL = 1 - phiFu,
+  phiFu = 1 - phiL,
+  phiU,
   relativeDelta = FALSE,
   tT,
-  tFu = 1 - tT,
-  phiL = 1 - phiFu,
-  phiU,
-  phiFu = 1 - phiL,
+  tF,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
+  weights,
+  weightsS,
   randRatio = 1,
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  sim,
+  wiggle = FALSE,
+  nnF = nnE,
+  decision1 = TRUE
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy . Note that the maximum sample size is
-derived as the maximum value (latest look) in this vector.
-(if futility looks should be different, please specify also \code{nnF})}
-
 \item{pE}{true rate in the treatment population}
 
 \item{pS}{true rate in the standard of care population}
 
-\item{delta}{We want to be better than the control + delta (default: 0)}
+\item{phiL}{lower threshold on the predictive probability}
 
-\item{deltaFu}{declare futility when worse than the control + deltaW.
-Specify only when decision rule 2 is used.}
+\item{phiFu}{threshold on the predictive probability for futility. Specify only
+when decision rule 2 is used. phiL argument should be skipped in this case.}
+
+\item{phiU}{upper threshold on the predictive probability}
 
 \item{relativeDelta}{see \code{\link{postprobDist}}}
 
 \item{tT}{threshold for the probability to be above control + delta
 at the end of the trial}
-
-\item{tFu}{threshold for the probability to be under control + deltaFu
-at the end of the trial. Specify only when decision rule 2 is used.}
-
-\item{phiL}{lower threshold on the predictive probability}
-
-\item{phiU}{upper threshold on the predictive probability}
-
-\item{phiFu}{threshold on the predictive probability for futility. Specify only
-when decision rule 2 is used. phiL argument should be skipped in this case.}
 
 \item{parE}{beta parameters for the prior on the control proportion}
 
@@ -62,14 +52,26 @@ when decision rule 2 is used. phiL argument should be skipped in this case.}
 \item{randRatio}{the randomization ratio (active vs. control) to be used.
 default: 1.}
 
+\item{nnF}{vector of look locations for futility
+(default: same as efficacy)}
+
+\item{nn}{vector of look locations for efficacy . Note that the maximum sample size is
+derived as the maximum value (latest look) in this vector.
+(if futility looks should be different, please specify also \code{nnF})}
+
+\item{delta}{We want to be better than the control + delta (default: 0)}
+
+\item{deltaFu}{declare futility when worse than the control + deltaW.
+Specify only when decision rule 2 is used.}
+
+\item{tFu}{threshold for the probability to be under control + deltaFu
+at the end of the trial. Specify only when decision rule 2 is used.}
+
 \item{ns}{number of simulations}
 
 \item{nr}{generate random look locations? (not default)}
 
 \item{d}{distance for random looks around the look locations in \code{nn}}
-
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
 }
 \value{
 A list with the following elements:
