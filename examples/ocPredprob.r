@@ -17,7 +17,7 @@ result <- ocPredprob(
   phiL = 0.2,
   phiU = 0.8,
   parE = c(1, 1),
-  sim = 100,
+  sim = 50,
   wiggle = FALSE,
   decision1 = TRUE
 )

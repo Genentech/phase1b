@@ -23,6 +23,8 @@ jobs:
   r-cmd:
     name: R CMD Check 🧬
     uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
+    with:
+      additional-r-cmd-check-params: --as-cran
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   coverage:
