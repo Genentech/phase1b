@@ -22,6 +22,8 @@ BugReports: https://github.com/genentech/phase1b/issues
 Depends:
     R (>= 3.6)
 Suggests:
+    rmarkdown,
+    bookdown,
     knitr,
     officer,
     shiny,

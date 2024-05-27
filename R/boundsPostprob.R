@@ -14,12 +14,12 @@
 #'          threshold
 #' - `pL` : response rate corresponding to `xL`.
 #' - `postL`: posterior probability corresponding to `xL`.
-#' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
+#' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate `pL` based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
 #' - `postU` : posterior probability corresponding to `xU`.
-#' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
+#' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate `pU` based on exact
 #'            binomial test.
 #'
 #' @example examples/boundsPostprob.R
@@ -31,8 +31,8 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
     "xU", "pU", "postU"
   ))
   znames <- c(
-    "xL", "pL", "postL", "UciL",
-    "xU", "pU", "postU", "LciU"
+    "xL", "pL", "postL", "pL_upper_ci",
+    "xU", "pU", "postU", "pU_lower_ci"
   )
   z <- matrix(NA, length(nvec), length(znames))
   dimnames(z) <- list(nvec, znames)
@@ -56,17 +56,17 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
       }
     }
     # calculate lower CI at boundaries
-    UciL <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
-    LciU <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
+    pL_upper_ci <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
+    pU_lower_ci <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
     z[k, ] <- c(
       xL,
       xL / n,
       postL,
-      UciL,
+      pL_upper_ci,
       xU,
       xU / n,
       postU,
-      LciU
+      pU_lower_ci
     )
   }
   return(round(data.frame(nvec, z), 4))
