@@ -195,7 +195,7 @@ looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
 h_get_decisionDist_rct(
-  nnr = input$nn,
+  nnr = input$nnE,
   nnrE = looks$nnrE,
   nnrF = looks$nnrF,
   pE = input$pE,
@@ -206,7 +206,9 @@ h_get_decisionDist_rct(
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = TRUE
+  relativeDelta = TRUE,
+  randRatio = 1,
+  Nmax = 30
 )
 ```
 # helper also works when `relativeDelta = FALSE`
@@ -217,7 +219,7 @@ looks_nnrE <- looks$nnrE
 looks_nnrF <- looks$nnrF
 
 h_get_decisionDist_rct(
-  nnr = input$nn,
+  nnr = input$nnE,
   nnrE = looks$nnrE,
   nnrF = looks$nnrF,
   pE = input$pE,
@@ -228,7 +230,9 @@ h_get_decisionDist_rct(
   tU = input$tU,
   deltaE = input$deltaE,
   deltaF = input$deltaF,
-  relativeDelta = FALSE
+  relativeDelta = FALSE,
+  randRatio = 1,
+  Nmax = 30
 )
 ```
 # h_get_oc_rct
@@ -311,7 +315,7 @@ new_RctPostprobDist <- function(nnE,
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  decision <- all_sizes <- vector(length = sim)
+  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
   nnE <- sort(nnE)
   nnF <- sort(nnF)
   nn <- sort(unique(c(nnF, nnE)))
@@ -353,7 +357,13 @@ new_RctPostprobDist <- function(nnE,
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
   }
-  oc <- h_get_oc_rct(all_sizes = all_sizes, nnr = nnr, Nmax = Nmax, nActive = nActive, nControl = nControl, decision = decision)
+  oc <- h_get_oc_rct(
+    all_sizes = all_sizes,
+    Nmax = Nmax,
+    nActive = nActive,
+    nControl = nControl,
+    decision = decision
+  )
   list(
     oc = oc,
     ExpectedN = mean(all_sizes),
@@ -375,7 +385,7 @@ new_RctPostprobDist <- function(nnE,
 ```{r}
 set.seed(2000)
 new_RctPostprobDist(
-  nnE = input$nn,
+  nnE = input$nnE,
   pE = input$pE,
   pS = input$pS,
   deltaE = input$deltaE,
