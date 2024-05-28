@@ -140,6 +140,150 @@ h_decision_one_RctpredprobDist <- function(
     all_sizes = length(xActive) + length(xControl)
   )
 }
+
+#' Generating random decision and sample size looks
+#'
+#' A helper function for [ocRctPredprobDist()] to generate a single trial decision and sample size.
+#'
+#' @inheritParams h_decision_one_RctpredprobDist
+#' @inheritParams ocPredprobDist
+#'
+#' @return A list with the following elements :
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `all_sizes` : resulting sample size.
+#'  - `nActive` : number of patients in the active arm.
+#'  - `nControl` : number of patients in the control arm.
+#' @keywords internal
+h_decision_two_RctpredprobDist <- function(
+    nnE,
+    nnF,
+    nnr,
+    pE,
+    pS,
+    parE,
+    parS,
+    tF,
+    tT,
+    phiU,
+    phiFu,
+    deltaE,
+    deltaF,
+    weights,
+    weightsS,
+    relativeDelta,
+    randRatio) {
+  assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
+  assert_numeric(nnr, lower = 1, sorted = TRUE)
+  assert_number(pE, lower = 0, upper = 1)
+  assert_number(pS, lower = 0, upper = 1)
+  assert_number(randRatio, lower = 1, finite = TRUE)
+
+  Nmax <- max(nnr)
+  NmaxControl <- max(nnF)
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- nActive <- nControl <- NA
+  activeProp <- randRatio / (randRatio + 1)
+
+  NmaxActive <- ceiling(activeProp * Nmax)
+  NmaxControl <- Nmax - NmaxActive
+
+  isActive <- sample(
+    x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
+    size = Nmax,
+    replace = FALSE
+  )
+  response <- rbinom(Nmax, size = 1, prob = ifelse(isActive, pE, pS))
+  index_look <- 1
+  size_look <- nnr[index_look]
+  # The criteria for Decision 2 for Interim looks are :
+  # Interim GO : P ( successful at final) > phiU
+  # Interim STOP : P ( unsuccessful at final ) > phiFu
+  while (is.na(decision) && index_look < length(nnr)) {
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+    if (size_look %in% nnE) {
+      interim_qU <- predprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        Nmax = NmaxActive,
+        NmaxControl = NmaxControl,
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        parS = parS,
+        weightsS = weightsS,
+        thetaT = tT
+      )$result
+      decision <- ifelse(interim_qU > phiU, TRUE, decision)
+    }
+    if (size_look %in% nnF) {
+      interim_qU <- 1 - predprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        Nmax = NmaxActive,
+        NmaxControl = NmaxControl,
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        weights = weights,
+        parS = parS,
+        weightsS = weightsS,
+        thetaT = tT
+      )$result
+      decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+    }
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  # The criteria for Decision 2 for Futility looks are :
+  # Final GO = P( RR > p0 + delta ) > tT
+  # Final STOP = P( RR < p1 - delta ) > tF
+  if (is.na(decision)) {
+    size_look <- nnr[index_look]
+    xActive <- response[which(isActive[1:size_look])]
+    xControl <- response[which(!isActive[1:size_look])]
+    if (size_look %in% nnE) {
+      final_eff_qU <- postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaE,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+      decision <- ifelse(final_eff_qU > tT, TRUE, decision)
+    }
+    if (size_look %in% nnF) {
+      final_fu_qU <- 1 - postprobDist(
+        x = sum(xActive),
+        n = length(xActive),
+        xS = sum(xControl),
+        nS = length(xControl),
+        delta = deltaF,
+        relativeDelta = relativeDelta,
+        parE = parE,
+        parS = parS
+      )
+      decision <- ifelse(final_fu_qU > tF, FALSE, decision)
+    }
+  }
+  list(
+    nActive = length(xActive),
+    nControl = length(xControl),
+    decision = decision,
+    all_sizes = length(xActive) + length(xControl)
+  )
+}
+
 #' Calculate operating characteristics for RCT against SOC,
 #' using the predictive probability method with beta priors
 #'
