@@ -125,3 +125,140 @@ test_that("h_decision_two_RctPredProbDist gives correct result and list when rel
   expect_equal(result$nControl, 15)
   expect_list(result)
 })
+
+# ocRctPredprobDist ----
+test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
+  set.seed(2000)
+  input <- list(
+    nnE = c(10, 20, 30),
+    pE = 0.4,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    relativeDelta = FALSE,
+    tL = 0.8,
+    tU = 0.8,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    nnF = c(10, 20, 30),
+    sim = 5,
+    Nmax = 15
+  )
+  expect_warning(results <- ocRctPredprobDist(
+    nnE = c(10, 20, 30),
+    pE = 0.4,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    phiU = 0.8,
+    phiFu = 0.2,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    tF = 0.4,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    weights = 1,
+    weightsS = 1,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  results <- sum(results$oc[5:7])
+  expect_equal(results, 1)
+})
+
+test_that("ocRctPredprobDist gives higher PrFutility with decreased pE", {
+  set.seed(1989)
+  expect_warning(res_low_truep <- ocRctPredprobDist(
+    nnE = c(10, 20, 30),
+    pE = 0.4,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    phiU = 0.8,
+    phiFu = 0.2,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    tF = 0.4,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    weights = 1,
+    weightsS = 1,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(res <- ocRctPredprobDist(
+    nnE = c(10, 20, 30),
+    pE = 0.6,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    phiU = 0.8,
+    phiFu = 0.2,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    tF = 0.4,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    weights = 1,
+    weightsS = 1,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_true(res$oc$PrFutility < res_low_truep$oc$PrFutility)
+})
+
+test_that("ocRctPredprobDist gives higher PrEfficacy with increased pE", {
+  set.seed(1989)
+  expect_warning(res_eff <- ocRctPredprobDist(
+    nnE = c(10, 20, 30),
+    pE = 0.3,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    phiU = 0.8,
+    phiFu = 0.2,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    tF = 0.4,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    weights = 1,
+    weightsS = 1,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(res_high_truep <- ocRctPredprobDist(
+    nnE = c(10, 20, 30),
+    pE = 0.6,
+    pS = 0.3,
+    deltaE = 0.2,
+    deltaF = 0.1,
+    phiU = 0.8,
+    phiFu = 0.2,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    tF = 0.4,
+    parE = c(a = 1, b = 1),
+    parS = c(a = 1, b = 1),
+    weights = 1,
+    weightsS = 1,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30),
+    decision1 = TRUE
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_true(res_high_truep$oc$PrEfficacy > res_eff$oc$PrEfficacy)
+})
