@@ -287,224 +287,168 @@ h_decision_two_RctpredprobDist <- function(
 #' Calculate operating characteristics for RCT against SOC,
 #' using the predictive probability method with beta priors
 #'
-#' The randomization works as follows. According to the randomization ratio and
-#' the maximum sample size, patients are allocated to the treatment and SOC
-#' arms. The number of patients in the active treatment arm is rounded to the
-#' next higher integer. That is, the sequence of patients is determined from
-#' the start, such that the number of patients in both arms is constant across
-#' trial simulations.
+#' We emulate a randomized-controlled trial setting where at any given sample size,
+#' there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
+#' a treatment or experimental arm. The allocation of patients will depend on the
+#' randomization ratio set by the user and is rounded to the next higher integer.
+#' Therefore the sequence of patients is determined from the start, such that the number of
+#' patients in both arms is constant across trial simulations, however the number of patients
+#' within the control and treatment arm is determined by the randomisation ratio.
+#' Interim looks are for sample sizes below that of the final sample size.
 #'
-#' Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
-#' successful trial is larger than phiU, and stopped for futility if it is below
-#' phiL. A trial is successful if after the maximum number of patients the
-#' posterior probability of the treatment being at least delta better than the
-#' control is above tT. Otherwise the decision is "failure". Hence there is no
-#' gray zone.
+#' Final looks are only performed at the maximum sample size.
 #'
-#' Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-#' p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
-#' probability of an unsuccessful trial is larger than phiFu. In this case, the
-#' decision is "failure" when the posterior probability of having the treatment
-#' response rate at most p1 is above tFu at the maximum number of patients.
+#' At each interim or final look, a futility or efficacy or both can be performed.
 #'
-#' Returned operating characteristics in a matrix include:
-#' ExpectedN: expected number of patients in the trials
-#' ExpectedNactive: expected number of patients with treatment
-#' ExpectedNcontrol: expected number of patients with SOC
-#' PrStopEarly: probability to stop the trial early (before reaching the
-#' maximum sample size)
-#' PrEfficacy: probability to decide for efficacy
-#' PrFutility: probability to decide for futility
-#' PrGrayZone: probability of no decision at the end ("gray zone")
+#' The rules for Stop, Go and Gray Zone (where applicable), and use of beta priors are the same
+#' as in [ocPredprobDist()] where the only difference here is to emulate a
+#' randomized-controlled trial setting.
 #'
-#' @param nn vector of look locations for efficacy . Note that the maximum sample size is
-#' derived as the maximum value (latest look) in this vector.
-#' (if futility looks should be different, please specify also \code{nnF})
-#' @param pE true rate in the treatment population
-#' @param pS true rate in the standard of care population
-#' @param delta We want to be better than the control + delta (default: 0)
-#' @param deltaFu declare futility when worse than the control + deltaW.
-#' Specify only when decision rule 2 is used.
-#' @param relativeDelta see \code{\link{postprobDist}}
-#' @param tT threshold for the probability to be above control + delta
-#' at the end of the trial
-#' @param tFu threshold for the probability to be under control + deltaFu
-#' at the end of the trial. Specify only when decision rule 2 is used.
-#' @param phiL lower threshold on the predictive probability
-#' @param phiU upper threshold on the predictive probability
-#' @param phiFu threshold on the predictive probability for futility. Specify only
-#' when decision rule 2 is used. phiL argument should be skipped in this case.
-#' @param parE beta parameters for the prior on the control proportion
-#' @param parS beta parameters for the prior on the treatment proportion
-#' @param randRatio the randomization ratio (active vs. control) to be used.
-#' default: 1.
-#' @param ns number of simulations
-#' @param nr generate random look locations? (not default)
-#' @param d distance for random looks around the look locations in \code{nn}
-#' @param nnF vector of look locations for futility
-#' (default: same as efficacy)
-#' @return A list with the following elements:
-#' oc: matrix with operating characteristics (see Details section)
-#' Decision: vector of the decisions made in the simulated trials
-#' (\code{TRUE} for success, \code{FALSE} for failure)
-#' SampleSize: vector of the sample sizes in the simulated trials
-#' SampleSizeActive: vector of the patients with treatment in the simulated trials
-#' SampleSizeControl: vector of the patients with control in the simulated trials
-#' nn: vector of look locations
-#' nnE: vector of efficacy look locations
-#' nnF: vector of futility look locations
-#' todo: would we like to return nnr instead, the actual look locations?
-#' params: input parameters of this function
+#' The returned value is a list with the following elements:
+#' - `oc`: matrix with operating characteristics with the following details:
+#' - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
+#' - `ExpectedNactive` : the mean of the number of patients in treatment arm
+#' - `ExpectedNcontrol`: the mean of the number of patients in control arm
+#' - `PrStopEarly`: probability to stop the trial early (before reaching the maximum sample size)
+#' - `PrEarlyEff`: probability of Early Go decision
+#' - `PrEarlyFut`: probability of Early Stop decision
+#' - `PrEfficacy`: probability of Go decision
+#' - `PrFutility`: probability of Stop decision
+#' - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+#' - `Decision` : numeric of results with `TRUE` as Go, `FALSE` as Stop and `NA` as Evaluate decision.
+#' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+#' - `wiggled_nnE` : user input for `nnE` with random distance applied.
+#' - `wiggled_nnF` : user input for `nnF` with random distance applied.
+#' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
+#' - `params` : all user input arguments.
 #'
+#' @inheritParams h_decision_one_predprobDist
+#' @inheritParams h_decision_two_predprobDist
+#' @inheritParams ocRctPostprobDist
 #' @example examples/ocRctPredprobDist.R
 #' @export
-ocRctPredprobDist <- function(nn, pE, pS, delta = 0, deltaFu = delta, relativeDelta = FALSE,
-                              tT, tFu = 1 - tT,
-                              phiL = 1 - phiFu, phiU, phiFu = 1 - phiL,
-                              parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
+ocRctPredprobDist <- function(nnE,
+                              pE,
+                              pS,
+                              deltaE,
+                              deltaF,
+                              phiL = 1 - phiFu,
+                              phiFu = 1 - phiL,
+                              phiU,
+                              relativeDelta = FALSE,
+                              tT,
+                              tF,
+                              parE = c(a = 1, b = 1),
+                              parS = c(a = 1, b = 1),
+                              weights,
+                              weightsS,
                               randRatio = 1,
-                              ns = 10000, nr = FALSE, d = NULL, nnF = nn) {
-  ## checks
-  stopifnot(
-    is.probability(pE),
-    is.probability(pS),
-    is.probability(delta),
-    is.bool(relativeDelta),
-    is.probability(tT),
-    is.probability(phiL),
-    is.probability(phiU),
-    randRatio > 0,
-    is.scalar(ns),
-    is.bool(nr)
-  )
+                              sim,
+                              wiggle = FALSE,
+                              nnF = nnE,
+                              decision1 = TRUE) {
+  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
+  assert_number(deltaE, upper = 1, finite = TRUE)
+  assert_number(deltaF, upper = 1, finite = TRUE)
+  assert_flag(relativeDelta)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(tF, lower = 0, upper = 1)
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(sim, lower = 1, finite = TRUE)
+  assert_flag(wiggle)
+  assert_numeric(nnF, min.len = 0, any.missing = FALSE)
 
-  ## s: decision reject H0 (TRUE) or fail to reject (FALSE)
-  ##    during trial if continuing (NA)
-
-  if (phiL + phiFu != 1) {
-    warning("Both phiL and phiFu arguments are specified, phiL will be overwrite by 1-phiFu")
+  if (sim < 50000) {
+    warning("Advise to use sim >= 50000 to achieve convergence")
   }
-
-  nnE <- sort(nn)
+  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
+  nnE <- sort(nnE)
   nnF <- sort(nnF)
-  s <- rep(NA, ns)
-  n <- nActive <- nControl <- s
-  ns <- as.integer(ns)
-  nn <- sort(unique(c(nnF, nnE)))
-  nL <- length(nn)
-  Nstart <- nn[1]
-  Nmax <- nn[nL]
+  nnr <- sort(unique(c(nnF, nnE)))
 
-  ## proportion of active patients:
-  activeProp <- randRatio / (randRatio + 1)
+  Nstart <- nnr[1]
+  Nmax <- max(nnr)
 
-  ## determine number of active and control patients
-  NmaxActive <- ceiling(activeProp * Nmax)
-  NmaxControl <- Nmax - NmaxActive
-
-  if (nr && is.null(d)) {
-    ## set parameter d for randomly generating look locations
-    d <- floor(min(nn - c(0, nn[-nL])) / 2)
-  }
-  nnr <- nn
-  nnrE <- nnE
-  nnrF <- nnF
-  for (k in 1:ns) { ## simulate a clinical trial ns times
-    if (nr && (d > 0)) {
-      ## randomly generate look locations
-      dd <- sample(-d:d,
-        size = nL - 1, replace = TRUE,
-        prob = 2^(c(-d:0, rev(-d:(-1))) / 2)
+  for (k in seq_len(sim)) {
+    if (length(nnr) != 1 && wiggle) {
+      dist <- h_get_distance(nn = nnr)
+      nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+      nnrE <- nnr$nnrE
+      nnrF <- nnr$nnrF
+    } else {
+      nnrE <- nnE
+      nnrF <- nnF
+      dist <- NA
+    }
+    nnr <- unique(c(nnrE, nnrF))
+    tmp <- if (decision1) {
+      h_decision_one_RctpredprobDist(
+        nnr = nnr,
+        nnE = nnE,
+        nnF = nnF,
+        pE = pE,
+        pS = pS,
+        parE = parE,
+        parS = parS,
+        tT = tT,
+        phiU = phiU,
+        phiL = phiL,
+        deltaE = deltaE,
+        deltaF = deltaF,
+        weights = weights,
+        weightsS = weightsS,
+        relativeDelta = relativeDelta,
+        randRatio = randRatio
       )
-      nnr <- nn + c(dd, 0)
-      nnrE <- nnr[nn %in% nnE]
-      nnrF <- nnr[nn %in% nnF]
+    } else {
+      h_decision_two_RctpredprobDist(
+        nnr = nnr,
+        nnE = nnE,
+        nnF = nnF,
+        pE = pE,
+        pS = pS,
+        parE = parE,
+        parS = parS,
+        tT = tT,
+        tF = tF,
+        phiU = phiU,
+        phiFu = phiFu,
+        deltaE = deltaE,
+        deltaF = deltaF,
+        weights = weights,
+        weightsS = weightsS,
+        relativeDelta = relativeDelta,
+        randRatio = randRatio
+      )
     }
-
-    ## simulate sequence of patients
-    isActive <- sample(
-      x = rep(c(TRUE, FALSE), c(NmaxActive, NmaxControl)),
-      size = Nmax,
-      replace = FALSE
-    )
-
-    ## simulate sequence of responses
-    x <- stats::rbinom(Nmax, 1,
-      prob = ifelse(isActive, pE, pS)
-    )
-
-    j <- 1
-    i <- nnr[j]
-
-    while (is.na(s[k]) && (j <= length(nnr))) {
-      ## current data in both arms:
-      xActive <- x[which(isActive[1:i])]
-      xControl <- x[which(!isActive[1:i])]
-
-      ## compute predictive probability
-      if (i %in% nnrF) {
-        qL <- 1 - predprobDist(
-          x = sum(xActive), n = length(xActive),
-          xS = sum(xControl), nS = length(xControl),
-          Nmax = NmaxActive, NmaxControl = NmaxControl,
-          delta = deltaFu,
-          relativeDelta = relativeDelta,
-          thetaT = 1 - tFu,
-          parE = parE, parS = parS
-        )$result
-
-        s[k] <- ifelse(qL >= phiFu, FALSE, NA)
-      }
-      if (i %in% nnrE) {
-        q <- predprobDist(
-          x = sum(xActive), n = length(xActive),
-          xS = sum(xControl), nS = length(xControl),
-          Nmax = NmaxActive, NmaxControl = NmaxControl,
-          delta = delta,
-          relativeDelta = relativeDelta,
-          thetaT = tT,
-          parE = parE, parS = parS
-        )$result
-
-        ## make the decision
-        s[k] <- ifelse(q >= phiU & !(i < Nmax & phiU == 1), ## (1)
-          TRUE,
-          s[k]
-        )
-      }
-
-      ## what happens if phiU == 1?
-      ## then q >= phiU will always be FALSE, except for the last iteration
-      ## when i == Nmax -> then it will be 1 or 0.
-      ## If it is 1, then the first condition (1) will be TRUE,
-      ## so it will be "success".
-
-      ## sample sizes: total and in both arms
-      n[k] <- i
-      nActive[k] <- length(xActive)
-      nControl[k] <- length(xControl)
-
-      j <- j + 1
-      i <- nnr[j]
-    }
+    decision[k] <- tmp$decision
+    all_sizes[k] <- tmp$all_sizes
+    nActive[k] <- tmp$nActive
+    nControl[k] <- tmp$nControl
   }
-  oc <- cbind(
-    ExpectedN = mean(n),
+  oc <- h_get_oc_rct(
+    all_sizes = all_sizes,
+    Nmax = Nmax,
+    nActive = nActive,
+    nControl = nControl,
+    decision = decision
+  )
+  list(
+    oc = oc,
+    nActive = nActive,
+    nControl = nControl,
+    ExpectedN = mean(all_sizes),
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
-    PrStopEarly = mean(n < Nmax),
-    PrEarlyEff = sum(s * (n < Nmax), na.rm = TRUE) / ns,
-    PrEarlyFut = sum((1 - s) * (n < Nmax), na.rm = TRUE) / ns,
-    PrEfficacy = sum(s, na.rm = TRUE) / ns,
-    PrFutility = sum(1 - s, na.rm = TRUE) / ns,
-    PrGrayZone = sum(is.na(s) / ns)
-  )
-
-  return(list(
-    oc = oc, Decision = s, SampleSize = n,
+    Decision = decision,
+    SampleSize = all_sizes,
     SampleSizeActive = nActive,
     SampleSizeControl = nControl,
-    nn = nn, nnE = nnE, nnF = nnF,
+    union_nn = nnr,
+    wiggled_nnE = nnrE,
+    wiggled_nnF = nnrF,
+    wiggle_dist = dist,
     params = as.list(match.call(expand.dots = FALSE))
-  ))
+  )
 }
