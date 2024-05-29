@@ -305,7 +305,7 @@ h_decision_two_RctpredprobDist <- function(
 #' randomized-controlled trial setting.
 #'
 #' The returned value is a list with the following elements:
-#' - `oc`: matrix with operating characteristics with the following details:
+#' - `oc`: matrix with operating characteristics, see [h_get_oc_rct()] for details
 #' - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
 #' - `ExpectedNactive` : the mean of the number of patients in treatment arm
 #' - `ExpectedNcontrol`: the mean of the number of patients in control arm
