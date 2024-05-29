@@ -306,17 +306,20 @@ h_decision_two_RctpredprobDist <- function(
 #'
 #' The returned value is a list with the following elements:
 #' - `oc`: matrix with operating characteristics with the following details:
-#' - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
-#' - `ExpectedNactive` : the mean of the number of patients in treatment arm
-#' - `ExpectedNcontrol`: the mean of the number of patients in control arm
-#' - `PrStopEarly`: probability to stop the trial early (before reaching the maximum sample size)
-#' - `PrEarlyEff`: probability of Early Go decision
-#' - `PrEarlyFut`: probability of Early Stop decision
-#' - `PrEfficacy`: probability of Go decision
-#' - `PrFutility`: probability of Stop decision
-#' - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
-#' - `Decision` : numeric of results with `TRUE` as Go, `FALSE` as Stop and `NA` as Evaluate decision.
+#'  - `ExpectedN`: expected number of patients in the trials in both treatment and SOC group
+#'  - `ExpectedNactive` : the mean of the number of patients in treatment arm
+#'  - `ExpectedNcontrol`: the mean of the number of patients in control arm
+#'  - `PrStopEarly`: probability to stop the trial early (before reaching the maximum sample size)
+#'  - `PrEarlyEff`: probability of Early Go decision
+#'  - `PrEarlyFut`: probability of Early Stop decision
+#'  - `PrEfficacy`: probability of Go decision
+#'  - `PrFutility`: probability of Stop decision
+#'  - `PrGrayZone`: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+#' - `Decision` : results in `logical` with `TRUE` as Go, `FALSE` as Stop and `NA` as Evaluate decision.
 #' - `SampleSize` : numeric of sample sizes from `nnE` or `nnF` or both.
+#' - `SampleSizeActive` : numeric of sample sizes in the treatment or experimental arm.
+#' - `SampleSizeControl` : numeric of sample sizes in either standard of care (SOC) or control arm.
+#' - `union_nn` : unique `nnE` and `nnF` looks.
 #' - `wiggled_nnE` : user input for `nnE` with random distance applied.
 #' - `wiggled_nnF` : user input for `nnF` with random distance applied.
 #' - `wiggled_dist` : magnitude of random distance applied in order of input looks.
@@ -348,16 +351,10 @@ ocRctPredprobDist <- function(nnE,
                               nnF = nnE,
                               decision1 = TRUE) {
   assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
-  assert_number(deltaE, upper = 1, finite = TRUE)
-  assert_number(deltaF, upper = 1, finite = TRUE)
-  assert_flag(relativeDelta)
-  assert_number(tT, lower = 0, upper = 1)
-  assert_number(tF, lower = 0, upper = 1)
-  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
   assert_numeric(nnF, min.len = 0, any.missing = FALSE)
+  assert_flag(decision1)
 
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
@@ -436,11 +433,6 @@ ocRctPredprobDist <- function(nnE,
   )
   list(
     oc = oc,
-    nActive = nActive,
-    nControl = nControl,
-    ExpectedN = mean(all_sizes),
-    ExpectedNactive = mean(nActive),
-    ExpectedNcontrol = mean(nControl),
     Decision = decision,
     SampleSize = all_sizes,
     SampleSizeActive = nActive,

@@ -108,8 +108,11 @@ The returned value is a list with the following elements:
 \item \code{PrEfficacy}: probability of Go decision
 \item \code{PrFutility}: probability of Stop decision
 \item \code{PrGrayZone}: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
-\item \code{Decision} : numeric of results with \code{TRUE} as Go, \code{FALSE} as Stop and \code{NA} as Evaluate decision.
+\item \code{Decision} : results in \code{logical} with \code{TRUE} as Go, \code{FALSE} as Stop and \code{NA} as Evaluate decision.
 \item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{SampleSizeActive} : numeric of sample sizes in the treatment or experimental arm.
+\item \code{SampleSizeControl} : numeric of sample sizes in either standard of care (SOC) or control arm.
+\item \code{union_nn} : unique \code{nnE} and \code{nnF} looks.
 \item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
 \item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
 \item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.

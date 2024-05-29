@@ -127,23 +127,8 @@ test_that("h_decision_two_RctPredProbDist gives correct result and list when rel
 })
 
 # ocRctPredprobDist ----
-test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
+test_that("the sum of Eff, Fut, Gray zone probability is 1", {
   set.seed(2000)
-  input <- list(
-    nnE = c(10, 20, 30),
-    pE = 0.4,
-    pS = 0.3,
-    deltaE = 0.2,
-    deltaF = 0.1,
-    relativeDelta = FALSE,
-    tL = 0.8,
-    tU = 0.8,
-    parE = c(a = 1, b = 1),
-    parS = c(a = 1, b = 1),
-    nnF = c(10, 20, 30),
-    sim = 5,
-    Nmax = 15
-  )
   expect_warning(results <- ocRctPredprobDist(
     nnE = c(10, 20, 30),
     pE = 0.4,
