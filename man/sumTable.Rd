@@ -43,10 +43,12 @@ sumTable(2, 25, parX = c(1, 52), cut_B = 0.2, cut_W = 0.05, YPri = c(1, 1))
 summaries <- do.call(
   cbind,
   lapply(c(0:8),
-         sumTable,
-         TotalSample = 25,
-         parX = c(1, 52),
-         cut_B = 0.2,
-         cut_W = 0.05))
+    sumTable,
+    TotalSample = 25,
+    parX = c(1, 52),
+    cut_B = 0.2,
+    cut_W = 0.05
+  )
+)
 summaries
 }
