@@ -98,7 +98,7 @@ randomized-controlled trial setting.
 
 The returned value is a list with the following elements:
 \itemize{
-\item \code{oc}: matrix with operating characteristics, see \code{\link[=h_get_oc_rct]{h_get_oc_rct()}} for details
+\item \code{oc}: matrix with operating characteristics with the following details:
 \item \code{ExpectedN}: expected number of patients in the trials in both treatment and SOC group
 \item \code{ExpectedNactive} : the mean of the number of patients in treatment arm
 \item \code{ExpectedNcontrol}: the mean of the number of patients in control arm
