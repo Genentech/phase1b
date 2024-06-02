@@ -327,6 +327,7 @@ h_decision_two_RctpredprobDist <- function(
 #'
 #' @inheritParams h_decision_one_predprobDist
 #' @inheritParams h_decision_two_predprobDist
+#' @inheritParams ocPredprobDist
 #' @inheritParams ocRctPostprobDist
 #' @example examples/ocRctPredprobDist.R
 #' @export

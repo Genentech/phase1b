@@ -71,11 +71,13 @@ and each row corresponds to each component of a beta-mixture distribution for th
 
 \item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{wiggle}{(\code{flag}):\cr generate random look locations (not default).
-if \code{TRUE}, optional to specify \code{dist} (see @details).}
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default). If \code{wiggle = TRUE} and \code{nnE = nnF}, then all wiggled
+looks are the same between \code{nnE} and \code{nnF}.}
 
 \item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
 \code{length(nnF) = 1} then no Futility looks are performed.}
+
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \description{
 We emulate a randomized-controlled trial setting where at any given sample size,
