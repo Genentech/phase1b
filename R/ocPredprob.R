@@ -35,8 +35,6 @@
 h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
-  assert_number(p0, lower = 0, upper = 1)
-  assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tT, lower = 0, upper = 1)
@@ -125,9 +123,6 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
-  assert_number(p0, lower = 0, upper = 1)
-  assert_number(p1, lower = 0, upper = 1)
-  assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tT, lower = 0, upper = 1)
@@ -272,15 +267,6 @@ ocPredprob <- function(nnE,
                        nnF = nnE,
                        decision1 = TRUE) {
   assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
-  assert_number(truep, lower = 0, upper = 1)
-  assert_number(p0, lower = 0, upper = 1)
-  assert_number(p1, lower = 0, upper = 1)
-  assert_number(tT, lower = 0, upper = 1)
-  assert_number(tF, lower = 0, upper = 1)
-  assert_number(phiL, lower = 0, upper = 1)
-  assert_number(phiU, lower = 0, upper = 1)
-  assert_number(phiFu, lower = 0, upper = 1)
-  assert_numeric(parE, min.len = 2, any.missing = FALSE)
   assert_number(sim, lower = 1, finite = TRUE)
   assert_flag(wiggle)
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
