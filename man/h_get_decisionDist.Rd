@@ -21,10 +21,6 @@ h_get_decisionDist(
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}
 
-\item{nnrE}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnE}.}
-
-\item{nnrF}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnF}.}
-
 \item{truep}{(\code{number}):\cr assumed true response rate.}
 
 \item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.

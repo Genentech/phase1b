@@ -138,10 +138,6 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
 #'
 #' @inheritParams h_get_looks
 #' @inheritParams h_get_decision
-#' @typed nnrE : numeric
-#'  looks with random distance, if applied on `nnE`.
-#' @typed nnrF : numeric
-#'  looks with random distance, if applied on `nnF`.
 #' @typed all_sizes : numeric
 #'  sample sizes of all looks simulated `length(sim)` times if `dist` applied.
 #' @typed decision : numeric

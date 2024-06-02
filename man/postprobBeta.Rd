@@ -41,5 +41,6 @@ We observed \code{x} successes in n trials and so the posterior is
 
 # Example taken from Lee and Liu (2006)
 postprobBeta(x = 16, n = 23, p = 0.60, a = 0.6, b = 0.4)
-# Interpretation : The probability 16 of 23 successes is greater than 60 \% threshold is approximately 84 \%
+# Interpretation :
+# The probability 16 of 23 successes is greater than 60 \% threshold is approximately 84 \%
 }
