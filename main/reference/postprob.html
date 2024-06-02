@@ -50,12 +50,6 @@ and beta parameters."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -145,7 +139,8 @@ the other arguments (except <code>p</code> and <code>log.p</code> of course).</p
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8359808</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We could instead specify a mixture prior</span></span></span>
-<span class="r-in"><span><span class="co"># 2 component beta mixture prior, i.e., P_E ~ 0.6*beta(0.6,0.4) + 0.4*beta(1,1) and Pr(P_E &gt; p | data) = 0.823</span></span></span>
+<span class="r-in"><span><span class="co"># 2 component beta mixture prior :</span></span></span>
+<span class="r-in"><span><span class="co"># i.e., P_E ~ 0.6*beta(0.6,0.4) + 0.4*beta(1,1) and Pr(P_E &gt; p | data) = 0.823</span></span></span>
 <span class="r-in"><span><span class="fu">postprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fl">16</span>, n <span class="op">=</span> <span class="fl">23</span>, p <span class="op">=</span> <span class="fl">0.60</span>,</span></span>
 <span class="r-in"><span>  par <span class="op">=</span></span></span>

@@ -38,12 +38,6 @@ and a curve of the prob of a poor improvement over estunated diff"><!-- mathjax 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -98,7 +92,16 @@ and a curve of the prob of a poor improvement over estunated diff</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">summaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>, <span class="va">sumTable</span>, TotalSample <span class="op">=</span> <span class="fl">25</span>, parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">52</span><span class="op">)</span>, cut_B <span class="op">=</span> <span class="fl">0.2</span>, cut_W <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">summaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">cbind</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="va">sumTable</span>,</span></span>
+<span class="r-in"><span>    TotalSample <span class="op">=</span> <span class="fl">25</span>,</span></span>
+<span class="r-in"><span>    parX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">52</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    cut_B <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
+<span class="r-in"><span>    cut_W <span class="op">=</span> <span class="fl">0.05</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plotDecision</span><span class="op">(</span><span class="va">summaries</span>, Pos_cut <span class="op">=</span> <span class="fl">60</span>, Neg_cut <span class="op">=</span> <span class="fl">60</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotDecision-1.png" alt="" width="700" height="433"></span>

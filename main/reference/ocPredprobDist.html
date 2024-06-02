@@ -36,12 +36,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -233,10 +227,14 @@ seen in the evaluation for the final futility look in <code>ocPredprobDist()</co
 <span class="r-in"><span><span class="co"># True response rate or truep of the treatment group = 40%</span></span></span>
 <span class="r-in"><span><span class="co"># Desired difference to Standard of Care for Efficacy and Futility = 10%</span></span></span>
 <span class="r-in"><span><span class="co"># Delta calculation is absolute case. The following are the Final Stop rules respectively :</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Efficacy: Pr( response rate + deltaE &gt; 25% ) &gt; 60% or P(response rate + deltaE &gt; p0) &gt; tT</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Futility: Pr( response rate + deltaF &lt; 25% ) &lt; 60% or P(response rate + deltaF &gt; p0) &lt; tT</span></span></span>
-<span class="r-in"><span><span class="co"># - Interim look for Efficacy: Pr( success at final ) &gt; 80% or P(success at final) &gt; phiU</span></span></span>
-<span class="r-in"><span><span class="co"># - Interim look for Futility: Pr( failure at final ) &lt; 20% or P(success at final) &lt; phiL</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Efficacy:</span></span></span>
+<span class="r-in"><span><span class="co">#    Pr( response rate + deltaE &gt; 25% ) &gt; 60% or P(response rate + deltaE &gt; p0) &gt; tT</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Futility:</span></span></span>
+<span class="r-in"><span><span class="co">#    Pr( response rate + deltaF &lt; 25% ) &lt; 60% or P(response rate + deltaF &gt; p0) &lt; tT</span></span></span>
+<span class="r-in"><span><span class="co"># - Interim look for Efficacy:</span></span></span>
+<span class="r-in"><span><span class="co">#   Pr( success at final ) &gt; 80% or P(success at final) &gt; phiU</span></span></span>
+<span class="r-in"><span><span class="co"># - Interim look for Futility:</span></span></span>
+<span class="r-in"><span><span class="co">#   Pr( failure at final ) &lt; 20% or P(success at final) &lt; phiL</span></span></span>
 <span class="r-in"><span><span class="co"># We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
