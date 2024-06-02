@@ -6,168 +6,215 @@
 using the predictive probability method with beta priors}
 \usage{
 ocRctPredprobDist(
-  nn,
+  nnE,
   pE,
   pS,
-  delta = 0,
-  deltaFu = delta,
+  deltaE,
+  deltaF,
+  phiL = 1 - phiFu,
+  phiFu = 1 - phiL,
+  phiU,
   relativeDelta = FALSE,
   tT,
-  tFu = 1 - tT,
-  phiL = 1 - phiFu,
-  phiU,
-  phiFu = 1 - phiL,
+  tF,
   parE = c(a = 1, b = 1),
   parS = c(a = 1, b = 1),
+  weights,
+  weightsS,
   randRatio = 1,
-  ns = 10000,
-  nr = FALSE,
-  d = NULL,
-  nnF = nn
+  sim,
+  wiggle = FALSE,
+  nnF = nnE,
+  decision1 = TRUE
 )
 }
 \arguments{
-\item{nn}{vector of look locations for efficacy . Note that the maximum sample size is
-derived as the maximum value (latest look) in this vector.
-(if futility looks should be different, please specify also \code{nnF})}
+\item{nnE}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnE) = 1} then no Efficacy looks are performed.}
 
-\item{pE}{true rate in the treatment population}
+\item{pE}{(\code{number}):\cr Response rate in Treatment group.}
 
-\item{pS}{true rate in the standard of care population}
+\item{pS}{(\code{number}):\cr Response rate in Control group.}
 
-\item{delta}{We want to be better than the control + delta (default: 0)}
+\item{deltaE}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Efficacy looks only.
+Note that this can also be negative as well.}
 
-\item{deltaFu}{declare futility when worse than the control + deltaW.
-Specify only when decision rule 2 is used.}
+\item{deltaF}{(\code{number}):\cr margin by which the response rate in the treatment group should
+be better than in the standard of care or control or \code{S} group in Futility looks only.
+Note that this can also be negative as well.}
 
-\item{relativeDelta}{see \code{\link{postprobDist}}}
+\item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
-\item{tT}{threshold for the probability to be above control + delta
-at the end of the trial}
+\item{phiFu}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{tFu}{threshold for the probability to be under control + deltaFu
-at the end of the trial. Specify only when decision rule 2 is used.}
+\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{phiL}{lower threshold on the predictive probability}
+\item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
+response rate in magnitude of \code{delta} of the \code{S} non-responding patients. See \code{\link[=postprobDist]{postprobDist()}}.}
 
-\item{phiU}{upper threshold on the predictive probability}
+\item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
-\item{phiFu}{threshold on the predictive probability for futility. Specify only
-when decision rule 2 is used. phiL argument should be skipped in this case.}
+\item{tF}{(\code{number}):\cr threshold of which assumed \code{truep} does not exceed threshold of \code{p1}.}
 
-\item{parE}{beta parameters for the prior on the control proportion}
+\item{parE}{(\code{numeric}):\cr alpha and beta parameters for the prior on the treatment population.
+Default set at alpha = 1, beta = 1, or uniform prior.}
 
-\item{parS}{beta parameters for the prior on the treatment proportion}
+\item{parS}{(\code{numeric}):\cr parameters for beta distribution. If it is a matrix, it needs to have 2 columns,
+and each row corresponds to each component of a beta-mixture distribution for the \code{S} group.}
 
-\item{randRatio}{the randomization ratio (active vs. control) to be used.
-default: 1.}
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 
-\item{ns}{number of simulations}
+\item{weightsS}{(\code{numeric}):\cr weights for the \code{S} group.}
 
-\item{nr}{generate random look locations? (not default)}
+\item{randRatio}{(\code{numeric}):\cr The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.}
 
-\item{d}{distance for random looks around the look locations in \code{nn}}
+\item{sim}{(\code{number}):\cr number of simulations.}
 
-\item{nnF}{vector of look locations for futility
-(default: same as efficacy)}
-}
-\value{
-A list with the following elements:
-oc: matrix with operating characteristics (see Details section)
-Decision: vector of the decisions made in the simulated trials
-(\code{TRUE} for success, \code{FALSE} for failure)
-SampleSize: vector of the sample sizes in the simulated trials
-SampleSizeActive: vector of the patients with treatment in the simulated trials
-SampleSizeControl: vector of the patients with control in the simulated trials
-nn: vector of look locations
-nnE: vector of efficacy look locations
-nnF: vector of futility look locations
-todo: would we like to return nnr instead, the actual look locations?
-params: input parameters of this function
+\item{wiggle}{(\code{flag}):\cr generate random look locations (not default). If \code{wiggle = TRUE} and \code{nnE = nnF}, then all wiggled
+looks are the same between \code{nnE} and \code{nnF}.}
+
+\item{nnF}{(\code{numeric}):\cr sample size or sizes where study can be stopped for Efficacy decision. If \code{0} or \code{NULL} and
+\code{length(nnF) = 1} then no Futility looks are performed.}
+
+\item{decision1}{(\code{flag}):\cr Flag if \code{decision1 = TRUE} then Decision 1 rules will be used, otherwise Decision 2 rules will be used.}
 }
 \description{
-The randomization works as follows. According to the randomization ratio and
-the maximum sample size, patients are allocated to the treatment and SOC
-arms. The number of patients in the active treatment arm is rounded to the
-next higher integer. That is, the sequence of patients is determined from
-the start, such that the number of patients in both arms is constant across
-trial simulations.
+We emulate a randomized-controlled trial setting where at any given sample size,
+there exists the number of patients enrolled in either standard of care (SOC) or control arm, and
+a treatment or experimental arm. The allocation of patients will depend on the
+randomization ratio set by the user and is rounded to the next higher integer.
+Therefore the sequence of patients is determined from the start, such that the number of
+patients in both arms is constant across trial simulations, however the number of patients
+within the control and treatment arm is determined by the randomisation ratio.
+Interim looks are for sample sizes below that of the final sample size.
 }
 \details{
-Decision rule 1:The trial is stopped for efficacy if the predictive probability of a
-successful trial is larger than phiU, and stopped for futility if it is below
-phiL. A trial is successful if after the maximum number of patients the
-posterior probability of the treatment being at least delta better than the
-control is above tT. Otherwise the decision is "failure". Hence there is no
-gray zone.
+Final looks are only performed at the maximum sample size.
 
-Decision rule 2:A variation can be requested when skipping the argument phiL and utilizing the arguments
-p1, tFu & PhiFu. The trial can be stopped for futility if the predictive
-probability of an unsuccessful trial is larger than phiFu. In this case, the
-decision is "failure" when the posterior probability of having the treatment
-response rate at most p1 is above tFu at the maximum number of patients.
+At each interim or final look, a futility or efficacy or both can be performed.
 
-Returned operating characteristics in a matrix include:
-ExpectedN: expected number of patients in the trials
-ExpectedNactive: expected number of patients with treatment
-ExpectedNcontrol: expected number of patients with SOC
-PrStopEarly: probability to stop the trial early (before reaching the
-maximum sample size)
-PrEfficacy: probability to decide for efficacy
-PrFutility: probability to decide for futility
-PrGrayZone: probability of no decision at the end ("gray zone")
+The rules for Stop, Go and Gray Zone (where applicable), and use of beta priors are the same
+as in \code{\link[=ocPredprobDist]{ocPredprobDist()}} where the only difference here is to emulate a
+randomized-controlled trial setting.
+
+The returned value is a list with the following elements:
+\itemize{
+\item \code{oc}: matrix with operating characteristics with the following details:
+\item \code{ExpectedN}: expected number of patients in the trials in both treatment and SOC group
+\item \code{ExpectedNactive} : the mean of the number of patients in treatment arm
+\item \code{ExpectedNcontrol}: the mean of the number of patients in control arm
+\item \code{PrStopEarly}: probability to stop the trial early (before reaching the maximum sample size)
+\item \code{PrEarlyEff}: probability of Early Go decision
+\item \code{PrEarlyFut}: probability of Early Stop decision
+\item \code{PrEfficacy}: probability of Go decision
+\item \code{PrFutility}: probability of Stop decision
+\item \code{PrGrayZone}: probability of Evaluate or "Gray Zone" decision (between Go and Stop)
+\item \code{Decision} : results in \code{logical} with \code{TRUE} as Go, \code{FALSE} as Stop and \code{NA} as Evaluate decision.
+\item \code{SampleSize} : numeric of sample sizes from \code{nnE} or \code{nnF} or both.
+\item \code{SampleSizeActive} : numeric of sample sizes in the treatment or experimental arm.
+\item \code{SampleSizeControl} : numeric of sample sizes in either standard of care (SOC) or control arm.
+\item \code{union_nn} : unique \code{nnE} and \code{nnF} looks.
+\item \code{wiggled_nnE} : user input for \code{nnE} with random distance applied.
+\item \code{wiggled_nnF} : user input for \code{nnF} with random distance applied.
+\item \code{wiggled_dist} : magnitude of random distance applied in order of input looks.
+\item \code{params} : all user input arguments.
+}
 }
 \examples{
-# similar input parameters as the oc.predprobDist function
-# default simulation number is 10000. for illustration, the ns is set as 100 to
-# save program running time. Please note that 10 simulation run (ns=10) may not
-# be sufficient for a consistent OC evaluation.
-# 1)
-set.seed(20)
-res <- ocRctPredprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, delta = 0.1,
-  relativeDelta = FALSE, tT = 0.6,
-  phiL = 0.2, phiU = 0.8,
-  parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
-  randRatio = 1,
-  ns = 10, nr = FALSE, d = NULL
-)
-
-res$oc
-
-# separate specification of efficacy and futility analyses can be performed. E.g.
-# here have futility decisions only at the final analysis:
-set.seed(20)
-res1 <- ocRctPredprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, delta = 0.1, relativeDelta = FALSE,
+# When `relativeDelta = TRUE`:
+set.seed(2000)
+ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiFu = 0.2,
+  relativeDelta = TRUE,
   tT = 0.6,
-  phiL = 0.2, phiU = 0.8,
-  parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
   randRatio = 1,
-  ns = 10, nr = FALSE, d = NULL, nnF = c(30)
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
 )
 
-res1$oc
-
-# 2)
-# to examine operating characters of a phase Ib design with a
-# seperate rule for futility
-# at final analysis
-# denote treatment response rate as RRS
-# trial success is defined as: P(RRS>control+delta)>tT
-# trial failure is defined as: P(RRS<control+deltaFu)>tFu
-# (gray zone could occur in the final analysis)
-
-set.seed(20)
-res2 <- ocRctPredprobDist(
-  nn = c(10, 20, 30), pE = 0.4, pS = 0.3, delta = 0.1, deltaFu = 0.05,
+# When `relativeDelta = FALSE`:
+set.seed(2000)
+ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiFu = 0.2,
   relativeDelta = FALSE,
-  tT = 0.6, tFu = 0.6,
-  phiFu = 0.8, phiU = 0.8,
-  parE = c(a = 1, b = 1), parS = c(a = 1, b = 1),
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
   randRatio = 1,
-  ns = 10, nr = FALSE, d = NULL
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
 )
 
-res2$oc
+# Only one Futility look:
+set.seed(2000)
+ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiFu = 0.2,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = 20,
+  decision1 = TRUE
+)
+
+# When `deltaF = 0`:
+set.seed(2000)
+ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0,
+  phiU = 0.8,
+  phiFu = 0.2,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
 }
