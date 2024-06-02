@@ -13,25 +13,21 @@
 #' @export
 #' @keywords graphics
 myPlot <- function(alpha, beta, ...) {
-  grid <- seq(from = 0, to = 1, length = 1000)
-  xticks <- seq(from = 0, to = 1, by = 0.25)
-
-  plot(
-    x = grid,
-    y = dbeta(grid, alpha, beta),
-    ylab = "",
-    xaxt = "n",
-    yaxt = "n",
-    type = "l",
-    xaxs = "i",
-    yaxs = "i",
-    ...
+  x_support <- seq(from = 0, to = 1, length = 1000)
+  data <- data.frame(
+    grid = x_support,
+    xticks = seq(from = 0, to = 1, by = 0.25),
+    density = dbeta(x_support, alpha, beta)
   )
 
-  graphics::axis(
-    side = 1, at = xticks,
-    labels = paste(xticks * 100, "%", sep = "")
-  )
+
+  ggplot(data) +
+    geom_line(aes(x = grid, y = density)) +
+    ggtitle("") +
+    xlab("response rate") +
+    ylab(quote(f(x))) +
+    theme(axis.ticks.x = element_line(linewidth = 0.5)) +
+    scale_x_continuous(labels = scales::percent_format())
 }
 
 
