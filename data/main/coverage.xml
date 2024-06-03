@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.63276576161988" branch-rate="0" lines-covered="1375" lines-valid="2173" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-02 17:53:40.31299">
+<coverage line-rate="0.63682745825603" branch-rate="0" lines-covered="1373" lines-valid="2156" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-03 06:52:11.107175">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.63276576161988" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.63682745825603" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -423,66 +423,6 @@
             <line number="203" hits="289637" branch="false"/>
             <line number="204" hits="289637" branch="false"/>
             <line number="205" hits="289637" branch="false"/>
-          </lines>
-        </class>
-        <class name="helpers.R" filename="R/helpers.R" line-rate="0.117647058823529" branch-rate="0" complexity="0">
-          <methods>
-            <method name="is.scalar" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="10" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="is.bool" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="22" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="is.probability" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="34" hits="0" branch="false"/>
-                <line number="35" hits="0" branch="false"/>
-                <line number="36" hits="0" branch="false"/>
-                <line number="37" hits="0" branch="false"/>
-                <line number="38" hits="0" branch="false"/>
-                <line number="39" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="is.probRange" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="51" hits="0" branch="false"/>
-                <line number="52" hits="0" branch="false"/>
-                <line number="53" hits="0" branch="false"/>
-                <line number="54" hits="0" branch="false"/>
-                <line number="55" hits="0" branch="false"/>
-                <line number="56" hits="0" branch="false"/>
-                <line number="57" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="logit" signature="" line-rate="1" branch-rate="0" complexity="0">
-              <lines>
-                <line number="74" hits="2" branch="false"/>
-                <line number="76" hits="2" branch="false"/>
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="10" hits="0" branch="false"/>
-            <line number="22" hits="0" branch="false"/>
-            <line number="34" hits="0" branch="false"/>
-            <line number="35" hits="0" branch="false"/>
-            <line number="36" hits="0" branch="false"/>
-            <line number="37" hits="0" branch="false"/>
-            <line number="38" hits="0" branch="false"/>
-            <line number="39" hits="0" branch="false"/>
-            <line number="51" hits="0" branch="false"/>
-            <line number="52" hits="0" branch="false"/>
-            <line number="53" hits="0" branch="false"/>
-            <line number="54" hits="0" branch="false"/>
-            <line number="55" hits="0" branch="false"/>
-            <line number="56" hits="0" branch="false"/>
-            <line number="57" hits="0" branch="false"/>
-            <line number="74" hits="2" branch="false"/>
-            <line number="76" hits="2" branch="false"/>
           </lines>
         </class>
         <class name="oc2.R" filename="R/oc2.R" line-rate="0" branch-rate="0" complexity="0">
