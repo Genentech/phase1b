@@ -22,6 +22,7 @@ BugReports: https://github.com/genentech/phase1b/issues
 Depends:
     R (>= 3.6)
 Suggests:
+    rmarkdown,
     bookdown,
     knitr,
     officer,
@@ -54,7 +55,6 @@ Collate:
     'boundsPredprob.R'
     'data.R'
     'dbetabinom.R'
-    'helpers.R'
     'oc2.R'
     'oc3.R'
     'ocPostprob.R'
