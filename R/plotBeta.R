@@ -23,7 +23,7 @@ myPlot <- function(alpha, beta, ...) {
   )
   ggplot(data) +
     geom_line(aes(x = grid, y = density)) +
-    ggtitle(paste("Beta density with alpha = ", alpha, "and beta = ", beta, "parameters.")) +
+    ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
     xlab("response rate") +
     ylab(quote(f(x))) +
     theme(axis.ticks.x = element_line(linewidth = 0.5)) +
