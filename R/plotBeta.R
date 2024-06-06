@@ -2,10 +2,12 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @param alpha first parameter of the Beta distribution
-#' @param beta second parameter of the Beta distribution
-#' @param \dots additional arguments to \code{plot}
-#' @return nothing, only produces the plot as side effect
+#' @inheritParams dbetabinom
+#' @typed alpha : number
+#'  first parameter of the Beta distribution
+#' @typed beta : number
+#'  second parameter of the Beta distribution
+#' @return A beta distribution density plot
 #'
 #' @importFrom graphics axis
 #'
@@ -19,23 +21,18 @@ myPlot <- function(alpha, beta, ...) {
     xticks = seq(from = 0, to = 1, by = 0.25),
     density = dbeta(x_support, alpha, beta)
   )
-
-
   ggplot(data) +
     geom_line(aes(x = grid, y = density)) +
-    ggtitle("") +
+    ggtitle(paste("Beta density with alpha = ", alpha, "and beta = ", beta, "parameters.")) +
     xlab("response rate") +
     ylab(quote(f(x))) +
     theme(axis.ticks.x = element_line(linewidth = 0.5)) +
     scale_x_continuous(labels = scales::percent_format())
 }
 
-
-
-
 #' Plot Diff Between two Beta distributions
 #'
-#' This function will plot the PDF of a diffience between two Beta distributions
+#' This function will plot the PDF of a difference between two Beta distributions
 #'
 #' @param parY non-negative parameters of the treatment Beta distribution.
 #' @param parX non-negative parameters of the historical control Beta distribution

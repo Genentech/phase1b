@@ -7,20 +7,18 @@
 myPlot(alpha, beta, ...)
 }
 \arguments{
-\item{alpha}{first parameter of the Beta distribution}
+\item{alpha}{(\code{number}):\cr first parameter of the Beta distribution}
 
-\item{beta}{second parameter of the Beta distribution}
-
-\item{\dots}{additional arguments to \code{plot}}
+\item{beta}{(\code{number}):\cr second parameter of the Beta distribution}
 }
 \value{
-nothing, only produces the plot as side effect
+A beta distribution density plot
 }
 \description{
 This function will plot the PDF of a beta distribution
 }
 \examples{
-myPlot(1, 2)
-myPlot(1, 1)
+myPlot(alpha = 1, beta = 2)
+myPlot(alpha = 1, beta = 1)
 }
 \keyword{graphics}

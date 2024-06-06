@@ -25,7 +25,7 @@ myPlotDiff(parY, parX, cut_B = 0.2, cut_W = 0.1, shade = 1, note = 1, ...)
 nothing, only produces the plot as side effect
 }
 \description{
-This function will plot the PDF of a diffience between two Beta distributions
+This function will plot the PDF of a difference between two Beta distributions
 }
 \examples{
 myPlotDiff(c(5, 10), c(2, 5), 0.2, 0.05, 1, 0)

@@ -1,2 +1,2 @@
-myPlot(1, 2)
-myPlot(1, 1)
+myPlot(alpha = 1, beta = 2)
+myPlot(alpha = 1, beta = 1)
