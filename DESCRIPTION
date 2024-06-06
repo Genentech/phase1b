@@ -55,7 +55,6 @@ Collate:
     'boundsPredprob.R'
     'data.R'
     'dbetabinom.R'
-    'helpers.R'
     'oc2.R'
     'oc3.R'
     'ocPostprob.R'

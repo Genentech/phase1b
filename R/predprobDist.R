@@ -27,8 +27,6 @@
 #'  weights for the `S` group.
 #' @typed thetaT : number
 #'  threshold on the probability to be used.
-#' @typed density : numeric
-#'  the beta binomial mixed density for future success in `Nmax-n` patients in the `E` group.
 #'
 #' @return A `list` is returned with names `result` for predictive probability and
 #'  `table` of numeric values with counts of responses in the remaining patients,
