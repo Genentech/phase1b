@@ -43,13 +43,13 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp <- 1 - postprob(x, n, p0, parE = c(a, b)) # futility look
-      if (postp >= tL) {
+      postp <- postprob(x, n, p0, parE = c(a, b)) # futility look
+      if (postp >= tL) { # Rule is P(RR < p0) > tL
         postL <- postp
         xL <- x
       }
-      postp <- postprob(x, n, p0, parE = c(a, b)) # efficacy look
-      if (postp >= tU) {
+      postp <- 1 - postprob(x, n, p1, parE = c(a, b)) # efficacy look
+      if (postp >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp
         xU <- x
         break
@@ -69,5 +69,5 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
       pU_lower_ci
     )
   }
-  return(round(data.frame(nvec, z), 4))
+  round(data.frame(nvec, z), 4)
 }
