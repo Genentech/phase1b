@@ -11,10 +11,10 @@
 #'
 #' @importFrom graphics axis
 #'
-#' @example examples/plotBetaDist.R
+#' @example examples/plotBeta.R
 #' @export
 #' @keywords graphics
-plotBetaDist <- function(alpha, beta, ...) {
+plotBeta <- function(alpha, beta, ...) {
   x_support <- seq(from = 0, to = 1, length = 1000)
   data <- data.frame(
     grid = x_support,

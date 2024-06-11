@@ -658,9 +658,9 @@ ex1_prior_myplot_cap <- paste(
 ```
 
 ```{r ex1-prior_myPlot, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
-myPlot(75, 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
+plotBeta(alpha = 75, beta = 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
 par(new = TRUE)
-myPlot(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
+plotBeta(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
 legend("topright", c("Hist. Control", "Novel Combo"),
   lwd = 2, lty = 1,
   col = c("darkgrey", "deepskyblue"), bty = "n"
