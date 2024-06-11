@@ -41,14 +41,20 @@ myPlot <- function(alpha, beta, ...) {
 #'
 #' This function will plot the PDF of a diffience between two Beta distributions
 #'
-#' @param parY non-negative parameters of the treatment Beta distribution.
-#' @param parX non-negative parameters of the historical control Beta distribution
-#' @param cut_B a meaningful improvement threshold
-#' @param cut_W a poor improvement throshold
-#' @param shade paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
-#' @param note show values of the colored area, default value=1 as "yes". other numbers stands for "no"
-#' @param \dots additional arguments to \code{plot}
-#' @return nothing, only produces the plot as side effect
+#' @typed parY : numeric
+#'  non-negative parameters of the treatment Beta distribution.
+#' @typed parX : numeric
+#'  non-negative parameters of the historical control Beta distribution
+#' @typed cut_B : number
+#'  a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate
+#' @typed cut_W : number
+#'  a poor improvement throshold, the upper boundary of a meaningfully poor improvement in response rate
+#' @typed shade :
+#'  paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
+#' @typed note : number
+#'  show values of the colored area, default value=1 as "yes". other numbers stands for "no"
+#' @typed \dots additional arguments to \code{plot}
+#' @return a ggplot object
 #'
 #' @example examples/myPlotDiff.R
 #'
@@ -57,13 +63,13 @@ myPlot <- function(alpha, beta, ...) {
 #'
 #' @export
 #' @keywords graphics
-myPlotDiff <- function(parY, # parameters of phase Ib trial;
-                       parX, # parameters of HC;
-                       cut_B = 0.20, # a meaningful improvement threshold;
-                       cut_W = 0.1, # a poor improvement threshold;
-                       shade = 1, # paint the two areas under the curve, default: yes. other numbers stands for "no";
-                       note = 1, # show values of the colored area, default: yes. other numbers stands for "no";
-                       ...) {
+plotBetaDist <- function(parY, # parameters of phase Ib trial;
+                         parX, # parameters of HC;
+                         cut_B = 0.20, # a meaningful improvement threshold;
+                         cut_W = 0.1, # a poor improvement threshold;
+                         shade = 1, # paint the two areas under the curve, default: yes. other numbers stands for "no";
+                         note = 1, # show values of the colored area, default: yes. other numbers stands for "no";
+                         ...) {
   if (note == 1) {
     graphics::par(mar = c(5, 15, 1, 15) + .1)
   } else {
