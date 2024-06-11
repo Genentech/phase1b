@@ -45,13 +45,14 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b) {
     xU <- NA
     for (x in 0:n) {
       pp <- predprob(x, n, Nmax, p0, tT, parE = c(a, b))$result
-      if (pp <= phiL) {
-        xL <- x
-        ppL <- pp
-      }
-      if (pp >= phiU) {
+      if (pp >= phiU) { # Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
         xU <- x
         ppU <- ppL
+      }
+      predprob(x, n, Nmax, p0, tT, parE = c(a, b))$result
+      if (pp <= phiL) { # Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+        xL <- x
+        ppL <- pp
         # done: leave innermost for loop
         break
       }
