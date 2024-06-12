@@ -153,6 +153,7 @@ following the instructions in the [Installation section](#installation) with the
 following command:
 ```{r load}
 library(phase1b)
+library(ggplot2)
 ```
 Once loaded, you will have access to all of the functions in the `phase1b`
 R-package. To see a list of all of the functions in the `phase1b` R-package,

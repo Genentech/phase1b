@@ -157,7 +157,7 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #' @example examples/pbetaMix.R
 #' @export
 pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
-  assert_number(q, lower = 0, upper = 1, finite = TRUE)
+  assert_numeric(q, lower = 0, upper = 1, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
   assert_matrix(par)
   assert_flag(lower.tail)
