@@ -80,8 +80,8 @@ dbetabinomMix <- Vectorize(dbetabinomMix, vectorize.args = "x")
 #'
 #' @keywords internal
 h_getBetamixPost <- function(x, n, par, weights) {
-  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
-  assert_numeric(n, lower = 0, finite = TRUE)
+  assert_number(x, lower = 0, upper = n, finite = TRUE)
+  assert_number(n, lower = 0, finite = TRUE)
   assert_matrix(par, min.rows = 1, max.cols = 2, mode = "numeric")
   assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   # We renormalize weights.
