@@ -21,13 +21,13 @@ plotBeta <- function(alpha, beta, ...) {
     xticks = seq(from = 0, to = 1, by = 0.25),
     density = dbeta(x_support, alpha, beta)
   )
-  ggplot(data) +
-    geom_line(aes(x = grid, y = density)) +
-    ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
-    xlab("response rate") +
-    ylab(quote(f(x))) +
-    theme(axis.ticks.x = element_line(linewidth = 0.5)) +
-    scale_x_continuous(labels = scales::percent_format())
+  ggplot2::ggplot(data) +
+    ggplot2::geom_line(ggplot2::aes(x = grid, y = density)) +
+    ggplot2::ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
+    ggplot2::xlab("response rate") +
+    ggplot2::ylab(quote(f(x))) +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_line(linewidth = 0.5)) +
+    ggplot2::scale_x_continuous(labels = scales::percent_format())
 }
 
 #' Plot Diff Between two Beta distributions

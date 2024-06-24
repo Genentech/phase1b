@@ -664,12 +664,12 @@ ex1_prior_myplot_cap <- paste(
 )
 ```
 
-```{r ex1-prior_plotBeta, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
+```{r ex1_prior_plotBeta, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
 plotBeta(alpha = 75, beta = 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
 ```
 
 For the Novel combination, the following posterior has been updated.
-```{r ex1-prior_plotBeta2, fig.cap = ex1_prior_myplot_cap}
+```{r ex1_prior_plotBeta2, fig.cap = ex1_prior_myplot_cap}
 plotBeta(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
 ```
 

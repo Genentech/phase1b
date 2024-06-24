@@ -23,7 +23,6 @@ Depends:
     R (>= 3.6)
 Suggests:
     scales,
-    ggplot2,
     rmarkdown,
     bookdown,
     knitr,
