@@ -647,7 +647,7 @@ observed data would lead to a $\text{Beta}(60.75,29.25)$ posterior distribution 
 novel combination PET-CR rate.
 
 Alternatively, we could use the R-package function `plotBeta()` to achieve the
-same result, see Figure~\@ref(fig:ex1-prior_myPlot1) and Figure~\@ref(fig:ex1-prior_myPlot2).
+same result, see Figure~\@ref(fig:ex1-prior_plotBeta1) and Figure~\@ref(fig:ex1-prior_plotBeta2).
 
 ```{r, echo = FALSE}
 ex1_prior_myplot_cap <- paste(
@@ -656,14 +656,20 @@ ex1_prior_myplot_cap <- paste(
   "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel",
   "combination treatment group."
 )
+ex1_prior_myplot_cap <- paste(
+  "The prior distributions for the historical control and novel combination",
+  "treatment group. A $\text{Beta}(75,75)$ prior is used for the historical",
+  "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel",
+  "combination treatment group."
+)
 ```
 
-```{r ex1-prior_plotBeta, echo=TRUE, fig.cap = ex1-prior_plotBeta}
+```{r ex1-prior_plotBeta, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
 plotBeta(alpha = 75, beta = 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
 ```
 
 For the Novel combination, the following posterior has been updated.
-```{r}
+```{r ex1-prior_plotBeta2, fig.cap = ex1_prior_myplot_cap}
 plotBeta(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
 ```
 
