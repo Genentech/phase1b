@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.638011152416357" branch-rate="0" lines-covered="1373" lines-valid="2152" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-06 19:06:13.533578">
+<coverage line-rate="0.644052044609665" branch-rate="0" lines-covered="1386" lines-valid="2152" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-25 10:56:59.434709">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.638011152416357" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.644052044609665" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -309,12 +309,12 @@
             <method name="h_getBetamixPost" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="83" hits="584754" branch="false"/>
-                <line number="84" hits="584753" branch="false"/>
-                <line number="85" hits="584753" branch="false"/>
-                <line number="86" hits="584753" branch="false"/>
-                <line number="88" hits="584750" branch="false"/>
-                <line number="90" hits="584750" branch="false"/>
-                <line number="91" hits="584750" branch="false"/>
+                <line number="84" hits="584752" branch="false"/>
+                <line number="85" hits="584752" branch="false"/>
+                <line number="86" hits="584752" branch="false"/>
+                <line number="88" hits="584749" branch="false"/>
+                <line number="90" hits="584749" branch="false"/>
+                <line number="91" hits="584749" branch="false"/>
                 <line number="92" hits="584749" branch="false"/>
                 <line number="94" hits="584749" branch="false"/>
                 <line number="95" hits="584749" branch="false"/>
@@ -382,12 +382,12 @@
             <line number="62" hits="0" branch="false"/>
             <line number="64" hits="65634" branch="false"/>
             <line number="83" hits="584754" branch="false"/>
-            <line number="84" hits="584753" branch="false"/>
-            <line number="85" hits="584753" branch="false"/>
-            <line number="86" hits="584753" branch="false"/>
-            <line number="88" hits="584750" branch="false"/>
-            <line number="90" hits="584750" branch="false"/>
-            <line number="91" hits="584750" branch="false"/>
+            <line number="84" hits="584752" branch="false"/>
+            <line number="85" hits="584752" branch="false"/>
+            <line number="86" hits="584752" branch="false"/>
+            <line number="88" hits="584749" branch="false"/>
+            <line number="90" hits="584749" branch="false"/>
+            <line number="91" hits="584749" branch="false"/>
             <line number="92" hits="584749" branch="false"/>
             <line number="94" hits="584749" branch="false"/>
             <line number="95" hits="584749" branch="false"/>
@@ -3301,23 +3301,23 @@
             <line number="446" hits="5" branch="false"/>
           </lines>
         </class>
-        <class name="plotBeta.R" filename="R/plotBeta.R" line-rate="0" branch-rate="0" complexity="0">
+        <class name="plotBeta.R" filename="R/plotBeta.R" line-rate="0.12621359223301" branch-rate="0" complexity="0">
           <methods>
-            <method name="myPlot" signature="" line-rate="0" branch-rate="0" complexity="0">
+            <method name="plotBeta" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="18" hits="0" branch="false"/>
-                <line number="19" hits="0" branch="false"/>
-                <line number="20" hits="0" branch="false"/>
-                <line number="21" hits="0" branch="false"/>
-                <line number="22" hits="0" branch="false"/>
-                <line number="23" hits="0" branch="false"/>
-                <line number="24" hits="0" branch="false"/>
-                <line number="25" hits="0" branch="false"/>
-                <line number="26" hits="0" branch="false"/>
-                <line number="27" hits="0" branch="false"/>
-                <line number="28" hits="0" branch="false"/>
-                <line number="29" hits="0" branch="false"/>
-                <line number="30" hits="0" branch="false"/>
+                <line number="18" hits="1" branch="false"/>
+                <line number="19" hits="1" branch="false"/>
+                <line number="20" hits="1" branch="false"/>
+                <line number="21" hits="1" branch="false"/>
+                <line number="22" hits="1" branch="false"/>
+                <line number="23" hits="1" branch="false"/>
+                <line number="24" hits="1" branch="false"/>
+                <line number="25" hits="1" branch="false"/>
+                <line number="26" hits="1" branch="false"/>
+                <line number="27" hits="1" branch="false"/>
+                <line number="28" hits="1" branch="false"/>
+                <line number="29" hits="1" branch="false"/>
+                <line number="30" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="myPlotDiff" signature="" line-rate="0" branch-rate="0" complexity="0">
@@ -3416,19 +3416,19 @@
             </method>
           </methods>
           <lines>
-            <line number="18" hits="0" branch="false"/>
-            <line number="19" hits="0" branch="false"/>
-            <line number="20" hits="0" branch="false"/>
-            <line number="21" hits="0" branch="false"/>
-            <line number="22" hits="0" branch="false"/>
-            <line number="23" hits="0" branch="false"/>
-            <line number="24" hits="0" branch="false"/>
-            <line number="25" hits="0" branch="false"/>
-            <line number="26" hits="0" branch="false"/>
-            <line number="27" hits="0" branch="false"/>
-            <line number="28" hits="0" branch="false"/>
-            <line number="29" hits="0" branch="false"/>
-            <line number="30" hits="0" branch="false"/>
+            <line number="18" hits="1" branch="false"/>
+            <line number="19" hits="1" branch="false"/>
+            <line number="20" hits="1" branch="false"/>
+            <line number="21" hits="1" branch="false"/>
+            <line number="22" hits="1" branch="false"/>
+            <line number="23" hits="1" branch="false"/>
+            <line number="24" hits="1" branch="false"/>
+            <line number="25" hits="1" branch="false"/>
+            <line number="26" hits="1" branch="false"/>
+            <line number="27" hits="1" branch="false"/>
+            <line number="28" hits="1" branch="false"/>
+            <line number="29" hits="1" branch="false"/>
+            <line number="30" hits="1" branch="false"/>
             <line number="60" hits="0" branch="false"/>
             <line number="61" hits="0" branch="false"/>
             <line number="63" hits="0" branch="false"/>
