@@ -22,7 +22,6 @@ BugReports: https://github.com/genentech/phase1b/issues
 Depends:
     R (>= 3.6)
 Suggests:
-    ggplot2
     rmarkdown,
     bookdown,
     knitr,
