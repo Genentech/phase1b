@@ -130,9 +130,6 @@
     <loc>https://genentech.github.io/phase1b/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://genentech.github.io/phase1b/reference/myPlot.html</loc>
-  </url>
-  <url>
     <loc>https://genentech.github.io/phase1b/reference/myPlotDiff.html</loc>
   </url>
   <url>
@@ -164,6 +161,9 @@
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/pbetadiff.html</loc>
+  </url>
+  <url>
+    <loc>https://genentech.github.io/phase1b/reference/plotBeta.html</loc>
   </url>
   <url>
     <loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc>
