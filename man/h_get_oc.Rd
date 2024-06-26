@@ -10,10 +10,6 @@ h_get_oc(all_sizes, Nmax, decision)
 \item{all_sizes}{(\code{numeric}):\cr sample sizes of all looks simulated \code{length(sim)} times if \code{dist} applied.}
 
 \item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zone decisions of all looks simulated \code{length(sim)} times.}
-
-\item{nnrE}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnE}.}
-
-\item{nnrF}{(\code{numeric}):\cr looks with random distance, if applied on \code{nnF}.}
 }
 \value{
 A list of results containing :

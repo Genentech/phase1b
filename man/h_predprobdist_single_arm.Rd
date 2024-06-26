@@ -42,8 +42,6 @@ and each row corresponds to each component of a beta-mixture distribution for th
 \item{weightsS}{(\code{numeric}):\cr weights for the \code{S} group.}
 
 \item{thetaT}{(\code{number}):\cr threshold on the probability to be used.}
-
-\item{density}{(\code{numeric}):\cr the beta binomial mixed density for future success in \code{Nmax-n} patients in the \code{E} group.}
 }
 \value{
 A \code{list} is returned with names \code{result} for predictive probability and
