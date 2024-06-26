@@ -26,10 +26,6 @@
 #' @export
 boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
   z <- matrix(NA, nrow = length(nvec), ncol = 8)
-  # dimnames(z) <- list(nvec, c(
-  #   "xL", "pL", "postL",
-  #   "xU", "pU", "postU"
-  # ))
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
     "xU", "pU", "postU", "pU_lower_ci"
@@ -42,12 +38,12 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp <- postprob(x, n, p0, parE = c(a, b)) # futility look
+      postp <- 1 - postprob(x, n, p0, parE = c(a, b)) # futility look
       if (postp >= tL) { # Rule is P(RR < p0) > tL
         postL <- postp
         xL <- x
       }
-      postp <- 1 - postprob(x, n, p1, parE = c(a, b)) # efficacy look
+      postp <- postprob(x, n, p1, parE = c(a, b)) # efficacy look
       if (postp >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp
         xU <- x
@@ -67,7 +63,6 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
       postU,
       pU_lower_ci
     )
-    break
   }
   round(data.frame(nvec, z), 4)
 }
