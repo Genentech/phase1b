@@ -2,44 +2,37 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @param alpha first parameter of the Beta distribution
-#' @param beta second parameter of the Beta distribution
-#' @param \dots additional arguments to \code{plot}
-#' @return nothing, only produces the plot as side effect
+#' @inheritParams dbetabinom
+#' @typed alpha : number
+#'  first parameter of the Beta distribution
+#' @typed beta : number
+#'  second parameter of the Beta distribution
+#' @return A beta distribution density plot
 #'
 #' @importFrom graphics axis
 #'
-#' @example examples/myPlot.R
+#' @example examples/plotBeta.R
 #' @export
 #' @keywords graphics
-myPlot <- function(alpha, beta, ...) {
-  grid <- seq(from = 0, to = 1, length = 1000)
-  xticks <- seq(from = 0, to = 1, by = 0.25)
-
-  plot(
-    x = grid,
-    y = dbeta(grid, alpha, beta),
-    ylab = "",
-    xaxt = "n",
-    yaxt = "n",
-    type = "l",
-    xaxs = "i",
-    yaxs = "i",
-    ...
+plotBeta <- function(alpha, beta, ...) {
+  x_support <- seq(from = 0, to = 1, length = 1000)
+  data <- data.frame(
+    grid = x_support,
+    xticks = seq(from = 0, to = 1, by = 0.25),
+    density = dbeta(x_support, alpha, beta)
   )
-
-  graphics::axis(
-    side = 1, at = xticks,
-    labels = paste(xticks * 100, "%", sep = "")
-  )
+  ggplot2::ggplot(data) +
+    ggplot2::geom_line(ggplot2::aes(x = grid, y = density)) +
+    ggplot2::ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
+    ggplot2::xlab("response rate") +
+    ggplot2::ylab(quote(f(x))) +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_line(linewidth = 0.5)) +
+    ggplot2::scale_x_continuous(labels = scales::percent_format())
 }
-
-
-
 
 #' Plot Diff Between two Beta distributions
 #'
-#' This function will plot the PDF of a diffience between two Beta distributions
+#' This function will plot the PDF of a difference between two Beta distributions
 #'
 #' @param parY non-negative parameters of the treatment Beta distribution.
 #' @param parX non-negative parameters of the historical control Beta distribution
