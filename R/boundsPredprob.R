@@ -45,15 +45,13 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b) {
     xU <- NA
     for (x in 0:n) {
       pp <- predprob(x, n, Nmax, p0, tT, parE = c(a, b))$result
-      if (pp >= phiU) { # Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
-        xU <- x
-        ppU <- ppL
-      }
-      predprob(x, n, Nmax, p0, tT, parE = c(a, b))$result
-      if (pp <= phiL) { # Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+      if (pp <= phiL) { # Futility look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
         xL <- x
         ppL <- pp
-        # done: leave innermost for loop
+      }
+      if (pp >= phiU) { # Efficacy look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+        xU <- x
+        ppU <- pp
         break
       }
     }
@@ -62,8 +60,6 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b) {
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries
-    ppL <- predprob(xL, n, Nmax, p0, tT, parE = c(a, b))$result
-    ppU <- predprob(xU, n, Nmax, p0, tT, parE = c(a, b))$result
     postL <- postprob(xL, n, p0, parE = c(a, b))
     postU <- postprob(xU, n, p0, parE = c(a, b))
     # calculate lower CI at boundaries

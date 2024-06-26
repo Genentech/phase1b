@@ -29,15 +29,22 @@
 #' @export
 #' @keywords graphics
 boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
-  z <- matrix(NA, length(nvec), 6)
-  dimnames(z) <- list(nvec, c(
-    "xL", "pL", "postL",
-    "xU", "pU", "postU"
-  ))
+  z <- matrix(NA, length(nvec), ncol = 6)
+  # dimnames(z) <- list(nvec, c(
+  #   "xL", "pL", "postL",
+  #   "xU", "pU", "postU"
+  # ))
+  # znames <- c(
+  #   "xL", "pL", "postL", "UciL",
+  #   "xU", "pU", "postU", "LciU"
+  # )
+
   znames <- c(
-    "xL", "pL", "postL", "UciL",
-    "xU", "pU", "postU", "LciU"
+    "xL", "pL", "postL", "pL_upper_ci",
+    "xU", "pU", "postU", "pU_lower_ci"
   )
+  dimnames(z) <- list(nvec, znames)
+
   z <- matrix(NA, length(nvec), length(znames))
   dimnames(z) <- list(nvec, znames)
   k <- 0
