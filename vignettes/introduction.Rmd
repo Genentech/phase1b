@@ -143,6 +143,7 @@ The first time you use `phase1b` on your own computer you will need to download
 and install it, however, subsequent use will only require calling of the R-package.
 ```{r install-phase1b, eval=FALSE}
 install.packages("phase1b")
+install.packages("ggplot2")
 ```
 
 # Getting started {#getting-started}
@@ -153,6 +154,7 @@ following the instructions in the [Installation section](#installation) with the
 following command:
 ```{r load}
 library(phase1b)
+library(ggplot2)
 ```
 Once loaded, you will have access to all of the functions in the `phase1b`
 R-package. To see a list of all of the functions in the `phase1b` R-package,
@@ -644,9 +646,8 @@ a PET-CR rate of 68.75%, then our posterior updating based on the prior distribu
 observed data would lead to a $\text{Beta}(60.75,29.25)$ posterior distribution for the
 novel combination PET-CR rate.
 
-
-Alternatively, we could use the R-package function `myPlot()` to achieve the
-same result, see Figure~\@ref(fig:ex1-prior_myPlot).
+Alternatively, we could use the R-package function `plotBeta()` to achieve the
+same result, see Figure~\@ref(fig:ex1-prior_plotBeta1) and Figure~\@ref(fig:ex1-prior_plotBeta2).
 
 ```{r, echo = FALSE}
 ex1_prior_myplot_cap <- paste(
@@ -655,17 +656,23 @@ ex1_prior_myplot_cap <- paste(
   "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel",
   "combination treatment group."
 )
-```
-
-```{r ex1-prior_myPlot, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
-myPlot(75, 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
-par(new = TRUE)
-myPlot(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
-legend("topright", c("Hist. Control", "Novel Combo"),
-  lwd = 2, lty = 1,
-  col = c("darkgrey", "deepskyblue"), bty = "n"
+ex1_prior_myplot_cap <- paste(
+  "The prior distributions for the historical control and novel combination",
+  "treatment group. A $\text{Beta}(75,75)$ prior is used for the historical",
+  "control, and a $\text{Beta}(5.75,4.25)$ prior is used for the novel",
+  "combination treatment group."
 )
 ```
+
+```{r ex1_prior_plotBeta, echo=TRUE, fig.cap = ex1_prior_myplot_cap}
+plotBeta(alpha = 75, beta = 75, col = "darkgrey", ylim = c(0, 10), xlab = "PET-CR Rate", lwd = 2)
+```
+
+For the Novel combination, the following posterior has been updated.
+```{r ex1_prior_plotBeta2, fig.cap = ex1_prior_myplot_cap}
+plotBeta(5.75, 4.25, col = "deepskyblue", ylim = c(0, 10), lwd = 2, xlab = "")
+```
+
 
 The following code allows the reader to visualize
 the posterior distribution for the PET-CR rate against the posterior distribution of
@@ -763,7 +770,7 @@ results <- ocPostprob(
   tL = 0.6,
   tU = 0.8,
   parE = c(1, 1),
-  sim = 10000,
+  sim = 100,
   wiggle = FALSE,
   nnF = c(10, 20, 30)
 )
