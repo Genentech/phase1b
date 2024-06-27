@@ -63,11 +63,11 @@ probability to be below \code{p0} is larger than \code{tL}:
 
 Stop criteria for Efficacy :
 
-\code{Pr(truep > p1) > tU}
+\code{Pr(RR > p1) > tU}
 
 Stop criteria for Futility :
 
-\code{Pr(truep < p0) > tL}
+\code{Pr(RR < p0) > tL}
 
 Resulting operating characteristics include the following:
 \itemize{
