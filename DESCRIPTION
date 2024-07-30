@@ -23,6 +23,7 @@ BugReports: https://github.com/genentech/phase1b/issues
 Depends:
     R (>= 3.6)
 Suggests:
+    scales,
     rmarkdown,
     bookdown,
     knitr,
@@ -33,6 +34,7 @@ Suggests:
     reshape,
     testthat (>= 3.0.0)
 Imports:
+    ggplot2,
     checkmate,
     devtools,
     lifecycle
@@ -43,7 +45,7 @@ Language: en-US
 LazyData: true
 Roxygen:
     list(markdown = TRUE, packages = "roxytypes")
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Config/Needs/documentation:
     roxytypes
 Remotes:
