@@ -10,7 +10,7 @@ author:
   - name: Jiawen Zhu
     email: zhu.jiawen@gene.com
   - name: Daniel Sabanes Bove
-    email: daniel.sabanes_bove@roche.com
+    email: daniel@rconis.com
 output:
   bookdown::html_document2:
           theme: "spacelab"
