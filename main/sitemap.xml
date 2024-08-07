@@ -1,207 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://genentech.github.io/phase1b/404.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/PULL_REQUEST_TEMPLATE.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/SECURITY.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/articles/test.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ASLdata.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ATEdata.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/Phase1b-package.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/TTEdata.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/boundsPostprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/boundsPredprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/dbetaMix.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/dbetabinom.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/dbetabinomMix.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/dbetadiff.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_decision_one_RctpredprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_decision_one_predprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_decision_two_RctpredprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_decision_two_predprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_dist0.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_getBetamixPost.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_bounds.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_decision.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_decisionDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_decisionDist_rct.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_decision_one_predprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_decision_two_predprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_distance.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_looks.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_oc.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_get_oc_rct.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_integrand.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_integrand_relDelta.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_predprobdist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/h_predprobdist_single_arm.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/myPlotDiff.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/oc2.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/oc3.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocPostprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocPostprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocPredprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocPredprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocRctPostprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/ocRctPredprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/pbetaMix.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/pbetadiff.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/plotBeta.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/plotDecision.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/plotOc.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/postprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/postprobBeta.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/postprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/predprob.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/predprobDist.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/qbetaMix.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/qbetadiff.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/runShinyPhase1b.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/sumBetadiff.html</loc>
-  </url>
-  <url>
-    <loc>https://genentech.github.io/phase1b/reference/sumTable.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://genentech.github.io/phase1b/404.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/CONTRIBUTING.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/LICENSE-text.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/PULL_REQUEST_TEMPLATE.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/SECURITY.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/articles/index.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/articles/introduction.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/articles/test.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/authors.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/index.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/news/index.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ASLdata.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ATEdata.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/Phase1b-package.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/TTEdata.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/boundsPostprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/boundsPredprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/dbetaMix.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/dbetabinom.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/dbetabinomMix.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/dbetadiff.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_decision_one_RctpredprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_decision_one_predprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_decision_two_RctpredprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_decision_two_predprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_dist0.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_getBetamixPost.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_bounds.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_decision.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_decisionDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_decisionDist_rct.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_decision_one_predprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_decision_two_predprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_distance.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_looks.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_oc.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_get_oc_rct.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_integrand.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_integrand_relDelta.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_predprobdist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/h_predprobdist_single_arm.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/index.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/myPlotDiff.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/oc2.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/oc3.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocPostprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocPostprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocPredprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocPredprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocRctPostprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/ocRctPredprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/pbetaMix.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/pbetadiff.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/plotBeta.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/plotDecision.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/plotOc.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/postprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/postprobBeta.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/postprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/predprob.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/predprobDist.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/qbetaMix.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/qbetadiff.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/runShinyPhase1b.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/sumBetadiff.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/sumTable.html</loc></url>
 </urlset>
+

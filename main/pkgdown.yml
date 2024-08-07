@@ -1,11 +1,10 @@
 pandoc: '3.2'
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
   test: test.html
-last_built: 2024-06-26T11:59Z
+last_built: 2024-08-07T07:21Z
 urls:
   reference: https://genentech.github.io/phase1b/reference
   article: https://genentech.github.io/phase1b/articles
-
