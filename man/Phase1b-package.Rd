@@ -19,10 +19,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+\strong{Maintainer}: Daniel Sabanes Bove \email{daniel@rconis.com}
 
 Authors:
 \itemize{
+  \item Audrey Yeo \email{audrey.yeo@roche.com}
   \item Markus Elze \email{markus.elze@roche.com}
   \item Tony Pourmohamad \email{pourmoht@gene.com}
   \item Jiawen Zhu \email{zhu.jiawen@gene.com}
