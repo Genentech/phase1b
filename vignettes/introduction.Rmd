@@ -166,8 +166,7 @@ help(package = "phase1b")
 
 A list of functions will be displayed and you can learn more about each function,
 and see examples of its use, by clicking on its corresponding link.
-Note that this will easiest work in R-Studio
-((https://www.rstudio.com/products/rstudio/download/)), which
+Note that this will easiest work in [R-Studio](https://posit.co/download/rstudio-desktop/), which
 is the recommended software for editing and using R.
 
 # Methods and Models {#methods}

@@ -39,7 +39,7 @@ You can install the development version of phase1b from
 [GitHub](https://github.com/) with:
 
 ```r
-devtools::install_github("https://github.com/Genentech/phase1b", force = TRUE)
+devtools::install_github("https://github.com/Genentech/phase1b/", force = TRUE)
 library(phase1b)
 ```
 
@@ -55,4 +55,4 @@ To cite `phase1b` :
 Yeo, A T, Sabanés Bové D, Elze M, Pourmohamad T, Zhu J, Lymp J, Teterina
 A (2024). Phase1b : Calculations for decisions on Phase 1b clinical
 trials. R package version 1.0.0, \<
-<https://genentech.github.io/phase1b>\>
+<https://genentech.github.io/phase1b/>\>
