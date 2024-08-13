@@ -7,45 +7,48 @@
 boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
 }
 \arguments{
-\item{nvec}{(\code{numeric}):\cr A vector of number of patients in each look.}
+\item{nvec}{a vector of number of patients}
 
-\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
+\item{p0}{the efficacy threshold parameter in the postprob function}
 
-\item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
+\item{p1}{the futility threshold parameter in the postprob function
+(default = p0)}
 
-\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
+\item{tL}{futility boundary probability threshold}
 
-\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
+\item{tU}{efficacy boundary probability threshold}
+
+\item{a}{the alpha parameter of the beta prior of treatment group}
+
+\item{b}{the beta parameter of the beta prior of treatment group}
 }
 \value{
-A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
-\itemize{
-\item \code{xL} : the maximum number of responses that meet the futility.
-threshold
-\item \code{pL} : response rate corresponding to \code{xL}.
-\item \code{postL}: posterior probability corresponding to \code{xL}.
-\item \code{pL_upper_ci} : upper bound of one sided 95\% CI for the response rate \code{pL} based on an
-exact binomial test.
-\item \code{xU} : the minimal number of responses that meet the efficacy threshold.
-\item \code{pU} : response rate corresponding to \code{xU}.
-\item \code{postU} : posterior probability corresponding to \code{xU}.
-\item \code{pU_lower_ci} : lower bound of one sided 95\% CI for the response rate \code{pU} based on exact
-binomial test.
-}
+A matrix where for each sample size in \code{nvec}, this function
+returns the maximum number of responses that meet the futility
+threshold (xL), its corresponding response rate (pL), posterior probability
+(postL), upper bound of one sided 95\% CI for the response rate based on an
+exact binomial test (UciL), and the same boundary parameters for efficacy:
+the minimal number of responses that meet the efficacy threshold (xU),
+the corresponding response rate (pU), posterior probability (postU) and
+the lower bound of one sided 95\% CI for the response rate based on exact
+binomial test (LciU).
 }
 \description{
 This function is used to identify the efficacy and futility
-boundaries based on the following rules:
-Efficacy boundary: find minimum x (xU) where Pr(P > p1 |x, n, a, b) >= tU and
-Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
+boundaries based on posterior probabilities, i.e.:
+Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
+Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
 }
 \examples{
-# 40 pts trial with interim looks after each 10 pts.,
-# Efficacy decision if more than 60\% probability to be above 20\% ORR,
-# Futility decision if less than 60\% probability to be below 20\% ORR,
-# with uniform prior (i.e. beta(1, 1)) on the ORR:
+## 40 pts trial with interim looks after each 10 pts.,
+## efficacy decision if more than 90\% probability to be above 20\% ORR,
+## futility decision if less than 10\% probability to be above 20\% ORR,
+## with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
-  nvec = c(10, 20, 30, 40), p0 = 0.20, p1 = 0.2,
-  tL = 0.60, tU = 0.60, a = 1, b = 1
+  nvec = c(10, 20, 30, 40), p0 = 0.20,
+  tL = 0.10, tU = 0.90, a = 1, b = 1
 )
+## From this we see e.g. that at the third IA at 30 pts, we would stop for futility
+## if 5 or less patients responded, and for efficacy if 9 or more pts responded.
 }
+\keyword{graphics}
