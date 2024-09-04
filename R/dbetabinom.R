@@ -174,12 +174,15 @@ pbetaMix <- function(q, par, weights, lower.tail = TRUE, skipchecks = FALSE) {
     assert_matrix(par)
     assert_flag(lower.tail)
   }
-  degree <- length(weights)
-  X <- rep(q, each = degree)
 
-  Z <- pbeta(X, par[, 1], par[, 2], lower.tail = lower.tail)
-  Z2 <- matrix(Z, nrow = degree, ncol = length(q))
-  as.numeric(weights %*% Z2)
+  degree <- length(weights)
+  component_p <- matrix(
+    pbeta(rep(q, each = degree), par[, 1], par[, 2], lower.tail = lower.tail),
+    nrow = degree,
+    ncol = length(q)
+  )
+
+  as.numeric(weights %*% component_p)
 }
 
 
@@ -208,6 +211,9 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   assert_matrix(par)
   assert_flag(lower.tail)
 
+  grid <- seq(0, 1, len = 31)
+  f_grid <- pbetaMix(grid, par, weights, lower.tail = lower.tail, skipchecks = TRUE)
+
   sapply(p, function(p) {
     # special cases
     if (p == 0) {
@@ -217,9 +223,14 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
       return(1)
     }
 
+    diff <- f_grid - p
+    pos <- diff > 0
+    grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
+
     uniroot(
       f = function(q) pbetaMix(q, par, weights, lower.tail = lower.tail, skipchecks = TRUE) - p,
-      interval = c(0, 1),
+      # interval = c(0, 1),
+      interval = grid_interval,
       f.lower = -p,
       f.upper = 1 - p,
       tol = sqrt(.Machine$double.eps)
