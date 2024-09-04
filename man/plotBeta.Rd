@@ -4,7 +4,7 @@
 \alias{plotBeta}
 \title{Plot the Beta distribution}
 \usage{
-plotBeta(alpha, beta)
+plotBeta(alpha, beta, ...)
 }
 \arguments{
 \item{alpha}{(\code{number}):\cr first parameter of the Beta distribution}
