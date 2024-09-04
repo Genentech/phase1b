@@ -124,14 +124,20 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
   assert_true(all.equal(sum(weights), 1))
   assert_true(identical(length(weights), nrow(par)))
-  ret <- sum(weights * dbeta(x, par[, 1], par[, 2]))
+  degree <- length(weights)
+
+  component_densities <- matrix(
+    dbeta(rep(x, each = degree), par[, 1], par[, 2]),
+    nrow = degree,
+    ncol = length(x)
+  )
+  ret <- as.numeric(weights %*% component_densities)
   if (log) {
     log(ret)
   } else {
     ret
   }
 }
-dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 
 #' Beta-Mixture CDF
@@ -150,20 +156,31 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #' @typed lower.tail : flag
 #'  if `TRUE` (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
+#' @typed skipchecks : flag
+#'   Don't check arguments `q`, `weights`, `par`, `lower.tail`.
+#'   Useful to speed up execution within functions where values
+#'   are known to be correct.
 #' @return The (one minus) cdf value
 #'
 #' @note `q` can be a vector.
 #'
 #' @example examples/pbetaMix.R
+#' @importFrom stats pbeta
 #' @export
-pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
-  assert_number(q, lower = 0, upper = 1, finite = TRUE)
-  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
-  assert_matrix(par)
-  assert_flag(lower.tail)
-  sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
+pbetaMix <- function(q, par, weights, lower.tail = TRUE, skipchecks = FALSE) {
+  if (isFALSE(skipchecks)) {
+    assert_numeric(q, lower = 0, upper = 1, finite = TRUE)
+    assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
+    assert_matrix(par)
+    assert_flag(lower.tail)
+  }
+  degree <- length(weights)
+  X <- rep(q, each = degree)
+
+  Z <- pbeta(X, par[, 1], par[, 2], lower.tail = lower.tail)
+  Z2 <- matrix(Z, nrow = degree, ncol = length(q))
+  as.numeric(weights %*% Z2)
 }
-pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 
 
 #' Beta-Mixture Quantile Function
@@ -186,23 +203,26 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #' @example examples/qbetaMix.R
 #' @export
 qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
-  f <- function(pi) {
-    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - p
-  }
-  # Note: we give the lower and upper function values here in order to avoid problems for
-  # p = 0 or p = 1.
-  unirootResult <- uniroot(
-    f,
-    lower = 0, upper = 1,
-    f.lower = -p, f.upper = 1 - p,
-    tol = sqrt(.Machine$double.eps) # Increase the precision over default `tol`.
-  )
-  if (unirootResult$iter < 0) {
-    NA
-  } else {
-    assert_number(unirootResult$root)
-    assert_true(all.equal(f(unirootResult$root), 0, tolerance = 0.001))
-    unirootResult$root
-  }
+  assert_numeric(p, lower = 0, upper = 1)
+  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
+  assert_matrix(par)
+  assert_flag(lower.tail)
+
+  sapply(p, function(p) {
+    # special cases
+    if (p == 0) {
+      return(0)
+    }
+    if (p == 1) {
+      return(1)
+    }
+
+    uniroot(
+      f = function(q) pbetaMix(q, par, weights, lower.tail = lower.tail, skipchecks = TRUE) - p,
+      interval = c(0, 1),
+      f.lower = -p,
+      f.upper = 1 - p,
+      tol = sqrt(.Machine$double.eps)
+    )$root
+  })
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")

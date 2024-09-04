@@ -81,18 +81,25 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     if (missing(weights)) {
       weights <- rep(1, nrow(parE))
     }
-    betamixPost <- h_getBetamixPost(
-      x = x,
+    betamixPost <- lapply(
+      x,
+      h_getBetamixPost,
       n = n,
       par = parE,
       weights = weights
     )
+  } else {
+    assert_list(betamixPost)
+    assert_names(names(betamixPost), identical.to = c("par", "weights"))
+    betamixPost <- list(betamixPost)
   }
-  assert_list(betamixPost)
-  assert_names(names(betamixPost), identical.to = c("par", "weights"))
-  ret <- with(
+
+  ret <- vapply(
     betamixPost,
-    pbetaMix(q = p, par = par, weights = weights, lower.tail = FALSE)
+    FUN = function(bmp) {
+      pbetaMix(q = p, par = bmp$par, weights = bmp$weights, lower.tail = FALSE, skipchecks = TRUE)
+    },
+    FUN.VALUE = numeric(length(p))
   )
 
   if (log.p) {
@@ -101,4 +108,3 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
     ret
   }
 }
-postprob <- Vectorize(postprob, vectorize.args = "x")

@@ -2,7 +2,6 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @inheritParams dbetabinom
 #' @typed alpha : number
 #'  first parameter of the Beta distribution
 #' @typed beta : number
@@ -14,7 +13,7 @@
 #' @example examples/plotBeta.R
 #' @export
 #' @keywords graphics
-plotBeta <- function(alpha, beta, ...) {
+plotBeta <- function(alpha, beta) {
   x_support <- seq(from = 0, to = 1, length = 1000)
   data <- data.frame(
     grid = x_support,
