@@ -65,25 +65,27 @@ test_that("h_decision_two_predprobDist gives correct result and list", {
 
 test_that("ocPredprobDist gives correct result and list when relativeDelta = FALSE", {
   set.seed(1989)
-  expect_warning({
-    result <- ocPredprobDist(
-      nnE = c(10, 20, 30),
-      truep = 0.40,
-      deltaE = 0.5,
-      deltaF = 0.5,
-      relativeDelta = FALSE,
-      tT = 0.6,
-      phiU = 0.80,
-      phiFu = 0.7,
-      parE = c(1, 1),
-      parS = c(5, 25),
-      weights = 1,
-      weightsS = 1,
-      sim = 50,
-      nnF = c(10, 20, 30),
-      wiggle = TRUE,
-      decision1 = FALSE
-    )},
+  expect_warning(
+    {
+      result <- ocPredprobDist(
+        nnE = c(10, 20, 30),
+        truep = 0.40,
+        deltaE = 0.5,
+        deltaF = 0.5,
+        relativeDelta = FALSE,
+        tT = 0.6,
+        phiU = 0.80,
+        phiFu = 0.7,
+        parE = c(1, 1),
+        parS = c(5, 25),
+        weights = 1,
+        weightsS = 1,
+        sim = 50,
+        nnF = c(10, 20, 30),
+        wiggle = TRUE,
+        decision1 = FALSE
+      )
+    },
     "achieve convergence"
   )
   result_sum <- sum(result$oc[5:7])
