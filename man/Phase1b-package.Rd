@@ -23,12 +23,12 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Audrey Yeo \email{audrey.yeo@roche.com}
   \item Markus Elze \email{markus.elze@roche.com}
   \item Tony Pourmohamad \email{pourmoht@gene.com}
   \item Jiawen Zhu \email{zhu.jiawen@gene.com}
   \item James Lymp
   \item Anastasia Teterina \email{anastasia.teterina@roche.com}
+  \item Audrey Yeo \email{audrey.yeo@roche.com}
 }
 
 Other contributors:
