@@ -2,7 +2,6 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @inheritParams dbetabinom
 #' @typed alpha : number
 #'  first parameter of the Beta distribution
 #' @typed beta : number
