@@ -24,13 +24,13 @@ Phase I.
 
 The `phase1b` package provides a facility for early development study
 teams to decide on further development of a drug either through
-designing for phase 2 or 3, or expanding current cohorts. The prior
-distribution can incorporate any previous data via mixtures of beta
-distributions. Furthermore, based on an assumed true response rate if
-the novel drug was administered in the wider population, the package
-calculates the frequentist probability that a current clinical trial
-would be stopped for efficacy or futility conditional on true values of
-the response, otherwise known as operating characteristics.
+designing for phase 2 or 3, or expansion cohorts. The prior distribution
+can incorporate any previous data via mixtures of beta distributions.
+Furthermore, based on an assumed true response rate if the novel drug
+was administered in the wider population, the package calculates the
+frequentist probability that a current clinical trial would be stopped
+for efficacy or futility conditional on true values of the response,
+otherwise known as operating characteristics.
 
 The intended user is the early clinical trial statistician in the design
 and interim stage of their study and offers a flexible approach to
