@@ -7,7 +7,7 @@ output: github_document
 <img src="man/figures/hex_logo3.png" align = "right" alt="hex logo" style="display: inline-block; width:200px; margin: 0 auto auto auto;" />
 <!-- markdownlint-enable -->
 
-The `phase1`b package project is a a Bayesian approach to decision making in early development clinical trials.
+The `phase1b` package implements a Bayesian approach to decision making in early development clinical trials.
 As a background, the main purpose of early trials is to determine whether a novel treatment demonstrates sufficient safety and efficacy signals to warrant further investment (Lee & Liu, 2008).
 
 The new R package `phase1b` is a flexible toolkit that calculates many properties to this end, especially in the oncology therapeutic area. The primary focus of this package is on binary endpoints. The benefit of a Bayesian approach is the possibility to account for prior data (Thall & Simon, 1994) in that a new drug may have shown some signals of efficacy owing to its proposed mode of action, or similar activity based on prior data. The concept of the `phase1b` package is to evaluate the posterior probability that the response rate with a novel drug is better than with the current standard of care treatment in early phase trials such as Phase I.
