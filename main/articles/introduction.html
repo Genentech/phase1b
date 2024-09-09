@@ -45,12 +45,6 @@
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
 <ul class="navbar-nav">
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/genentech/phase1b"><span class="fa fa-github"></span></a></li>
       </ul>
@@ -80,7 +74,7 @@ Zhu</h4>
       
                               <h4 data-toc-skip class="author">Daniel
 Sabanes Bove</h4>
-                  <a class="author_email" href="mailto:#"></a><a href="mailto:daniel.sabanes_bove@roche.com" class="email">daniel.sabanes_bove@roche.com</a>
+                  <a class="author_email" href="mailto:#"></a><a href="mailto:daniel@rconis.com" class="email">daniel@rconis.com</a>
       
                   
       
@@ -155,8 +149,8 @@ help pages, you should execute the following command:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"phase1b"</span><span class="op">)</span></span></code></pre></div>
 <p>A list of functions will be displayed and you can learn more about
 each function, and see examples of its use, by clicking on its
-corresponding link. Note that this will easiest work in R-Studio ((<a href="https://www.rstudio.com/products/rstudio/download/" class="external-link uri">https://www.rstudio.com/products/rstudio/download/</a>)),
-which is the recommended software for editing and using R.</p>
+corresponding link. Note that this will easiest work in <a href="https://posit.co/download/rstudio-desktop/" class="external-link">R-Studio</a>, which is
+the recommended software for editing and using R.</p>
 </div>
 <div class="section level2">
 <h2 id="methods">Methods and Models<a class="anchor" aria-label="anchor" href="#methods"></a>
@@ -849,7 +843,7 @@ posterior distribution for the novel combination PET-CR rate.</p>
 Figure~@ref(fig:ex1-prior_plotBeta1) and
 Figure~@ref(fig:ex1-prior_plotBeta2).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBeta.html">plotBeta</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">75</span>, beta <span class="op">=</span> <span class="fl">75</span>, col <span class="op">=</span> <span class="st">"darkgrey"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"PET-CR Rate"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBeta.html">plotBeta</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">75</span>, beta <span class="op">=</span> <span class="fl">75</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/ex1_prior_plotBeta-1.png" alt="The prior distributions for the historical control and novel combination treatment group. A $    ext{Beta}(75,75)$ prior is used for the historical control, and a $ ext{Beta}(5.75,4.25)$ prior is used for the novel combination treatment group." width="700"><p class="caption">
 The prior distributions for the historical control and novel combination
@@ -861,7 +855,7 @@ combination treatment group.
 <p>For the Novel combination, the following posterior has been
 updated.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBeta.html">plotBeta</a></span><span class="op">(</span><span class="fl">5.75</span>, <span class="fl">4.25</span>, col <span class="op">=</span> <span class="st">"deepskyblue"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>, xlab <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotBeta.html">plotBeta</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">5.75</span>, beta <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="introduction_files/figure-html/ex1_prior_plotBeta2-1.png" alt="The prior distributions for the historical control and novel combination treatment group. A $   ext{Beta}(75,75)$ prior is used for the historical control, and a $ ext{Beta}(5.75,4.25)$ prior is used for the novel combination treatment group." width="700"><p class="caption">
 The prior distributions for the historical control and novel combination
@@ -1567,7 +1561,7 @@ B. Rubin. 2013. <em>Bayesian Data Analysis, Third Edition</em>. Chapman
 </div>
 <div id="ref-held-sabanes-2015" class="csl-entry">
 Held, Leonhard, and Daniel Sabanés Bové. 2015. <em>Applied Statistical
-Inference: Likelihood and Bayes</em>. Springer. <a href="http://www.springer.com/us/book/9783642378867" class="external-link">http://www.springer.com/us/book/9783642378867</a>.
+Inference: Likelihood and Bayes</em>. Springer. <a href="https://link.springer.com/book/10.1007/978-3-642-37887-4" class="external-link">https://link.springer.com/book/10.1007/978-3-642-37887-4</a>.
 </div>
 </div>
 </div>
@@ -1578,7 +1572,7 @@ Inference: Likelihood and Bayes</em>. Springer. <a href="http://www.springer.com
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Daniel Sabanes Bove, Markus Elze, Tony Pourmohamad, Jiawen Zhu, James Lymp, Anastasia Teterina, F. Hoffmann-La Roche Ltd.</p>
+  <p>Developed by Daniel Sabanes Bove, Markus Elze, Tony Pourmohamad, Jiawen Zhu, James Lymp, Anastasia Teterina, Audrey Yeo, F. Hoffmann-La Roche Ltd.</p>
 </div>
 
 <div class="pkgdown-footer-right">
