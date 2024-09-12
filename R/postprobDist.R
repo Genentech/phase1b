@@ -178,8 +178,6 @@ postprobDist <- function(x,
   activeBetamixPost <- lapply(x, function(x) h_getBetamixPost(x = x, n = n, par = parE, weights = weights))
 
   controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
-  # assert_names(names(activeBetamixPost), identical.to = c("par", "weights"))
-  # assert_names(names(controlBetamixPost), identical.to = c("par", "weights"))
   if (relativeDelta) {
     epsilon <- .Machine$double.xmin
     integrand <- h_integrand_relDelta
