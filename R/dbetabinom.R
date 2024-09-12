@@ -156,10 +156,6 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
 #' @typed lower.tail : flag
 #'  if `TRUE` (default), probabilities are `P[X <= x]`,
 #'  and otherwise `P[X > x]`.
-#' @typed skipchecks : flag
-#'   Don't check arguments `q`, `weights`, `par`, `lower.tail`.
-#'   Useful to speed up execution within functions where values
-#'   are known to be correct.
 #' @return The (one minus) cdf value
 #'
 #' @note `q` can be a vector.

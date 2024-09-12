@@ -16,10 +16,6 @@ corresponding to the beta parameters of the K components.}
 
 \item{lower.tail}{(\code{flag}):\cr if \code{TRUE} (default), probabilities are \code{P[X <= x]},
 and otherwise \code{P[X > x]}.}
-
-\item{skipchecks}{(\code{flag}):\cr Don't check arguments \code{q}, \code{weights}, \code{par}, \code{lower.tail}.
-Useful to speed up execution within functions where values
-are known to be correct.}
 }
 \value{
 The (one minus) cdf value
