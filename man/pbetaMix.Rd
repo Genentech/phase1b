@@ -4,7 +4,7 @@
 \alias{pbetaMix}
 \title{Beta-Mixture CDF}
 \usage{
-pbetaMix(q, par, weights, lower.tail = TRUE, skipchecks = FALSE)
+pbetaMix(q, par, weights, lower.tail = TRUE)
 }
 \arguments{
 \item{q}{(\code{number}):\cr the abscissa.}

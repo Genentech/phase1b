@@ -167,21 +167,21 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
 #' @example examples/pbetaMix.R
 #' @importFrom stats pbeta
 #' @export
-pbetaMix <- function(q, par, weights, lower.tail = TRUE, skipchecks = FALSE) {
-  if (isFALSE(skipchecks)) {
-    assert_numeric(q, lower = 0, upper = 1, finite = TRUE)
-    assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
-    assert_matrix(par)
-    assert_flag(lower.tail)
-  }
+pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
+  assert_numeric(q, lower = 0, upper = 1, finite = TRUE)
+  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
+  assert_matrix(par)
+  assert_flag(lower.tail)
+  .pbetaMix(q = q, par = par, weights = weights, lower.tail = lower.tail)
+}
 
+.pbetaMix <- function(q, par, weights, lower.tail) {
   degree <- length(weights)
   component_p <- matrix(
     pbeta(rep(q, each = degree), par[, 1], par[, 2], lower.tail = lower.tail),
     nrow = degree,
     ncol = length(q)
   )
-
   as.numeric(weights %*% component_p)
 }
 
@@ -212,7 +212,7 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   assert_flag(lower.tail)
 
   grid <- seq(0, 1, len = 31)
-  f_grid <- pbetaMix(grid, par, weights, lower.tail = lower.tail, skipchecks = TRUE)
+  f_grid <- .pbetaMix(grid, par, weights, lower.tail = lower.tail)
 
   sapply(p, function(p) {
     # special cases
@@ -228,7 +228,7 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
     grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
 
     uniroot(
-      f = function(q) pbetaMix(q, par, weights, lower.tail = lower.tail, skipchecks = TRUE) - p,
+      f = function(q) .pbetaMix(q, par, weights, lower.tail = lower.tail) - p,
       interval = grid_interval,
       f.lower = -p,
       f.upper = 1 - p,

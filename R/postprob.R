@@ -97,7 +97,7 @@ postprob <- function(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALS
   ret <- vapply(
     betamixPost,
     FUN = function(bmp) {
-      pbetaMix(q = p, par = bmp$par, weights = bmp$weights, lower.tail = FALSE, skipchecks = TRUE)
+      .pbetaMix(q = p, par = bmp$par, weights = bmp$weights, lower.tail = FALSE)
     },
     FUN.VALUE = numeric(length(p))
   )
