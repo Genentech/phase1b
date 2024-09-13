@@ -164,7 +164,7 @@ postprobDist <- function(x,
   if (missing(weightsS)) {
     weightsS <- rep(1, nrow(parS))
   }
-  assert_number(n, lower = x, finite = TRUE)
+  assert_number(n, lower = min(x), finite = TRUE)
   assert_numeric(x, lower = 0, upper = n, finite = TRUE)
   assert_number(nS, lower = 0, finite = TRUE)
   assert_number(xS, lower = 0, upper = nS, finite = TRUE)
@@ -174,10 +174,10 @@ postprobDist <- function(x,
   assert_numeric(weightsS, lower = 0, finite = TRUE)
   assert_numeric(parE, lower = 0, finite = TRUE)
   assert_numeric(parS, lower = 0, finite = TRUE)
-  activeBetamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
+
+  activeBetamixPost <- lapply(x, function(x) h_getBetamixPost(x = x, n = n, par = parE, weights = weights))
+
   controlBetamixPost <- h_getBetamixPost(x = xS, n = nS, par = parS, weights = weightsS)
-  assert_names(names(activeBetamixPost), identical.to = c("par", "weights"))
-  assert_names(names(controlBetamixPost), identical.to = c("par", "weights"))
   if (relativeDelta) {
     epsilon <- .Machine$double.xmin
     integrand <- h_integrand_relDelta
@@ -186,26 +186,26 @@ postprobDist <- function(x,
     integrand <- h_integrand
   }
   bounds <- h_get_bounds(controlBetamixPost = controlBetamixPost)
-  intRes <- integrate(
-    f = integrand,
-    lower =
-      max(
-        bounds[1],
-        ifelse(relativeDelta, 0, 0 - delta)
-      ),
-    upper =
-      min(
-        ifelse(relativeDelta, 1, 1 - delta),
-        bounds[2]
-      ),
-    delta = delta,
-    activeBetamixPost = activeBetamixPost,
-    controlBetamixPost = controlBetamixPost
+
+  integral_results <- lapply(
+    seq_along(x),
+    function(i, this_posterior = activeBetamixPost, input_x = x) {
+      intRes <- integrate(
+        f = integrand,
+        lower = max(bounds[1], ifelse(relativeDelta, 0, 0 - delta)),
+        upper = min(ifelse(relativeDelta, 1, 1 - delta), bounds[2]),
+        delta = delta,
+        activeBetamixPost = this_posterior[[i]],
+        controlBetamixPost = controlBetamixPost
+      )
+      if (intRes$message == "OK") {
+        intRes$value
+      } else {
+        warning("Integration failed for posterior based on x =", input_x[i], "\n", intRes$message)
+        NA_real_
+      }
+    }
   )
-  if (intRes$message == "OK") {
-    intRes$value
-  } else {
-    stop(intRes$message)
-  }
+
+  unlist(integral_results)
 }
-postprobDist <- Vectorize(postprobDist, vectorize.args = "x")
