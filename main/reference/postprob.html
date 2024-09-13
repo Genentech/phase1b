@@ -42,12 +42,6 @@ and beta parameters."><!-- Global site tag (gtag.js) - Google Analytics --><scri
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/genentech/phase1b"><span class="fa fa-github"></span></a></li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul></div>
 
 
@@ -141,6 +135,21 @@ the other arguments (except <code>p</code> and <code>log.p</code> of course).</p
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8226271</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">postprob</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">23</span>, n <span class="op">=</span> <span class="fl">23</span>, p <span class="op">=</span> <span class="fl">0.60</span>,</span></span>
+<span class="r-in"><span>  par <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.610230e-10 8.199326e-09 1.633863e-07 1.979370e-06 1.685148e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 1.084654e-04 5.515347e-04 2.281187e-03 7.835363e-03 2.269926e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] 5.614896e-02 1.198178e-01 2.226531e-01 3.637244e-01 5.278774e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] 6.893075e-01 8.226271e-01 9.142057e-01 9.657989e-01 9.891582e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] 9.974047e-01 9.995695e-01 9.999586e-01 9.999988e-01</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
