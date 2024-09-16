@@ -2,44 +2,37 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @param alpha first parameter of the Beta distribution
-#' @param beta second parameter of the Beta distribution
-#' @param \dots additional arguments to \code{plot}
-#' @return nothing, only produces the plot as side effect
+#' @inheritParams dbetabinom
+#' @typed alpha : number
+#'  first parameter of the Beta distribution
+#' @typed beta : number
+#'  second parameter of the Beta distribution
+#' @return A beta distribution density plot
 #'
 #' @importFrom graphics axis
 #'
-#' @example examples/myPlot.R
+#' @example examples/plotBeta.R
 #' @export
 #' @keywords graphics
-myPlot <- function(alpha, beta, ...) {
-  grid <- seq(from = 0, to = 1, length = 1000)
-  xticks <- seq(from = 0, to = 1, by = 0.25)
-
-  plot(
-    x = grid,
-    y = dbeta(grid, alpha, beta),
-    ylab = "",
-    xaxt = "n",
-    yaxt = "n",
-    type = "l",
-    xaxs = "i",
-    yaxs = "i",
-    ...
+plotBeta <- function(alpha, beta, ...) {
+  x_support <- seq(from = 0, to = 1, length = 1000)
+  data <- data.frame(
+    grid = x_support,
+    xticks = seq(from = 0, to = 1, by = 0.25),
+    density = dbeta(x_support, alpha, beta)
   )
-
-  graphics::axis(
-    side = 1, at = xticks,
-    labels = paste(xticks * 100, "%", sep = "")
-  )
+  ggplot2::ggplot(data) +
+    ggplot2::geom_line(ggplot2::aes(x = grid, y = density)) +
+    ggplot2::ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
+    ggplot2::xlab("response rate") +
+    ggplot2::ylab(quote(f(x))) +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_line(linewidth = 0.5)) +
+    ggplot2::scale_x_continuous(labels = scales::percent_format())
 }
-
-
-
 
 #' Plot Diff Between two Beta distributions
 #'
-#' This function will plot the PDF of a diffience between two Beta distributions
+#' This function will plot the PDF of a difference between two Beta distributions
 #'
 #' @typed parY : numeric
 #'  non-negative parameters of the treatment Beta distribution.
@@ -48,12 +41,13 @@ myPlot <- function(alpha, beta, ...) {
 #' @typed cut_B : number
 #'  a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate
 #' @typed cut_W : number
-#'  a poor improvement throshold, the upper boundary of a meaningfully poor improvement in response rate
-#' @typed shade :
-#'  paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
-#' @typed note : number
-#'  show values of the colored area, default value=1 as "yes". other numbers stands for "no"
-#' @typed \dots additional arguments to \code{plot}
+#'  a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate
+#' @typed shade : flag
+#'  paint the two areas under the curve, default value = TRUE
+#' @typed note : flag
+#'  show values of the colored area, default value = TRUE
+#' @typed ... :
+#'  additional arguments to `ggplot()`
 #' @return a ggplot object
 #'
 #' @example examples/myPlotDiff.R
@@ -63,12 +57,14 @@ myPlot <- function(alpha, beta, ...) {
 #'
 #' @export
 #' @keywords graphics
-plotBetaDist <- function(parY, # parameters of phase Ib trial;
+plotBetaDiff <- function(parY, # parameters of phase Ib trial;
                          parX, # parameters of HC;
                          cut_B = 0.20, # a meaningful improvement threshold;
                          cut_W = 0.1, # a poor improvement threshold;
-                         shade = 1, # paint the two areas under the curve, default: yes. other numbers stands for "no";
-                         note = 1, # show values of the colored area, default: yes. other numbers stands for "no";
+                         shade = TRUE, # paint the two areas under the curve,
+                         # default: yes. other numbers stands for "no";
+                         note = TRUE, # show values of the colored area,
+                         # default: yes. other numbers stands for "no";
                          ...) {
   if (note == 1) {
     graphics::par(mar = c(5, 15, 1, 15) + .1)

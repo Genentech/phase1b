@@ -34,7 +34,7 @@ test_that("predprob gives an error when x is a numeric", {
     p = 0.6,
     thetaT = 0.9,
     parE = c(0.6, 0.4)
-  ), "is not a multiple of replacement length")
+  ), "Must have length 1")
 })
 
 test_that("predprob gives an error when K columns of weights exceed rows parE", {
