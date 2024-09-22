@@ -69,11 +69,8 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
     xticks = seq(from = 0, to = 1, by = 0.25),
     density = dbetadiff(z = diff, parY = parY, parX = parX)
   )
-
   data$Stop <- ifelse(diff > -1 & diff < Stop_cut, TRUE, FALSE)
   data$Go <- ifelse(diff > Go_cut & diff < 1, TRUE, FALSE)
-
-  # shade the AUC for Go if difference was `lower` :
 
   Go_auc <- integrate(
     f = dbetadiff,
