@@ -7,11 +7,10 @@
 plotBetaDiff(
   parY,
   parX,
-  cut_B = 0.2,
-  cut_W = 0.1,
+  Go_cut = 0.2,
+  Stop_cut = 0.1,
   shade = TRUE,
-  note = TRUE,
-  ...
+  note = TRUE
 )
 }
 \arguments{
@@ -19,13 +18,13 @@ plotBetaDiff(
 
 \item{parX}{(\code{numeric}):\cr non-negative parameters of the historical control Beta distribution}
 
-\item{cut_B}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
-
-\item{cut_W}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
-
 \item{shade}{(\code{flag}):\cr paint the two areas under the curve, default value = TRUE}
 
 \item{note}{(\code{flag}):\cr show values of the colored area, default value = TRUE}
+
+\item{cut_B}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
+
+\item{cut_W}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 
 \item{...}{(``):\cr additional arguments to \code{ggplot()}}
 }
