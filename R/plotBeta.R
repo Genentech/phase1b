@@ -66,7 +66,6 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
-    xticks = seq(from = 0, to = 1, by = 0.25),
     density = dbetadiff(z = diff, parY = parY, parX = parX)
   )
   data$Stop <- ifelse(diff > -1 & diff < Stop_cut, TRUE, FALSE)
@@ -98,14 +97,15 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
     ggplot2::ggtitle(plot_title)
 
   if (shade == TRUE) {
-    pbetadiff_plot +
-      ggplot2::geom_area(data = filter(data, Go == TRUE), fill = "#009E73") +
-      ggplot2::geom_area(data = filter(data, Stop == TRUE), fill = "#D55E00")
+    pbetadiff_plot <- pbetadiff_plot +
+      ggplot2::geom_area(data = data[data$Go == TRUE, ], fill = "#009E73") +
+      ggplot2::geom_area(data = data[data$Stop == TRUE, ], fill = "#D55E00")
   }
 
   if (note == TRUE) {
-    pbetadiff_plot +
+    pbetadiff_plot <- pbetadiff_plot +
       ggplot2::annotate("text", x = -0.5, y = 4.25, label = Go_label, colour = "#009E73") +
       ggplot2::annotate("text", x = -0.5, y = 4.75, label = Stop_label, colour = "#D55E00")
   }
+  pbetadiff_plot
 }
