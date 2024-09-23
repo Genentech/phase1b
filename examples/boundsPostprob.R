@@ -4,7 +4,7 @@
 # with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
   nvec = c(10, 20, 30, 40),
-  p0 = 0.20,
+  p0 = 0.15,
   p1 = 0.20,
   tL = 0.60,
   tU = 0.80,
