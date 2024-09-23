@@ -4,7 +4,7 @@
 \alias{plotBeta}
 \title{Plot the Beta distribution}
 \usage{
-plotBeta(alpha, beta)
+plotBeta(alpha, beta, ...)
 }
 \arguments{
 \item{alpha}{(\code{number}):\cr first parameter of the Beta distribution}
@@ -18,6 +18,7 @@ A beta distribution density plot
 This function will plot the PDF of a beta distribution
 }
 \examples{
+# plotBeta
 plotBeta(alpha = 4, beta = 5)
 plotBeta(alpha = 1, beta = 1)
 }

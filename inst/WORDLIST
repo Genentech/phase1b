@@ -102,6 +102,7 @@ gelman
 Gelman
 generalizable
 geq
+ggplot
 grayzone
 grey
 Gsponer
@@ -201,6 +202,8 @@ renewcommand
 reproducibility
 responder
 responders
+roxygen
+Roxygen
 Sabanes
 sabanes
 Sabanés
@@ -243,6 +246,7 @@ USUBJID
 VAD
 vanillaBayes
 vanillaPP
+vbump
 Vehtari
 WeightedBayes
 weightedBetaPrior
