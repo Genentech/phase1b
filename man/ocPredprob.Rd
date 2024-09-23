@@ -117,6 +117,7 @@ The criteria for Decision 2 for Futility looks are :
 }
 }
 }
+<<<<<<< HEAD
 \examples{
 # Here we illustrate an example for Decision 1 with the following assumptions :
 # True response rate or truep of the treatment group = 40\%
@@ -238,3 +239,5 @@ result <- ocPredprob(
 )
 result$oc
 }
+=======
+>>>>>>> ab51030 ([skip roxygen] [skip vbump] Roxygen Man Pages Auto Update)
