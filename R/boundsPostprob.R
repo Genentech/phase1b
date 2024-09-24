@@ -7,9 +7,11 @@
 #'
 #' @inheritParams postprob
 #' @inheritParams ocPostprob
-#' @typed nvec : numeric
+#' @typed a : numeric
+#'
+#' @typed looks : numeric
 #'  A vector of number of patients in each look.
-#' @return A matrix for each same size in `nvec`. For each sample size, the following is returned:
+#' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
 #' - `xL` : the maximum number of responses that meet the futility.
 #'          threshold
 #' - `pL` : response rate corresponding to `xL`.
@@ -24,26 +26,30 @@
 #'
 #' @example examples/boundsPostprob.R
 #' @export
-boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
-  z <- matrix(NA, nrow = length(nvec), ncol = 8)
+boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
+  z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
     "xU", "pU", "postU", "pU_lower_ci"
   )
-  dimnames(z) <- list(nvec, znames)
+  dimnames(z) <- list(looks, znames)
   k <- 0
-  for (n in nvec) {
+  parE <- t(parE)
+  if (missing(weights)) {
+    weights <- rep(1, nrow(parE))
+  }
+  for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp <- 1 - postprob(x, n, p0, parE = c(a, b)) # futility look
+      postp <- 1 - postprob(x, n, p0, parE, weights) # futility look
       if (postp >= tL) { # Rule is P(RR < p0) > tL
         postL <- postp
         xL <- x
       }
-      postp <- postprob(x, n, p1, parE = c(a, b)) # efficacy look
+      postp <- postprob(x, n, p1, parE, weights) # efficacy look
       if (postp >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp
         xU <- x
@@ -64,5 +70,5 @@ boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
       pU_lower_ci
     )
   }
-  round(data.frame(nvec, z), 4)
+  round(data.frame(looks, z), 4)
 }

@@ -4,10 +4,10 @@
 \alias{boundsPostprob}
 \title{Decision cutpoints for boundary (based on posterior probability)}
 \usage{
-boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
+boundsPostprob(looks, p0, p1 = p0, tL, tU, parE, weights)
 }
 \arguments{
-\item{nvec}{(\code{numeric}):\cr A vector of number of patients in each look.}
+\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
@@ -16,9 +16,16 @@ boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
 \item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
+
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+corresponding to the beta parameters of the \code{K} components.}
+
+\item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
+
+\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
-A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
+A matrix for each same size in \code{looks}. For each sample size, the following is returned:
 \itemize{
 \item \code{xL} : the maximum number of responses that meet the futility.
 threshold
@@ -45,12 +52,25 @@ Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
 # Futility decision if more than 60\% probability to be below 20\% ORR,
 # with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
-  nvec = c(10, 20, 30, 40),
+  looks = c(10, 20, 30, 40),
   p0 = 0.15,
   p1 = 0.20,
   tL = 0.60,
   tU = 0.80,
-  a = 1,
-  b = 1
+  parE = c(1, 1)
+)
+
+# 40 pts trial with various interim looks.
+# Efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Futility decision if more than 60\% probability to be below 20\% ORR,
+# with mixed prior and weights:
+boundsPostprob(
+  looks = c(7, 20, 40),
+  p0 = 0.15,
+  p1 = 0.20,
+  tL = 0.60,
+  tU = 0.80,
+  parE = rbind(c(1, 19), c(2, 10)),
+  weights = c(0.2, 0.8)
 )
 }
