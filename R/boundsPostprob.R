@@ -7,8 +7,6 @@
 #'
 #' @inheritParams postprob
 #' @inheritParams ocPostprob
-#' @typed a : numeric
-#'
 #' @typed looks : numeric
 #'  A vector of number of patients in each look.
 #' @return A matrix for each same size in `looks`. For each sample size, the following is returned:

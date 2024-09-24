@@ -21,8 +21,6 @@ boundsPostprob(looks, p0, p1 = p0, tL, tU, parE, weights)
 corresponding to the beta parameters of the \code{K} components.}
 
 \item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
-
-\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
 A matrix for each same size in \code{looks}. For each sample size, the following is returned:
@@ -49,7 +47,7 @@ Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
 \examples{
 # 40 pts trial with interim looks after each 10 pts.,
 # Efficacy decision if more than 80\% probability to be above 20\% ORR,
-# Futility decision if more than 60\% probability to be below 20\% ORR,
+# Futility decision if more than 60\% probability to be below 15\% ORR,
 # with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
   looks = c(10, 20, 30, 40),
@@ -62,7 +60,7 @@ boundsPostprob(
 
 # 40 pts trial with various interim looks.
 # Efficacy decision if more than 80\% probability to be above 20\% ORR,
-# Futility decision if more than 60\% probability to be below 20\% ORR,
+# Futility decision if more than 60\% probability to be below 15\% ORR,
 # with mixed prior and weights:
 boundsPostprob(
   looks = c(7, 20, 40),
