@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Daniel Sabanes Bove \email{daniel.sabanes_bove@roche.com}
+\strong{Maintainer}: Daniel Sabanes Bove \email{daniel@rconis.com}
 
 Authors:
 \itemize{
@@ -28,6 +28,7 @@ Authors:
   \item Jiawen Zhu \email{zhu.jiawen@gene.com}
   \item James Lymp
   \item Anastasia Teterina \email{anastasia.teterina@roche.com}
+  \item Audrey Yeo \email{audrey.yeo@roche.com}
 }
 
 Other contributors:

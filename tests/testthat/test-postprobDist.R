@@ -84,6 +84,26 @@ test_that("postprobDist gives the correct result for a weighted beta-mixture", {
   expect_equal(result, 0.3248885, tolerance = 1e-4)
 })
 
+test_that("postprobDist works with vector x", {
+  result <- postprobDist(
+    x = c(0, 10, 22, 23),
+    n = 23,
+    delta = 0.1,
+    parE = rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    ),
+    parS = rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    ),
+    weights = c(0.5, 0.5),
+    weightsS = c(0.3, 0.7)
+  )
+  expected <- c(0.0022653966293937, 0.324888481243124, 0.771937234865335, 0.817017633697455)
+  expect_equal(result, expected, tolerance = 1e-4)
+})
+
 test_that("postprobDist gives an error when n is not a number.", {
   expect_error(
     results <- postprobDist(

@@ -84,6 +84,23 @@ test_that("pbetaMix gives the correct number result with beta-mixture", {
   expect_equal(result, 0.4768404, tolerance = 1e-5)
 })
 
+test_that("pbetaMix works for edge cases", {
+  result_ushape <- pbetaMix(
+    q = c(0, 1),
+    par = rbind(c(0.2, 0.4), c(3, .3)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_ushape, c(0, 1))
+
+  result_vshape <- pbetaMix(
+    q = c(0, 1),
+    par = rbind(c(9, 4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_vshape, c(0, 1))
+})
+
+
 test_that("The complement of pbetaMix can be derived with a different lower.tail flag", {
   result <- pbetaMix(
     q = 0.3,
@@ -182,6 +199,32 @@ test_that("dbetaMix gives the correct result as dbeta", {
     shape2 = 1,
   )
   expect_equal(result, result2, tolerance = 1e-4)
+})
+
+test_that("dbetaMix handles edge cases", {
+  result_inf <- dbetaMix(
+    x = c(0, 1), par = rbind(c(0.2, 0.4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_inf, c(Inf, Inf))
+
+  result_finite <- dbetaMix(
+    x = c(0, 1), par = rbind(c(2, 4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_finite, c(0.4, 0.4))
+
+  result_right <- dbetaMix(
+    x = c(0, 1), par = rbind(c(0, 4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_right, c(Inf, 0.4))
+
+  result_right <- dbetaMix(
+    x = c(NA, 1), par = rbind(c(0, 4), c(1, 1)),
+    weights = c(0.6, 0.4)
+  )
+  expect_equal(result_right, c(NA, 0.4))
 })
 
 # h_getBetamixPost ----

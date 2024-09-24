@@ -124,14 +124,20 @@ dbetaMix <- function(x, par, weights, log = FALSE) {
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
   assert_true(all.equal(sum(weights), 1))
   assert_true(identical(length(weights), nrow(par)))
-  ret <- sum(weights * dbeta(x, par[, 1], par[, 2]))
+  degree <- length(weights)
+
+  component_densities <- matrix(
+    dbeta(rep(x, each = degree), par[, 1], par[, 2]),
+    nrow = degree,
+    ncol = length(x)
+  )
+  ret <- as.numeric(weights %*% component_densities)
   if (log) {
     log(ret)
   } else {
     ret
   }
 }
-dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 
 
 #' Beta-Mixture CDF
@@ -155,15 +161,25 @@ dbetaMix <- Vectorize(dbetaMix, vectorize.args = "x")
 #' @note `q` can be a vector.
 #'
 #' @example examples/pbetaMix.R
+#' @importFrom stats pbeta
 #' @export
 pbetaMix <- function(q, par, weights, lower.tail = TRUE) {
-  assert_number(q, lower = 0, upper = 1, finite = TRUE)
+  assert_numeric(q, lower = 0, upper = 1, finite = TRUE)
   assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
   assert_matrix(par)
   assert_flag(lower.tail)
-  sum(weights * pbeta(q, par[, 1], par[, 2], lower.tail = lower.tail))
+  .pbetaMix(q = q, par = par, weights = weights, lower.tail = lower.tail)
 }
-pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
+
+.pbetaMix <- function(q, par, weights, lower.tail) {
+  degree <- length(weights)
+  component_p <- matrix(
+    pbeta(rep(q, each = degree), par[, 1], par[, 2], lower.tail = lower.tail),
+    nrow = degree,
+    ncol = length(q)
+  )
+  as.numeric(weights %*% component_p)
+}
 
 
 #' Beta-Mixture Quantile Function
@@ -186,23 +202,33 @@ pbetaMix <- Vectorize(pbetaMix, vectorize.args = "q")
 #' @example examples/qbetaMix.R
 #' @export
 qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
-  f <- function(pi) {
-    pbetaMix(q = pi, par = par, weights = weights, lower.tail = lower.tail) - p
-  }
-  # Note: we give the lower and upper function values here in order to avoid problems for
-  # p = 0 or p = 1.
-  unirootResult <- uniroot(
-    f,
-    lower = 0, upper = 1,
-    f.lower = -p, f.upper = 1 - p,
-    tol = sqrt(.Machine$double.eps) # Increase the precision over default `tol`.
-  )
-  if (unirootResult$iter < 0) {
-    NA
-  } else {
-    assert_number(unirootResult$root)
-    assert_true(all.equal(f(unirootResult$root), 0, tolerance = 0.001))
-    unirootResult$root
-  }
+  assert_numeric(p, lower = 0, upper = 1)
+  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE)
+  assert_matrix(par)
+  assert_flag(lower.tail)
+
+  grid <- seq(0, 1, len = 31)
+  f_grid <- .pbetaMix(grid, par, weights, lower.tail = lower.tail)
+
+  sapply(p, function(p) {
+    # special cases
+    if (p == 0) {
+      return(0)
+    }
+    if (p == 1) {
+      return(1)
+    }
+
+    diff <- f_grid - p
+    pos <- diff > 0
+    grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
+
+    uniroot(
+      f = function(q) .pbetaMix(q, par, weights, lower.tail = lower.tail) - p,
+      interval = grid_interval,
+      f.lower = -p,
+      f.upper = 1 - p,
+      tol = sqrt(.Machine$double.eps)
+    )$root
+  })
 }
-qbetaMix <- Vectorize(qbetaMix, vectorize.args = "p")
