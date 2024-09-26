@@ -46,7 +46,7 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
         postL <- postp
         xL <- x
       }
-      postp <- postprob(x, n, p1, parE, weights) # efficacy look
+      postp_eff <- postprob(x, n, p1, parE, weights) # efficacy look
       if (postp >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp
         xU <- x
