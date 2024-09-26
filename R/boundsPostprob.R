@@ -41,7 +41,7 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp <- 1 - postprob(x, n, p0, parE, weights) # futility look
+      postp_fut <- 1 - postprob(x, n, p0, parE, weights) # futility look
       if (postp >= tL) { # Rule is P(RR < p0) > tL
         postL <- postp
         xL <- x
