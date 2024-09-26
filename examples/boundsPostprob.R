@@ -11,7 +11,7 @@ boundsPostprob(
   parE = c(1, 1)
 )
 
-# 40 pts trial with various interim looks.
+# 40 pts trial with interim looks at 7 and 20 pts.
 # Efficacy decision if more than 80% probability to be above 20% ORR,
 # Futility decision if more than 60% probability to be below 15% ORR,
 # with mixed prior and weights:
