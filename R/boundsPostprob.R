@@ -2,8 +2,8 @@
 #'
 #' This function is used to identify the efficacy and futility
 #' boundaries based on the following rules:
-#' Efficacy boundary: find minimum x (xU) where Pr(P > p1 |x, n, a, b) >= tU and
-#' Futility boundary: find maximum x (xL) where Pr(P < p0 | x, n, a, b) >= tL
+#' Efficacy boundary: find minimum x (xU) where Pr(RR > p1 |x, n, a, b) >= tU and
+#' Futility boundary: find maximum x (xL) where Pr(RR < p0 | x, n, a, b) >= tL
 #'
 #' @inheritParams postprob
 #' @inheritParams ocPostprob
