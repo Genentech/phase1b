@@ -48,7 +48,7 @@ test_that("boundsPostProb for beta mixture gives correct result and list", {
     xU = c(2, 6, 10),
     pU = c(0.2857, 0.3000, 0.2500),
     postU = c(0.8890, 0.9054, 0.8012),
-    pU_lower_ci = c(.0534, 0.1396, 0.1424)
+    pU_lower_ci = c(0.0534, 0.1396, 0.1424)
   )
   expect_equal(result$xL, expected$xL)
   expect_equal(result$pL, expected$pL)
