@@ -12,7 +12,7 @@
 #' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
 #' - `xL` : the maximum number of responses that meet the futility threshold.
 #' - `pL` : response rate corresponding to `xL`.
-#' - `postL`: posterior probability corresponding to `xL`.
+#' - `postL`: posterior probability corresponding to `xL`, i.e. Pr(RR < p0 | xL, n, a, b).
 #' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate `pL` based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
