@@ -10,7 +10,7 @@
 #' @inheritParams predprob
 #' @inheritParams ocPredprob
 #' @inheritParams boundsPostprob
-#' @return A matrix for each same size in `nvec`. For each sample size, the following is returned:
+#' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
 #' - `xL` : the maximum number of responses that meet the futility.
 #'          threshold
 #' - `pL` : response rate corresponding to `xL`.
@@ -30,15 +30,19 @@
 #' @example examples/boundsPredprob.R
 #' @export
 #' @keywords graphics
-boundsPredprob <- function(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b) {
+boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE) {
   znames <- c(
     "xL", "pL", "ppL", "postL", "UciL",
     "xU", "pU", "ppU", "postU", "LciU"
   )
-  z <- matrix(NA, length(nvec), length(znames))
-  dimnames(z) <- list(nvec, znames)
+  z <- matrix(NA, length(looks), length(znames))
+  dimnames(z) <- list(looks, znames)
+  parE <- t(parE)
+  if (missing(weights)) {
+    weights <- rep(1, nrow(parE))
+  }
   k <- 0
-  for (n in nvec) {
+  for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
@@ -78,5 +82,5 @@ boundsPredprob <- function(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b) {
       LciU
     )
   }
-  return(round(data.frame(nvec, z), 4))
+  return(round(data.frame(looks, z), 4))
 }

@@ -4,11 +4,9 @@
 \alias{boundsPredprob}
 \title{Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.}
 \usage{
-boundsPredprob(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b)
+boundsPredprob(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE)
 }
 \arguments{
-\item{nvec}{a vector of number of patients}
-
 \item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
@@ -19,12 +17,11 @@ boundsPredprob(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b)
 
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
-\item{a}{the alpha parameter of the beta prior of treatment group}
-
-\item{b}{the beta parameter of the beta prior of treatment group}
+\item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
 }
 \value{
-A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
+A matrix for each same size in \code{looks}. For each sample size, the following is returned:
 \itemize{
 \item \code{xL} : the maximum number of responses that meet the futility.
 threshold
