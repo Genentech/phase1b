@@ -30,7 +30,6 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
-  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
@@ -42,6 +41,7 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
   }
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
@@ -49,8 +49,8 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
     xU <- NA
     for (x in 0:n) {
       postp_fut <- 1 - postprob(x, n, p0, parE, weights) # futility look
-      if (postp_full >= tL) { # Rule is P(RR < p0) > tL
-        postL <- postp_eff
+      if (postp_fut >= tL) { # Rule is P(RR < p0) > tL
+        postL <- postp_fut
         xL <- x
       }
       postp_eff <- postprob(x, n, p1, parE, weights) # efficacy look
