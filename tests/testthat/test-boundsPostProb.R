@@ -29,7 +29,7 @@ test_that("boundsPostProb gives correct result and list", {
   expect_equal(result$pU_lower_ci, expected$pU_lower_ci)
 })
 
-test_that("boundsPostProb for beta mixture gives correct result and list", {
+test_that("boundsPostProb for beta mixture gives correct result", {
   result <- boundsPostprob(
     looks = c(7, 20, 40),
     p0 = 0.15,
