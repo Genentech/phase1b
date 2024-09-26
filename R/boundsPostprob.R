@@ -24,6 +24,13 @@
 #' @example examples/boundsPostprob.R
 #' @export
 boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
+  assert_numeric(looks)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
@@ -42,13 +49,13 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
     xU <- NA
     for (x in 0:n) {
       postp_fut <- 1 - postprob(x, n, p0, parE, weights) # futility look
-      if (postp >= tL) { # Rule is P(RR < p0) > tL
-        postL <- postp
+      if (postp_full >= tL) { # Rule is P(RR < p0) > tL
+        postL <- postp_eff
         xL <- x
       }
       postp_eff <- postprob(x, n, p1, parE, weights) # efficacy look
-      if (postp >= tU) { # Rule is P(RR > p1) > tU
-        postU <- postp
+      if (postp_eff >= tU) { # Rule is P(RR > p1) > tU
+        postU <- postp_eff
         xU <- x
         break
       }
