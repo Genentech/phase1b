@@ -17,7 +17,7 @@
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
-#' - `postU` : posterior probability corresponding to `xU`.
+#' - `postU` : posterior probability corresponding to `xU`, i.e. Pr(RR > p1 |xU, n, a, b).
 #' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate `pU` based on exact
 #'            binomial test.
 #'
