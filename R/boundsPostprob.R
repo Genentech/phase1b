@@ -10,8 +10,7 @@
 #' @typed looks : numeric
 #'  A vector of number of patients in each look.
 #' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
-#' - `xL` : the maximum number of responses that meet the futility.
-#'          threshold
+#' - `xL` : the maximum number of responses that meet the futility threshold.
 #' - `pL` : response rate corresponding to `xL`.
 #' - `postL`: posterior probability corresponding to `xL`.
 #' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate `pL` based on an
