@@ -1,5 +1,5 @@
 # boundsPostProb ----
-test_that("boundsPostProb gives correct result and list", {
+test_that("boundsPostProb gives correct result", {
   result <- boundsPostprob(
     looks = c(10, 20, 30, 40),
     p0 = 0.15,
