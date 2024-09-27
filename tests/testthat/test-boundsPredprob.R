@@ -1,13 +1,12 @@
 # boundsPostProb ----
-test_that("boundsPredprob gives correct result and list", {
+test_that("boundsPredprob gives correct result", {
   result <- boundsPredprob(
-    nvec = c(10, 20, 30, 40),
+    looks = c(10, 20, 30, 40),
     p0 = 0.2,
     tT = 0.80,
     phiL = 0.10,
     phiU = 0.90,
-    a = 1,
-    b = 1
+    parE = c(1, 1)
   )
   expected <- data.frame(
     list(

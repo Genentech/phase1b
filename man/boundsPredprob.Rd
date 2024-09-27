@@ -4,7 +4,16 @@
 \alias{boundsPredprob}
 \title{Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.}
 \usage{
-boundsPredprob(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE)
+boundsPredprob(
+  looks,
+  Nmax = max(looks),
+  p0,
+  tT,
+  phiL,
+  phiU,
+  parE = c(1, 1),
+  weights
+)
 }
 \arguments{
 \item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
@@ -19,6 +28,8 @@ boundsPredprob(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE)
 
 \item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
 corresponding to the beta parameters of the K components.}
+
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 }
 \value{
 A matrix for each same size in \code{looks}. For each sample size, the following is returned:
@@ -26,14 +37,14 @@ A matrix for each same size in \code{looks}. For each sample size, the following
 \item \code{xL} : the maximum number of responses that meet the futility.
 threshold
 \item \code{pL} : response rate corresponding to \code{xL}.
-\item \code{ppL} : predictive probability corresponding to \code{xL}
+\item \code{predL} : predictive probability corresponding to \code{xL}
 \item \code{postL}: posterior probability corresponding to \code{xL}.
 \item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
 \item \code{pU} : response rate corresponding to \code{xU}.
+\item \code{predU} : predictive probability corresponding to \code{xU}
 \item \code{postL}: posterior probability corresponding to \code{xU}.
-\item \code{ppU} : predictive probability corresponding to \code{xU}
 \item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
 binomial test.
 }
@@ -56,13 +67,11 @@ Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
 # Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
 # Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
-  nvec = c(10, 20, 30, 40),
-  p = 0.20,
+  looks = c(10, 20, 30, 40),
+  p0 = 0.20,
   tT = 0.80,
   phiL = 0.10,
-  phiU = 0.90,
-  a = 1,
-  b = 1
+  phiU = 0.90
 )
 # From this we see e.g. that at the first IA at 10 patients, we would stop for futility
 # if no patient responded, and for efficacy if 4 or more patients responded.

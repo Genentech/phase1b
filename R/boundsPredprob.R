@@ -14,14 +14,14 @@
 #' - `xL` : the maximum number of responses that meet the futility.
 #'          threshold
 #' - `pL` : response rate corresponding to `xL`.
-#' - `ppL` : predictive probability corresponding to `xL`
+#' - `predL` : predictive probability corresponding to `xL`
 #' - `postL`: posterior probability corresponding to `xL`.
 #' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
+#' - `predU` : predictive probability corresponding to `xU`
 #' - `postL`: posterior probability corresponding to `xU`.
-#' - `ppU` : predictive probability corresponding to `xU`
 #' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
 #'
@@ -30,32 +30,37 @@
 #' @example examples/boundsPredprob.R
 #' @export
 #' @keywords graphics
-boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE) {
+boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = c(1, 1), weights) {
+  assert_numeric(looks)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
   znames <- c(
-    "xL", "pL", "ppL", "postL", "UciL",
-    "xU", "pU", "ppU", "postU", "LciU"
+    "xL", "pL", "predL", "postL", "UciL",
+    "xU", "pU", "predU", "postU", "LciU"
   )
   z <- matrix(NA, length(looks), length(znames))
   dimnames(z) <- list(looks, znames)
+  k <- 0
   parE <- t(parE)
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
   }
-  k <- 0
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      pp <- predprob(x, n, Nmax, p0, tT, parE = c(a, b))$result
-      if (pp <= phiL) { # Futility look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+      predprob <- predprob(x, n, Nmax, p0, tT, parE = parE)$result
+      if (predprob <= phiL) { # Futility look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
         xL <- x
-        ppL <- pp
+        predL <- predprob
       }
-      if (pp >= phiU) { # Efficacy look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+      if (predprob >= phiU) { # Efficacy look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
         xU <- x
-        ppU <- pp
+        predU <- predprob
         break
       }
     }
@@ -64,20 +69,20 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE) {
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries
-    postL <- postprob(xL, n, p0, parE = c(a, b))
-    postU <- postprob(xU, n, p0, parE = c(a, b))
+    postL <- postprob(xL, n, p0, parE = parE)
+    postU <- postprob(xU, n, p0, parE = parE)
     # calculate lower CI at boundaries
     UciL <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
     LciU <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
     z[k, ] <- c(
       xL,
       xL / n,
-      ppL,
+      predL,
       postL,
       UciL,
       xU,
       xU / n,
-      ppU,
+      predU,
       postU,
       LciU
     )
