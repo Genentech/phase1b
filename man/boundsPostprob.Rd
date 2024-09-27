@@ -4,7 +4,7 @@
 \alias{boundsPostprob}
 \title{Decision cutpoints for boundary (based on posterior probability)}
 \usage{
-boundsPostprob(looks, p0, p1 = p0, tL, tU, parE, weights)
+boundsPostprob(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights)
 }
 \arguments{
 \item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}

@@ -23,7 +23,7 @@
 #'
 #' @example examples/boundsPostprob.R
 #' @export
-boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE, weights) {
+boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) {
   assert_numeric(looks)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(p1, lower = 0, upper = 1)
