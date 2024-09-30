@@ -1,10 +1,26 @@
-## 40 pts trial with interim looks after each 10 pts.,
-## efficacy decision if more than 90% probability to be above 20% ORR,
-## futility decision if less than 10% probability to be above 20% ORR,
-## with uniform prior (i.e. beta(1, 1)) on the ORR:
+# 40 pts trial with interim looks after each 10 pts.,
+# Efficacy decision if more than 80% probability to be above 20% ORR,
+# Futility decision if more than 60% probability to be below 15% ORR,
+# with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
-  nvec = c(10, 20, 30, 40), p0 = 0.20,
-  tL = 0.10, tU = 0.90, a = 1, b = 1
+  looks = c(10, 20, 30, 40),
+  p0 = 0.15,
+  p1 = 0.20,
+  tL = 0.60,
+  tU = 0.80,
+  parE = c(1, 1)
 )
-## From this we see e.g. that at the third IA at 30 pts, we would stop for futility
-## if 5 or less patients responded, and for efficacy if 9 or more pts responded.
+
+# 40 pts trial with interim looks at 7 and 20 pts.
+# Efficacy decision if more than 80% probability to be above 20% ORR,
+# Futility decision if more than 60% probability to be below 15% ORR,
+# with mixed prior and weights:
+boundsPostprob(
+  looks = c(7, 20, 40),
+  p0 = 0.15,
+  p1 = 0.20,
+  tL = 0.60,
+  tU = 0.80,
+  parE = rbind(c(1, 19), c(2, 10)),
+  weights = c(0.2, 0.8)
+)

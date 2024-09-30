@@ -1,72 +1,78 @@
 #' Decision cutpoints for boundary (based on posterior probability)
 #'
 #' This function is used to identify the efficacy and futility
-#' boundaries based on posterior probabilities, i.e.:
-#' Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
-#' Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+#' boundaries based on the following rules:
+#' Efficacy boundary: find minimum x (xU) where Pr(RR > p1 |x, n, a, b) >= tU and
+#' Futility boundary: find maximum x (xL) where Pr(RR < p0 | x, n, a, b) >= tL
 #'
-#' @param nvec a vector of number of patients
-#' @param p0 the efficacy threshold parameter in the postprob function
-#' @param p1 the futility threshold parameter in the postprob function
-#' (default = p0)
-#' @param tL futility boundary probability threshold
-#' @param tU efficacy boundary probability threshold
-#' @param a  the alpha parameter of the beta prior of treatment group
-#' @param b  the beta parameter of the beta prior of treatment group
-#' @return A matrix where for each sample size in \code{nvec}, this function
-#' returns the maximum number of responses that meet the futility
-#' threshold (xL), its corresponding response rate (pL), posterior probability
-#' (postL), upper bound of one sided 95% CI for the response rate based on an
-#' exact binomial test (UciL), and the same boundary parameters for efficacy:
-#' the minimal number of responses that meet the efficacy threshold (xU),
-#' the corresponding response rate (pU), posterior probability (postU) and
-#' the lower bound of one sided 95% CI for the response rate based on exact
-#' binomial test (LciU).
-#'
-#' @importFrom stats binom.test
+#' @inheritParams postprob
+#' @inheritParams ocPostprob
+#' @typed looks : numeric
+#'  A vector of number of patients in each look.
+#' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
+#' - `xL` : the maximum number of responses that meet the futility threshold.
+#' - `pL` : response rate corresponding to `xL`.
+#' - `postL`: posterior probability corresponding to `xL`, i.e. Pr(RR < p0 | xL, n, a, b).
+#' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate `pL` based on an
+#'            exact binomial test.
+#' - `xU` : the minimal number of responses that meet the efficacy threshold.
+#' - `pU` : response rate corresponding to `xU`.
+#' - `postU` : posterior probability corresponding to `xU`, i.e. Pr(RR > p1 |xU, n, a, b).
+#' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate `pU` based on exact
+#'            binomial test.
 #'
 #' @example examples/boundsPostprob.R
 #' @export
-#' @keywords graphics
-boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
-  z <- matrix(NA, length(nvec), 6)
-  dimnames(z) <- list(nvec, c(
-    "xL", "pL", "postL",
-    "xU", "pU", "postU"
-  ))
+boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) {
+  assert_numeric(looks)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
-    "xL", "pL", "postL", "UciL",
-    "xU", "pU", "postU", "LciU"
+    "xL", "pL", "postL", "pL_upper_ci",
+    "xU", "pU", "postU", "pU_lower_ci"
   )
-  z <- matrix(NA, length(nvec), length(znames))
-  dimnames(z) <- list(nvec, znames)
+  dimnames(z) <- list(looks, znames)
   k <- 0
-  for (n in nvec) {
+  parE <- t(parE)
+  if (missing(weights)) {
+    weights <- rep(1, nrow(parE))
+  }
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
+  for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp <- postprob(x, n, p1, parE = c(a, b))
-      if (postp <= tL) {
+      postp_fut <- 1 - postprob(x, n, p0, parE, weights) # futility look
+      if (postp_fut >= tL) { # Rule is P(RR < p0) > tL
+        postL <- postp_fut
         xL <- x
       }
-      if (p0 != p1) {
-        postp <- postprob(x, n, p0, parE = c(a, b))
-      }
-      if (postp >= tU) {
+      postp_eff <- postprob(x, n, p1, parE, weights) # efficacy look
+      if (postp_eff >= tU) { # Rule is P(RR > p1) > tU
+        postU <- postp_eff
         xU <- x
-        # done: leave innermost for loop
         break
       }
     }
-    # calculate posterior probabilities at boundaries
-    postL <- postprob(xL, n, p1, parE = c(a, b))
-    postU <- postprob(xU, n, p0, parE = c(a, b))
     # calculate lower CI at boundaries
-    UciL <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
-    LciU <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
-    z[k, ] <- c(xL, xL / n, postL, UciL, xU, xU / n, postU, LciU)
+    pL_upper_ci <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
+    pU_lower_ci <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
+    z[k, ] <- c(
+      xL,
+      xL / n,
+      postL,
+      pL_upper_ci,
+      xU,
+      xU / n,
+      postU,
+      pU_lower_ci
+    )
   }
-  return(round(data.frame(nvec, z), 4))
+  round(data.frame(looks, z), 4)
 }
