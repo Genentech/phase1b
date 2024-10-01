@@ -16,6 +16,8 @@ boundsPredprob(
 )
 }
 \arguments{
+\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
+
 \item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}

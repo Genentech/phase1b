@@ -4,51 +4,70 @@
 \alias{boundsPostprob}
 \title{Decision cutpoints for boundary (based on posterior probability)}
 \usage{
-boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
+boundsPostprob(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights)
 }
 \arguments{
-\item{nvec}{a vector of number of patients}
+\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
 
-\item{p0}{the efficacy threshold parameter in the postprob function}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p1}{the futility threshold parameter in the postprob function
-(default = p0)}
+\item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
 
-\item{tL}{futility boundary probability threshold}
+\item{tL}{(\code{number}):\cr posterior probability threshold for being below \code{p0}.}
 
-\item{tU}{efficacy boundary probability threshold}
+\item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{a}{the alpha parameter of the beta prior of treatment group}
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+corresponding to the beta parameters of the \code{K} components.}
 
-\item{b}{the beta parameter of the beta prior of treatment group}
+\item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
 }
 \value{
-A matrix where for each sample size in \code{nvec}, this function
-returns the maximum number of responses that meet the futility
-threshold (xL), its corresponding response rate (pL), posterior probability
-(postL), upper bound of one sided 95\% CI for the response rate based on an
-exact binomial test (UciL), and the same boundary parameters for efficacy:
-the minimal number of responses that meet the efficacy threshold (xU),
-the corresponding response rate (pU), posterior probability (postU) and
-the lower bound of one sided 95\% CI for the response rate based on exact
-binomial test (LciU).
+A matrix for each same size in \code{looks}. For each sample size, the following is returned:
+\itemize{
+\item \code{xL} : the maximum number of responses that meet the futility threshold.
+\item \code{pL} : response rate corresponding to \code{xL}.
+\item \code{postL}: posterior probability corresponding to \code{xL}, i.e. Pr(RR < p0 | xL, n, a, b).
+\item \code{pL_upper_ci} : upper bound of one sided 95\% CI for the response rate \code{pL} based on an
+exact binomial test.
+\item \code{xU} : the minimal number of responses that meet the efficacy threshold.
+\item \code{pU} : response rate corresponding to \code{xU}.
+\item \code{postU} : posterior probability corresponding to \code{xU}, i.e. Pr(RR > p1 |xU, n, a, b).
+\item \code{pU_lower_ci} : lower bound of one sided 95\% CI for the response rate \code{pU} based on exact
+binomial test.
+}
 }
 \description{
 This function is used to identify the efficacy and futility
-boundaries based on posterior probabilities, i.e.:
-Efficacy boundary: find minimum x (xU) where Pr(P>p0|x,n,a,b) >= tU and
-Futility boundary: find maximum x (xL) where Pr(P>p1|x,n,a,b) <= tL
+boundaries based on the following rules:
+Efficacy boundary: find minimum x (xU) where Pr(RR > p1 |x, n, a, b) >= tU and
+Futility boundary: find maximum x (xL) where Pr(RR < p0 | x, n, a, b) >= tL
 }
 \examples{
-## 40 pts trial with interim looks after each 10 pts.,
-## efficacy decision if more than 90\% probability to be above 20\% ORR,
-## futility decision if less than 10\% probability to be above 20\% ORR,
-## with uniform prior (i.e. beta(1, 1)) on the ORR:
+# 40 pts trial with interim looks after each 10 pts.,
+# Efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Futility decision if more than 60\% probability to be below 15\% ORR,
+# with uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPostprob(
-  nvec = c(10, 20, 30, 40), p0 = 0.20,
-  tL = 0.10, tU = 0.90, a = 1, b = 1
+  looks = c(10, 20, 30, 40),
+  p0 = 0.15,
+  p1 = 0.20,
+  tL = 0.60,
+  tU = 0.80,
+  parE = c(1, 1)
 )
-## From this we see e.g. that at the third IA at 30 pts, we would stop for futility
-## if 5 or less patients responded, and for efficacy if 9 or more pts responded.
+
+# 40 pts trial with interim looks at 7 and 20 pts.
+# Efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Futility decision if more than 60\% probability to be below 15\% ORR,
+# with mixed prior and weights:
+boundsPostprob(
+  looks = c(7, 20, 40),
+  p0 = 0.15,
+  p1 = 0.20,
+  tL = 0.60,
+  tU = 0.80,
+  parE = rbind(c(1, 19), c(2, 10)),
+  weights = c(0.2, 0.8)
+)
 }
-\keyword{graphics}
