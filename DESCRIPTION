@@ -3,12 +3,13 @@ Package: phase1b
 Title: Calculations for decisions on Phase 1b clinical trials
 Version: 1.0.0
 Authors@R: c(
-    person("Daniel", "Sabanes Bove", , "daniel.sabanes_bove@roche.com", role = c("aut", "cre")),
+    person("Daniel", "Sabanes Bove", , "daniel@rconis.com", role = c("aut", "cre")),
     person("Markus", "Elze", , "markus.elze@roche.com", role = "aut"),
     person("Tony", "Pourmohamad", , "pourmoht@gene.com", role = "aut"),
     person("Jiawen", "Zhu", , "zhu.jiawen@gene.com", role = "aut"),
     person("James", "Lymp", role = "aut"),
     person("Anastasia", "Teterina", , "anastasia.teterina@roche.com", role = "aut"),
+    person("Audrey", "Yeo", , "audrey.yeo@roche.com", role = c("aut")),
     person("F. Hoffmann-La Roche Ltd", role = c("cph", "fnd"))
   )
 Description: The phase1b R package is intended to be used when conducting
