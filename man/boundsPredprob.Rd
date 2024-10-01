@@ -70,10 +70,26 @@ boundsPredprob(
   looks = c(10, 20, 30, 40),
   p0 = 0.20,
   tT = 0.80,
-  phiL = 0.10,
+  phiL = 0.60,
   phiU = 0.90
 )
-# From this we see e.g. that at the first IA at 10 patients, we would stop for futility
-# if no patient responded, and for efficacy if 4 or more patients responded.
+
+# 25 pts trial with interim looks at 7 and 15 pts.
+# Efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Final futility decision otherwise.
+# Interim efficacy decision if more than 90\% predictive probability reach this or
+# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Interim futility decision if less than 60\% predictive probability or
+# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phi
+# with mixed prior and weights:
+boundsPredprob(
+  looks = c(7, 15, 25),
+  p0 = 0.20,
+  tT = 0.80,
+  phiL = 0.60,
+  phiU = 0.90,
+  parE = rbind(c(1, 1), c(3, 10)),
+  weights = c(0.2, 0.8)
+)
 }
 \keyword{graphics}
