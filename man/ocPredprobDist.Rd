@@ -249,14 +249,10 @@ result$oc
 # True response rate or truep of the treatment group = 40\%
 # Desired difference to Standard of Care for Efficacy and Futility = 50\%
 # Delta calculation is relative case. The following are the Final Stop rules respectively :
-# - Final look for Efficacy: P( P_S + (1-P_S)*deltaE > 25\% ) > 60\% or
-#                            P( P_S + (1-P_S)*deltaE > p0) > tT
-# - Final look for Futility: P( P_S + (1-P_S)*deltaEF < 25\% ) < 60\% or
-#                            P( P_S + (1-P_S)*deltaF > p0) < tT
-# - Interim look for Efficacy: P( success at final ) > 80\% or
-#                            P(success at final) > phiU
-# - Interim look for Futility: P( failure at final ) < 20\% or
-#                            P(success at final) < phiL
+# - Final look for Efficacy: P( P_S + (1-P_S)*deltaE > 25\% ) > 60\%
+# - Final look for Futility: P( P_S + (1-P_S)*deltaEF < 25\% ) < 60\%
+# - Interim look for Efficacy: P( success at final ) > 80\%
+# - Interim look for Futility: P( failure at final ) < 20\%
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
