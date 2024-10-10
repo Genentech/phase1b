@@ -4,9 +4,20 @@
 \alias{boundsPredprob}
 \title{Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.}
 \usage{
-boundsPredprob(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b)
+boundsPredprob(
+  looks,
+  Nmax = max(looks),
+  p0,
+  tT,
+  phiL,
+  phiU,
+  parE = c(1, 1),
+  weights
+)
 }
 \arguments{
+\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
+
 \item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
 
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
@@ -16,21 +27,26 @@ boundsPredprob(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b)
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
+
+\item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
+corresponding to the beta parameters of the K components.}
+
+\item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 }
 \value{
-A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
+A matrix for each same size in \code{looks}. For each sample size, the following is returned:
 \itemize{
 \item \code{xL} : the maximum number of responses that meet the futility.
 threshold
 \item \code{pL} : response rate corresponding to \code{xL}.
-\item \code{ppL} : predictive probability corresponding to \code{xL}
+\item \code{predL} : predictive probability corresponding to \code{xL}
 \item \code{postL}: posterior probability corresponding to \code{xL}.
 \item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
 \item \code{pU} : response rate corresponding to \code{xU}.
+\item \code{predU} : predictive probability corresponding to \code{xU}
 \item \code{postL}: posterior probability corresponding to \code{xU}.
-\item \code{ppU} : predictive probability corresponding to \code{xU}
 \item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
 binomial test.
 }
@@ -44,17 +60,38 @@ Futility boundary: find maximum x (xL) where
 Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
 }
 \examples{
-# 40 pts trial with interim looks after each 10 pts.,
-# final efficacy decision if more than 80\% probability to be above 20\% ORR,
-# final futility decision otherwise.
-# Interim efficacy decision if more than 90\% predictive probability reach this,
-# interim futility decision if less than 10\% predictive probability.
+# 40 pts trial with interim looks after each 10 patients.
+# Final efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Final futility decision otherwise.
+# Interim efficacy decision if more than 90\% predictive probability reach this or
+# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Interim futility decision if less than 10\% predictive probability or
+# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
 # Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
-  nvec = c(10, 20, 30, 40), p = 0.20, tT = 0.80,
-  phiL = 0.10, phiU = 0.90, a = 1, b = 1
+  looks = c(10, 20, 30, 40),
+  p0 = 0.20,
+  tT = 0.80,
+  phiL = 0.60,
+  phiU = 0.90
 )
-# From this we see e.g. that at the first IA at 10 pts, we would stop for futility
-# if no patient responded, and for efficacy if 4 or more pts responded.
+
+# 25 pts trial with interim looks at 7 and 15 pts.
+# Efficacy decision if more than 80\% probability to be above 20\% ORR,
+# Final futility decision otherwise.
+# Interim efficacy decision if more than 90\% predictive probability reach this or
+# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Interim futility decision if less than 60\% predictive probability or
+# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phi
+# with mixed prior and weights:
+boundsPredprob(
+  looks = c(7, 15, 25),
+  p0 = 0.20,
+  tT = 0.80,
+  phiL = 0.60,
+  phiU = 0.90,
+  parE = cbind(c(1, 1), c(3, 10)),
+  weights = c(0.2, 0.8)
+)
 }
 \keyword{graphics}
