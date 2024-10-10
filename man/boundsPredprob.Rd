@@ -2,60 +2,59 @@
 % Please edit documentation in R/boundsPredprob.R
 \name{boundsPredprob}
 \alias{boundsPredprob}
-\title{Decision cutpoints for boundary (based on predictive probability)}
+\title{Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.}
 \usage{
-boundsPredprob(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b)
+boundsPredprob(nvec, Nmax = max(nvec), p0, tT, phiL, phiU, a, b)
 }
 \arguments{
-\item{nvec}{a vector of number of patients}
+\item{Nmax}{(\code{number}):\cr maximum number of patients at the end of the trial in the \code{E} group.}
 
-\item{Nmax}{maximum number of patients at the end of the trial
-(default: maximum of \code{nvec})}
+\item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
-\item{p}{threshold on the response rate}
+\item{tT}{(\code{number}):\cr threshold of which assumed \code{truep} exceeds acceptable threshold of \code{p0}.}
 
-\item{tT}{threshold on the posterior probability to be above p}
+\item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
 
-\item{phiL}{futility boundary predictive probability threshold}
-
-\item{phiU}{efficacy boundary predictive probability threshold}
-
-\item{a}{the alpha parameter of a beta prior of treatment group}
-
-\item{b}{the beta parameter of a beta prior of treatment group}
+\item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 }
 \value{
-A matrix where for each sample size in \code{nvec}, this function
-returns the maximum number of responses that meet the futility
-threshold (xL), its corresponding response rate (pL), predictive probability
-(ppL) and posterior probability (postL), the upper bound of one
-sided 95\% CI for the response rate based on an
-exact binomial test (UciL), and the same boundary parameters for efficacy:
-the minimal number of responses that meet the efficacy threshold (xU),
-the corresponding response rate (pU), predictive probability
-(ppL) and posterior probability (postU), the lower bound of one sided
-95\% CI for the response rate based on exact binomial test (LciU).
+A matrix for each same size in \code{nvec}. For each sample size, the following is returned:
+\itemize{
+\item \code{xL} : the maximum number of responses that meet the futility.
+threshold
+\item \code{pL} : response rate corresponding to \code{xL}.
+\item \code{ppL} : predictive probability corresponding to \code{xL}
+\item \code{postL}: posterior probability corresponding to \code{xL}.
+\item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
+exact binomial test.
+\item \code{xU} : the minimal number of responses that meet the efficacy threshold.
+\item \code{pU} : response rate corresponding to \code{xU}.
+\item \code{postL}: posterior probability corresponding to \code{xU}.
+\item \code{ppU} : predictive probability corresponding to \code{xU}
+\item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
+binomial test.
+}
 }
 \description{
 This function is used to identify the efficacy boundary and futility
-boundary based on predictive probabilities, i.e.:
+boundary based on the following rules:
 Efficacy boundary: find minimum x (xU) where
-Pr(Pr(P > p | x, Y) >= tT | x) > phiU,
+Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
 Futility boundary: find maximum x (xL) where
-Pr(Pr(P > p | x, Y) >= tT | x) < phiL
+Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
 }
 \examples{
-## 40 pts trial with interim looks after each 10 pts.,
-## final efficacy decision if more than 80\% probability to be above 20\% ORR,
-## final futility decision otherwise.
-## Interim efficacy decision if more than 90\% predictive probability reach this,
-## interim futility decision if less than 10\% predictive probability.
-## Uniform prior (i.e. beta(1, 1)) on the ORR:
+# 40 pts trial with interim looks after each 10 pts.,
+# final efficacy decision if more than 80\% probability to be above 20\% ORR,
+# final futility decision otherwise.
+# Interim efficacy decision if more than 90\% predictive probability reach this,
+# interim futility decision if less than 10\% predictive probability.
+# Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
   nvec = c(10, 20, 30, 40), p = 0.20, tT = 0.80,
   phiL = 0.10, phiU = 0.90, a = 1, b = 1
 )
-## From this we see e.g. that at the first IA at 10 pts, we would stop for futility
-## if no patient responded, and for efficacy if 4 or more pts responded.
+# From this we see e.g. that at the first IA at 10 pts, we would stop for futility
+# if no patient responded, and for efficacy if 4 or more pts responded.
 }
 \keyword{graphics}
