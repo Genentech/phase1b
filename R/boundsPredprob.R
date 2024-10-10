@@ -42,7 +42,6 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   z <- matrix(NA, length(looks), length(znames))
   dimnames(z) <- list(looks, znames)
   k <- 0
-  parE <- t(parE)
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
   }
@@ -53,7 +52,7 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      predprob <- predprob(x, n, Nmax, p0, tT, parE = parE)$result
+      predprob <- predprob(x = x, n = n, Nmax = max(looks), p = p0, thetaT = tT, parE = parE, weights = weights)$result
       if (predprob <= phiL) { # Futility look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
         xL <- x
         predL <- predprob
