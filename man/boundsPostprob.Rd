@@ -4,9 +4,11 @@
 \alias{boundsPostprob}
 \title{Decision cutpoints for boundary (based on posterior probability)}
 \usage{
-boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
+boundsPostprob(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights)
 }
 \arguments{
+\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
+
 \item{p0}{(\code{number}):\cr lower Futility threshold of response rate.}
 
 \item{p1}{(\code{number}):\cr upper Efficacy threshold of response rate.}
@@ -15,7 +17,10 @@ boundsPostprob(nvec, p0, p1 = p0, tL, tU, a, b)
 
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
-\item{looks}{(\code{numeric}):\cr A vector of number of patients in each look.}
+\item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
+corresponding to the beta parameters of the \code{K} components.}
+
+\item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
 }
 \value{
 A matrix for each same size in \code{looks}. For each sample size, the following is returned:
@@ -66,4 +71,3 @@ boundsPostprob(
   weights = c(0.2, 0.8)
 )
 }
-\keyword{graphics}

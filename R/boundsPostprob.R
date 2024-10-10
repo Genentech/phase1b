@@ -23,17 +23,19 @@
 #'
 #' @example examples/boundsPostprob.R
 #' @export
-#' @keywords graphics
-boundsPostprob <- function(nvec, p0, p1 = p0, tL, tU, a, b) {
-  z <- matrix(NA, length(nvec), ncol = 6)
+boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) {
+  assert_numeric(looks)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
     "xU", "pU", "postU", "pU_lower_ci"
   )
-  dimnames(z) <- list(nvec, znames)
-
-  z <- matrix(NA, length(nvec), length(znames))
-  dimnames(z) <- list(nvec, znames)
+  dimnames(z) <- list(looks, znames)
   k <- 0
   parE <- t(parE)
   if (missing(weights)) {
