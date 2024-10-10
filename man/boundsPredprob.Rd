@@ -90,7 +90,7 @@ boundsPredprob(
   tT = 0.80,
   phiL = 0.60,
   phiU = 0.90,
-  parE = rbind(c(1, 1), c(3, 10)),
+  parE = cbind(c(1, 1), c(3, 10)),
   weights = c(0.2, 0.8)
 )
 }

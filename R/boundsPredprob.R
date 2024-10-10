@@ -42,10 +42,6 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   z <- matrix(NA, length(looks), length(znames))
   dimnames(z) <- list(looks, znames)
   k <- 0
-  if (missing(weights)) {
-    weights <- rep(1, nrow(parE))
-  }
-  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
