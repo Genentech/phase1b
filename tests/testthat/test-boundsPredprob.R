@@ -19,13 +19,15 @@ test_that("boundsPredprob gives correct result and when default weight is not as
   )
   expected <- data.frame(
     list(
-      nvec = c(10, 20, 30, 40),
+      looks = c(10, 20, 30, 40),
       xL = c(0, 2, 5, 9),
       pL = c(0, 0.1, 0.1667, 0.225),
+      predL = c(0.0268, 0.0269, 0.0446, 0.0000),
       postL = c(0.0859, 0.1787, 0.3931, 0.704),
       UciL = c(0.2589, 0.2826, 0.319, 0.3598),
       xU = c(4, 7, 9, 10),
       pU = c(0.4, 0.35, 0.3, 0.25),
+      predU = c(0.9287, 0.9600, 0.9604, 1.0000),
       postU = c(0.9496, 0.9569, 0.9254, 0.8177),
       LciU = c(0.15, 0.1773, 0.1663, 0.1424)
     )

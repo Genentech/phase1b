@@ -1,11 +1,7 @@
 #' Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.
 #'
 #' This function is used to identify the efficacy boundary and futility
-#' boundary based on the following rules:
-#' Efficacy boundary: find minimum x (xU) where
-#' Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
-#' Futility boundary: find maximum x (xL) where
-#' Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+#' boundary based on rules in @details.
 #'
 #' @inheritParams predprob
 #' @inheritParams ocPredprob
@@ -26,6 +22,13 @@
 #'            binomial test.
 #'
 #' @importFrom stats binom.test
+#'
+#' @details see also `predprob()`
+#' The following rules are Decision 1 rules:
+#' Efficacy boundary: find minimum x (xU) where
+#' Pr(Pr(response rate > p0 | data) >= tT | x) >= phiU,
+#' Futility boundary: find maximum x (xL) where
+#' Pr(Pr(response rate > p0 | data) >= tT | x) =< phiL
 #'
 #' @example examples/boundsPredprob.R
 #' @export

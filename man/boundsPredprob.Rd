@@ -53,11 +53,15 @@ binomial test.
 }
 \description{
 This function is used to identify the efficacy boundary and futility
-boundary based on the following rules:
+boundary based on rules in @details.
+}
+\details{
+see also \code{predprob()}
+The following rules are Decision 1 rules:
 Efficacy boundary: find minimum x (xU) where
-Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+Pr(Pr(response rate > p0 | data) >= tT | x) >= phiU,
 Futility boundary: find maximum x (xL) where
-Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+Pr(Pr(response rate > p0 | data) >= tT | x) =< phiL
 }
 \examples{
 # 40 pts trial with interim looks after each 10 patients.
