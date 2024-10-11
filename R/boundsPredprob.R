@@ -17,7 +17,7 @@
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
 #' - `predU` : predictive probability corresponding to `xU`
-#' - `postL`: posterior probability corresponding to `xU`.
+#' - `postU`: posterior probability corresponding to `xU`.
 #' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
 #'
