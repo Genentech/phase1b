@@ -1,4 +1,4 @@
-# boundsPredProb ----
+# boundsPredprob ----
 test_that("boundsPredprob gives correct result and when default weight is not assigned", {
   result_weights <- boundsPredprob(
     looks = c(10, 20, 30, 40),
@@ -40,7 +40,7 @@ test_that("boundsPredprob gives correct result and when default weight is not as
   expect_equal(result$LciU, c(0.15, 0.1773, 0.1663, 0.1424))
 })
 
-test_that("boundsPredprob with Beta Mixture Priors give correct results with predprob", {
+test_that("boundsPredprob with Beta Mixture Priors give correct results", {
   result <- boundsPredprob(
     looks = c(10, 20),
     p0 = 0.20,
