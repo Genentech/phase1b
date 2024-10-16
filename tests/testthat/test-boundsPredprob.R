@@ -1,0 +1,102 @@
+# boundsPredprob ----
+test_that("boundsPredprob gives correct result and when default weight is not assigned", {
+  result_weights <- boundsPredprob(
+    looks = c(10, 20, 30, 40),
+    p0 = 0.2,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+    parE = c(1, 1),
+    weights = 1
+  )
+  result <- boundsPredprob(
+    looks = c(10, 20, 30, 40),
+    p0 = 0.2,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+    parE = c(1, 1)
+  )
+  expected <- data.frame(
+    list(
+      looks = c(10, 20, 30, 40),
+      xL = c(0, 2, 5, 9),
+      pL = c(0, 0.1, 0.1667, 0.225),
+      predL = c(0.0268, 0.0269, 0.0446, 0.0000),
+      postL = c(0.0859, 0.1787, 0.3931, 0.704),
+      UciL = c(0.2589, 0.2826, 0.319, 0.3598),
+      xU = c(4, 7, 9, 10),
+      pU = c(0.4, 0.35, 0.3, 0.25),
+      predU = c(0.9287, 0.9600, 0.9604, 1.0000),
+      postU = c(0.9496, 0.9569, 0.9254, 0.8177),
+      LciU = c(0.15, 0.1773, 0.1663, 0.1424)
+    )
+  )
+  expect_equal(result$xL, c(0, 2, 5, 9))
+  expect_equal(result$pL, c(0, 0.1, 0.1667, 0.225))
+  expect_equal(result$postL, c(0.0859, 0.1787, 0.3931, 0.704))
+  expect_equal(result$UciL, c(0.2589, 0.2826, 0.319, 0.3598))
+  expect_equal(result$xU, c(4, 7, 9, 10))
+  expect_equal(result$pU, c(0.4, 0.35, 0.3, 0.25))
+  expect_equal(result$postU, c(0.9496, 0.9569, 0.9254, 0.8177))
+  expect_equal(result$LciU, c(0.15, 0.1773, 0.1663, 0.1424))
+})
+
+test_that("boundsPredprob with Beta Mixture Priors give correct results", {
+  result <- boundsPredprob(
+    looks = c(10, 20),
+    p0 = 0.20,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+    parE = cbind(c(1, 1), c(3, 10)),
+    weights = c(0.2, 0.8)
+  )
+  result_predprob_lower <- predprob(
+    x = 2,
+    n = 10,
+    p = 0.20,
+    Nmax = 20,
+    thetaT = 0.80,
+    parE = cbind(c(1, 1), c(3, 10)),
+    weights = c(0.2, 0.8)
+  )
+  result_predprob_upper <- predprob(
+    x = 6,
+    n = 10,
+    p = 0.20,
+    Nmax = 20,
+    thetaT = 0.80,
+    parE = cbind(c(1, 1), c(3, 10)),
+    weights = c(0.2, 0.8)
+  )
+  expected <- data.frame(
+    list(
+      looks = c(10, 20),
+      xL = c(2, 6),
+      pL = c(0.2, 0.3),
+      predL = c(0.0409, 0),
+      postL = c(0.367, 0.7734),
+      UciL = c(0.5069, 0.5078),
+      xU = c(6, 7),
+      pU = c(0.6, 0.35),
+      predU = c(0.9859, 1),
+      postU = c(0.9875, 0.8919),
+      LciU = c(0.3035, 0.1773)
+    )
+  )
+  expect_equal(result$xL[1], 2)
+  expect_equal(result$predL[1], result_predprob_lower$result, tolerance = 1e-3)
+  expect_equal(result$xL[2], 6)
+  expect_equal(result$predU[1], result_predprob_upper$result, tolerance = 1e-4)
+  expect_equal(result$xL, c(2, 6))
+  expect_equal(result$pL, c(0.2, 0.3))
+  expect_equal(result$predL, c(0.0409, 0))
+  expect_equal(result$postL, c(0.367, 0.7734))
+  expect_equal(result$UciL, c(0.5069, 0.5078))
+  expect_equal(result$xU, c(6, 7))
+  expect_equal(result$pU, c(0.6, 0.35))
+  expect_equal(result$predU, c(0.9859, 1))
+  expect_equal(result$postU, c(0.9875, 0.8919))
+  expect_equal(result$LciU, c(0.3035, 0.1773))
+})
