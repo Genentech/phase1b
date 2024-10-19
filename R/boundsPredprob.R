@@ -7,7 +7,7 @@
 #' @inheritParams ocPredprob
 #' @inheritParams boundsPostprob
 #' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
-#' - `xL` : the maximum number of responses that meet the futility.
+#' - `xL` : the maximum number of responses that meet the futility
 #'          threshold
 #' - `pL` : response rate corresponding to `xL`.
 #' - `predL` : predictive probability corresponding to `xL`
