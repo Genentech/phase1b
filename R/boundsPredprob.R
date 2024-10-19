@@ -12,13 +12,13 @@
 #' - `pL` : response rate corresponding to `xL`.
 #' - `predL` : predictive probability corresponding to `xL`
 #' - `postL`: posterior probability corresponding to `xL`.
-#' - `Ucil` : upper bound of one sided 95% CI for the response rate based on an
+#' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate based on an
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
 #' - `predU` : predictive probability corresponding to `xU`
 #' - `postU`: posterior probability corresponding to `xU`.
-#' - `LciU` : lower bound of one sided 95% CI for the response rate based on exact
+#' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
 #'
 #' @importFrom stats binom.test
@@ -37,6 +37,8 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   assert_numeric(looks)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(tT, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   znames <- c(
     "xL", "pL", "predL", "postL", "UciL",
@@ -52,11 +54,11 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
     xU <- NA
     for (x in 0:n) {
       predprob <- predprob(x = x, n = n, Nmax = max(looks), p = p0, thetaT = tT, parE = parE, weights = weights)$result
-      if (predprob <= phiL) { # Futility look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+      if (predprob <= phiL) { # Futility look, Rule Pr(Pr( RR > p0 | x, Y) >= tT | x) =< phiL
         xL <- x
         predL <- predprob
       }
-      if (predprob >= phiU) { # Efficacy look, Rule Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+      if (predprob >= phiU) { # Efficacy look, Rule Pr(Pr( RR > p0 | x, Y) >= tT | x) >= phiU,
         xU <- x
         predU <- predprob
         break

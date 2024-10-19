@@ -41,13 +41,13 @@ threshold
 \item \code{pL} : response rate corresponding to \code{xL}.
 \item \code{predL} : predictive probability corresponding to \code{xL}
 \item \code{postL}: posterior probability corresponding to \code{xL}.
-\item \code{Ucil} : upper bound of one sided 95\% CI for the response rate based on an
+\item \code{pL_upper_ci} : upper bound of one sided 95\% CI for the response rate based on an
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
 \item \code{pU} : response rate corresponding to \code{xU}.
 \item \code{predU} : predictive probability corresponding to \code{xU}
 \item \code{postU}: posterior probability corresponding to \code{xU}.
-\item \code{LciU} : lower bound of one sided 95\% CI for the response rate based on exact
+\item \code{pU_lower_ci} : lower bound of one sided 95\% CI for the response rate based on exact
 binomial test.
 }
 }
