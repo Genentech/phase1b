@@ -36,7 +36,7 @@ corresponding to the beta parameters of the K components.}
 \value{
 A matrix for each same size in \code{looks}. For each sample size, the following is returned:
 \itemize{
-\item \code{xL} : the maximum number of responses that meet the futility.
+\item \code{xL} : the maximum number of responses that meet the futility
 threshold
 \item \code{pL} : response rate corresponding to \code{xL}.
 \item \code{predL} : predictive probability corresponding to \code{xL}
