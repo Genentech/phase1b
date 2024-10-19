@@ -48,12 +48,12 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) 
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      postp_fut <- 1 - postprob(x, n, p0, parE, weights) # futility look
+      postp_fut <- 1 - postprob(x = x, n = x, p = p0, parE = parE, weights = weights) # futility look
       if (postp_fut >= tL) { # Rule is P(RR < p0) > tL
         postL <- postp_fut
         xL <- x
       }
-      postp_eff <- postprob(x, n, p1, parE, weights) # efficacy look
+      postp_eff <- postprob(x = x, n = n, p1 = p1, parE = parE, weights = weights) # efficacy look
       if (postp_eff >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp_eff
         xU <- x
