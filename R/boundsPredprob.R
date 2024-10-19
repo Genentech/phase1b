@@ -69,8 +69,8 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries
-    postL <- postprob(xL, n, p0, parE = parE)
-    postU <- postprob(xU, n, p0, parE = parE)
+    postL <- postprob(x = xL, n = n, p = p0, parE = parE, weights = weights, log.p = FALSE)
+    postU <- postprob(x = xU, n = n, p = p0, parE = parE, weights = weights, log.p = FALSE)
     # calculate lower CI at boundaries
     pL_upper_ci <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
     pU_lower_ci <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
