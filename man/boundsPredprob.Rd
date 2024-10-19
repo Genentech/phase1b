@@ -68,9 +68,9 @@ Pr(Pr(response rate > p0 | data) >= tT | x) =< phiL
 # Final efficacy decision if more than 80\% probability to be above 20\% ORR,
 # Final futility decision otherwise.
 # Interim efficacy decision if more than 90\% predictive probability reach this or
-# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Efficacy look Pr(Pr(P > p0 | x, Y) >= tT | x) >= phiU,
 # Interim futility decision if less than 10\% predictive probability or
-# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+# Futility look Pr(Pr(P > p0 | x, Y) >= tT | x) =< phiL
 # Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
   looks = c(10, 20, 30, 40),
@@ -84,9 +84,9 @@ boundsPredprob(
 # Efficacy decision if more than 80\% probability to be above 20\% ORR,
 # Final futility decision otherwise.
 # Interim efficacy decision if more than 90\% predictive probability reach this or
-# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Efficacy look Pr(Pr(P > p0 | x, Y) >= tT | x) >= phiU,
 # Interim futility decision if less than 60\% predictive probability or
-# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phi
+# Futility look Pr(Pr(P > p0 | x, Y) >= tT | x) =< phi
 # with mixed prior and weights:
 boundsPredprob(
   looks = c(7, 15, 25),
