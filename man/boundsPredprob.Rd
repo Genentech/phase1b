@@ -59,18 +59,18 @@ boundary based on rules in @details.
 see also \code{predprob()}
 The following rules are Decision 1 rules:
 Efficacy boundary: find minimum x (xU) where
-Pr(Pr(response rate > p0 | data) >= tT | x) >= phiU,
+Pr(Pr(RR > p0 | data) >= tT | x) >= phiU,
 Futility boundary: find maximum x (xL) where
-Pr(Pr(response rate > p0 | data) >= tT | x) =< phiL
+Pr(Pr(RR > p0 | data) >= tT | x) =< phiL
 }
 \examples{
 # 40 pts trial with interim looks after each 10 patients.
 # Final efficacy decision if more than 80\% probability to be above 20\% ORR,
 # Final futility decision otherwise.
 # Interim efficacy decision if more than 90\% predictive probability reach this or
-# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Efficacy look Pr(Pr(RR > p0 | x, Y) >= tT | x) >= phiU,
 # Interim futility decision if less than 10\% predictive probability or
-# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phiL
+# Futility look Pr(Pr(RR) > p0 | x, Y) >= tT | x) =< phiL
 # Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
   looks = c(10, 20, 30, 40),
@@ -84,9 +84,9 @@ boundsPredprob(
 # Efficacy decision if more than 80\% probability to be above 20\% ORR,
 # Final futility decision otherwise.
 # Interim efficacy decision if more than 90\% predictive probability reach this or
-# Efficacy look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) >= phiU,
+# Efficacy look Pr(Pr(RR > p0 | x, Y) >= tT | x) >= phiU,
 # Interim futility decision if less than 60\% predictive probability or
-# Futility look Pr(Pr(P > p0 | x, Y, a, b) >= tT | x) =< phi
+# Futility look Pr(Pr(RR > p0 | x, Y) >= tT | x) =< phi
 # with mixed prior and weights:
 boundsPredprob(
   looks = c(7, 15, 25),

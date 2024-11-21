@@ -2,7 +2,7 @@
 #'
 #' This function is used to identify the efficacy and futility
 #' boundaries based on the following rules:
-#' Efficacy boundary: find minimum x (xU) where Pr(RR > p1 |x, n, a, b) >= tU and
+#' Efficacy boundary: find minimum x (xU) where Pr(RR > p1 | x, n, a, b) >= tU and
 #' Futility boundary: find maximum x (xL) where Pr(RR < p0 | x, n, a, b) >= tL
 #'
 #' @inheritParams postprob
@@ -53,7 +53,7 @@ boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) 
         postL <- postp_fut
         xL <- x
       }
-      postp_eff <- postprob(x = x, n = n, p1 = p1, parE = parE, weights = weights) # efficacy look
+      postp_eff <- postprob(x = x, n = n, p = p1, parE = parE, weights = weights) # efficacy look
       if (postp_eff >= tU) { # Rule is P(RR > p1) > tU
         postU <- postp_eff
         xU <- x

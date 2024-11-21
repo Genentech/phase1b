@@ -26,9 +26,9 @@
 #' @details see also `predprob()`
 #' The following rules are Decision 1 rules:
 #' Efficacy boundary: find minimum x (xU) where
-#' Pr(Pr(response rate > p0 | data) >= tT | x) >= phiU,
+#' Pr(Pr(RR > p0 | data) >= tT | x) >= phiU,
 #' Futility boundary: find maximum x (xL) where
-#' Pr(Pr(response rate > p0 | data) >= tT | x) =< phiL
+#' Pr(Pr(RR > p0 | data) >= tT | x) =< phiL
 #'
 #' @example examples/boundsPredprob.R
 #' @export
@@ -53,7 +53,15 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      predprob <- predprob(x = x, n = n, Nmax = max(looks), p = p0, thetaT = tT, parE = parE, weights = weights)$result
+      predprob <- predprob(
+        x = x,
+        n = n,
+        Nmax = max(looks),
+        p = p0,
+        thetaT = tT,
+        parE = parE,
+        weights = weights
+      )$result
       if (predprob <= phiL) { # Futility look, Rule Pr(Pr( RR > p0 | x, Y) >= tT | x) =< phiL
         xL <- x
         predL <- predprob
