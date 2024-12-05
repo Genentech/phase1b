@@ -122,3 +122,23 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
 })
+
+test_that("ocPredprob continues if grey zone at interim", {
+  set.seed(40) # Used for reproducibility
+  res1 <- ocPredprob(
+    nnE = c(19, 39),
+    truep = 0.05,
+    p0 = 0.2,
+    p1 = 0.2,
+    phiU = 0.9,
+    tT = 0.8,
+    tF = 0.5,
+    phiFu = 0.9,
+    parE = c(2/6, 1 - 2/6),
+    sim = 100,
+    wiggle = FALSE,
+    decision1 = FALSE
+  )
+  na_dec_ind <- which(is.na(res1$Decision))
+  expect_true(all(res1$SampleSize[na_dec_ind] > 19))
+})
