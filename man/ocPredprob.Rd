@@ -97,8 +97,8 @@ The criteria for Decision 1 for Interim looks are :
 
 The criteria for Decision 1 for Final looks are:
 \itemize{
-\item Final GO = P( response rate > p0 | data) > tT
-\item Final STOP = P( response rate > p0 | data ) < tT
+\item Final GO = P( RR > p0 | data) > tT
+\item Final STOP = P( RR > p0 | data ) < tT
 }
 }
 
@@ -112,8 +112,8 @@ The criteria for Decision 2 for Interim looks are :
 
 The criteria for Decision 2 for Futility looks are :
 \itemize{
-\item Final GO = P( response rate > p0) > tT
-\item Final STOP = P( response rate  < p1) > tF
+\item Final GO = P( RR > p0) > tT
+\item Final STOP = P( RR  < p1) > tF
 }
 }
 }
