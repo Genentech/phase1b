@@ -2,15 +2,11 @@
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30.
 # True response rate or truep of the treatment group = 40%
 # Desired difference to Standard of Care for Efficacy and Futility = 10%
-# Delta calculation is absolute case. The following are the Final Stop rules respectively :
-# - Final look for Efficacy:
-#    Pr( response rate + deltaE > 25% ) > 60% or P(response rate + deltaE > p0) > tT
-# - Final look for Futility:
-#    Pr( response rate + deltaF < 25% ) < 60% or P(response rate + deltaF > p0) < tT
-# - Interim look for Efficacy:
-#   Pr( success at final ) > 80% or P(success at final) > phiU
-# - Interim look for Futility:
-#   Pr( success at final ) < 20% or P(success at final) < phiL
+# The following are the Final Stop rules respectively :
+# - Final look for Efficacy: Pr( RR + deltaE > 25% ) > 60%
+# - Final look for Futility: Pr( RR + deltaF < 25% ) < 60%
+# - Interim look for Efficacy: Pr( success at final ) > 80%
+# - Interim look for Futility: Pr( failure at final ) < 20%
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 
 set.seed(20)
@@ -41,12 +37,10 @@ result$oc
 # Desired difference to Standard of Care for Efficacy and Futility is 10% and -10% respectively.
 # Grey zone occurs due to different posterior probability distribution in the Efficacy and Futility rules.
 # Delta calculation is absolute case. The following are the Final Stop rules respectively :
-# - Final look for Efficacy: Pr( response rate + deltaE > 25% ) > 60% or P( response rate + deltaE > p0) > tT
-# - Final look for Futility: Pr( response rate + deltaF < 25% ) < 60% or P( response rate + deltaF > p0) < tT
-# - Interim look for Efficacy: Pr( success at final ) > 80% or
-#                            P(success at final) > phiU
-# - Interim look for Futility: Pr( failure at final ) < 20% or
-#                           P(success at final) < phiL
+# - Final look for Efficacy: Pr( RR + deltaE > 25% ) > 60%
+# - Final look for Futility: Pr( RR + deltaF < 25% ) < 60%
+# - Interim look for Efficacy: Pr( success at final ) > 80%
+# - Interim look for Futility: Pr( failure at final ) < 20%
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 #
 set.seed(20)
@@ -76,8 +70,8 @@ result$oc
 # True response rate or truep of the treatment group = 40%
 # Desired difference to Standard of Care for Efficacy and Futility = 50%
 # Delta calculation is absolute case. The following are the Final Stop rules respectively :
-# - Final look for Efficacy: Pr( response rate + deltaE > 25% ) > 60% or P(response rate + deltaE > p0) > tT
-# - Final look for Futility: Pr( response rate + deltaF < 25% ) < 60% or P(response rate + deltaF > p0) < tT
+# - Final look for Efficacy: Pr( RR + deltaE > 25% ) > 60% or P(RR + deltaE > p0) > tT
+# - Final look for Futility: Pr( RR + deltaF < 25% ) < 60% or P(RR + deltaF > p0) < tT
 # - Interim look for Efficacy: Pr( success at final ) > 80% or P(success at final) > phiU
 # - Interim look for Futility: Pr( failure at final ) < 20% or
 #   P(success at final) < phiL

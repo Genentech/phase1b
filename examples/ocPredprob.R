@@ -1,8 +1,8 @@
 # Here we illustrate an example for Decision 1 with the following assumptions :
 # True response rate or truep of the treatment group = 40%
 # The following are the Final Stop rules respectively :
-# - Final look for Efficacy: Pr( response rate > 25% ) > 60% or P(response rate > p0) > tT
-# - Final look for Futility: Pr( response rate < 25% ) < 60% or P(response rate > p0) < tT
+# - Final look for Efficacy: Pr( RR > 25% ) > 60% or P( RR > p0) > tT
+# - Final look for Futility: Pr( RR < 25% ) < 60% or P(RR > p0) < tT
 # - Interim look for Efficacy: Pr( success at final ) > 80% or P(success at final) > phiU
 # - Interim look for Futility: Pr( failure at final ) < 20% or P(success at final) < phiL
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
@@ -76,8 +76,8 @@ result$oc
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # True response rate or truep of the treatment group = 60%
 # The following are the Final Stop rules respectively :
-# - Final look for Efficacy: Pr( response rate > 25% ) > 60% or P(response rate > p0) > tT
-# - Final look for Futility: Pr( response rate < 25% ) < 60% or P(response rate < p1) > tF
+# - Final look for Efficacy: Pr( RR > 25% ) > 60% or P(RR > p0) > tT
+# - Final look for Futility: Pr( RR < 25% ) < 60% or P(RR < p1) > tF
 # - Interim look for Efficacy: Pr( success at final ) > 80% or P(success at final) > phiU
 # - Interim look for Futility: Pr( failure at final ) > 80% or P(failure at final) > phiFu
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
