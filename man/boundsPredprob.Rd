@@ -37,7 +37,7 @@ corresponding to the beta parameters of the K components.}
 A matrix for each same size in \code{looks}. For each sample size, the following is returned:
 \itemize{
 \item \code{xL} : the maximum number of responses that meet the futility
-threshold
+threshold.
 \item \code{pL} : response rate corresponding to \code{xL}.
 \item \code{predL} : predictive probability corresponding to \code{xL}
 \item \code{postL}: posterior probability corresponding to \code{xL}.
@@ -45,13 +45,15 @@ threshold
 exact binomial test.
 \item \code{xU} : the minimal number of responses that meet the efficacy threshold.
 \item \code{pU} : response rate corresponding to \code{xU}.
-\item \code{predU} : predictive probability corresponding to \code{xU}
+\item \code{predU} : predictive probability corresponding to \code{xU}.
 \item \code{postU}: posterior probability corresponding to \code{xU}.
 \item \code{pU_lower_ci} : lower bound of one sided 95\% CI for the response rate based on exact
 binomial test.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function is used to identify the efficacy boundary and futility
 boundary based on rules in @details.
 }

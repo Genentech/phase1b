@@ -1,5 +1,7 @@
 #' Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' This function is used to identify the efficacy boundary and futility
 #' boundary based on rules in @details.
 #'
@@ -8,7 +10,7 @@
 #' @inheritParams boundsPostprob
 #' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
 #' - `xL` : the maximum number of responses that meet the futility
-#'          threshold
+#'          threshold.
 #' - `pL` : response rate corresponding to `xL`.
 #' - `predL` : predictive probability corresponding to `xL`
 #' - `postL`: posterior probability corresponding to `xL`.
@@ -16,7 +18,7 @@
 #'            exact binomial test.
 #' - `xU` : the minimal number of responses that meet the efficacy threshold.
 #' - `pU` : response rate corresponding to `xU`.
-#' - `predU` : predictive probability corresponding to `xU`
+#' - `predU` : predictive probability corresponding to `xU`.
 #' - `postU`: posterior probability corresponding to `xU`.
 #' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate based on exact
 #'            binomial test.
@@ -34,11 +36,11 @@
 #' @export
 #' @keywords graphics
 boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = c(1, 1), weights) {
-  assert_numeric(looks)
+  assert_numeric(looks, any.missing = FALSE)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(tT, lower = 0, upper = 1)
-  assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   znames <- c(
     "xL", "pL", "predL", "postL", "UciL",
@@ -47,6 +49,7 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   z <- matrix(NA, length(looks), length(znames))
   dimnames(z) <- list(looks, znames)
   k <- 0
+  assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
