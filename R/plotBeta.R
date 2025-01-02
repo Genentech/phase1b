@@ -86,22 +86,27 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
     upper = Stop_cut # Calculate probability of Stop, if difference was at most `Stop_cut`.
   )
 
-  Go_label <- paste("Probability of Go is", round(Go_auc$value * 100, digits = 2), "%")
-  Stop_label <- paste("Probability of Stop is", round(Stop_auc$value * 100, digits = 2), "%")
-  plot_title <- paste("According to Beta difference density", Go_label, "and", Stop_label)
-
-  pbetadiff_plot <- ggplot2::ggplot(data = data, mapping = aes(x = grid, y = density)) +
-    ggplot2::geom_line(colour = "#888888") +
-    xlab("Difference between treatment") +
-    ggplot2::ylab(quote(f(x))) +
-    ggplot2::ggtitle(plot_title)
+  Go_label <- paste("probability of Go is", round(Go_auc$value * 100, digits = 2), "%")
+  Stop_label <- paste("probability of Stop is", round(Stop_auc$value * 100, digits = 2), "%")
+  plot_title <- paste("According to Beta difference density", Go_label, "and\n", Stop_label)
 
   if (shade == TRUE) {
-    pbetadiff_plot <- pbetadiff_plot +
-      ggplot2::geom_area(data = data[data$Go == TRUE, ], fill = "#009E73") +
-      ggplot2::geom_area(data = data[data$Stop == TRUE, ], fill = "#D55E00")
+    pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
+      ggplot2::geom_line(colour = "#888888") +
+      geom_area(data = data[data$grid < Stop_cut,], fill = "#D55E00",
+                mapping = aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))) +
+      geom_area(data = data[data$grid > Go_cut,], fill = "#009E73",
+                mapping = aes(x = ifelse(grid > 0.3, grid, 0)))  +
+      xlab("Difference between treatment") +
+      ggplot2::ylab(quote(f(x))) +
+      ggplot2::ggtitle(plot_title)
+  } else {
+    pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
+      ggplot2::geom_line(colour = "#888888") +
+      xlab("Difference between treatment") +
+      ggplot2::ylab(quote(f(x))) +
+      ggplot2::ggtitle(plot_title)
   }
-
   if (note == TRUE) {
     pbetadiff_plot <- pbetadiff_plot +
       ggplot2::annotate("text", x = -0.5, y = 4.25, label = Go_label, colour = "#009E73") +

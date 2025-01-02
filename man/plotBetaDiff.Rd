@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotBeta.R
 \name{plotBetaDiff}
 \alias{plotBetaDiff}
-\title{Plot Diff Between two Beta distributions}
+\title{Plot difference Between two Beta distributions}
 \usage{
 plotBetaDiff(
   parY,
@@ -35,13 +35,17 @@ a ggplot object
 This function will plot the PDF of a difference between two Beta distributions
 }
 \examples{
-myPlotDiff(
-  parY = c(5, 10),
-  parX = c(2, 5),
-  cut_B = 0.2, # a meaningful improvement threshold
-  cut_W = 0.05, # a poor improvement threshold
-  shade = 1, # paint the two areas under the curve, default: yes. other numbers stands for "no";
-  note = 1
-) # show values of the colored area, default: yes. other numbers stands for "no";
+# The beta distribution and acceptable bounds for
+# a meaningful improvement of 0.20 and worsening of 0.05
+parX <- c(1, 52) # parameters of experimental arm
+parY <- c(5.5, 20.5) # parameters of control or SOC
+plotBetaDiff(
+  parY = parY,
+  parX = parX,
+  Go_cut = 0.3,
+  Stop_cut = 0.1,
+  shade = TRUE,
+  note = TRUE
+)
 }
 \keyword{graphics}
