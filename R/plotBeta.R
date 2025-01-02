@@ -30,7 +30,7 @@ plotBeta <- function(alpha, beta, ...) {
     ggplot2::scale_x_continuous(labels = scales::percent_format())
 }
 
-#' Plot Diff Between two Beta distributions
+#' Plot difference Between two Beta distributions
 #'
 #' This function will plot the PDF of a difference between two Beta distributions
 #'
@@ -50,7 +50,7 @@ plotBeta <- function(alpha, beta, ...) {
 #'  additional arguments to `ggplot()`
 #' @return a ggplot object
 #'
-#' @example examples/myPlotDiff.R
+#' @example examples/plotBetaDiff.R
 #'
 #' @importFrom graphics par axis polygon mtext
 #' @importFrom stats integrate
