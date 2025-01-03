@@ -86,14 +86,14 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
     upper = Stop_cut # Calculate probability of Stop, if difference was at most `Stop_cut`.
   )
 
-  Go_label <- paste("probability of Go is", round(Go_auc$value * 100, digits = 2), "%")
-  Stop_label <- paste("probability of Stop is", round(Stop_auc$value * 100, digits = 2), "%")
-  plot_title <- paste("According to Beta difference density", Go_label, "and\n", Stop_label)
+  Go_label <- paste("P(Go) is", round(Go_auc$value * 100, digits = 2), "%")
+  Stop_label <- paste("P(S) is", round(Stop_auc$value * 100, digits = 2), "%")
+  plot_title <- paste("According to Beta difference density", Go_label, "and", Stop_label)
 
   if (shade == TRUE) {
     pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
       ggplot2::geom_line(colour = "#888888") +
-      geom_area(data = data[data$grid < Stop_cut,], fill = "#D55E00",
+      geom_area(data = data[data$grid < Stop_cut,], fill = "#FF0046",
                 mapping = aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))) +
       geom_area(data = data[data$grid > Go_cut,], fill = "#009E73",
                 mapping = aes(x = ifelse(grid > 0.3, grid, 0)))  +
@@ -109,8 +109,8 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
   }
   if (note == TRUE) {
     pbetadiff_plot <- pbetadiff_plot +
-      ggplot2::annotate("text", x = -0.5, y = 4.25, label = Go_label, colour = "#009E73") +
-      ggplot2::annotate("text", x = -0.5, y = 4.75, label = Stop_label, colour = "#D55E00")
+      ggplot2::annotate("text", x = -0.5, y = 3.75, size = 5, label = Stop_label, colour = "#FF0046") +
+      ggplot2::annotate("text", x = -0.5, y = 3.25, size = 5, label = Go_label, colour = "#009E73")
   }
   pbetadiff_plot
 }
