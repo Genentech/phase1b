@@ -18,5 +18,4 @@ test_that("plotBetaDiff works as expected", {
   )
   vdiffr::expect_doppelganger("", result)
   vdiffr::expect_doppelganger("", result)
-
 })
