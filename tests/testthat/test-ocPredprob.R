@@ -123,7 +123,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
 })
 
-test_that("ocPredprob continues if grey zone at interim", {
+test_that("ocPredprob stops at interim when Futility criteria met", {
   set.seed(40) # Used for reproducibility
   res1 <- ocPredprob(
     nnE = c(19, 39),
