@@ -43,7 +43,7 @@ plotBetaDiff(
   parY = parY,
   parX = parX,
   Go_cut = 0.3,
-  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccesful trial
+  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,
   note = TRUE
 )
@@ -54,7 +54,7 @@ plotBetaDiff(
   parY = c(1, 1), # prior  parameters for experimental arm
   parX = c(1, 1), # prior parameters for control or SOC arm
   Go_cut = 0.3,
-  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccesful trial
+  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,
   note = TRUE
 )

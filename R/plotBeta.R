@@ -87,7 +87,7 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
   )
 
   Go_label <- paste("P(Go) is", round(Go_auc$value * 100, digits = 2), "%")
-  Stop_label <- paste("P(S) is", round(Stop_auc$value * 100, digits = 2), "%")
+  Stop_label <- paste("P(Stop) is", round(Stop_auc$value * 100, digits = 2), "%")
   plot_title <- paste("According to Beta difference density", Go_label, "and", Stop_label)
 
   if (shade == TRUE) {
