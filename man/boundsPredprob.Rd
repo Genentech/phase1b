@@ -72,7 +72,7 @@ Pr(Pr(RR > p0 | data) >= tT | x) =< phiL
 # Interim efficacy decision if more than 90\% predictive probability reach this or
 # Efficacy look Pr(Pr(RR > p0 | x, Y) >= tT | x) >= phiU,
 # Interim futility decision if less than 10\% predictive probability or
-# Futility look Pr(Pr(RR) > p0 | x, Y) >= tT | x) =< phiL
+# Futility look Pr(Pr(RR > p0 | x, Y) >= tT | x) =< phiL
 # Uniform prior (i.e. beta(1, 1)) on the ORR:
 boundsPredprob(
   looks = c(10, 20, 30, 40),
