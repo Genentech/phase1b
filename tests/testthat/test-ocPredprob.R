@@ -91,8 +91,8 @@ test_that("the PrFutility increases with increase futility looks", {
 test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   expect_warning(result_eff <- ocPredprob(
-    nnE = c(10, 20),
-    truep = 0.6,
+    nnE = 5,
+    truep = 0.7,
     p0 = 0.2,
     p1 = 0.2,
     tT = 0.6,
@@ -106,8 +106,8 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_more_eff <- ocPredprob(
-    nnE = c(10, 20, 40),
-    truep = 0.6,
+    nnE = c(5, 20, 40),
+    truep = 0.7,
     p0 = 0.2,
     p1 = 0.2,
     tT = 0.6,
