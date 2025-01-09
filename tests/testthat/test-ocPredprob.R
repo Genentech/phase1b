@@ -127,9 +127,9 @@ test_that("ocPredprob correctly shows maximum sample size when no decision reach
   set.seed(40) # Used for reproducibility
   res1 <- ocPredprob(
     nnE = c(19, 39),
-    truep = 0.05,
-    p0 = 0.2,
-    p1 = 0.2,
+    truep = 0.4,
+    p0 = 0.9,
+    p1 = 0.1,
     phiU = 0.9,
     tT = 0.8,
     tF = 0.5,
@@ -140,5 +140,6 @@ test_that("ocPredprob correctly shows maximum sample size when no decision reach
     decision1 = FALSE
   )
   na_dec_ind <- which(is.na(res1$Decision))
+  expect_true(length(na_dec_ind) > 0)
   expect_true(all(res1$SampleSize[na_dec_ind] > 19))
 })
