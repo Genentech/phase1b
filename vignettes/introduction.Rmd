@@ -882,21 +882,6 @@ plotBetaDiff(
   shade = TRUE,
   note = TRUE
 )
-
-
-# plotBetaDiff(c(5.75 + 55, 4.25 + 80 - 55), c(75, 75), 0.15, 0.05, 1, 0,
-#   xlab = "(Combo Response) - (Control Response)"
-# )
-# legend("topright", c("Prob. of No Go", "Prob. of Go"),
-#   pch = 15,
-#   col = c("red", "green"), bty = "n"
-# )
-
-arrows(.5, 2, .22, 1, lwd = 2)
-text(.5, 2.2, expression("Prob" * (Delta > +15 * "%")))
-
-arrows(-.25, 2, 0, .2, lwd = 2)
-text(-.25, 2.2, expression("Prob" * (Delta < +5 * "%")))
 ```
 
 In Figure \@ref(fig:ex1:betadiff1) we see that the probability of a go decision
