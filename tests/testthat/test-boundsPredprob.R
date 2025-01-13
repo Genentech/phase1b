@@ -53,81 +53,87 @@ test_that("boundsPredprob with Beta Mixture Priors give correct results", {
     weights = c(0.2, 0.8)
   )
   expected_lower_bound_results <- data.frame(
-    list(interim_predL =  # predL of interim data
-           predprob(
-             x = result$xL[1],
-             n = 10,
-             p = 0.20,
-             Nmax = 20,
-             thetaT = 0.80,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8)
-           )$result,
-         interim_post = # postL of interim data
-           postprob(
-             x = 2,
-             n = 10,
-             p = 0.2,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8),
-             log.p = FALSE),
-         final_predL = # predU of interim data
-           predprob(
-             x = result$xL[2],
-             n = 20,
-             p = 0.20,
-             Nmax = 20,
-             thetaT = 0.80,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8)
-           )$result,
-         final_post = # postU of final data
-           postprob(
-             x = 6,
-             n = 20,
-             p = 0.2,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8),
-             log.p = FALSE)
+    list(
+      interim_predL = # predL of interim data
+        predprob(
+          x = result$xL[1],
+          n = 10,
+          p = 0.20,
+          Nmax = 20,
+          thetaT = 0.80,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8)
+        )$result,
+      interim_post = # postL of interim data
+        postprob(
+          x = 2,
+          n = 10,
+          p = 0.2,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8),
+          log.p = FALSE
+        ),
+      final_predL = # predU of interim data
+        predprob(
+          x = result$xL[2],
+          n = 20,
+          p = 0.20,
+          Nmax = 20,
+          thetaT = 0.80,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8)
+        )$result,
+      final_post = # postU of final data
+        postprob(
+          x = 6,
+          n = 20,
+          p = 0.2,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8),
+          log.p = FALSE
+        )
     )
   )
   expected_upper_bound_results <- data.frame(
-    list(interim_predU =  # predL of interim data
-           predprob(
-             x = result$xU[1],
-             n = 10,
-             p = 0.20,
-             Nmax = 20,
-             thetaT = 0.80,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8)
-           )$result,
-         interim_post = # postL of interim data
-           postprob(
-             x = result$xU[1],
-             n = 10,
-             p = 0.2,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8),
-             log.p = FALSE),
-         final_predU = # predU of interim data
-           predprob(
-             x = result$xU[2],
-             n = 20,
-             p = 0.20,
-             Nmax = 20,
-             thetaT = 0.80,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8)
-           )$result,
-         final_post = # postU of final data
-           postprob(
-             x = result$xU[2],
-             n = 20,
-             p = 0.2,
-             parE = cbind(c(1, 1), c(3, 10)),
-             weights = c(0.2, 0.8),
-             log.p = FALSE)
+    list(
+      interim_predU = # predL of interim data
+        predprob(
+          x = result$xU[1],
+          n = 10,
+          p = 0.20,
+          Nmax = 20,
+          thetaT = 0.80,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8)
+        )$result,
+      interim_post = # postL of interim data
+        postprob(
+          x = result$xU[1],
+          n = 10,
+          p = 0.2,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8),
+          log.p = FALSE
+        ),
+      final_predU = # predU of interim data
+        predprob(
+          x = result$xU[2],
+          n = 20,
+          p = 0.20,
+          Nmax = 20,
+          thetaT = 0.80,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8)
+        )$result,
+      final_post = # postU of final data
+        postprob(
+          x = result$xU[2],
+          n = 20,
+          p = 0.2,
+          parE = cbind(c(1, 1), c(3, 10)),
+          weights = c(0.2, 0.8),
+          log.p = FALSE
+        )
     )
   )
   # lower bound predictive and posterior probabilities
