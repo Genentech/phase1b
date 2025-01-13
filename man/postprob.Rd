@@ -14,7 +14,7 @@ postprob(x, n, p, parE = c(1, 1), weights, betamixPost, log.p = FALSE)
 \item{p}{(\code{number}):\cr threshold that \code{P_E} is measured.}
 
 \item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
-corresponding to the beta parameters of the \code{K} components.}
+corresponding to the beta parameters of the \code{K} priors.}
 
 \item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
 

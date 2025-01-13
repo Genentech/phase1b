@@ -29,7 +29,7 @@ boundsPredprob(
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{parE}{(\code{numeric}):\cr the beta parameters matrix, with K rows and 2 columns,
-corresponding to the beta parameters of the K components.}
+corresponding to the beta parameters of the K priors.}
 
 \item{weights}{(\code{numeric}):\cr the mixture weights of the beta mixture prior.}
 }

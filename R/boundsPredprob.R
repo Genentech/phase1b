@@ -43,12 +43,15 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   assert_number(phiU, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
   znames <- c(
-    "xL", "pL", "predL", "postL", "UciL",
-    "xU", "pU", "predU", "postU", "LciU"
+    "xL", "pL", "predL", "postL", "pL_upper_ci",
+    "xU", "pU", "predU", "postU", "pU_lower_ci"
   )
   z <- matrix(NA, length(looks), length(znames))
   dimnames(z) <- list(looks, znames)
   k <- 0
+  if (missing(weights)) {
+    weights <- rep(1, nrow(t(parE)))
+  }
   assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
   for (n in looks) {
     k <- k + 1

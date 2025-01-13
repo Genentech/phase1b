@@ -18,7 +18,7 @@ boundsPostprob(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights)
 \item{tU}{(\code{number}):\cr posterior probability threshold for being above \code{p1}.}
 
 \item{parE}{(\code{matrix}):\cr the beta parameters matrix, with \code{K} rows and 2 columns,
-corresponding to the beta parameters of the \code{K} components.}
+corresponding to the beta parameters of the \code{K} priors.}
 
 \item{weights}{(\code{vector}):\cr The mixture weights of the beta mixture prior.}
 }
