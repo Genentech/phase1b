@@ -55,7 +55,7 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #'  threshold that `P_E` is measured.
 #' @typed parE : matrix
 #'  the beta parameters matrix, with `K` rows and 2 columns,
-#'  corresponding to the beta parameters of the `K` priors.
+#'  corresponding to the beta parameters of the `K` components.
 #' @typed weights : vector
 #'  The mixture weights of the beta mixture prior.
 #' @typed betamixPost : matrix

@@ -31,7 +31,7 @@
 #'  threshold on the probability to be above p.
 #' @typed parE : numeric
 #'  the beta parameters matrix, with K rows and 2 columns,
-#'  corresponding to the beta parameters of the K priors.
+#'  corresponding to the beta parameters of the K components.
 #' @typed weights : numeric
 #'  the mixture weights of the beta mixture prior.
 #' @return A `list` is returned with names `result` for predictive probability and
