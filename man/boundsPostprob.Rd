@@ -38,9 +38,11 @@ binomial test.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function is used to identify the efficacy and futility
 boundaries based on the following rules:
-Efficacy boundary: find minimum x (xU) where Pr(RR > p1 |x, n, a, b) >= tU and
+Efficacy boundary: find minimum x (xU) where Pr(RR > p1 | x, n, a, b) >= tU and
 Futility boundary: find maximum x (xL) where Pr(RR < p0 | x, n, a, b) >= tL
 }
 \examples{
