@@ -52,7 +52,7 @@ boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = 
   if (missing(weights)) {
     weights <- rep(1, nrow(t(parE)))
   }
-  assert_numeric(weights, min.len = 0, len = nrow(parE), finite = TRUE)
+  assert_numeric(weights, min.len = 0, len = nrow(t(parE)), finite = TRUE)
   for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
