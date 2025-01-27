@@ -15,8 +15,8 @@ interim STOP = P(successful trial at final) &amp;lt; phiL
 
 
 The criteria for Decision 1 for Final looks are:
-Final GO = P( response rate &amp;gt; p0 | data) &amp;gt; tT
-Final STOP = P( response rate &amp;gt; p0 | data ) &amp;lt; tT
+Final GO = P( RR &amp;gt; p0 | data) &amp;gt; tT
+Final STOP = P( RR &amp;gt; p0 | data ) &amp;lt; tT
 
 
 
@@ -31,8 +31,8 @@ Interim STOP : P (failure at final ) &amp;gt; phiFu
 
 
 The criteria for Decision 2 for Futility looks are :
-Final GO = P( response rate &amp;gt; p0) &amp;gt; tT
-Final STOP = P( response rate  &amp;lt; p1) &amp;gt; tF
+Final GO = P( RR &amp;gt; p0) &amp;gt; tT
+Final STOP = P( RR  &amp;lt; p1) &amp;gt; tF
 
 
 
@@ -52,8 +52,8 @@ interim STOP = P(successful trial at final) &amp;lt; phiL
 
 
 The criteria for Decision 1 for Final looks are:
-Final GO = P( response rate &amp;gt; p0 | data) &amp;gt; tT
-Final STOP = P( response rate &amp;gt; p0 | data ) &amp;lt; tT
+Final GO = P( RR &amp;gt; p0 | data) &amp;gt; tT
+Final STOP = P( RR &amp;gt; p0 | data ) &amp;lt; tT
 
 
 
@@ -68,8 +68,8 @@ Interim STOP : P (failure at final ) &amp;gt; phiFu
 
 
 The criteria for Decision 2 for Futility looks are :
-Final GO = P( response rate &amp;gt; p0) &amp;gt; tT
-Final STOP = P( response rate  &amp;lt; p1) &amp;gt; tF
+Final GO = P( RR &amp;gt; p0) &amp;gt; tT
+Final STOP = P( RR  &amp;lt; p1) &amp;gt; tF
 
 
 
@@ -102,12 +102,6 @@ Final STOP = P( response rate  &amp;lt; p1) &amp;gt; tF
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/genentech/phase1b"><span class="fa fa-github"></span></a></li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul></div>
 
 
@@ -134,8 +128,8 @@ used when <code>decision1 == TRUE</code> which is the default setting.</p><div c
 
 <p>The criteria for Decision 1 for Interim looks are :</p><ul><li><p>interim GO =  P(successful trial at final) &gt; phiU</p></li>
 <li><p>interim STOP = P(successful trial at final) &lt; phiL</p></li>
-</ul><p>The criteria for Decision 1 for Final looks are:</p><ul><li><p>Final GO = P( response rate &gt; p0 | data) &gt; tT</p></li>
-<li><p>Final STOP = P( response rate &gt; p0 | data ) &lt; tT</p></li>
+</ul><p>The criteria for Decision 1 for Final looks are:</p><ul><li><p>Final GO = P( RR &gt; p0 | data) &gt; tT</p></li>
+<li><p>Final STOP = P( RR &gt; p0 | data ) &lt; tT</p></li>
 </ul></div>
 
 <div class="section">
@@ -144,8 +138,8 @@ used when <code>decision1 == TRUE</code> which is the default setting.</p><div c
 
 <p>The criteria for Decision 2 for Interim looks are :</p><ul><li><p>Interim GO : P ( success at final) &gt; phiU</p></li>
 <li><p>Interim STOP : P (failure at final ) &gt; phiFu</p></li>
-</ul><p>The criteria for Decision 2 for Futility looks are :</p><ul><li><p>Final GO = P( response rate &gt; p0) &gt; tT</p></li>
-<li><p>Final STOP = P( response rate  &lt; p1) &gt; tF</p></li>
+</ul><p>The criteria for Decision 2 for Futility looks are :</p><ul><li><p>Final GO = P( RR &gt; p0) &gt; tT</p></li>
+<li><p>Final STOP = P( RR  &lt; p1) &gt; tF</p></li>
 </ul></div>
 
     </div>
@@ -258,8 +252,8 @@ maximum sample size)</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Here we illustrate an example for Decision 1 with the following assumptions :</span></span></span>
 <span class="r-in"><span><span class="co"># True response rate or truep of the treatment group = 40%</span></span></span>
 <span class="r-in"><span><span class="co"># The following are the Final Stop rules respectively :</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Efficacy: Pr( response rate &gt; 25% ) &gt; 60% or P(response rate &gt; p0) &gt; tT</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Futility: Pr( response rate &lt; 25% ) &lt; 60% or P(response rate &gt; p0) &lt; tT</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Efficacy: Pr( RR &gt; 25% ) &gt; 60% or P( RR &gt; p0) &gt; tT</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Futility: Pr( RR &lt; 25% ) &lt; 60% or P(RR &gt; p0) &lt; tT</span></span></span>
 <span class="r-in"><span><span class="co"># - Interim look for Efficacy: Pr( success at final ) &gt; 80% or P(success at final) &gt; phiU</span></span></span>
 <span class="r-in"><span><span class="co"># - Interim look for Futility: Pr( failure at final ) &lt; 20% or P(success at final) &lt; phiL</span></span></span>
 <span class="r-in"><span><span class="co"># We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.</span></span></span>
@@ -345,8 +339,8 @@ maximum sample size)</p></li>
 <span class="r-in"><span><span class="co"># Here we illustrate an example for Decision 2 with the following assumptions :</span></span></span>
 <span class="r-in"><span><span class="co"># True response rate or truep of the treatment group = 60%</span></span></span>
 <span class="r-in"><span><span class="co"># The following are the Final Stop rules respectively :</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Efficacy: Pr( response rate &gt; 25% ) &gt; 60% or P(response rate &gt; p0) &gt; tT</span></span></span>
-<span class="r-in"><span><span class="co"># - Final look for Futility: Pr( response rate &lt; 25% ) &lt; 60% or P(response rate &lt; p1) &gt; tF</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Efficacy: Pr( RR &gt; 25% ) &gt; 60% or P(RR &gt; p0) &gt; tT</span></span></span>
+<span class="r-in"><span><span class="co"># - Final look for Futility: Pr( RR &lt; 25% ) &lt; 60% or P(RR &lt; p1) &gt; tF</span></span></span>
 <span class="r-in"><span><span class="co"># - Interim look for Efficacy: Pr( success at final ) &gt; 80% or P(success at final) &gt; phiU</span></span></span>
 <span class="r-in"><span><span class="co"># - Interim look for Futility: Pr( failure at final ) &gt; 80% or P(failure at final) &gt; phiFu</span></span></span>
 <span class="r-in"><span><span class="co"># We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.</span></span></span>

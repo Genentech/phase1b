@@ -68,12 +68,6 @@ PrGrayZone: probability between Go and Stop ,"Evaluate" or Gray decision zone
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/genentech/phase1b"><span class="fa fa-github"></span></a></li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://Genentech.github.io/phase1b/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul></div>
 
 
@@ -185,8 +179,8 @@ if <code>TRUE</code>, optional to specify <code>dist</code> (see @details).</p><
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># For three looks of 10, 20 and 30 we have the following assumptions :</span></span></span>
 <span class="r-in"><span><span class="co"># True response rate or truep of the treatment group = 40%</span></span></span>
 <span class="r-in"><span><span class="co"># The following are the Stop rules respectively :</span></span></span>
-<span class="r-in"><span><span class="co"># Look for Efficacy: Pr(truep &gt; 30% )&gt; 80%</span></span></span>
-<span class="r-in"><span><span class="co"># Look for Futility: Pr(truep &lt; 20% )&gt; 60%</span></span></span>
+<span class="r-in"><span><span class="co"># Look for Efficacy: Pr(RR &gt; 30% )&gt; 80%</span></span></span>
+<span class="r-in"><span><span class="co"># Look for Futility: Pr(RR &lt; 20% )&gt; 60%</span></span></span>
 <span class="r-in"><span><span class="co"># Prior of treatment arm parE= Beta(1,1).</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ocPostprob</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nnE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, truep <span class="op">=</span> <span class="fl">0.40</span>, p0 <span class="op">=</span> <span class="fl">0.20</span>, p1 <span class="op">=</span> <span class="fl">0.30</span>, tL <span class="op">=</span> <span class="fl">0.60</span>, tU <span class="op">=</span> <span class="fl">0.80</span>, parE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
