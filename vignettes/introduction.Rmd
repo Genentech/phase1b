@@ -865,8 +865,8 @@ the same result in far fewer lines of code, see
 Figure~\@ref(fig:ex1:betadiff1:plotBetadiff)).
 
 ```{r, echo = FALSE}
-ex1_betadiff_1_plotBetaDiff_cap <- paste(
-  "The distribution of the difference in PET-CR rates amongst the novel",
+ex1_plotBetaDiff_cap <- paste(
+  "The distribution of the difference in PET-CR rates between the novel",
   "combination group and the historical control. Here, we see that the probability",
   "of a go decision (green) is much more likely than the probability of a no go",
   "decision (red)."
