@@ -873,7 +873,7 @@ ex1_plotBetaDiff_cap <- paste(
 )
 ```
 
-```{r ex1:betadiff1:plotBetaDiff, echo=TRUE, fig.cap = ex1_betadiff_1_plotBetaDiff_cap}
+```{r ex1:betadiff1:plotBetaDiff, echo=TRUE, fig.cap = ex1_plotBetaDiff_cap}
 plotBetaDiff(
   parY = parY,
   parX = parX,
