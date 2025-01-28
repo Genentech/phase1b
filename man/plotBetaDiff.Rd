@@ -48,7 +48,6 @@ plotBetaDiff(
   note = TRUE
 )
 
-
 # a larger Go_cut with uniform prior
 plotBetaDiff(
   parY = c(1, 1), # prior  parameters for experimental arm
