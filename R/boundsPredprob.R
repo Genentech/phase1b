@@ -1,74 +1,105 @@
-#' Decision cutpoints for boundary (based on predictive probability)
+#' Decision cutpoints for boundary (based on predictive probability) for Decision 1 rule.
+#'
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' This function is used to identify the efficacy boundary and futility
-#' boundary based on predictive probabilities, i.e.:
-#' Efficacy boundary: find minimum x (xU) where
-#' Pr(Pr(P > p | x, Y) >= tT | x) > phiU,
-#' Futility boundary: find maximum x (xL) where
-#' Pr(Pr(P > p | x, Y) >= tT | x) < phiL
+#' boundary based on rules in @details.
 #'
-#' @param nvec  a vector of number of patients
-#' @param Nmax  maximum number of patients at the end of the trial
-#' (default: maximum of \code{nvec})
-#' @param p  threshold on the response rate
-#' @param tT  threshold on the posterior probability to be above p
-#' @param phiL  futility boundary predictive probability threshold
-#' @param phiU  efficacy boundary predictive probability threshold
-#' @param a  the alpha parameter of a beta prior of treatment group
-#' @param b  the beta parameter of a beta prior of treatment group
-#' @return A matrix where for each sample size in \code{nvec}, this function
-#' returns the maximum number of responses that meet the futility
-#' threshold (xL), its corresponding response rate (pL), predictive probability
-#' (ppL) and posterior probability (postL), the upper bound of one
-#' sided 95% CI for the response rate based on an
-#' exact binomial test (UciL), and the same boundary parameters for efficacy:
-#' the minimal number of responses that meet the efficacy threshold (xU),
-#' the corresponding response rate (pU), predictive probability
-#' (ppL) and posterior probability (postU), the lower bound of one sided
-#' 95% CI for the response rate based on exact binomial test (LciU).
+#' @inheritParams predprob
+#' @inheritParams ocPredprob
+#' @inheritParams boundsPostprob
+#' @return A matrix for each same size in `looks`. For each sample size, the following is returned:
+#' - `xL` : the maximum number of responses that meet the futility
+#'          threshold.
+#' - `pL` : response rate corresponding to `xL`.
+#' - `predL` : predictive probability corresponding to `xL`
+#' - `postL`: posterior probability corresponding to `xL`.
+#' - `pL_upper_ci` : upper bound of one sided 95% CI for the response rate based on an
+#'            exact binomial test.
+#' - `xU` : the minimal number of responses that meet the efficacy threshold.
+#' - `pU` : response rate corresponding to `xU`.
+#' - `predU` : predictive probability corresponding to `xU`.
+#' - `postU`: posterior probability corresponding to `xU`.
+#' - `pU_lower_ci` : lower bound of one sided 95% CI for the response rate based on exact
+#'            binomial test.
 #'
 #' @importFrom stats binom.test
+#'
+#' @details see also `predprob()`
+#' The following rules are Decision 1 rules:
+#' Efficacy boundary: find minimum x (xU) where
+#' Pr(Pr(RR > p0 | data) >= tT | x) >= phiU,
+#' Futility boundary: find maximum x (xL) where
+#' Pr(Pr(RR > p0 | data) >= tT | x) =< phiL
 #'
 #' @example examples/boundsPredprob.R
 #' @export
 #' @keywords graphics
-boundsPredprob <- function(nvec, Nmax = max(nvec), p, tT, phiL, phiU, a, b) {
+boundsPredprob <- function(looks, Nmax = max(looks), p0, tT, phiL, phiU, parE = c(1, 1), weights) {
+  assert_numeric(looks, any.missing = FALSE)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(tT, lower = 0, upper = 1)
+  assert_number(phiL, lower = 0, upper = 1)
+  assert_number(phiU, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
   znames <- c(
-    "xL", "pL", "ppL", "postL", "UciL",
-    "xU", "pU", "ppU", "postU", "LciU"
+    "xL", "pL", "predL", "postL", "pL_upper_ci",
+    "xU", "pU", "predU", "postU", "pU_lower_ci"
   )
-  z <- matrix(NA, length(nvec), length(znames))
-  dimnames(z) <- list(nvec, znames)
+  z <- matrix(NA, length(looks), length(znames))
+  dimnames(z) <- list(looks, znames)
   k <- 0
-  for (n in nvec) {
+  if (missing(weights)) {
+    weights <- rep(1, nrow(t(parE)))
+  }
+  assert_numeric(weights, min.len = 0, len = nrow(t(parE)), finite = TRUE)
+  for (n in looks) {
     k <- k + 1
     # initialize so will return NA if 0 or n in "continue" region
     xL <- NA
     xU <- NA
     for (x in 0:n) {
-      pp <- predprob(x, n, Nmax, p, tT, parE = c(a, b))$result
-      if (pp <= phiL) {
+      predprob <- predprob(
+        x = x,
+        n = n,
+        Nmax = max(looks),
+        p = p0,
+        thetaT = tT,
+        parE = parE,
+        weights = weights
+      )$result
+      if (predprob <= phiL) { # Futility look, Rule Pr(Pr( RR > p0 | x, Y) >= tT | x) =< phiL
         xL <- x
+        predL <- predprob
       }
-      if (pp >= phiU) {
+      if (predprob >= phiU) { # Efficacy look, Rule Pr(Pr( RR > p0 | x, Y) >= tT | x) >= phiU,
         xU <- x
-        # done: leave innermost for loop
+        predU <- predprob
         break
       }
     }
-    # reset xU to NA if phiU=1 and n<Nmax
+    # reset xU to NA if phiU = 1 and n < Nmax
     if (n < Nmax && phiU == 1) {
       xU <- NA
     }
     # calculate predictive and posterior probabilities at boundaries
-    ppL <- predprob(xL, n, Nmax, p, tT, parE = c(a, b))$result
-    ppU <- predprob(xU, n, Nmax, p, tT, parE = c(a, b))$result
-    postL <- postprob(xL, n, p, parE = c(a, b))
-    postU <- postprob(xU, n, p, parE = c(a, b))
+    postL <- postprob(x = xL, n = n, p = p0, parE = parE, weights = weights, log.p = FALSE)
+    postU <- postprob(x = xU, n = n, p = p0, parE = parE, weights = weights, log.p = FALSE)
     # calculate lower CI at boundaries
-    UciL <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
-    LciU <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
-    z[k, ] <- c(xL, xL / n, ppL, postL, UciL, xU, xU / n, ppU, postU, LciU)
+    pL_upper_ci <- ifelse(!is.na(xL), stats::binom.test(xL, n, alt = "less")$conf.int[2], NA)
+    pU_lower_ci <- ifelse(!is.na(xU), stats::binom.test(xU, n, alt = "greater")$conf.int[1], NA)
+    z[k, ] <- c(
+      xL,
+      xL / n,
+      predL,
+      postL,
+      pL_upper_ci,
+      xU,
+      xU / n,
+      predU,
+      postU,
+      pU_lower_ci
+    )
   }
-  return(round(data.frame(nvec, z), 4))
+  round(data.frame(looks, z), 4)
 }

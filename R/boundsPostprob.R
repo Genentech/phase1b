@@ -1,5 +1,7 @@
 #' Decision cutpoints for boundary (based on posterior probability)
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' This function is used to identify the efficacy and futility
 #' boundaries based on the following rules:
 #' Efficacy boundary: find minimum x (xU) where Pr(RR > p1 | x, n, a, b) >= tU and
@@ -24,17 +26,17 @@
 #' @example examples/boundsPostprob.R
 #' @export
 boundsPostprob <- function(looks, p0, p1 = p0, tL, tU, parE = c(1, 1), weights) {
-  assert_numeric(looks)
+  assert_numeric(looks, any.missing = FALSE)
   assert_number(p0, lower = 0, upper = 1)
   assert_number(p1, lower = 0, upper = 1)
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
   assert_numeric(parE, min.len = 2, any.missing = FALSE)
-  z <- matrix(NA, nrow = length(looks), ncol = 8)
   znames <- c(
     "xL", "pL", "postL", "pL_upper_ci",
     "xU", "pU", "postU", "pU_lower_ci"
   )
+  z <- matrix(NA, nrow = length(looks), ncol = length(znames))
   dimnames(z) <- list(looks, znames)
   k <- 0
   parE <- t(parE)
