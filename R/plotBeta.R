@@ -93,11 +93,11 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
   if (shade == TRUE) {
     pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
       ggplot2::geom_line(colour = "#888888") +
-      geom_area(
+      ggplot2::geom_area(
         data = data[data$grid < Stop_cut, ], fill = "#FF0046",
         mapping = aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))
       ) +
-      geom_area(
+      ggplot2::geom_area(
         data = data[data$grid > Go_cut, ], fill = "#009E73",
         mapping = aes(x = ifelse(grid > 0.3, grid, 0))
       ) +
@@ -105,8 +105,8 @@ plotBetaDiff <- function(parY, # parameters of experimental arm
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
   } else {
-    pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
-      ggplot2::geom_line(colour = "#888888") +
+    pbetadiff_plot <- ggplot2::ggplot(data = data) +
+      ggplot2::geom_line(aes(x = grid, y = density, colour = "#888888")) +
       xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
