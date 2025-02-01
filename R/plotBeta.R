@@ -2,7 +2,6 @@
 #'
 #' This function will plot the PDF of a beta distribution
 #'
-#' @inheritParams dbetabinom
 #' @typed alpha : number
 #'  first parameter of the Beta distribution
 #' @typed beta : number
@@ -15,6 +14,8 @@
 #' @export
 #' @keywords graphics
 plotBeta <- function(alpha, beta) {
+  assert_number(alpha, finite = TRUE)
+  assert_number(beta, finite = TRUE)
   x_support <- seq(from = 0, to = 1, length = 1000)
   data <- data.frame(
     grid = x_support,
@@ -55,12 +56,19 @@ plotBeta <- function(alpha, beta) {
 #'
 #' @export
 #' @keywords graphics
-plotbetadiff <- function(parE, # parameters of experimental arm
+plotBetaDiff <- function(parE, # parameters of experimental arm
                          parS, # parameters of control or SOC
                          go_cut = 0.20, # a meaningful improvement threshold
                          stop_cut = 0.1, # a poor improvement threshold
                          shade = TRUE, # paint the two areas under the curve
                          note = TRUE) { # show values of the colored area
+  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(go_cut, finite = TRUE)
+  assert_number(stop_cut, finite = TRUE)
+  assert_flag(shade)
+  assert_flag(note)
+
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
@@ -88,8 +96,8 @@ plotbetadiff <- function(parE, # parameters of experimental arm
   stop_label <- paste("P(Stop) is", round(stop_auc$value * 100, digits = 2), "%")
   plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
 
-  if (shade) {
-    pbetadiff_plot <- ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
+  pbetadiff_plot <- if (shade) {
+    ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
       ggplot2::geom_line(colour = "#888888") +
       ggplot2::geom_area(
         data = data[data$grid < stop_cut, ], fill = "#FF0046",

@@ -1,6 +1,6 @@
 # The following examples use these parameters:
-parX <- c(1, 52)
-parY <- c(5.5, 20.5)
+parE <- c(1, 52)
+parS <- c(5.5, 20.5)
 
 # Calculate probability based on quantile `Q(Z) =< 0.122838`
 pbetadiff(
