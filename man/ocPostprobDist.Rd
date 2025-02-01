@@ -76,11 +76,11 @@ respectively.
 
 Stop criteria for Efficacy :
 
-\code{Pr(truep > P_S + deltaE) > tU}
+\code{Pr(RR > P_S + deltaE) > tU}
 
 Stop criteria for Futility :
 
-\code{Pr(truep < P_S + deltaF) > tL}
+\code{Pr(RR < P_S + deltaF) > tL}
 
 Where \code{truep} is the assumed true rate of response and \code{p1} and \code{p0} respectively are
 the thresholds for Efficacy and Futility respectively.
@@ -121,8 +121,6 @@ or \code{Pr(truep > P_S + (1 - P_S) * deltaF | data)} for Futility looks.
 # True response rate or truep of the treatment group = 40\%
 # The following are the Go and Stop rules respectively :
 # Prior of treatment arm parE= Beta(1,1).
-# stop for efficacy (deltaE): Pr(truep > P_S + deltaE) > tU
-# stop for futility (deltaF): Pr(truep < P_S + deltaF) > tL
 # Without random distance allowed for Futility and Efficacy Looks.
 res1 <- ocPostprobDist(
   nnE = c(10, 20, 30),
