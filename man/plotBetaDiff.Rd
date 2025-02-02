@@ -5,8 +5,8 @@
 \title{Plot difference Between two Beta distributions}
 \usage{
 plotBetaDiff(
-  parE,
-  parS,
+  parX,
+  parY,
   go_cut = 0.2,
   stop_cut = 0.1,
   shade = TRUE,
@@ -14,13 +14,13 @@ plotBetaDiff(
 )
 }
 \arguments{
-\item{parE}{(\code{numeric}):\cr non-negative parameters of the historical control Beta distribution}
-
-\item{parS}{(\code{numeric}):\cr non-negative parameters of the treatment Beta distribution.}
-
 \item{shade}{(\code{flag}):\cr paint the two areas under the curve, default value = TRUE}
 
 \item{note}{(\code{flag}):\cr show values of the colored area, default value = TRUE}
+
+\item{parS}{(\code{numeric}):\cr non-negative parameters of the treatment Beta distribution.}
+
+\item{parE}{(\code{numeric}):\cr non-negative parameters of the historical control Beta distribution}
 
 \item{cut_B}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
@@ -35,11 +35,11 @@ This function will plot the PDF of a difference between two Beta distributions
 \examples{
 # The beta distribution and acceptable bounds for
 # a meaningful improvement of 0.30 and worsening of 0.1
-parE <- c(1, 52) # prior  parameters of experimental arm
-parS <- c(5.5, 20.5) # prior  parameters of control or SOC
+parX <- c(1, 52) # prior  parameters of experimental arm
+parY <- c(5.5, 20.5) # prior  parameters of control or SOC
 plotBetaDiff(
-  parE = parE,
-  parS = parS,
+  parX = parX,
+  parY = parY,
   go_cut = 0.3,
   stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,
@@ -48,8 +48,8 @@ plotBetaDiff(
 
 # a larger Go_cut with uniform prior
 plotBetaDiff(
-  parE = c(1, 1), # prior  parameters for experimental arm
-  parS = c(1, 1), # prior parameters for control or SOC arm
+  parX = c(1, 1), # prior  parameters for experimental arm
+  parY = c(1, 1), # prior parameters for control or SOC arm
   go_cut = 0.3,
   stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,

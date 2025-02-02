@@ -56,14 +56,14 @@ plotBeta <- function(alpha, beta) {
 #'
 #' @export
 #' @keywords graphics
-plotBetaDiff <- function(parE, # parameters of experimental arm
-                         parS, # parameters of control or SOC
+plotBetaDiff <- function(parX, # parameters of experimental arm
+                         parY, # parameters of control or SOC
                          go_cut = 0.20, # a meaningful improvement threshold
                          stop_cut = 0.1, # a poor improvement threshold
                          shade = TRUE, # paint the two areas under the curve
                          note = TRUE) { # show values of the colored area
-  assert_numeric(parE, lower = 0, finite = TRUE, any.missing = FALSE)
-  assert_numeric(parS, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parX, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parY, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_number(go_cut, finite = TRUE)
   assert_number(stop_cut, finite = TRUE)
   assert_flag(shade)
@@ -72,22 +72,22 @@ plotBetaDiff <- function(parE, # parameters of experimental arm
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
-    density = dbetadiff(z = diff, parS = parS, parE = parE)
+    density = dbetadiff(z = diff, parY = parY, parX = parX)
   )
   data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
   data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
 
   go_auc <- integrate(
     f = dbetadiff,
-    parS = parS,
-    parE = parE,
+    parX = parX,
+    parY = parY,
     lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
     upper = 1
   )
   stop_auc <- integrate(
     f = dbetadiff,
-    parS = parS,
-    parE = parE,
+    parX = parX,
+    parY = parY,
     lower = -1,
     upper = stop_cut # Calculate probability of stop, if difference was at most `stop_cut`.
   )
