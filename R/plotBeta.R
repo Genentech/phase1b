@@ -35,10 +35,10 @@ plotBeta <- function(alpha, beta) {
 #'
 #' This function will plot the PDF of a difference between two Beta distributions
 #'
-#' @typed parS : numeric
+#' @typed parX : numeric
+#'  non-negative parameters of the control Beta distribution
+#' @typed parY : numeric
 #'  non-negative parameters of the treatment Beta distribution.
-#' @typed parE : numeric
-#'  non-negative parameters of the historical control Beta distribution
 #' @typed cut_B : number
 #'  a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate
 #' @typed cut_W : number
@@ -56,8 +56,8 @@ plotBeta <- function(alpha, beta) {
 #'
 #' @export
 #' @keywords graphics
-plotBetaDiff <- function(parX, # parameters of experimental arm
-                         parY, # parameters of control or SOC
+plotBetaDiff <- function(parX, # parameters of control or SOC
+                         parY, # parameters of experimental arm
                          go_cut = 0.20, # a meaningful improvement threshold
                          stop_cut = 0.1, # a poor improvement threshold
                          shade = TRUE, # paint the two areas under the curve
