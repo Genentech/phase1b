@@ -1,10 +1,10 @@
 # plotBetaDiff
 test_that("plotBetaDiff works as expected", {
-  parX <- c(5.5, 20.5) # prior  parameters of control or SOC
-  parY <- c(1, 52) # prior  parameters of experimental arm
+  parX <- c(1, 52) # prior  parameters of control or SOC
+  parY <- c(5.5, 20.5) # prior  parameters of experimental arm
   result1 <- plotBetaDiff(
-    parY = parY,
     parX = parX,
+    parY = parY,
     go_cut = 0.3,
     stop_cut = 0.1, # below a difference of 10%, is an unsuccessful trial
     shade = TRUE,

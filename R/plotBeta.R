@@ -97,7 +97,7 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
 
   pbetadiff_plot <- if (shade) {
-    ggplot2::ggplot(data = data, aes(x = grid, y = density)) +
+    ggplot2::ggplot(data = data, mapping = aes(x = grid, y = density)) +
       ggplot2::geom_line(colour = "#888888") +
       ggplot2::geom_area(
         data = data[data$grid < stop_cut, ], fill = "#FF0046",

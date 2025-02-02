@@ -1,7 +1,7 @@
 # The beta distribution and acceptable bounds for
 # a meaningful improvement of 0.30 and worsening of 0.1
-parX <- c(5.5, 20.5) # prior  parameters of control or SOC
-parY <- c(1, 52) # prior  parameters of experimental arm
+parX <- c(1, 52) # prior  parameters of control or SOC
+parY <- c(5.5, 20.5) # prior  parameters of experimental arm
 plotBetaDiff(
   parX = parX,
   parY = parY,
