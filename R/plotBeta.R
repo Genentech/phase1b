@@ -96,18 +96,19 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   stop_label <- paste("P(Stop) is", round(stop_auc$value * 100, digits = 2), "%")
   plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
 
+
   pbetadiff_plot <- if (shade) {
-    ggplot2::ggplot(data = data, mapping = aes(x = grid, y = density)) +
+    ggplot2::ggplot(data = data, mapping = ggplot2::aes(x = grid, y = density)) +
       ggplot2::geom_line(colour = "#888888") +
       ggplot2::geom_area(
         data = data[data$grid < stop_cut, ], fill = "#FF0046",
-        mapping = aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))
+        mapping = ggplot2::aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))
       ) +
       ggplot2::geom_area(
         data = data[data$grid > go_cut, ], fill = "#009E73",
-        mapping = aes(x = ifelse(grid > 0.3, grid, 0))
+        mapping = ggplot2::aes(x = ifelse(grid > 0.3, grid, 0))
       ) +
-      xlab("Difference between treatment") +
+      ggplot2::xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
   } else {
