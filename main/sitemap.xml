@@ -42,7 +42,6 @@
 <url><loc>https://genentech.github.io/phase1b/reference/h_predprobdist.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/h_predprobdist_single_arm.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/index.html</loc></url>
-<url><loc>https://genentech.github.io/phase1b/reference/myPlotDiff.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/oc2.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/oc3.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/ocPostprob.html</loc></url>
@@ -54,6 +53,7 @@
 <url><loc>https://genentech.github.io/phase1b/reference/pbetaMix.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/pbetadiff.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotBeta.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/plotBetaDiff.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotDecision.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotOc.html</loc></url>
