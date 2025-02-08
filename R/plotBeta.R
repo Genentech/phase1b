@@ -6,7 +6,6 @@
 #'  first parameter of the Beta distribution
 #' @typed beta : number
 #'  second parameter of the Beta distribution
-#'
 #' @return A beta distribution density plot
 #'
 #' @importFrom graphics axis
@@ -15,6 +14,8 @@
 #' @export
 #' @keywords graphics
 plotBeta <- function(alpha, beta) {
+  assert_number(alpha, finite = TRUE)
+  assert_number(beta, finite = TRUE)
   x_support <- seq(from = 0, to = 1, length = 1000)
   data <- data.frame(
     grid = x_support,
@@ -30,141 +31,97 @@ plotBeta <- function(alpha, beta) {
     ggplot2::scale_x_continuous(labels = scales::percent_format())
 }
 
-#' Plot Diff Between two Beta distributions
+#' Plot difference Between two Beta distributions
 #'
 #' This function will plot the PDF of a difference between two Beta distributions
 #'
-#' @param parY non-negative parameters of the treatment Beta distribution.
-#' @param parX non-negative parameters of the historical control Beta distribution
-#' @param cut_B a meaningful improvement threshold
-#' @param cut_W a poor improvement throshold
-#' @param shade paint the two areas under the curve, default value=1 as "yes". other numbers stands for "no";
-#' @param note show values of the colored area, default value=1 as "yes". other numbers stands for "no"
-#' @param \dots additional arguments to \code{plot}
-#' @return nothing, only produces the plot as side effect
+#' @typed parX : numeric
+#'  non-negative parameters of the control Beta distribution
+#' @typed parY : numeric
+#'  non-negative parameters of the treatment Beta distribution.
+#' @typed go_cut : number
+#'  a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate
+#' @typed stop_cut : number
+#'  a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate
+#' @typed shade : flag
+#'  paint the two areas under the curve, default value = TRUE
+#' @typed note : flag
+#'  show values of the colored area, default value = TRUE
+#' @return a ggplot object
 #'
-#' @example examples/myPlotDiff.R
+#' @example examples/plotBetaDiff.R
 #'
 #' @importFrom graphics par axis polygon mtext
 #' @importFrom stats integrate
 #'
 #' @export
 #' @keywords graphics
-myPlotDiff <- function(parY, # parameters of phase Ib trial;
-                       parX, # parameters of HC;
-                       cut_B = 0.20, # a meaningful improvement threshold;
-                       cut_W = 0.1, # a poor improvement threshold;
-                       shade = 1, # paint the two areas under the curve, default: yes. other numbers stands for "no";
-                       note = 1, # show values of the colored area, default: yes. other numbers stands for "no";
-                       ...) {
-  if (note == 1) {
-    graphics::par(mar = c(5, 15, 1, 15) + .1)
+plotBetaDiff <- function(parX, # parameters of control or SOC
+                         parY, # parameters of experimental arm
+                         go_cut = 0.20, # a meaningful improvement threshold
+                         stop_cut = 0.1, # a poor improvement threshold
+                         shade = TRUE, # paint the two areas under the curve
+                         note = TRUE) { # show values of the colored area
+  assert_numeric(parX, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_numeric(parY, lower = 0, finite = TRUE, any.missing = FALSE)
+  assert_number(go_cut, finite = TRUE)
+  assert_number(stop_cut, finite = TRUE)
+  assert_flag(shade)
+  assert_flag(note)
+
+  diff <- seq(from = -1, to = 1, length = 1000)
+  data <- data.frame(
+    grid = diff,
+    density = dbetadiff(z = diff, parY = parY, parX = parX)
+  )
+  data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
+  data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
+
+  go_auc <- integrate(
+    f = dbetadiff,
+    parX = parX,
+    parY = parY,
+    lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
+    upper = 1
+  )
+  stop_auc <- integrate(
+    f = dbetadiff,
+    parX = parX,
+    parY = parY,
+    lower = -1,
+    upper = stop_cut # Calculate probability of stop, if difference was at most `stop_cut`.
+  )
+
+  go_label <- paste("P(Go) is", round(go_auc$value * 100, digits = 2), "%")
+  stop_label <- paste("P(Stop) is", round(stop_auc$value * 100, digits = 2), "%")
+  plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
+
+
+  pbetadiff_plot <- if (shade) {
+    ggplot2::ggplot(data = data, mapping = ggplot2::aes(x = grid, y = density)) +
+      ggplot2::geom_line(colour = "#888888") +
+      ggplot2::geom_area(
+        data = data[data$grid < stop_cut, ], fill = "#FF0046",
+        mapping = ggplot2::aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))
+      ) +
+      ggplot2::geom_area(
+        data = data[data$grid > go_cut, ], fill = "#009E73",
+        mapping = ggplot2::aes(x = ifelse(grid > 0.3, grid, 0))
+      ) +
+      ggplot2::xlab("Difference between treatment") +
+      ggplot2::ylab(quote(f(x))) +
+      ggplot2::ggtitle(plot_title)
   } else {
-    graphics::par(mar = c(5, 5, 1, 5) + .1)
+    pbetadiff_plot <- ggplot2::ggplot(data = data) +
+      ggplot2::geom_line(aes(x = grid, y = density, colour = "#888888")) +
+      xlab("Difference between treatment") +
+      ggplot2::ylab(quote(f(x))) +
+      ggplot2::ggtitle(plot_title)
   }
-  grid <- seq(from = -0.5, to = 0.75, length = 1000)
-  xticks <- seq(from = -1, to = 1, by = 0.25)
-
-
-
-  graphics::plot(
-    x = grid,
-    y = dbetadiff(grid, parY = parY, parX = parX),
-    ylab = "",
-    xaxt = "n",
-    yaxt = "n",
-    type = "l",
-    xaxs = "i",
-    yaxs = "i",
-    ...
-  )
-
-  graphics::axis(
-    side = 1, at = xticks,
-    labels =
-      paste(ifelse(xticks >= 0, "+", ""),
-        xticks * 100, "%",
-        sep = ""
-      )
-  )
-
-  ## now color the go / stop prob areas
-
-  if (shade == 1) {
-    ## first stop:
-    stopGrid <- grid[grid <= cut_W]
-    nStop <- length(stopGrid)
-
-    graphics::polygon(
-      x =
-        c(
-          stopGrid,
-          rev(stopGrid)
-        ),
-      y =
-        c(
-          rep(0, nStop),
-          dbetadiff(rev(stopGrid), parY = parY, parX = parX)
-        ),
-      col = "red"
-    )
-
-    A_value <- stats::integrate(
-      f = dbetadiff,
-      parY = parY,
-      parX = parX,
-      lower = -1,
-      upper = cut_W
-    )
-    if (note == 1) {
-      graphics::mtext(
-        paste("Prob(diff< ", round(cut_W * 100), "%)=",
-          sprintf("%1.2f%%", 100 * as.numeric(A_value$value)),
-          sep = ""
-        ),
-        side = 2, line = 1, las = 1, cex = 1
-      )
-    }
-
-    ## then go:
-    goGrid <- grid[grid >= cut_B]
-    nGo <- length(goGrid)
-
-    graphics::polygon(
-      x =
-        c(
-          goGrid,
-          rev(goGrid)
-        ),
-      y =
-        c(
-          rep(0, nGo),
-          dbetadiff(rev(goGrid), parY = parY, parX = parX)
-        ),
-      col = "green"
-    )
-
-    B_value <- stats::integrate(
-      f = dbetadiff,
-      parY = parY,
-      parX = parX,
-      lower = cut_B,
-      upper = 1
-    )
-
-    if (note == 1) {
-      graphics::mtext(
-        paste(
-          sprintf("%1.2f%%", 100 * as.numeric(B_value$value)),
-          "=Prob(diff> ",
-          round(cut_B * 100), "%)",
-          sep = ""
-        ),
-        side = 4,
-        line = 1,
-        las = 1,
-        cex = 1
-      )
-    }
+  if (note) {
+    pbetadiff_plot <- pbetadiff_plot +
+      ggplot2::annotate("text", x = -0.5, y = 3.75, size = 5, label = stop_label, colour = "#FF0046") +
+      ggplot2::annotate("text", x = -0.5, y = 3.25, size = 5, label = go_label, colour = "#009E73")
   }
+  pbetadiff_plot
 }

@@ -30,3 +30,4 @@ coverage.*
 .vscode/
 .rds
 node_modules
+vintage_NAMESPACE

@@ -37,7 +37,9 @@ Imports:
     ggplot2,
     checkmate,
     devtools,
-    lifecycle
+    lifecycle,
+    vdiffr,
+    tools,
 VignetteBuilder:
     knitr
 Encoding: UTF-8
