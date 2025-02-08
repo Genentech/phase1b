@@ -39,6 +39,7 @@ Imports:
     devtools,
     lifecycle,
     vdiffr,
+    tools,
 VignetteBuilder:
     knitr
 Encoding: UTF-8

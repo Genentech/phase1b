@@ -39,9 +39,9 @@ plotBeta <- function(alpha, beta) {
 #'  non-negative parameters of the control Beta distribution
 #' @typed parY : numeric
 #'  non-negative parameters of the treatment Beta distribution.
-#' @typed cut_B : number
+#' @typed go_cut : number
 #'  a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate
-#' @typed cut_W : number
+#' @typed stop_cut : number
 #'  a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate
 #' @typed shade : flag
 #'  paint the two areas under the curve, default value = TRUE

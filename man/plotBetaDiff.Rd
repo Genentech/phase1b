@@ -18,13 +18,13 @@ plotBetaDiff(
 
 \item{parY}{(\code{numeric}):\cr non-negative parameters of the treatment Beta distribution.}
 
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
+
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
+
 \item{shade}{(\code{flag}):\cr paint the two areas under the curve, default value = TRUE}
 
 \item{note}{(\code{flag}):\cr show values of the colored area, default value = TRUE}
-
-\item{cut_B}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
-
-\item{cut_W}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 }
 \value{
 a ggplot object
