@@ -860,33 +860,28 @@ arrows(-.25, 2, 0, .2, lwd = 2)
 text(-.25, 2.2, expression("Prob" * (Delta < +5 * "%")))
 ```
 
-Alternatively, we could use the R-package function `myPlotDiff()` to achieve the
+Alternatively, we could use the R-package function `plotBetaDiff()` to achieve the
 the same result in far fewer lines of code, see
-Figure~\@ref(fig:ex1:betadiff1:myPlotDiff)).
+Figure~\@ref(fig:ex1:betadiff1:plotBetadiff)).
 
 ```{r, echo = FALSE}
-ex1_betadiff_1_myplotdiff_cap <- paste(
-  "The distribution of the difference in PET-CR rates amongst the novel",
+ex1_plotBetaDiff_cap <- paste(
+  "The distribution of the difference in PET-CR rates between the novel",
   "combination group and the historical control. Here, we see that the probability",
   "of a go decision (green) is much more likely than the probability of a no go",
   "decision (red)."
 )
 ```
 
-```{r ex1:betadiff1:myPlotDiff, echo=TRUE, fig.cap = ex1_betadiff_1_myplotdiff_cap}
-myPlotDiff(c(5.75 + 55, 4.25 + 80 - 55), c(75, 75), 0.15, 0.05, 1, 0,
-  xlab = "(Combo Response) - (Control Response)"
+```{r ex1:betadiff1:plotBetaDiff, echo=TRUE, fig.cap = ex1_plotBetaDiff_cap}
+plotBetaDiff(
+  parX = parX,
+  parY = parY,
+  go_cut = 0.3,
+  stop_cut = 0.15, # below a difference of 15%, is an unsuccessful trial
+  shade = TRUE,
+  note = TRUE
 )
-legend("topright", c("Prob. of No Go", "Prob. of Go"),
-  pch = 15,
-  col = c("red", "green"), bty = "n"
-)
-
-arrows(.5, 2, .22, 1, lwd = 2)
-text(.5, 2.2, expression("Prob" * (Delta > +15 * "%")))
-
-arrows(-.25, 2, 0, .2, lwd = 2)
-text(-.25, 2.2, expression("Prob" * (Delta < +5 * "%")))
 ```
 
 In Figure \@ref(fig:ex1:betadiff1) we see that the probability of a go decision
