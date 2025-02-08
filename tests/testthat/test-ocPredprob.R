@@ -134,7 +134,7 @@ test_that("ocPredprob correctly shows maximum sample size when no decision reach
     tT = 0.8,
     tF = 0.5,
     phiFu = 0.9,
-    parE = c(2/6, 1 - 2/6),
+    parE = c(2 / 6, 1 - 2 / 6),
     sim = 100,
     wiggle = FALSE,
     decision1 = FALSE
