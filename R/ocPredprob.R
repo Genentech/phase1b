@@ -163,6 +163,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
     index_look <- index_look + 1
   }
   if (is.na(decision)) {
+    size_look <- nnr[index_look]
     if (size_look %in% nnE) { # for efficacy looks at FINAL
       final_qU <- postprob(
         # based on all data, the posterior probability is a GO when P(p > p0) > tT
@@ -211,8 +212,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - interim STOP = P(successful trial at final) < phiL
 #'
 #' The criteria for Decision 1 for Final looks are:
-#' - Final GO = P( response rate > p0 | data) > tT
-#' - Final STOP = P( response rate > p0 | data ) < tT
+#' - Final GO = P( RR > p0 | data) > tT
+#' - Final STOP = P( RR > p0 | data ) < tT
 #'
 #' ## Decision 2:
 #' The criteria for Decision 2 for Interim looks are :
@@ -220,8 +221,8 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
 #' - Interim STOP : P (failure at final ) > phiFu
 #'
 #' The criteria for Decision 2 for Futility looks are :
-#' - Final GO = P( response rate > p0) > tT
-#' - Final STOP = P( response rate  < p1) > tF
+#' - Final GO = P( RR > p0) > tT
+#' - Final STOP = P( RR  < p1) > tF
 #'
 #' @inheritParams h_get_decision_one_predprob
 #' @inheritParams h_get_decision_two_predprob

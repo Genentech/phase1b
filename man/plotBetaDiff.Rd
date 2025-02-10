@@ -5,28 +5,26 @@
 \title{Plot difference Between two Beta distributions}
 \usage{
 plotBetaDiff(
-  parY,
   parX,
-  Go_cut = 0.2,
-  Stop_cut = 0.1,
+  parY,
+  go_cut = 0.2,
+  stop_cut = 0.1,
   shade = TRUE,
   note = TRUE
 )
 }
 \arguments{
+\item{parX}{(\code{numeric}):\cr non-negative parameters of the control Beta distribution}
+
 \item{parY}{(\code{numeric}):\cr non-negative parameters of the treatment Beta distribution.}
 
-\item{parX}{(\code{numeric}):\cr non-negative parameters of the historical control Beta distribution}
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
+
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 
 \item{shade}{(\code{flag}):\cr paint the two areas under the curve, default value = TRUE}
 
 \item{note}{(\code{flag}):\cr show values of the colored area, default value = TRUE}
-
-\item{cut_B}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
-
-\item{cut_W}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
-
-\item{...}{(``):\cr additional arguments to \code{ggplot()}}
 }
 \value{
 a ggplot object
@@ -36,25 +34,24 @@ This function will plot the PDF of a difference between two Beta distributions
 }
 \examples{
 # The beta distribution and acceptable bounds for
-# a meaningful improvement of 0.20 and worsening of 0.1
-parX <- c(1, 52) # prior  parameters of experimental arm
-parY <- c(5.5, 20.5) # prior  parameters of control or SOC
+# a meaningful improvement of 0.30 and worsening of 0.1
+parX <- c(1, 52) # prior  parameters of control or SOC
+parY <- c(5.5, 20.5) # prior  parameters of experimental arm
 plotBetaDiff(
-  parY = parY,
   parX = parX,
-  Go_cut = 0.3,
-  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccesful trial
+  parY = parY,
+  go_cut = 0.3,
+  stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,
   note = TRUE
 )
 
-
 # a larger Go_cut with uniform prior
 plotBetaDiff(
-  parY = c(1, 1), # prior  parameters for experimental arm
-  parX = c(1, 1), # prior parameters for control or SOC arm
-  Go_cut = 0.3,
-  Stop_cut = 0.1, # below a difference of 10\%, is an unsuccesful trial
+  parX = c(1, 1), # prior  parameters for experimental arm
+  parY = c(1, 1), # prior parameters for control or SOC arm
+  go_cut = 0.3,
+  stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
   shade = TRUE,
   note = TRUE
 )

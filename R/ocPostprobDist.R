@@ -103,11 +103,11 @@ h_get_decisionDist <- function(nnr,
 #'
 #' Stop criteria for Efficacy :
 #'
-#' `Pr(truep > P_S + deltaE) > tU`
+#' `Pr(RR > P_S + deltaE) > tU`
 #'
 #' Stop criteria for Futility :
 #'
-#' `Pr(truep < P_S + deltaF) > tL`
+#' `Pr(RR < P_S + deltaF) > tL`
 #'
 #' Where `truep` is the assumed true rate of response and `p1` and `p0` respectively are
 #' the thresholds for Efficacy and Futility respectively.
