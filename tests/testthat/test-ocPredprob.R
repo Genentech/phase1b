@@ -91,8 +91,8 @@ test_that("the PrFutility increases with increase futility looks", {
 test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
   expect_warning(result_eff <- ocPredprob(
-    nnE = c(10, 20),
-    truep = 0.6,
+    nnE = 5,
+    truep = 0.7,
     p0 = 0.2,
     p1 = 0.2,
     tT = 0.6,
@@ -106,8 +106,8 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_more_eff <- ocPredprob(
-    nnE = c(10, 20, 40),
-    truep = 0.6,
+    nnE = c(5, 20, 40),
+    truep = 0.7,
     p0 = 0.2,
     p1 = 0.2,
     tT = 0.6,
@@ -121,4 +121,25 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
     decision1 = FALSE
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
+})
+
+test_that("ocPredprob correctly shows maximum sample size when no decision reached", {
+  set.seed(40) # Used for reproducibility
+  res1 <- ocPredprob(
+    nnE = c(19, 39),
+    truep = 0.4,
+    p0 = 0.9,
+    p1 = 0.1,
+    phiU = 0.9,
+    tT = 0.8,
+    tF = 0.5,
+    phiFu = 0.9,
+    parE = c(2 / 6, 1 - 2 / 6),
+    sim = 100,
+    wiggle = FALSE,
+    decision1 = FALSE
+  )
+  na_dec_ind <- which(is.na(res1$Decision))
+  expect_true(length(na_dec_ind) > 0)
+  expect_true(all(res1$SampleSize[na_dec_ind] > 19))
 })
