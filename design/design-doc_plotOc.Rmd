@@ -1,0 +1,180 @@
+---
+title: "Design Document for plotOc"
+output: html_document
+date: "2024-01-08"
+editor_options:
+  chunk_output_type: console
+---
+# Purpose 
+Plot a bar plot for simulated results of :
+- `ocPostprob()`
+- `ocPredprob()`
+- others
+
+Note these results and definitions :
+FALSE = met the futility criteria
+TRUE = met the efficacy criteria
+
+which can be improved in future PR, e.g "Go" as factor for "met the efficacy criteria". 
+
+## Important packages
+```{r}
+library(dplyr)
+```
+
+## This is the easiest use-case where `length(nnE) = length(nnF)` AND `wiggle = FALSE`
+
+```{r}
+# Here, we only have one Futility but many Efficacy looks or stop.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 100, wiggle = FALSE, nnF = c(10, 20, 30)
+)
+
+res # (may need to add wiggled distance)
+res$oc
+```
+
+### Curating data table such that it can be an input to `geom_bar()`
+
+```{r}
+col_data = data.frame(decision = res$Decision,
+                      sample_size = res$SampleSize,
+                      look = as.factor(res$SampleSize))
+data <- col_data %>% 
+  group_by(decision, sample_size) %>% 
+  summarise(prop = sum(length(decision))/nrow(col_data), .groups = NULL) %>% as_tibble()
+data
+
+all_decision <- c(TRUE, FALSE, NA)
+all_looks <- c(10, 20, 30)
+
+data$decision <- factor(data$decision, levels = all_decision)
+table(data$decision)
+data$sample_size <- factor(data$sample_size, levels = all_looks)
+data
+table(data$sample_size)
+
+data1 <- data %>%
+  complete(decision, nesting(sample_size), 
+           fill = list(prop = 0))
+
+ggplot(data1, aes(fill = decision, x = sample_size, y = prop)) +
+  geom_bar(position = "dodge", stat = "identity")
+```
+
+## The second use case is where `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
+
+```{r}
+# Here, we only have one Futility but many Efficacy looks or stop.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 100, wiggle = TRUE, nnF = c(10, 20, 30)
+)
+
+res # (may need to add wiggled distance as param)
+res$oc
+```
+
+### Curating data table such that it can be an input to `geom_bar()`
+
+```{r}
+col_data = data.frame(decision = res$Decision,
+                      sample_size = res$SampleSize,
+                      look = as.factor(res$SampleSize))
+
+ # matching wiggled_ sample sizes to unwiggled looks
+col_data$look[decision == TRUE,] <- ifelse(
+  res$SampleSize - dist | res$SampleSize + dist == res$params$nnE, 
+  ifelse(res$SampleSize - dist | res$SampleSize + dist == res$params$nnE[]))
+
+col_data$look[col_data$decision == FALSE,] <- ifelse(col_data$sample_size == res$wiggled_nnrE, res$wiggled_nnrF, NA)
+
+
+
+data <- col_data %>% 
+  group_by(decision, sample_size) %>% 
+  summarise(prop = sum(length(decision))/nrow(col_data), .groups = NULL) %>% as_tibble()
+data
+
+all_decision <- c(TRUE, FALSE, NA)
+all_looks <- c(10, 20, 30)
+data$decision <- factor(data$decision, levels = all_decision)
+table(data$decision)
+data$sample_size <- factor(data$sample_size, levels = all_looks)
+data
+table(data$sample_size)
+
+data1 <- data %>%
+  complete(decision, nesting(sample_size), 
+           fill = list(prop = 0))
+
+ggplot(data1, aes(fill = decision, x = sample_size, y = prop)) +
+  geom_bar(position = "dodge", stat = "identity")
+```
+
+## The third use case is where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and wiggle)
+```{r}
+# Here, we only have one Futility but many Efficacy looks or stop.
+res <- ocPostprob(
+  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
+  sim = 100, wiggle = FALSE, nnF = 30
+)
+
+res # (may need to add wiggled distance)
+res$oc
+```
+
+### Curating data table such that it can be an input to `geom_bar()`
+
+```{r}
+```
+
+## Helper function to curate data frame
+
+Check that it works for all cases.
+
+## User facing function
+
+```{r}
+plotOc <- function(oc) {
+
+  if (wiggle == FALSE) {
+    data <-  table(oc$Decision, oc$SampleSize) / oc$params$sim
+  } else {
+
+  }
+
+ggplot(oc, aes(x = name, y = value)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Percentage of trials that Go and Stop per look") +
+  ylabs("Percentage %") +
+  xlabs("Looks and sample size")
+
+
+
+  ## plot function for oc.predprob or oc.postprob, or the dist versions of them
+  graphics::barplot(table(oc$Decision, oc$SampleSize) / oc$params$sim, beside = TRUE)
+
+
+  ## get the parameter
+  parDat <- lapply(z$params, deparse)
+
+  ## get parameters, which are saved in parDat
+  allParNames <- c(
+    "p", "p0", "p1",
+    "delta", "deltaE", "deltaF", "relativeDelta",
+    "phiL", "phiU", "tL", "tU", "tT", "parE", "parS"
+  )
+  parInds <- which(names(parDat) %in% allParNames)
+
+  graphics::title(paste(names(parDat[parInds]), parDat[parInds],
+    sep = "=", collapse = ", "
+  ))
+  graphics::title(xlab = paste(dimnames(z$oc)[[2]], signif(z$oc, 3),
+    sep = " = ", collapse = ", "
+  ))
+
+  return(invisible())
+}
+```
