@@ -187,7 +187,7 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
                       labels = c("Go", "Stop", "Grey zone")) 
     if (wiggle_status) {
         wiggle_warning <- 
-          paste("Note that sample sizes slightly differ from the ones labeld")
+          paste("Note that sample sizes slightly differ from the ones labeled")
         barplot + ggplot2::annotate("text", 
                                     label = wiggle_warning, 
                                     x = length(unique(all_looks))/1.5, 
