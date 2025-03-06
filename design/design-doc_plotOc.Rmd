@@ -1,13 +1,17 @@
 ---
 title: "Design Document for plotOc"
 output: html_document
-date: "2024-01-08"
+date: "2025-03-05"
 editor_options:
   chunk_output_type: console
 ---
 # Purpose 
 Plot a bar plot for simulated results of :
-- `ocPostprob()`
+- `ocPostprob()` when
+  - `length(nnE) = length(nnF)` AND `wiggle = FALSE` ✔️
+  - `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
+  - `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
+  - `length(nnE) =! length(nnF)` AND `wiggle = TRUE`. (looks are different and wiggle)
 - `ocPredprob()`
 - others
 
@@ -18,11 +22,34 @@ TRUE = met the efficacy criteria
 which can be improved in future PR, e.g "Go" as factor for "met the efficacy criteria". 
 
 ## Important packages
+
 ```{r}
 library(dplyr)
 ```
 
-## This is the easiest use-case where `length(nnE) = length(nnF)` AND `wiggle = FALSE`
+# `ocPostprob()` 
+
+## `ocPostprob()` where `length(nnE) = length(nnF)` AND `wiggle = FALSE`
+
+### Input parameters :
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+input <- list(
+  nn = c(10, 20, 30),
+  nnE = c(10, 20, 30),
+  nnF = c(10, 20, 30),
+  p0 = 0.2,
+  p1 = 0.3,
+  parE = c(1, 1),
+  truep = 0.4,
+  tU = 0.8,
+  tL = 0.6,
+  wiggle = TRUE,
+  sim = 100
+)
+```
 
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
@@ -36,25 +63,30 @@ res$oc
 ```
 
 ### Curating data table such that it can be an input to `geom_bar()`
+checking for these three scenarios
+- `length(nnE) = length(nnF)` AND `wiggle = FALSE` ✔️
+- `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
+- `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
+- `length(nnE) =! length(nnF)` AND `wiggle = TRUE`. (looks are different and wiggle)
 
 ```{r}
+# create df from res
 col_data = data.frame(decision = res$Decision,
                       sample_size = res$SampleSize,
                       look = as.factor(res$SampleSize))
+# check data summary
 data <- col_data %>% 
   group_by(decision, sample_size) %>% 
   summarise(prop = sum(length(decision))/nrow(col_data), .groups = NULL) %>% as_tibble()
 data
 
+# setting levels of factors
 all_decision <- c(TRUE, FALSE, NA)
 all_looks <- c(10, 20, 30)
-
 data$decision <- factor(data$decision, levels = all_decision)
-table(data$decision)
 data$sample_size <- factor(data$sample_size, levels = all_looks)
-data
-table(data$sample_size)
 
+# data input for plot, such that all variables present, even empty cases
 data1 <- data %>%
   complete(decision, nesting(sample_size), 
            fill = list(prop = 0))
@@ -62,6 +94,84 @@ data1 <- data %>%
 ggplot(data1, aes(fill = decision, x = sample_size, y = prop)) +
   geom_bar(position = "dodge", stat = "identity")
 ```
+
+## helper function for creating data frame
+
+```{r}
+h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+  assert_numeric(nnr)
+  assert_number(truep, lower = 0, upper = 1)
+  assert_number(p0, lower = 0, upper = 1)
+  assert_number(p1, lower = 0, upper = 1)
+  assert_numeric(parE, min.len = 2, any.missing = FALSE)
+  assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
+  assert_number(tL, lower = 0, upper = 1)
+  assert_number(tU, lower = 0, upper = 1)
+
+  Nmax <- max(nnr)
+  index_look <- 1
+  size_look <- nnr[index_look]
+  all_sizes <- decision <- NA
+  response <- stats::rbinom(Nmax, size = 1, prob = truep)
+
+  while (is.na(decision) && index_look <= length(nnr)) {
+    if (size_look %in% nnF) {
+      qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
+      decision <- ifelse(qL >= tL, FALSE, NA)
+    }
+    if (size_look %in% nnE) {
+      qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
+      decision <- ifelse(qU < tU, decision, TRUE)
+    }
+    all_sizes <- size_look
+    index_look <- index_look + 1
+    size_look <- nnr[index_look]
+  }
+  list(
+    decision = decision,
+    all_sizes = all_sizes,
+    all_looks = size_look
+  )
+}
+```
+
+
+```{r}
+decision <- vector(length = input$sim)
+all_sizes <- vector(length = input$sim)
+all_looks <- vector(length = input$sim)
+
+for (k in seq_len(input$sim)) {
+  if (length(input$nn) != 1 && input$wiggle) {
+    dist <- h_get_distance(nn = input$nn)
+    nnr <- h_get_looks(dist = dist, nnE = input$nnE, nnF = input$nnF)
+    nnrE <- nnr$nnrE
+    nnrF <- nnr$nnrF
+  } else {
+    dist <- 0
+    nnrE <- input$nnE
+    nnrF <- input$nnF
+  }
+  nnr <- unique(c(nnrE, nnrF))
+  tmp <- h_get_decision(
+    nnr = nnr,
+    truep = input$truep, 
+    p0 = input$p0, 
+    p1 = input$p1,
+    parE = c(1, 1), 
+    nnE = nnrE,
+    nnF = nnrF, 
+    tL = input$tL, 
+    tU = input$tU
+  )
+  decision[k] <- tmp$decision
+  all_sizes[k] <- tmp$all_sizes
+  all_looks[k] <- tmp$all_looks
+}
+```
+
+
 
 ## The second use case is where `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
 
@@ -83,6 +193,18 @@ col_data = data.frame(decision = res$Decision,
                       sample_size = res$SampleSize,
                       look = as.factor(res$SampleSize))
 
+# matching the wiggled sample size AND input sample size
+expand.grid(as.data.frame(
+  nnE = res$wiggled_nnrE,
+  lookE = c(res$params$nnE),
+  nnF = res$wiggled_nnrF,
+  lookF = c(res$params$nnF)))
+
+as.data.frame(res$wiggled_nnrE)
+
+as.data.frame(c(res$params$nnE))
+
+
  # matching wiggled_ sample sizes to unwiggled looks
 col_data$look[decision == TRUE,] <- ifelse(
   res$SampleSize - dist | res$SampleSize + dist == res$params$nnE, 
@@ -90,6 +212,14 @@ col_data$look[decision == TRUE,] <- ifelse(
 
 col_data$look[col_data$decision == FALSE,] <- ifelse(col_data$sample_size == res$wiggled_nnrE, res$wiggled_nnrF, NA)
 
+for (i in 1: length(res$SampleSize)) {
+  if (res$wiggled_nnrE[i] - dist | res$wiggled_nnrE[i]  + dist)
+}
+
+res$wiggled_nnrE %>% c()
+
+data.frame(wiggled_nnE = res$wiggled_nnrE, 
+           wiggled_nnF = res$wiggled_nnrF)
 
 
 data <- col_data %>% 
@@ -113,7 +243,7 @@ ggplot(data1, aes(fill = decision, x = sample_size, y = prop)) +
   geom_bar(position = "dodge", stat = "identity")
 ```
 
-## The third use case is where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and wiggle)
+## The third use case is where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
 res <- ocPostprob(
@@ -150,8 +280,6 @@ ggplot(oc, aes(x = name, y = value)) +
   ggtitle("Percentage of trials that Go and Stop per look") +
   ylabs("Percentage %") +
   xlabs("Looks and sample size")
-
-
 
   ## plot function for oc.predprob or oc.postprob, or the dist versions of them
   graphics::barplot(table(oc$Decision, oc$SampleSize) / oc$params$sim, beside = TRUE)

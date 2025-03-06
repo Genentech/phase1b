@@ -128,7 +128,8 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   }
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = all_sizes,
+    all_looks = size_look
   )
 }
 
@@ -234,6 +235,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+  all_looks <- vector(length = sim)
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       dist <- h_get_distance(nn = nn)
@@ -254,11 +256,13 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     union_nn = nnr,
     wiggled_nnrE = nnrE,
