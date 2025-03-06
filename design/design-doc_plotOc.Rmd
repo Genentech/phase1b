@@ -73,7 +73,7 @@ checking for these three scenarios
 # create df from res
 col_data = data.frame(decision = res$Decision,
                       sample_size = res$SampleSize,
-                      look = as.factor(res$SampleSize))
+                      look = res$Looks)
 # check data summary
 data <- col_data %>% 
   group_by(decision, sample_size) %>% 

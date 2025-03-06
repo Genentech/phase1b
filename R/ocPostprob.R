@@ -128,8 +128,7 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   }
   list(
     decision = decision,
-    all_sizes = all_sizes,
-    all_looks = size_look
+    all_sizes = all_sizes
   )
 }
 
@@ -262,7 +261,6 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   list(
     oc = oc,
     Decision = decision,
-    Looks = all_looks,
     SampleSize = all_sizes,
     union_nn = nnr,
     wiggled_nnrE = nnrE,
