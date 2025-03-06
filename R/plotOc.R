@@ -13,18 +13,17 @@
 #' @export
 #' @keywords graphics
 plotOc <- function(oc) {
-
   if (wiggle == FALSE) {
-    data <-  table(oc$Decision, oc$SampleSize) / oc$params$sim
+    data <- table(oc$Decision, oc$SampleSize) / oc$params$sim
   } else {
 
   }
 
-ggplot(oc, aes(x = name, y = value)) +
-  geom_bar(stat = "identity") +
-  ggtitle("Percentage of trials that Go and Stop per look") +
-  ylabs("Percentage %") +
-  xlabs("Looks and sample size")
+  ggplot(oc, aes(x = name, y = value)) +
+    geom_bar(stat = "identity") +
+    ggtitle("Percentage of trials that Go and Stop per look") +
+    ylabs("Percentage %") +
+    xlabs("Looks and sample size")
 
 
 

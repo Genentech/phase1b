@@ -13,4 +13,3 @@ oc <- ocPostprob(
   p1 = 0.3, tL = 0.6, tU = 0.8, parE = c(1, 1), sim = 100, wiggle = TRUE
 )
 oc$oc
-
