@@ -53,53 +53,52 @@ input <- list(
 
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
-res <- ocPostprob(
+res1 <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 100, wiggle = FALSE, nnF = c(10, 20, 30)
 )
 
-res # (may need to add wiggled distance)
-res$oc
+res1 # (may need to add wiggled distance)
+res1$oc
 ```
 
 ## 2. `ocPostprob()` where `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
 
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
-res <- ocPostprob(
+res2 <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 100, wiggle = TRUE, nnF = c(10, 20, 30)
 )
 
-res # (may need to add wiggled distance as param)
-res$oc
+res2 # (may need to add wiggled distance as param)
+res2$oc
 ```
 
 ## 3. `ocPostprob()` where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
 ```{r}
-res <- ocPostprob(
+res3 <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 100, wiggle = FALSE, nnF = 30
 )
 
-res # (may need to add wiggled distance)
-res$oc
+res3 # (may need to add wiggled distance)
+res3$oc
 ```
 
 ## 4. `ocPostprob()` where `length(nnE) =! length(nnF)` AND `wiggle = TRUE`. (looks are different and wiggle)
 
 ```{r}
-res <- ocPostprob(
+res4 <- ocPostprob(
   nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
   sim = 100, wiggle = TRUE, nnF = 30
 )
 
-res # (may need to add wiggled distance)
-res$oc
+res4 
+res4$oc
 ```
 
-
-### Curating data table such that it can be an input to `geom_bar()` for all cases
+### Helper function
 
 ```{r}
 
@@ -109,103 +108,103 @@ h_get_dataframe <- function(decision, sample_size, all_looks) {
                       look = all_looks)
   # summarise into frequency table
   df <- df %>%  
-  group_by(decision, sample_size) %>% 
+  group_by(decision, look) %>% 
     summarise(prop = sum(length(decision))/nrow(df)) %>% 
     as_tibble()
   # setting levels of factors
   all_decision <- c(TRUE, FALSE, NA)
   all_looks <- c(10, 20, 30)
   df$decision <- factor(df$decision, levels = all_decision)
-  df$sample_size <- factor(df$sample_size, levels = all_looks)
+  df$look <- factor(df$look, levels = all_looks)
   # data input for plot, such that all variables present, even empty cases
   df <- df %>%
-    complete(decision, nesting(sample_size), 
+    complete(decision, look, 
              fill = list(prop = 0))
-  ggplot(df, aes(fill = decision, x = sample_size, y = prop)) +
-      geom_bar(position = "dodge", stat = "identity")
-}
+  df
 
-h_get_dataframe(res$Decision, sample_size = res$SampleSize, res$Looks)
-
-# create df from res
-col_data = data.frame(decision = res$Decision,
-                      sample_size = res$SampleSize,
-                      look = res$Looks)
-# check data summary
-data <- col_data %>% 
-  group_by(decision, sample_size) %>% 
-  summarise(prop = sum(length(decision))/nrow(col_data)) %>% as_tibble()
-data
-
-# setting levels of factors
-all_decision <- c(TRUE, FALSE, NA)
-all_looks <- c(10, 20, 30)
-data$decision <- factor(data$decision, levels = all_decision)
-data$sample_size <- factor(data$sample_size, levels = all_looks)
-
-# data input for plot, such that all variables present, even empty cases
-data1 <- data %>%
-  complete(decision, nesting(sample_size), 
-           fill = list(prop = 0))
-
-ggplot(data1, aes(fill = decision, x = sample_size, y = prop)) +
-  geom_bar(position = "dodge", stat = "identity")
+                       }
 ```
 
-## Testing four cases
+# Example for case 1
+```{r}
+h_get_dataframe(res1$Decision, sample_size = res1$SampleSize, res1$Looks)
+```
+
+# Example for case 2
+```{r}
+h_get_dataframe(res2$Decision, sample_size = res2$SampleSize, res2$Looks)
+```
+
+# Example for case 3
+```{r}
+h_get_dataframe(res3$Decision, sample_size = res3$SampleSize, res3$Looks)
+```
+
+# Example for case 4
+```{r}
+h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
+```
+
+## Testing helper function
 
 ```{r}
-
-# h_ ----
-test_that("h_get_decision will give GO decision in favourable conditions", {
+# h_get_dataframe ----
+test_that("h_get_dataframe gives correct data frame", {
   set.seed(1989)
-  result <- h_get_decision(
+  res4 <- ocPostprob(
+    nnE = c(10, 20, 30), 
+    truep = 0.40, 
+    p0 = 0.20, 
+    p1 = 0.30, 
+    tL = 0.60, 
+    tU = 0.80, 
+    parE = c(1, 1),
+    sim = 100, 
+    wiggle = TRUE, 
+    nnF = 30
+  )
+  result <- h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
   expect_equal(result$decision, TRUE)
   expect_equal(result$all_sizes, 20)
 })
 
 ```
 
-
 ## User facing function
 
 ```{r}
-plotOc <- function(oc) {
-
-  if (wiggle == FALSE) {
-    data <-  table(oc$Decision, oc$SampleSize) / oc$params$sim
-  } else {
-
-  }
-
-ggplot(oc, aes(x = name, y = value)) +
-  geom_bar(stat = "identity") +
-  ggtitle("Percentage of trials that Go and Stop per look") +
-  ylabs("Percentage %") +
-  xlabs("Looks and sample size")
-
-  ## plot function for oc.predprob or oc.postprob, or the dist versions of them
-  graphics::barplot(table(oc$Decision, oc$SampleSize) / oc$params$sim, beside = TRUE)
-
-
-  ## get the parameter
-  parDat <- lapply(z$params, deparse)
-
-  ## get parameters, which are saved in parDat
-  allParNames <- c(
-    "p", "p0", "p1",
-    "delta", "deltaE", "deltaF", "relativeDelta",
-    "phiL", "phiU", "tL", "tU", "tT", "parE", "parS"
-  )
-  parInds <- which(names(parDat) %in% allParNames)
-
-  graphics::title(paste(names(parDat[parInds]), parDat[parInds],
-    sep = "=", collapse = ", "
-  ))
-  graphics::title(xlab = paste(dimnames(z$oc)[[2]], signif(z$oc, 3),
-    sep = " = ", collapse = ", "
-  ))
-
-  return(invisible())
+plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
+  df <- h_get_dataframe(decision = decision, 
+                        sample_size = sample_size, 
+                        all_looks = all_looks)
+  barplot <-   
+    ggplot2::ggplot(df, aes(fill = decision, x = look, y = prop)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") + 
+    ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") +
+    ggplot2::ylab("percentage") +
+    ggplot2::xlab("look (n)") +
+    # scale_fill_discrete(name = "Decision", labels = c("Go", "Stop", "Grey zone")) +
+    scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
+                      labels = c("Go", "Stop", "Grey zone")) +
+    if (wiggle_status) {
+      wiggle_warning <- paste("Note that sample sizes slightly differ from the ones labed")
+      barplot <- barplot + ggplot2::annotate("text", 
+                                  label = wiggle_warning, 
+                                  x = length(unique(all_looks))/1.5, 
+                                  y = 0.65, 
+                                  size = 5,
+                                  colour = "black") 
+    } else {
+      barplot
+    }
+  barplot
 }
 ```
+
+```{r}
+plotOc(decision = res2$Decision, 
+       sample_size = res2$SampleSize,
+       all_looks = res2$Looks,
+       wiggle_status = res2$params$wiggle)
+```
+
