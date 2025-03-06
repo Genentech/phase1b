@@ -259,6 +259,8 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
       dist <- 0
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(c(nnrE, nnrF))
     orig_nnr <- unique(c(orig_nnE, orig_nnF))
