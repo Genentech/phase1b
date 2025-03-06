@@ -96,7 +96,15 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'
 #' @keywords internal
 #'
-h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+h_get_decision <- function(nnr,
+                           truep,
+                           p0, p1,
+                           parE = c(1, 1),
+                           nnE,
+                           nnF,
+                           tL,
+                           tU,
+                           orig_nnr) {
   assert_numeric(nnr)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
@@ -117,18 +125,22 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
     if (size_look %in% nnF) {
       qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
       decision <- ifelse(qL >= tL, FALSE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnE) {
       qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
       decision <- ifelse(qU < tU, decision, TRUE)
+      all_looks <- orig_nnr[index_look]
     }
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
+    all_looks <- all_looks
   }
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = all_sizes,
+    all_looks = all_looks
   )
 }
 
@@ -241,17 +253,26 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- 0
       nnrE <- nnE
       nnrF <- nnF
     }
     nnr <- unique(c(nnrE, nnrF))
+    orig_nnr <- unique(c(orig_nnE, orig_nnF))
     tmp <- h_get_decision(
       nnr = nnr,
-      truep = truep, p0 = p0, p1 = p1,
-      parE = c(1, 1), nnE = nnrE,
-      nnF = nnrF, tL = tL, tU = tU
+      truep = truep,
+      p0 = p0,
+      p1 = p1,
+      parE = c(1, 1),
+      nnE = nnrE,
+      nnF = nnrF,
+      tL = tL,
+      tU = tU,
+      orig_nnr = orig_nnr
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
@@ -261,6 +282,7 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     union_nn = nnr,
     wiggled_nnrE = nnrE,
