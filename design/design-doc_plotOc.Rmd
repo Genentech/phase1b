@@ -183,21 +183,21 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
     ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") +
     ggplot2::ylab("percentage") +
     ggplot2::xlab("look (n)") +
-    # scale_fill_discrete(name = "Decision", labels = c("Go", "Stop", "Grey zone")) +
     scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
-                      labels = c("Go", "Stop", "Grey zone")) +
+                      labels = c("Go", "Stop", "Grey zone")) 
     if (wiggle_status) {
-      wiggle_warning <- paste("Note that sample sizes slightly differ from the ones labed")
-      barplot <- barplot + ggplot2::annotate("text", 
-                                  label = wiggle_warning, 
-                                  x = length(unique(all_looks))/1.5, 
-                                  y = 0.65, 
-                                  size = 5,
-                                  colour = "black") 
+        wiggle_warning <- 
+          paste("Note that sample sizes slightly differ from the ones labeld")
+        barplot + ggplot2::annotate("text", 
+                                    label = wiggle_warning, 
+                                    x = length(unique(all_looks))/1.5, 
+                                    y = 0.65, 
+                                    size = 5,
+                                    colour = "black") 
+      
     } else {
       barplot
-    }
-  barplot
+    }                               
 }
 ```
 
@@ -207,4 +207,26 @@ plotOc(decision = res2$Decision,
        all_looks = res2$Looks,
        wiggle_status = res2$params$wiggle)
 ```
+
+```{r}
+plotOc(decision = res1$Decision, 
+       sample_size = res1$SampleSize,
+       all_looks = res1$Looks,
+       wiggle_status = res1$params$wiggle)
+```
+
+```{r}
+plotOc(decision = res3$Decision, 
+       sample_size = res3$SampleSize,
+       all_looks = res3$Looks,
+       wiggle_status = res3$params$wiggle)
+```
+
+```{r}
+plotOc(decision = res4$Decision, 
+       sample_size = res4$SampleSize,
+       all_looks = res4$Looks,
+       wiggle_status = res4$params$wiggle)
+```
+
 
