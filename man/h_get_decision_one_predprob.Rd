@@ -13,7 +13,8 @@ h_get_decision_one_predprob(
   nnF,
   tT,
   phiU,
-  phiL
+  phiL,
+  orig_nnr
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{phiU}{(\code{number}):\cr upper threshold on the predictive probability.}
 
 \item{phiL}{(\code{number}):\cr lower threshold on the predictive probability.}
+
+\item{orig_nnr}{(\code{numeric}):\cr unique values of original, user-input values of \code{nnE} and \code{nnF}, defined by user-facing
+function and aid to \code{plotOc()}'s x axis input when \code{wiggle = TRUE}.}
 }
 \value{
 A list with the following elements:
