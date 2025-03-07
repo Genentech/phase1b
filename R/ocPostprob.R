@@ -88,6 +88,9 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed parE : numeric
 #'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
+#' @typed orig_nnr : numeric
+#'  unique values of original, user-input values of `nnE` and `nnF`, defined by user-facing
+#'  function and aid to `plotOc()`'s x axis input when `wiggle = TRUE`.
 #'
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -114,6 +117,7 @@ h_get_decision <- function(nnr,
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(orig_nnr, lower = min(nnr), upper = max(nnr), any.missing = FALSE)
 
   Nmax <- max(nnr)
   index_look <- 1

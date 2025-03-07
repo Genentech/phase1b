@@ -54,6 +54,9 @@ test_that("h_get_looks together with h_get_distance always gives unique looks", 
 # h_get_decision ----
 test_that("h_get_decision will give GO decision in favourable conditions", {
   set.seed(1989)
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(orig_nnE, orig_nnF)
   result <- h_get_decision(
     nnr = c(10, 20, 30),
     truep = 0.5,
@@ -64,7 +67,8 @@ test_that("h_get_decision will give GO decision in favourable conditions", {
     tL = 0.2,
     tU = 0.3,
     nnE = c(10, 20, 30),
-    nnF = c(10, 20, 30)
+    nnF = c(10, 20, 30),
+    orig_nnr = orig_nnr
   )
   expect_equal(result$decision, TRUE)
   expect_equal(result$all_sizes, 20)

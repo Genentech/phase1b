@@ -3,6 +3,7 @@
 #' A helper function for [ocPredprob()] to generate numeric of decisions `decisions` and
 #' random looks `all_sizes` for `decision1 == TRUE`.
 #'
+#' @inheritParams h_get_decision
 #' @typed nnr : numeric
 #'  union of `nnE` and `nnF`.
 #' @typed truep : number
