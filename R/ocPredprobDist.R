@@ -28,7 +28,8 @@ h_decision_one_predprobDist <- function(
     deltaF,
     weights,
     weightsS,
-    relativeDelta = FALSE) {
+    relativeDelta = FALSE,
+    orig_nnr) {
   assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, sorted = TRUE)
@@ -63,6 +64,7 @@ h_decision_one_predprobDist <- function(
         thetaT = tT
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) {
       interim_qU <- predprobDist(
@@ -81,6 +83,7 @@ h_decision_one_predprobDist <- function(
         thetaT = tT
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     index_look <- index_look + 1
   }
@@ -103,6 +106,7 @@ h_decision_one_predprobDist <- function(
         weightsS = weightsS # for controlBetamixPost
       )
       decision <- ifelse(final_eff_qU >= tT, TRUE, NA)
+      all_looks <- orig_nnr[index_look]
     }
   }
   if (size_look %in% nnF) {
@@ -119,10 +123,12 @@ h_decision_one_predprobDist <- function(
       weightsS = weightsS # for controlBetamixPost
     )
     decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+    all_looks <- orig_nnr[index_look]
   }
   list(
     decision = decision,
-    all_sizes = size_look
+    all_sizes = size_look,
+    all_looks = all_looks
   )
 }
 
@@ -158,7 +164,8 @@ h_decision_two_predprobDist <- function(
     deltaF,
     weights,
     weightsS,
-    relativeDelta) {
+    relativeDelta,
+    orig_nnr) {
   assert_numeric(nnE, lower = 1, sorted = TRUE, any.missing = FALSE, )
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE, )
   assert_numeric(nnr, lower = 1, sorted = TRUE, any.missing = FALSE, )
@@ -191,6 +198,7 @@ h_decision_two_predprobDist <- function(
         thetaT = tT
       )$result
       decision <- ifelse(interim_qU > phiU, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) {
       interim_qU <- 1 - predprobDist(
@@ -209,6 +217,7 @@ h_decision_two_predprobDist <- function(
         thetaT = tT
       )$result
       decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     index_look <- index_look + 1
   }
@@ -230,6 +239,7 @@ h_decision_two_predprobDist <- function(
       )
     }
     decision <- ifelse(final_eff_qU > tT, TRUE, NA)
+    all_looks <- orig_nnr[index_look]
   }
   if (size_look %in% nnF) {
     final_fu_qU <- 1 - postprobDist(
@@ -243,10 +253,12 @@ h_decision_two_predprobDist <- function(
       parS = parS
     )
     decision <- ifelse(final_fu_qU > tF, FALSE, decision)
+    all_looks <- orig_nnr[index_look]
   }
   list(
     decision = decision,
-    all_sizes = size_look
+    all_sizes = size_look,
+    all_looks = all_looks
   )
 }
 
@@ -335,6 +347,7 @@ ocPredprobDist <- function(
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+  all_looks <- vector(length = sim)
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       # if we have more than one look in nnF and nnE, we don't wiggle
@@ -348,6 +361,7 @@ ocPredprobDist <- function(
       nnrF <- nnF
     }
     nnr <- unique(sort(c(nnrE, nnrF)))
+    orig_nnr <- unique(sort(c(nnrE, nnrF)))
     tmp <- if (decision1) {
       h_decision_one_predprobDist(
         nnE = nnE,
@@ -365,7 +379,8 @@ ocPredprobDist <- function(
         deltaF = deltaF,
         weights = weights,
         weightsS = weightsS,
-        relativeDelta = relativeDelta
+        relativeDelta = relativeDelta,
+        orig_nnr = orig_nnr
       )
     } else {
       h_decision_two_predprobDist(
@@ -385,16 +400,19 @@ ocPredprobDist <- function(
         deltaF = deltaF,
         weights = weights,
         weightsS = weightsS,
-        relativeDelta = relativeDelta
+        relativeDelta = relativeDelta,
+        orig_nnr = orig_nnr
       )
     }
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     wiggled_nnrE = nnrE,
     wiggled_nnrF = nnrF,

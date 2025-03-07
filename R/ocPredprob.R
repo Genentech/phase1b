@@ -32,7 +32,7 @@
 #'
 #' @keywords internal
 #'
-h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL) {
+h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF, tT, phiU, phiL, orig_nnr) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
@@ -57,6 +57,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) {
       interim_qU <- predprob(
@@ -68,6 +69,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         parE = parE
       )$result
       decision <- ifelse(interim_qU < phiL, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     index_look <- index_look + 1
   }
@@ -83,6 +85,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       )
     }
     decision <- ifelse(final_eff_qU > tT, TRUE, NA)
+    all_looks <- orig_nnr[index_look]
   }
   if (size_look %in% nnF) {
     final_fu_qU <- postprob(
@@ -93,10 +96,12 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
       log.p = FALSE
     )
     decision <- ifelse(final_fu_qU < tT, FALSE, decision)
+    all_looks <- orig_nnr[index_look]
   }
   list(
     decision = decision,
-    all_sizes = size_look
+    all_sizes = size_look,
+    all_looks = all_looks
   )
 }
 
@@ -120,7 +125,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
 #'
 #' @keywords internal
 #'
-h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU) {
+h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tT, tF, phiFu, phiU, orig_nnr) {
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
   assert_numeric(nnE, lower = 1, any.missing = FALSE, sorted = TRUE)
@@ -147,6 +152,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiU, TRUE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) {
       # STOP when P (failure at final ) > phiFu
@@ -159,6 +165,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         parE = parE
       )$result
       decision <- ifelse(interim_qU > phiFu, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
     index_look <- index_look + 1
   }
@@ -174,6 +181,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         log.p = FALSE
       )
       decision <- ifelse(final_qU > tT, TRUE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) { # for futility looks at FINAL
       # based on all data, the posterior probability is a STOP when P(p < p1) > tF
@@ -185,11 +193,13 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
         log.p = FALSE
       )
       decision <- ifelse(final_qU > tF, FALSE, decision)
+      all_looks <- orig_nnr[index_look]
     }
   }
   list(
     decision = decision,
-    all_sizes = size_look
+    all_sizes = size_look,
+    all_looks = all_looks
   )
 }
 
@@ -280,6 +290,7 @@ ocPredprob <- function(nnE,
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+  all_looks <- vector(length = sim)
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       # if we have more than one look in nnF and nnE, we don't wiggle
@@ -287,12 +298,17 @@ ocPredprob <- function(nnE,
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- NULL
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(sort(c(nnrE, nnrF)))
+    orig_nnr <- unique(c(orig_nnE, orig_nnF))
     tmp <- if (decision1) {
       h_get_decision_one_predprob(
         nnr = nnr,
@@ -303,7 +319,8 @@ ocPredprob <- function(nnE,
         nnF = nnrF,
         tT = tT,
         phiU = phiU,
-        phiL = phiL
+        phiL = phiL,
+        orig_nnr = orig_nnr
       )
     } else {
       h_get_decision_two_predprob(
@@ -317,16 +334,19 @@ ocPredprob <- function(nnE,
         tT = tT,
         tF = tF,
         phiFu = phiFu,
-        phiU = phiU
+        phiU = phiU,
+        orig_nnr = orig_nnr
       )
     }
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     wiggled_nnrE = nnrE,
     wiggled_nnrF = nnrF,

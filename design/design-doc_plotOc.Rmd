@@ -12,8 +12,7 @@ Plot a bar plot for simulated results of :
   2. `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
   3. `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
   4. `length(nnE) =! length(nnF)` AND `wiggle = TRUE`. (looks are different and wiggle)
-- `ocPredprob()`
-- others
+- all other `oc` series such as `ocPredprob()` 
 
 Note these results and definitions :
 FALSE = met the futility criteria
@@ -25,26 +24,6 @@ which can be improved in future PR, e.g "Go" as factor for "met the efficacy cri
 
 ```{r}
 library(dplyr)
-```
-
-### Input parameters :
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-input <- list(
-  nn = c(10, 20, 30),
-  nnE = c(10, 20, 30),
-  nnF = c(10, 20, 30),
-  p0 = 0.2,
-  p1 = 0.3,
-  parE = c(1, 1),
-  truep = 0.4,
-  tU = 0.8,
-  tL = 0.6,
-  wiggle = TRUE,
-  sim = 100
-)
 ```
 
 # `ocPostprob()` 
@@ -98,7 +77,66 @@ res4
 res4$oc
 ```
 
-### Helper function
+## 5. `ocPredprob()` where decision1 = FALSE
+```{r}
+res5 <- ocPredprob(
+  nnE = c(10, 20),
+  truep = 0.6,
+  p0 = 0.25,
+  p1 = 0.25,
+  tT = 0.6,
+  tF = 0.6,
+  phiU = 0.8,
+  phiFu = 0.8,
+  parE = c(1, 1),
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20),
+  decision1 = FALSE
+)
+res5$oc
+```
+
+## 6. `ocPostprobDist()` where decision1 = FALSE
+```{r}
+res6 <- ocPostprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.4,
+  deltaE = 0.1,
+  deltaF = -0.1,
+  tL = 0.6,
+  tU = 0.6,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  sim = 50,
+  wiggle = TRUE
+)
+res6$oc
+```
+
+## 7. `ocPredprobDist()` where decision1 = FALSE
+```{r}
+res7 <- ocPredprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  deltaE = 0.10,
+  deltaF = 0.10,
+  relativeDelta = FALSE,
+  tT = 0.6,
+  phiU = 0.80,
+  phiL = 0.20,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  wiggle = FALSE,
+  decision1 = TRUE
+)
+res7$oc
+```
+
+### Helper `h_get_dataframe`
 
 ```{r}
 h_get_dataframe <- function(decision, sample_size, all_looks) {
@@ -117,6 +155,7 @@ h_get_dataframe <- function(decision, sample_size, all_looks) {
   df$look <- factor(df$look, levels = all_looks)
   # data input for plot, such that all variables present, even empty cases
   df <- df %>%
+    mutate(decision = forcats::fct_na_value_to_level(decision)) %>%
     complete(decision, look, 
              fill = list(prop = 0)) %>% as.data.frame()
   df
@@ -144,7 +183,23 @@ h_get_dataframe(res3$Decision, sample_size = res3$SampleSize, res3$Looks)
 h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
 ```
 
-## Testing helper function
+# Example for case 5 
+```{r}
+h_get_dataframe(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
+```
+
+# Example for case 6
+```{r}
+h_get_dataframe(res6$Decision, sample_size = res6$SampleSize, res6$Looks)
+```
+
+# Example for case 7
+```{r}
+h_get_dataframe(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
+```
+
+
+# Testing helper function
 
 ```{r}
 # h_get_dataframe ----
@@ -205,7 +260,7 @@ test_that("h_get_dataframe gives correct data frame when wiggle = FALSE", {
 })
 ```
 
-## User facing function
+## `plotOc`
 
 ```{r}
 plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
@@ -267,4 +322,27 @@ plotOc(decision = res4$Decision,
        wiggle_status = res4$params$wiggle)
 ```
 
+### Plot case 5`ocPredprob()`
+```{r}
+plotOc(decision = res5$Decision, 
+       sample_size = res5$SampleSize,
+       all_looks = res5$Looks,
+       wiggle_status = res5$params$wiggle)
+```
+
+### Plot case 6 `ocPostProbDist``
+```{r}
+plotOc(decision = res6$Decision, 
+       sample_size = res6$SampleSize,
+       all_looks = res6$Looks,
+       wiggle_status = res6$params$wiggle)
+```
+
+### Plot case 7 `ocPredProbDist`
+```{r}
+plotOc(decision = res7$Decision, 
+       sample_size = res7$SampleSize,
+       all_looks = res7$Looks,
+       wiggle_status = res7$params$wiggle)
+```
 

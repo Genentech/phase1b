@@ -31,7 +31,8 @@ h_get_decisionDist <- function(nnr,
                                tU,
                                deltaE,
                                deltaF,
-                               relativeDelta) {
+                               relativeDelta,
+                               orig_nnr) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -62,6 +63,7 @@ h_get_decisionDist <- function(nnr,
         parS = parE
       )
       decision <- ifelse(qL >= tL, FALSE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnrE) {
       qU <- postprobDist(
@@ -75,6 +77,7 @@ h_get_decisionDist <- function(nnr,
         parS = parS
       )
       decision <- ifelse(qU < tU, decision, TRUE)
+      all_looks <- orig_nnr[index_look]
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -82,7 +85,8 @@ h_get_decisionDist <- function(nnr,
   }
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = all_sizes,
+    all_looks = all_looks
   )
 }
 
@@ -190,6 +194,7 @@ ocPostprobDist <- function(nnE,
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+  all_looks <- vector(length = sim)
 
   nnE <- sort(nnE)
   nnF <- sort(nnF)
@@ -206,12 +211,17 @@ ocPostprobDist <- function(nnE,
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF) # we generate sim number of looks
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- NULL
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(c(nnrE, nnrF))
+    orig_nnr <- unique(c(orig_nnE, orig_nnF))
     tmp <- h_get_decisionDist(
       nnr = nnr,
       nnrE = nnrE,
@@ -222,15 +232,18 @@ ocPostprobDist <- function(nnE,
       tU = tU,
       deltaE = deltaE,
       deltaF = deltaF,
-      relativeDelta = relativeDelta
+      relativeDelta = relativeDelta,
+      orig_nnr = orig_nnr
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     union_nn = nnr,
     input_nnE = nnE,
