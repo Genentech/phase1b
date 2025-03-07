@@ -135,7 +135,6 @@ h_get_decision <- function(nnr,
     all_sizes <- size_look
     index_look <- index_look + 1
     size_look <- nnr[index_look]
-    all_looks <- all_looks
   }
   list(
     decision = decision,

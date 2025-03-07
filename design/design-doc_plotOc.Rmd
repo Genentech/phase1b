@@ -101,7 +101,6 @@ res4$oc
 ### Helper function
 
 ```{r}
-
 h_get_dataframe <- function(decision, sample_size, all_looks) {
   df <- data.frame(decision = decision,
                       sample_size = sample_size,
@@ -119,7 +118,7 @@ h_get_dataframe <- function(decision, sample_size, all_looks) {
   # data input for plot, such that all variables present, even empty cases
   df <- df %>%
     complete(decision, look, 
-             fill = list(prop = 0))
+             fill = list(prop = 0)) %>% as.data.frame()
   df
 
                        }
@@ -149,7 +148,7 @@ h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
 
 ```{r}
 # h_get_dataframe ----
-test_that("h_get_dataframe gives correct data frame", {
+test_that("h_get_dataframe gives correct data frame when wiggle = TRUE", {
   set.seed(1989)
   res4 <- ocPostprob(
     nnE = c(10, 20, 30), 
@@ -163,11 +162,47 @@ test_that("h_get_dataframe gives correct data frame", {
     wiggle = TRUE, 
     nnF = 30
   )
-  result <- h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
-  expect_equal(result$decision, TRUE)
-  expect_equal(result$all_sizes, 20)
+  result <- h_get_dataframe(res4$Decision, 
+                            sample_size = res4$SampleSize, 
+                            res4$Looks)
+  expected <- data.frame(decision = 
+        structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA), 
+                  levels = c("TRUE", "FALSE"), class = "factor"), 
+      look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L), 
+                     levels = c("10","20", "30"), 
+                     class = "factor"), 
+      prop = c(0.48, 0.18, 0.11, 0, 0, 0.01, 0, 0, 0.22))
+  expect_equal(result, expected)
 })
+```
 
+```{r}
+test_that("h_get_dataframe gives correct data frame when wiggle = FALSE", {
+  set.seed(1989)
+  res3 <- ocPostprob(
+    nnE = c(10, 20, 30), 
+    truep = 0.40, 
+    p0 = 0.20, 
+    p1 = 0.30, 
+    tL = 0.60, 
+    tU = 0.80, 
+    parE = c(1, 1),
+    sim = 100, 
+    wiggle = FALSE, 
+    nnF = 30
+  )
+  result <- h_get_dataframe(res3$Decision, 
+                            sample_size = res4$SampleSize, 
+                            res4$Looks)
+  expected <- data.frame(decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
+                                              levels = c("TRUE", "FALSE"), 
+                                              class = "factor"),
+                         look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
+                                          levels = c("10", "20", "30"), 
+                                          class = "factor"),
+                         prop = c(0.39, 0.13, 0.23, 0, 0, 0,0.09, 0.05, 0.11))
+  expect_equal(result, expected)
+})
 ```
 
 ## User facing function
@@ -180,8 +215,10 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
   barplot <-   
     ggplot2::ggplot(df, aes(fill = decision, x = look, y = prop)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") + 
-    ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") +
-    ggplot2::ylab("percentage") +
+    ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") + 
+    ggplot2::theme(title = element_text(size = 13)) +
+    ggplot2::ylab("percentage") + 
+    ggplot2::theme(axis.text.x = element_text(size = 12)) +
     ggplot2::xlab("look (n)") +
     scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
                       labels = c("Go", "Stop", "Grey zone")) 
@@ -201,27 +238,28 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
 }
 ```
 
+### Plot case 1:
 ```{r}
 plotOc(decision = res2$Decision, 
        sample_size = res2$SampleSize,
        all_looks = res2$Looks,
        wiggle_status = res2$params$wiggle)
 ```
-
+### Plot case 2:
 ```{r}
 plotOc(decision = res1$Decision, 
        sample_size = res1$SampleSize,
        all_looks = res1$Looks,
        wiggle_status = res1$params$wiggle)
 ```
-
+### Plot case 3:
 ```{r}
 plotOc(decision = res3$Decision, 
        sample_size = res3$SampleSize,
        all_looks = res3$Looks,
        wiggle_status = res3$params$wiggle)
 ```
-
+### Plot case 4:
 ```{r}
 plotOc(decision = res4$Decision, 
        sample_size = res4$SampleSize,
