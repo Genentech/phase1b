@@ -12,7 +12,7 @@
 #' @example examples/plotOc.R
 #' @export
 #' @keywords graphics
-plotOc <- function(oc) {
+vintage_plotOc <- function(oc) {
   if (wiggle == FALSE) {
     data <- table(oc$Decision, oc$SampleSize) / oc$params$sim
   } else {
