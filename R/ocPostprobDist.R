@@ -44,6 +44,7 @@ h_get_decisionDist <- function(nnr,
   assert_number(deltaE, finite = TRUE)
   assert_number(deltaF, finite = TRUE)
   assert_flag(relativeDelta)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   size_look <- nnr[index_look]

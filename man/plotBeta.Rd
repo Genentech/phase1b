@@ -15,7 +15,7 @@ plotBeta(alpha, beta)
 A beta distribution density plot
 }
 \description{
-This function will plot the PDF of a beta distribution
+This function will plot a PDF of a beta distribution
 }
 \examples{
 # plotBeta

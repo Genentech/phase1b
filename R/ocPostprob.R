@@ -117,7 +117,7 @@ h_get_decision <- function(nnr,
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
-  assert_numeric(orig_nnr, lower = min(nnr), upper = max(nnr), any.missing = FALSE)
+  assert_numeric(orig_nnr)
 
   Nmax <- max(nnr)
   index_look <- 1

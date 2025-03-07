@@ -41,6 +41,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
   assert_number(tT, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
   assert_number(phiL, lower = 0, upper = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   Nmax <- max(nnr)
@@ -135,6 +136,7 @@ h_get_decision_two_predprob <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE,
   assert_number(tF, lower = 0, upper = 1)
   assert_number(phiFu, lower = 0, upper = 1)
   assert_number(phiU, lower = 0, upper = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   Nmax <- max(nnr)

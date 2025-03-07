@@ -47,6 +47,7 @@ h_get_decisionDist_rct <- function(nnr,
   assert_flag(relativeDelta)
   assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
   assert_number(Nmax, lower = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   size_look <- nnr[index_look]

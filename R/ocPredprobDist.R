@@ -34,6 +34,7 @@ h_decision_one_predprobDist <- function(
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE)
   assert_numeric(nnr, lower = 1, sorted = TRUE)
   assert_number(truep, lower = 0, upper = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   Nmax <- max(nnr)
@@ -170,6 +171,7 @@ h_decision_two_predprobDist <- function(
   assert_numeric(nnF, lower = 1, sorted = TRUE, any.missing = FALSE, )
   assert_numeric(nnr, lower = 1, sorted = TRUE, any.missing = FALSE, )
   assert_number(truep, lower = 0, upper = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   Nmax <- max(nnr)

@@ -1,6 +1,6 @@
 #' Plot the Beta distribution
 #'
-#' This function will plot the PDF of a beta distribution
+#' This function will plot a PDF of a beta distribution
 #'
 #' @typed alpha : number
 #'  first parameter of the Beta distribution
