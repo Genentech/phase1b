@@ -12,7 +12,7 @@ Plot a bar plot for simulated results of :
   2. `length(nnE) = length(nnF)` AND `wiggle = TRUE`. (looks wiggle together)
   3. `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
   4. `length(nnE) =! length(nnF)` AND `wiggle = TRUE`. (looks are different and wiggle)
-- all other `oc` series such as `ocPredprob()` 
+- all other `oc` series such as `ocPredprob()` where `wiggle = TRUE`
 
 Note these results and definitions :
 FALSE = met the futility criteria
@@ -167,7 +167,7 @@ res9 <- ocRctPostprobDist(
   pS = 0.3,
   deltaE = 0.15,
   deltaF = 0.05,
-  relativeDelta = TRUE,
+  relativeDelta = FALSE,
   tL = 0.2,
   tU = 0.8,
   parE = c(a = 1, b = 1),
