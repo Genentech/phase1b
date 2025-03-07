@@ -355,17 +355,21 @@ ocPredprobDist <- function(
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- 0
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(sort(c(nnrE, nnrF)))
-    orig_nnr <- unique(sort(c(nnrE, nnrF)))
+    orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
     tmp <- if (decision1) {
       h_decision_one_predprobDist(
-        nnE = nnE,
-        nnF = nnF,
+        nnE = nnrE,
+        nnF = nnrF,
         nnr = nnr,
         truep = truep,
         xS = xS,
@@ -384,8 +388,8 @@ ocPredprobDist <- function(
       )
     } else {
       h_decision_two_predprobDist(
-        nnE = nnE,
-        nnF = nnF,
+        nnE = nnrE,
+        nnF = nnrF,
         nnr = nnr,
         truep = truep,
         xS = xS,

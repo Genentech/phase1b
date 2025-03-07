@@ -24,6 +24,7 @@ which can be improved in future PR, e.g "Go" as factor for "met the efficacy cri
 
 ```{r}
 library(dplyr)
+library(tidyr)
 ```
 
 # `ocPostprob()` 
@@ -90,7 +91,7 @@ res5 <- ocPredprob(
   phiFu = 0.8,
   parE = c(1, 1),
   sim = 50,
-  wiggle = FALSE,
+  wiggle = TRUE,
   nnF = c(10, 20),
   decision1 = FALSE
 )
@@ -130,10 +131,126 @@ res7 <- ocPredprobDist(
   weights = 1,
   weightsS = 1,
   sim = 50,
-  wiggle = FALSE,
+  wiggle = TRUE,
   decision1 = TRUE
 )
 res7$oc
+```
+## 8. `ocPredprobDist()` where decision1 = TRUE
+```{r}
+res8 <- ocPredprobDist(
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  deltaE = 0.5,
+  deltaF = 0.5,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  phiU = 0.80,
+  phiFu = 0.7,
+  parE = c(1, 1),
+  parS = c(5, 25),
+  weights = 1,
+  weightsS = 1,
+  sim = 50,
+  nnF = c(10, 20, 30),
+  wiggle = TRUE,
+  decision1 = TRUE
+)
+res8
+```
+
+## 9. `ocRctPostprobDist()` where decision1 = TRUE
+```{r}
+res9 <- ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0.05,
+  relativeDelta = TRUE,
+  tL = 0.2,
+  tU = 0.8,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 20, 30)
+)
+res9
+```
+
+## 10. `ocRctPostprobDist()` where decision1 = FALSE
+```{r}
+res10 <- ocRctPostprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.4,
+  pS = 0.3,
+  deltaE = 0.15,
+  deltaF = 0.05,
+  relativeDelta = FALSE,
+  tL = 0.2,
+  tU = 0.8,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30)
+)
+res10
+```
+
+## 11. `ocRctPredprobDist()` where decision1 = FALSE
+```{r}
+res11 <- ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiFu = 0.2,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 50,
+  wiggle = TRUE,
+  nnF = c(10, 20, 30),
+  decision1 = FALSE
+)
+res11
+```
+
+## 12. `ocRctPredtprobDist()` where decision1 = TRUE
+```{r}
+res12 <- ocRctPredprobDist(
+  nnE = c(10, 20, 30),
+  pE = 0.3,
+  pS = 0.3,
+  deltaE = 0.2,
+  deltaF = 0.1,
+  phiU = 0.8,
+  phiFu = 0.2,
+  relativeDelta = TRUE,
+  tT = 0.6,
+  tF = 0.4,
+  parE = c(a = 1, b = 1),
+  parS = c(a = 1, b = 1),
+  weights = 1,
+  weightsS = 1,
+  randRatio = 1,
+  sim = 50,
+  wiggle = FALSE,
+  nnF = c(10, 20, 30),
+  decision1 = TRUE
+)
+res12
 ```
 
 ### Helper `h_get_dataframe`
@@ -149,18 +266,16 @@ h_get_dataframe <- function(decision, sample_size, all_looks) {
     summarise(prop = sum(length(decision))/nrow(df)) %>% 
     as_tibble()
   # setting levels of factors
+  # all_decision <- c("TRUE", "FALSE", "NA")
   all_decision <- c(TRUE, FALSE, NA)
-  all_looks <- c(10, 20, 30)
+  all_looks <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = all_decision)
   df$look <- factor(df$look, levels = all_looks)
-  # data input for plot, such that all variables present, even empty cases
-  df <- df %>%
-    mutate(decision = forcats::fct_na_value_to_level(decision)) %>%
-    complete(decision, look, 
-             fill = list(prop = 0)) %>% as.data.frame()
+  df <- df %>% 
+    complete(decision, look, fill = list(prop = 0))
   df
 
-                       }
+}
 ```
 
 # Example for case 1
@@ -183,19 +298,44 @@ h_get_dataframe(res3$Decision, sample_size = res3$SampleSize, res3$Looks)
 h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
 ```
 
-# Example for case 5 
+# Example for case 5  
 ```{r}
 h_get_dataframe(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
 ```
 
-# Example for case 6
+# Example for case 6 
 ```{r}
 h_get_dataframe(res6$Decision, sample_size = res6$SampleSize, res6$Looks)
 ```
 
-# Example for case 7
+# Example for case 7 
 ```{r}
 h_get_dataframe(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
+```
+
+# Example for case 8 
+```{r}
+h_get_dataframe(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
+```
+
+# Example for case 9 
+```{r}
+h_get_dataframe(res9$Decision, sample_size = res9$SampleSize, res9$Looks)
+```
+
+# Example for case 10 
+```{r}
+h_get_dataframe(res10$Decision, sample_size = res10$SampleSize, res10$Looks)
+```
+
+# Example for case 11 
+```{r}
+h_get_dataframe(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
+```
+
+# Example for case 12 
+```{r}
+h_get_dataframe(res12$Decision, sample_size = res12$SampleSize, res12$Looks)
 ```
 
 
@@ -268,12 +408,12 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
                         sample_size = sample_size, 
                         all_looks = all_looks)
   barplot <-   
-    ggplot2::ggplot(df, aes(fill = decision, x = look, y = prop)) +
+    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = look, y = prop)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") + 
     ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") + 
-    ggplot2::theme(title = element_text(size = 13)) +
+    ggplot2::theme(title = ggplot2::element_text(size = 13)) +
     ggplot2::ylab("percentage") + 
-    ggplot2::theme(axis.text.x = element_text(size = 12)) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size = 12)) +
     ggplot2::xlab("look (n)") +
     scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
                       labels = c("Go", "Stop", "Grey zone")) 
@@ -346,3 +486,38 @@ plotOc(decision = res7$Decision,
        wiggle_status = res7$params$wiggle)
 ```
 
+### Plot case 8 `ocPredProbDist`
+```{r}
+plotOc(decision = res8$Decision, 
+       sample_size = res8$SampleSize,
+       all_looks = res8$Looks,
+       wiggle_status = res8$params$wiggle)
+```
+### Plot case 9`ocRctPostProbDist`
+```{r}
+plotOc(decision = res9$Decision, 
+       sample_size = res9$SampleSize,
+       all_looks = res9$Looks,
+       wiggle_status = res9$params$wiggle)
+```
+### Plot case 10 `ocRctPostProbDist`
+```{r}
+plotOc(decision = res10$Decision, 
+       sample_size = res10$SampleSize,
+       all_looks = res10$Looks,
+       wiggle_status = res10$params$wiggle)
+```
+### Plot case 11 `ocRctPredProbDist`
+```{r}
+plotOc(decision = res11$Decision, 
+       sample_size = res11$SampleSize,
+       all_looks = res11$Looks,
+       wiggle_status = res11$params$wiggle)
+```
+### Plot case 12 `ocRctPredProbDist`
+```{r}
+plotOc(decision = res12$Decision, 
+       sample_size = res12$SampleSize,
+       all_looks = res12$Looks,
+       wiggle_status = res12$params$wiggle)
+```
