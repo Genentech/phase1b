@@ -39,10 +39,10 @@ plotOc <- function(oc) {
   parInds <- which(names(parDat) %in% allParNames)
 
   graphics::title(paste(names(parDat[parInds]), parDat[parInds],
-                        sep = "=", collapse = ", "
+    sep = "=", collapse = ", "
   ))
   graphics::title(xlab = paste(dimnames(z$oc)[[2]], signif(z$oc, 3),
-                               sep = " = ", collapse = ", "
+    sep = " = ", collapse = ", "
   ))
 
   return(invisible())
