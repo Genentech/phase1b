@@ -410,26 +410,27 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
   barplot <-   
     ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = look, y = prop)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") + 
-    ggplot2::ggtitle("Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") + 
+    ggplot2::ggtitle(
+      "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis") + 
     ggplot2::theme(title = ggplot2::element_text(size = 13)) +
     ggplot2::ylab("percentage") + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(size = 12)) +
     ggplot2::xlab("look (n)") +
-    scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
-                      labels = c("Go", "Stop", "Grey zone")) 
-    if (wiggle_status) {
-        wiggle_warning <- 
-          paste("Note that sample sizes slightly differ from the ones labeled")
-        barplot + ggplot2::annotate("text", 
-                                    label = wiggle_warning, 
-                                    x = length(unique(all_looks))/1.5, 
-                                    y = 0.65, 
-                                    size = 5,
-                                    colour = "black") 
-      
-    } else {
-      barplot
-    }                               
+    ggplot2::scale_fill_manual(values = c("#009E73", "#FF0046", "lightgrey"),
+                               labels = c("Go", "Stop", "Grey zone")) +
+    ggplot2::labs(fill = "Decision")
+  generic_title <- 
+    "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
+  wiggle_warning_on_title <- paste(
+    generic_title, "\nNote that sample sizes may differ slightly from the ones labeled")
+  
+  if (wiggle_status) {
+    barplot + 
+      ggplot2::ggtitle(wiggle_warning_on_title) 
+  } else {
+    barplot + 
+      ggplot2::ggtitle(generic_title) 
+  }                               
 }
 ```
 
