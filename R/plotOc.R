@@ -45,5 +45,4 @@ vintage_plotOc <- function(oc) {
     sep = " = ", collapse = ", "
   ))
 
-  return(invisible())
 }
