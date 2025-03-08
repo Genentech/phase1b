@@ -44,5 +44,4 @@ vintage_plotOc <- function(oc) {
   graphics::title(xlab = paste(dimnames(z$oc)[[2]], signif(z$oc, 3),
     sep = " = ", collapse = ", "
   ))
-
 }
