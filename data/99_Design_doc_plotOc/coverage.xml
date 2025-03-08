@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.720798957881025" branch-rate="0" lines-covered="1660" lines-valid="2303" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-07 22:40:40.248149">
+<coverage line-rate="0.721112076455256" branch-rate="0" lines-covered="1660" lines-valid="2302" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-08 07:24:18.413141">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.720798957881025" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.721112076455256" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -4112,7 +4112,6 @@
                 <line number="44" hits="0" branch="false"/>
                 <line number="45" hits="0" branch="false"/>
                 <line number="46" hits="0" branch="false"/>
-                <line number="48" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -4138,7 +4137,6 @@
             <line number="44" hits="0" branch="false"/>
             <line number="45" hits="0" branch="false"/>
             <line number="46" hits="0" branch="false"/>
-            <line number="48" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="postprob.R" filename="R/postprob.R" line-rate="0.970588235294118" branch-rate="0" complexity="0">
