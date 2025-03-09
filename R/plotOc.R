@@ -15,7 +15,7 @@
 #' @keywords internal
 #'
 h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
-  assert_numeric(decision)
+  assert_logical(decision)
   assert_numeric(sample_size)
   assert_numeric(all_looks)
   df <- data.frame(
