@@ -1,10 +1,10 @@
 # h_get_dataframe_oc ----
 test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle = TRUE", {
   set.seed(2025)
-  res2 <- ocPostprob(
+  expect_warning(res2 <- ocPostprob(
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
     sim = 100, wiggle = TRUE, nnF = c(10, 20, 30)
-  )
+  ), "Advise to use sim >= 50000 to achieve convergence")
   result <- h_get_dataframe_oc(res2$Decision, sample_size = res2$SampleSize, res2$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
@@ -18,11 +18,12 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
     prop = c(0.44, 0.22, 0.11, 0.03, 0.00, 0.00, 0.00, 0.00, 0.20)
   )
   expect_identical(result, expected)
+  # expect_warning(res2, "Advise to use sim >= 50000 to achieve convergence")
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decision1 = FALSE", {
   set.seed(2025)
-  res5 <- ocPredprob(
+  expect_warning(res5 <- ocPredprob(
     nnE = c(10, 20),
     truep = 0.6,
     p0 = 0.25,
@@ -35,8 +36,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
     sim = 50,
     wiggle = TRUE,
     nnF = c(10, 20),
-    decision1 = FALSE
-  )
+    decision1 = FALSE)
+    )
   result <- h_get_dataframe_oc(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
@@ -47,14 +48,14 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
       levels = c("10", "20"),
       class = "factor"
     ),
-    prop = c(0.9, 0.1, 0, 0)
+    prop = c(0.94, 0.06, 0, 0)
   )
   expect_identical(result, expected)
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when relativeDelta = FALSE", {
   set.seed(2025)
-  res7 <- ocPredprobDist(
+  expect_warning(res7 <- ocPredprobDist(
     nnE = c(10, 20, 30),
     truep = 0.40,
     deltaE = 0.10,
@@ -69,7 +70,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
     weightsS = 1,
     sim = 50,
     wiggle = TRUE,
-    decision1 = TRUE
+    decision1 = TRUE)
   )
   result <- h_get_dataframe_oc(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
   expected <- dplyr::tibble(
@@ -88,7 +89,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when relativeDelta = TRUE", {
   set.seed(2025)
-  res8 <- ocPredprobDist(
+  expect_warning(res8 <- ocPredprobDist(
     nnE = c(10, 20, 30),
     truep = 0.40,
     deltaE = 0.5,
@@ -104,7 +105,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
     sim = 50,
     nnF = c(10, 20, 30),
     wiggle = TRUE,
-    decision1 = TRUE
+    decision1 = TRUE)
   )
   result <- h_get_dataframe_oc(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
   expected <- dplyr::tibble(
@@ -123,7 +124,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
 
 test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when relativeDelta = FALSE", {
   set.seed(2025)
-  res11 <- ocRctPostprobDist(
+  expect_warning(res11 <- ocRctPostprobDist(
     nnE = c(10, 20, 30),
     pE = 0.4,
     pS = 0.3,
@@ -137,7 +138,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     randRatio = 1,
     sim = 50,
     wiggle = TRUE,
-    nnF = c(10, 20, 30)
+    nnF = c(10, 20, 30))
   )
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
   expected <- dplyr::tibble(
@@ -156,7 +157,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
 
 test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` relativeDelta = TRUE", {
   set.seed(2025)
-  res11 <- ocRctPredprobDist(
+  expect_warning(res11 <- ocRctPredprobDist(
     nnE = c(10, 20, 30),
     pE = 0.3,
     pS = 0.3,
@@ -175,7 +176,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
     sim = 50,
     wiggle = TRUE,
     nnF = c(10, 20, 30),
-    decision1 = FALSE
+    decision1 = FALSE)
   )
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
   expected <- dplyr::tibble(
