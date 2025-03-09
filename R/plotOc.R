@@ -1,3 +1,41 @@
+#' Helper function for simulation result as input for `plotOc()`
+#'
+#' Data frame input for bar plot for simulated results of :
+#' - `ocPostprob()`
+#' - `ocPostprobDist()`
+#' - `ocPostpred()`
+#' - `ocPostpredDist()`
+#' - `ocRctPostprobDist()`
+#' - `ocRctPredprobDist()`
+#'
+#' @inheritParams h_get_oc
+#' @typed all_looks : numeric
+#' original looks before adjustment by `wiggle = TRUE`, if applied.
+#'
+#' @keywords internal
+#'
+h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
+  df <- data.frame(
+    decision = decision,
+    sample_size = sample_size,
+    look = all_looks
+  )
+  # summarise into frequency table
+  df <- df %>%
+    dplyr::group_by(decision, look) %>%
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
+    dplyr::as_tibble()
+  # setting levels of factors
+  # all_decision <- c("TRUE", "FALSE", "NA")
+  all_decision <- c(TRUE, FALSE, NA)
+  all_looks <- unique(sort(all_looks))
+  df$decision <- factor(df$decision, levels = all_decision)
+  df$look <- factor(df$look, levels = all_looks)
+  df <- df %>%
+    tidyr::complete(decision, look, fill = list(prop = 0))
+  df
+}
+
 #' Display the operating characteristics using an oc object
 #'
 #' Reads results from [ocPredprob()]

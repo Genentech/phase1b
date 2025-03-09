@@ -98,7 +98,7 @@ res5 <- ocPredprob(
 res5$oc
 ```
 
-## 6. `ocPostprobDist()` where decision1 = FALSE
+## 6. `ocPostprobDist()` where wiggle = TRUE
 ```{r}
 res6 <- ocPostprobDist(
   nnE = c(10, 20, 30),
@@ -115,7 +115,7 @@ res6 <- ocPostprobDist(
 res6$oc
 ```
 
-## 7. `ocPredprobDist()` where decision1 = FALSE
+## 7. `ocPredprobDist()` where decision1 = TRUE and relativeDelta = FALSE
 ```{r}
 res7 <- ocPredprobDist(
   nnE = c(10, 20, 30),
@@ -136,7 +136,7 @@ res7 <- ocPredprobDist(
 )
 res7$oc
 ```
-## 8. `ocPredprobDist()` where decision1 = TRUE
+## 8. `ocPredprobDist()` where relativeDelta = TRUE
 ```{r}
 res8 <- ocPredprobDist(
   nnE = c(10, 20, 30),
@@ -159,7 +159,7 @@ res8 <- ocPredprobDist(
 res8
 ```
 
-## 9. `ocRctPostprobDist()` where decision1 = TRUE
+## 9. `ocRctPostprobDist()` where relativeDelta = FALSE
 ```{r}
 res9 <- ocRctPostprobDist(
   nnE = c(10, 20, 30),
@@ -180,7 +180,7 @@ res9 <- ocRctPostprobDist(
 res9
 ```
 
-## 10. `ocRctPostprobDist()` where decision1 = FALSE
+## 10. `ocRctPostprobDist()` where relativeDelta = FALSE
 ```{r}
 res10 <- ocRctPostprobDist(
   nnE = c(10, 20, 30),
@@ -201,7 +201,7 @@ res10 <- ocRctPostprobDist(
 res10
 ```
 
-## 11. `ocRctPredprobDist()` where decision1 = FALSE
+## 11. `ocRctPredprobDist()` where relativeDelta = TRUE
 ```{r}
 res11 <- ocRctPredprobDist(
   nnE = c(10, 20, 30),
