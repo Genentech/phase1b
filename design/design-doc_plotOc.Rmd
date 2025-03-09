@@ -34,8 +34,16 @@ library(tidyr)
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
 res1 <- ocPostprob(
-  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 100, wiggle = FALSE, nnF = c(10, 20, 30)
+  nnE = c(10, 20, 30), 
+  truep = 0.40, 
+  p0 = 0.20, 
+  p1 = 0.30, 
+  tL = 0.60, 
+  tU = 0.80, 
+  parE = c(1, 1),
+  sim = 100, 
+  wiggle = FALSE, 
+  nnF = c(10, 20, 30)
 )
 
 res1 # (may need to add wiggled distance)
@@ -47,8 +55,16 @@ res1$oc
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
 res2 <- ocPostprob(
-  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 100, wiggle = TRUE, nnF = c(10, 20, 30)
+  nnE = c(10, 20, 30), 
+  truep = 0.40, 
+  p0 = 0.20, 
+  p1 = 0.30, 
+  tL = 0.60, 
+  tU = 0.80, 
+  parE = c(1, 1),
+  sim = 100, 
+  wiggle = TRUE, 
+  nnF = c(10, 20, 30)
 )
 
 res2 # (may need to add wiggled distance as param)
@@ -58,8 +74,16 @@ res2$oc
 ## 3. `ocPostprob()` where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
 ```{r}
 res3 <- ocPostprob(
-  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 100, wiggle = FALSE, nnF = 30
+  nnE = c(10, 20, 30), 
+  truep = 0.40, 
+  p0 = 0.20, 
+  p1 = 0.30, 
+  tL = 0.60, 
+  tU = 0.80, 
+  parE = c(1, 1),
+  sim = 100, 
+  wiggle = FALSE, 
+  nnF = 30
 )
 
 res3 # (may need to add wiggled distance)
@@ -70,8 +94,16 @@ res3$oc
 
 ```{r}
 res4 <- ocPostprob(
-  nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-  sim = 100, wiggle = TRUE, nnF = 30
+  nnE = c(10, 20, 30), 
+  truep = 0.40, 
+  p0 = 0.20, 
+  p1 = 0.30, 
+  tL = 0.60, 
+  tU = 0.80, 
+  parE = c(1, 1),
+  sim = 100, 
+  wiggle = TRUE, 
+  nnF = 30
 )
 
 res4
@@ -136,7 +168,7 @@ res7 <- ocPredprobDist(
 )
 res7$oc
 ```
-## 8. `ocPredprobDist()` where relativeDelta = TRUE
+## 8. `ocPredprobDist()` where  decision1 = TRUE and relativeDelta = TRUE
 ```{r}
 res8 <- ocPredprobDist(
   nnE = c(10, 20, 30),
@@ -268,7 +300,6 @@ h_get_dataframe <- function(decision, sample_size, all_looks) {
     summarise(prop = sum(length(decision)) / nrow(df)) %>%
     as_tibble()
   # setting levels of factors
-  # all_decision <- c("TRUE", "FALSE", "NA")
   all_decision <- c(TRUE, FALSE, NA)
   all_looks <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = all_decision)

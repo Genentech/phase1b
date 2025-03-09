@@ -1,12 +1,12 @@
 #' Helper function for simulation result as input for `plotOc()`
 #'
 #' Data frame input for bar plot for simulated results of :
-#' - `ocPostprob()`
-#' - `ocPostprobDist()`
-#' - `ocPostpred()`
-#' - `ocPostpredDist()`
-#' - `ocRctPostprobDist()`
-#' - `ocRctPredprobDist()`
+#' - `[ocPostprob()]`
+#' - `[ocPostprobDist()]`
+#' - `[ocPostpred()]`
+#' - `[ocPostpredDist()]`
+#' - `[ocRctPostprobDist()]`
+#' - `[ocRctPredprobDist()]`
 #'
 #' @inheritParams h_get_oc
 #' @typed all_looks : numeric
@@ -15,6 +15,9 @@
 #' @keywords internal
 #'
 h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
+  assert_numeric(decision)
+  assert_numeric(sample_size)
+  assert_numeric(all_looks)
   df <- data.frame(
     decision = decision,
     sample_size = sample_size,
@@ -26,7 +29,6 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
     dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
     dplyr::as_tibble()
   # setting levels of factors
-  # all_decision <- c("TRUE", "FALSE", "NA")
   all_decision <- c(TRUE, FALSE, NA)
   all_looks <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = all_decision)

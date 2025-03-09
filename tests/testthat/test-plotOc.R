@@ -46,7 +46,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
   expect_identical(result, expected)
 })
 
-test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when relativeDelta = FALSE and decision1 = TRUE", {
+test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when relativeDelta = FALSE", {
   set.seed(2025)
   res7 <- ocPredprobDist(
     nnE = c(10, 20, 30),
