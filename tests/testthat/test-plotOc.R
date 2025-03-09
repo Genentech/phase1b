@@ -36,8 +36,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
     sim = 50,
     wiggle = TRUE,
     nnF = c(10, 20),
-    decision1 = FALSE)
-    )
+    decision1 = FALSE
+  ))
   result <- h_get_dataframe_oc(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
@@ -70,8 +70,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
     weightsS = 1,
     sim = 50,
     wiggle = TRUE,
-    decision1 = TRUE)
-  )
+    decision1 = TRUE
+  ))
   result <- h_get_dataframe_oc(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
@@ -105,8 +105,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
     sim = 50,
     nnF = c(10, 20, 30),
     wiggle = TRUE,
-    decision1 = TRUE)
-  )
+    decision1 = TRUE
+  ))
   result <- h_get_dataframe_oc(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
@@ -138,8 +138,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     randRatio = 1,
     sim = 50,
     wiggle = TRUE,
-    nnF = c(10, 20, 30))
-  )
+    nnF = c(10, 20, 30)
+  ))
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
@@ -176,8 +176,8 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
     sim = 50,
     wiggle = TRUE,
     nnF = c(10, 20, 30),
-    decision1 = FALSE)
-  )
+    decision1 = FALSE
+  ))
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
