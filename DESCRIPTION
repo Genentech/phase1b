@@ -41,7 +41,7 @@ Imports:
     vdiffr,
     tools,
     tidyr,
-    dplyr (>= 1.0.0
+    dplyr (>= 1.0.0)
 VignetteBuilder:
     knitr
 Encoding: UTF-8
