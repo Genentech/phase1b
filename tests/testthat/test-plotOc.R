@@ -8,12 +8,15 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
   result <- h_get_dataframe_oc(res2$Decision, sample_size = res2$SampleSize, res2$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
-                         levels = c("TRUE", "FALSE"),
-                         class = "factor"),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
     look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-                     levels = c("10", "20", "30"),
-                     class = "factor"),
-    prop = c(0.44, 0.22, 0.11, 0.03, 0.00, 0.00, 0.00, 0.00, 0.20))
+      levels = c("10", "20", "30"),
+      class = "factor"
+    ),
+    prop = c(0.44, 0.22, 0.11, 0.03, 0.00, 0.00, 0.00, 0.00, 0.20)
+  )
   expect_identical(result, expected)
 })
 
@@ -37,12 +40,15 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
   result <- h_get_dataframe_oc(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
-                         levels = c("TRUE", "FALSE"),
-                         class = "factor"),
-    look = structure(c(1L, 2L, 1L, 2L ),
-                     levels = c("10", "20"),
-                     class = "factor"),
-    prop = c(0.9, 0.1, 0, 0))
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("10", "20"),
+      class = "factor"
+    ),
+    prop = c(0.9, 0.1, 0, 0)
+  )
   expect_identical(result, expected)
 })
 
@@ -66,13 +72,17 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
     decision1 = TRUE
   )
   result <- h_get_dataframe_oc(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 2L, 2L),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            look = structure(c(1L, 2L, 1L, 2L),
-                                             levels = c("20", "30"),
-                                             class = "factor"),
-                            prop = c(0.56, 0.36, 0.02, 0.06))
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 2L, 2L),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("20", "30"),
+      class = "factor"
+    ),
+    prop = c(0.56, 0.36, 0.02, 0.06)
+  )
   expect_identical(result, expected)
 })
 
@@ -97,13 +107,17 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
     decision1 = TRUE
   )
   result <- h_get_dataframe_oc(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 2L, 2L),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            look = structure(c(1L, 2L, 1L, 2L),
-                                             levels = c("20", "30"),
-                                             class = "factor"),
-                            prop = c(0.04, 0.02, 0.8, 0.14))
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 2L, 2L),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("20", "30"),
+      class = "factor"
+    ),
+    prop = c(0.04, 0.02, 0.8, 0.14)
+  )
   expect_identical(result, expected)
 })
 
@@ -126,13 +140,17 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     nnF = c(10, 20, 30)
   )
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-                                             levels = c("10", "20", "30"),
-                                             class = "factor"),
-                            prop = c(0.04, 0.02, 0.04, 0.72, 0.02, 0.04, 0, 0, 0.12))
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
+      levels = c("10", "20", "30"),
+      class = "factor"
+    ),
+    prop = c(0.04, 0.02, 0.04, 0.72, 0.02, 0.04, 0, 0, 0.12)
+  )
   expect_identical(result, expected)
 })
 
@@ -160,12 +178,16 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
     decision1 = FALSE
   )
   result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
-                                             levels = c("10", "20", "30"),
-                                             class = "factor"),
-                            prop = c(0.02, 0, 0, 0.22, 0.22, 0.48, 0, 0, 0.06))
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    look = structure(c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L),
+      levels = c("10", "20", "30"),
+      class = "factor"
+    ),
+    prop = c(0.02, 0, 0, 0.22, 0.22, 0.48, 0, 0, 0.06)
+  )
   expect_identical(result, expected)
 })

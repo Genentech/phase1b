@@ -34,15 +34,15 @@ library(tidyr)
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
 res1 <- ocPostprob(
-  nnE = c(10, 20, 30), 
-  truep = 0.40, 
-  p0 = 0.20, 
-  p1 = 0.30, 
-  tL = 0.60, 
-  tU = 0.80, 
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  p0 = 0.20,
+  p1 = 0.30,
+  tL = 0.60,
+  tU = 0.80,
   parE = c(1, 1),
-  sim = 100, 
-  wiggle = FALSE, 
+  sim = 100,
+  wiggle = FALSE,
   nnF = c(10, 20, 30)
 )
 
@@ -55,15 +55,15 @@ res1$oc
 ```{r}
 # Here, we only have one Futility but many Efficacy looks or stop.
 res2 <- ocPostprob(
-  nnE = c(10, 20, 30), 
-  truep = 0.40, 
-  p0 = 0.20, 
-  p1 = 0.30, 
-  tL = 0.60, 
-  tU = 0.80, 
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  p0 = 0.20,
+  p1 = 0.30,
+  tL = 0.60,
+  tU = 0.80,
   parE = c(1, 1),
-  sim = 100, 
-  wiggle = TRUE, 
+  sim = 100,
+  wiggle = TRUE,
   nnF = c(10, 20, 30)
 )
 
@@ -74,15 +74,15 @@ res2$oc
 ## 3. `ocPostprob()` where `length(nnE) =! length(nnF)` AND `wiggle = FALSE`. (looks are different and don't wiggle)
 ```{r}
 res3 <- ocPostprob(
-  nnE = c(10, 20, 30), 
-  truep = 0.40, 
-  p0 = 0.20, 
-  p1 = 0.30, 
-  tL = 0.60, 
-  tU = 0.80, 
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  p0 = 0.20,
+  p1 = 0.30,
+  tL = 0.60,
+  tU = 0.80,
   parE = c(1, 1),
-  sim = 100, 
-  wiggle = FALSE, 
+  sim = 100,
+  wiggle = FALSE,
   nnF = 30
 )
 
@@ -94,15 +94,15 @@ res3$oc
 
 ```{r}
 res4 <- ocPostprob(
-  nnE = c(10, 20, 30), 
-  truep = 0.40, 
-  p0 = 0.20, 
-  p1 = 0.30, 
-  tL = 0.60, 
-  tU = 0.80, 
+  nnE = c(10, 20, 30),
+  truep = 0.40,
+  p0 = 0.20,
+  p1 = 0.30,
+  tL = 0.60,
+  tU = 0.80,
   parE = c(1, 1),
-  sim = 100, 
-  wiggle = TRUE, 
+  sim = 100,
+  wiggle = TRUE,
   nnF = 30
 )
 
