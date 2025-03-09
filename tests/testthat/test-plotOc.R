@@ -123,7 +123,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
 
 test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when relativeDelta = FALSE", {
   set.seed(2025)
-  expect_warning(res11 <- ocRctPostprobDist(
+  expect_warning(res9 <- ocRctPostprobDist(
     nnE = c(10, 20, 30),
     pE = 0.4,
     pS = 0.3,
@@ -139,7 +139,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     wiggle = TRUE,
     nnF = c(10, 20, 30)
   ))
-  result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
+  result <- h_get_dataframe_oc(res9$Decision, sample_size = res9$SampleSize, res9$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
       levels = c("TRUE", "FALSE"),
