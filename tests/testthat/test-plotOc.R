@@ -18,7 +18,6 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
     prop = c(0.44, 0.22, 0.11, 0.03, 0.00, 0.00, 0.00, 0.00, 0.20)
   )
   expect_identical(result, expected)
-  # expect_warning(res2, "Advise to use sim >= 50000 to achieve convergence")
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decision1 = FALSE", {
