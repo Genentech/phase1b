@@ -1,5 +1,4 @@
 # h_get_dataframe_oc ----
-# Example for case 2
 test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle = TRUE", {
   set.seed(2025)
   res2 <- ocPostprob(
@@ -18,7 +17,6 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
   expect_identical(result, expected)
 })
 
-#
 test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decision1 = FALSE", {
   set.seed(2025)
   res5 <- ocPredprob(
