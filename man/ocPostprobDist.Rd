@@ -154,7 +154,7 @@ res2 <- ocPostprobDist(
 res2$oc
 
 # Allow Futility analysis only at the end.
-res4 <- ocPostprobDist(
+res3 <- ocPostprobDist(
   nnE = c(10, 20, 30),
   truep = 0.4,
   deltaE = 0.1,
@@ -168,5 +168,5 @@ res4 <- ocPostprobDist(
   nnF = 30
 )
 
-res4$oc
+res3$oc
 }

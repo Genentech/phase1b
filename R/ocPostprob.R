@@ -88,6 +88,9 @@ h_get_looks <- function(dist, nnE, nnF) {
 #' @typed parE : numeric
 #'  alpha and beta parameters for the prior on the treatment population.
 #'  Default set at alpha = 1, beta = 1, or uniform prior.
+#' @typed orig_nnr : numeric
+#'  unique values of original, user-input values of `nnE` and `nnF`, defined by user-facing
+#'  function and aid to `plotOc()`'s x axis input when `wiggle = TRUE`.
 #'
 #' @return A list with the following elements :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -96,7 +99,15 @@ h_get_looks <- function(dist, nnE, nnF) {
 #'
 #' @keywords internal
 #'
-h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU) {
+h_get_decision <- function(nnr,
+                           truep,
+                           p0, p1,
+                           parE = c(1, 1),
+                           nnE,
+                           nnF,
+                           tL,
+                           tU,
+                           orig_nnr) {
   assert_numeric(nnr)
   assert_number(truep, lower = 0, upper = 1)
   assert_number(p0, lower = 0, upper = 1)
@@ -106,6 +117,7 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   assert_numeric(nnF, lower = 1, any.missing = FALSE, sorted = TRUE)
   assert_number(tL, lower = 0, upper = 1)
   assert_number(tU, lower = 0, upper = 1)
+  assert_numeric(orig_nnr)
 
   Nmax <- max(nnr)
   index_look <- 1
@@ -117,10 +129,12 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
     if (size_look %in% nnF) {
       qL <- 1 - postprob(x = sum(response[1:size_look]), n = size_look, p = p0, parE = parE)
       decision <- ifelse(qL >= tL, FALSE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnE) {
       qU <- postprob(x = sum(response[1:size_look]), n = size_look, p = p1, parE = parE)
       decision <- ifelse(qU < tU, decision, TRUE)
+      all_looks <- orig_nnr[index_look]
     }
     all_sizes <- size_look
     index_look <- index_look + 1
@@ -128,7 +142,8 @@ h_get_decision <- function(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU)
   }
   list(
     decision = decision,
-    all_sizes = all_sizes
+    all_sizes = all_sizes,
+    all_looks = all_looks
   )
 }
 
@@ -234,31 +249,45 @@ ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
   }
   decision <- vector(length = sim)
   all_sizes <- vector(length = sim)
+  all_looks <- vector(length = sim)
   for (k in seq_len(sim)) {
     if (length(nn) != 1 && wiggle) {
       dist <- h_get_distance(nn = nn)
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- 0
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(c(nnrE, nnrF))
+    orig_nnr <- unique(c(orig_nnE, orig_nnF))
     tmp <- h_get_decision(
       nnr = nnr,
-      truep = truep, p0 = p0, p1 = p1,
-      parE = c(1, 1), nnE = nnrE,
-      nnF = nnrF, tL = tL, tU = tU
+      truep = truep,
+      p0 = p0,
+      p1 = p1,
+      parE = c(1, 1),
+      nnE = nnrE,
+      nnF = nnrF,
+      tL = tL,
+      tU = tU,
+      orig_nnr = orig_nnr
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
   list(
     oc = oc,
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     union_nn = nnr,
     wiggled_nnrE = nnrE,

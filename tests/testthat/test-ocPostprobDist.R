@@ -5,7 +5,9 @@ test_that("h_get_decisionDist gives correct result when relativeDelta = TRUE", {
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
-
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
   # input values from above arguments
   result <- h_get_decisionDist(
     nnr = c(10, 20, 30),
@@ -17,7 +19,8 @@ test_that("h_get_decisionDist gives correct result when relativeDelta = TRUE", {
     tU = 0.6,
     deltaF = 0.1,
     deltaE = 0.2,
-    relativeDelta = TRUE
+    relativeDelta = TRUE,
+    orig_nnr = orig_nnr
   )
   expect_list(result, any.missing = FALSE)
   expect_equal(result$decision, NA)
@@ -30,7 +33,9 @@ test_that("h_get_decisionDist gives correct result relativeDelta = FALSE", {
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
-
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
   # input values from above arguments
   result <- h_get_decisionDist(
     nnr = c(10, 20, 30),
@@ -42,7 +47,8 @@ test_that("h_get_decisionDist gives correct result relativeDelta = FALSE", {
     tU = 0.6,
     deltaF = 0.1,
     deltaE = 0.2,
-    relativeDelta = FALSE
+    relativeDelta = FALSE,
+    orig_nnr = orig_nnr
   )
   expect_list(result, any.missing = FALSE)
   expect_equal(result$all_sizes, 30)
@@ -56,7 +62,9 @@ test_that("h_get_decisionDist gives correct result when nnE <U+2260> nnF", {
   looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20))
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
-
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
   # input values from above arguments
   result <- h_get_decisionDist(
     nnr = c(10, 20, 30),
@@ -68,7 +76,8 @@ test_that("h_get_decisionDist gives correct result when nnE <U+2260> nnF", {
     tU = 0.6,
     deltaF = 0.1,
     deltaE = 0.2,
-    relativeDelta = FALSE
+    relativeDelta = FALSE,
+    orig_nnr = orig_nnr
   )
   expect_list(result, any.missing = FALSE)
   expect_equal(result$decision, NA)

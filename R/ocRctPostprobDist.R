@@ -31,7 +31,8 @@ h_get_decisionDist_rct <- function(nnr,
                                    deltaF,
                                    relativeDelta,
                                    randRatio = 1,
-                                   Nmax) {
+                                   Nmax,
+                                   orig_nnr) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -46,6 +47,7 @@ h_get_decisionDist_rct <- function(nnr,
   assert_flag(relativeDelta)
   assert_number(randRatio, na.ok = FALSE, upper = 1, finite = TRUE)
   assert_number(Nmax, lower = 1)
+  assert_numeric(orig_nnr)
 
   index_look <- 1
   size_look <- nnr[index_look]
@@ -78,6 +80,7 @@ h_get_decisionDist_rct <- function(nnr,
         parS = parE
       )
       decision <- ifelse(qL >= tL, FALSE, NA)
+      all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnrE) {
       qU <- postprobDist(
@@ -91,6 +94,7 @@ h_get_decisionDist_rct <- function(nnr,
         parS = parS
       )
       decision <- ifelse(qU < tU, decision, TRUE)
+      all_looks <- orig_nnr[index_look]
     }
     nActive <- length(xActive)
     nControl <- length(xControl)
@@ -100,6 +104,7 @@ h_get_decisionDist_rct <- function(nnr,
   }
   list(
     decision = decision,
+    all_looks = all_looks,
     all_sizes = all_sizes,
     nActive = nActive,
     nControl = nControl
@@ -220,7 +225,7 @@ ocRctPostprobDist <- function(nnE,
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  decision <- all_sizes <- nActive <- nControl <- vector(length = sim)
+  decision <- all_sizes <- all_looks <- nActive <- nControl <- vector(length = sim)
   nnE <- sort(nnE)
   nnF <- sort(nnF)
   nn <- sort(unique(c(nnF, nnE)))
@@ -237,12 +242,17 @@ ocRctPostprobDist <- function(nnE,
       nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
       nnrE <- nnr$nnrE
       nnrF <- nnr$nnrF
+      orig_nnE <- nnE
+      orig_nnF <- nnF
     } else {
       dist <- 0
       nnrE <- nnE
       nnrF <- nnF
+      orig_nnE <- nnrE
+      orig_nnF <- nnrF
     }
     nnr <- unique(c(nnrE, nnrF))
+    orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
     tmp <- h_get_decisionDist_rct(
       nnr = nnr,
       nnrE = nnrE,
@@ -256,12 +266,14 @@ ocRctPostprobDist <- function(nnE,
       deltaE = deltaE,
       deltaF = deltaF,
       relativeDelta = relativeDelta,
-      Nmax = Nmax
+      Nmax = Nmax,
+      orig_nnr = orig_nnr
     )
     decision[k] <- tmp$decision
     all_sizes[k] <- tmp$all_sizes
     nActive[k] <- tmp$nActive
     nControl[k] <- tmp$nControl
+    all_looks[k] <- tmp$all_looks
   }
   oc <- h_get_oc_rct(
     all_sizes = all_sizes,
@@ -276,6 +288,7 @@ ocRctPostprobDist <- function(nnE,
     ExpectedNactive = mean(nActive),
     ExpectedNcontrol = mean(nControl),
     Decision = decision,
+    Looks = all_looks,
     SampleSize = all_sizes,
     SampleSizeActive = nActive,
     SampleSizeControl = nControl,

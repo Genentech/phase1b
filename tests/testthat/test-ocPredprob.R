@@ -1,6 +1,9 @@
 # h_get_decision_one_predprob ----
 test_that("h_get_decision_one_predprob gives correct result and list", {
   set.seed(1989)
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
   result <- h_get_decision_one_predprob(
     nnr = c(10, 20, 30),
     truep = 0.4,
@@ -10,7 +13,8 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
     nnF = c(10, 20, 30),
     tT = 0.6,
     phiU = 0.8,
-    phiL = 0.3
+    phiL = 0.3,
+    orig_nnr = orig_nnr
   )
   expect_flag(result$decision, TRUE)
   expect_equal(result$all_sizes, 20)
@@ -20,6 +24,9 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
 # h_get_decision_two_predprob ----
 test_that("h_get_decision_two_predprob gives correct result and list", {
   set.seed(1989)
+  orig_nnE <- c(10, 20, 30)
+  orig_nnF <- c(10, 20, 30)
+  orig_nnr <- unique(sort(c(orig_nnE, orig_nnF)))
   result <- h_get_decision_two_predprob(
     nnr = c(10, 20, 30),
     truep = 0.4,
@@ -31,7 +38,8 @@ test_that("h_get_decision_two_predprob gives correct result and list", {
     tT = 0.6,
     tF = 0.6,
     phiFu = 0.8,
-    phiU = 0.3
+    phiU = 0.3,
+    orig_nnr = orig_nnr
   )
   expect_flag(result$decision, TRUE)
   expect_equal(result$all_sizes, 10)

@@ -21,7 +21,8 @@ h_decision_two_RctpredprobDist(
   weights,
   weightsS,
   relativeDelta,
-  randRatio
+  randRatio,
+  orig_nnr
 )
 }
 \arguments{
@@ -62,6 +63,9 @@ Note that this can also be negative as well.}
 \item{relativeDelta}{(\code{flag}):\cr If \code{TRUE}, then a \code{relativeDelta} is used. Represents that a minimum
 response rate in magnitude of \code{delta} of the \code{S} non-responding patients
 is included as the margin between treatment and control group. See note.}
+
+\item{orig_nnr}{(\code{numeric}):\cr unique values of original, user-input values of \code{nnE} and \code{nnF}, defined by user-facing
+function and aid to \code{plotOc()}'s x axis input when \code{wiggle = TRUE}.}
 }
 \value{
 A list with the following elements :

@@ -18,7 +18,8 @@ h_get_decisionDist_rct(
   deltaF,
   relativeDelta,
   randRatio = 1,
-  Nmax
+  Nmax,
+  orig_nnr
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ Default set at alpha = 1, beta = 1, or uniform prior.}
 \item{randRatio}{(\code{numeric}):\cr The randomisation ratio between treatment and control. Must be greater than 0 and maximum of 1.}
 
 \item{Nmax}{(\code{number}):\cr The max sample size or the sample size of final look.}
+
+\item{orig_nnr}{(\code{numeric}):\cr unique values of original, user-input values of \code{nnE} and \code{nnF}, defined by user-facing
+function and aid to \code{plotOc()}'s x axis input when \code{wiggle = TRUE}.}
 }
 \value{
 A list with the following elements :
