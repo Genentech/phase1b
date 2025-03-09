@@ -56,7 +56,6 @@
 <url><loc>https://genentech.github.io/phase1b/reference/plotBetaDiff.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotBounds.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/plotDecision.html</loc></url>
-<url><loc>https://genentech.github.io/phase1b/reference/plotOc.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/postprob.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/postprobBeta.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/postprobDist.html</loc></url>
@@ -67,5 +66,6 @@
 <url><loc>https://genentech.github.io/phase1b/reference/runShinyPhase1b.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/sumBetadiff.html</loc></url>
 <url><loc>https://genentech.github.io/phase1b/reference/sumTable.html</loc></url>
+<url><loc>https://genentech.github.io/phase1b/reference/vintage_plotOc.html</loc></url>
 </urlset>
 
