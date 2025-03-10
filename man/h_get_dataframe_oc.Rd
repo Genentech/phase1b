@@ -11,6 +11,15 @@ h_get_dataframe_oc(decision, sample_size, all_looks)
 
 \item{all_looks}{(\code{numeric}):\cr original looks before adjustment by \code{wiggle = TRUE}, if applied.}
 }
+\value{
+A data frame or tibble with the following variables :
+\itemize{
+\item \code{decision} : decision \code{flag} with \code{TRUE} for Go, \code{FALSE} for Stop, \code{NA} for Gray zone.
+\item \code{look} : resulting number of look size, anything below maximum
+look size is an indicated interim, Futility or Efficacy or both.
+\item \code{prop} : proportion of responders by \code{decision} and \code{look}.
+}
+}
 \description{
 Data frame input for bar plot for simulated results of :
 \itemize{

@@ -12,6 +12,12 @@
 #' @typed all_looks : numeric
 #' original looks before adjustment by `wiggle = TRUE`, if applied.
 #'
+#' @return A data frame or tibble with the following variables :
+#'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
+#'  - `look` : resulting number of look size, anything below maximum
+#'   look size is an indicated interim, Futility or Efficacy or both.
+#'  - `prop` : proportion of responders by `decision` and `look`.
+#'
 #' @keywords internal
 #'
 h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
