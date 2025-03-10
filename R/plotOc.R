@@ -33,9 +33,8 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
   all_looks <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = all_decision)
   df$look <- factor(df$look, levels = all_looks)
-  df <- df %>%
+  df %>%
     tidyr::complete(decision, look, fill = list(prop = 0))
-  df
 }
 
 #' Display the operating characteristics using an oc object
