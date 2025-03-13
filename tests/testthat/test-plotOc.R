@@ -191,3 +191,104 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
   )
   expect_identical(result, expected)
 })
+
+# plotOc ----
+test_that("plotOc gives expected results for `ocPostprob` and `ocPredprob`", {
+  set.seed(2025)
+  expect_warning(res2 <- ocPostprob(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    p0 = 0.20,
+    p1 = 0.30,
+    tL = 0.60,
+    tU = 0.80,
+    parE = c(1, 1),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = c(10, 20, 30)
+  ))
+  expect_warning(res5 <- ocPredprob(
+    nnE = c(10, 20),
+    truep = 0.6,
+    p0 = 0.25,
+    p1 = 0.25,
+    tT = 0.6,
+    tF = 0.6,
+    phiU = 0.8,
+    phiFu = 0.8,
+    parE = c(1, 1),
+    sim = 50,
+    wiggle = TRUE,
+    nnF = c(10, 20),
+    decision1 = FALSE
+  ))
+  result1 <- plotOc(
+    decision = res2$Decision,
+    sample_size = res2$SampleSize,
+    all_looks = res2$Looks,
+    wiggle_status = res2$params$wiggle
+  )
+  result2 <- plotOc(
+    decision = res5$Decision,
+    sample_size = res5$SampleSize,
+    all_looks = res5$Looks,
+    wiggle_status = res5$params$wiggle
+  )
+  vdiffr::expect_doppelganger(title = "plot of simulation result for single arm posterior probability", fig = result1)
+  vdiffr::expect_doppelganger(title = "plot of simulation result for single arm posterior predictive probability", fig = result2)
+})
+
+test_that("plotOc gives expected results for `ocPredprobDist` with different relativeDelta status", {
+  set.seed(2025)
+  expect_warning(res7 <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.10,
+    deltaF = 0.10,
+    relativeDelta = FALSE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiL = 0.20,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    wiggle = TRUE,
+    decision1 = TRUE)
+  )
+  expect_warning(res8 <- ocPredprobDist(
+    nnE = c(10, 20, 30),
+    truep = 0.40,
+    deltaE = 0.5,
+    deltaF = 0.5,
+    relativeDelta = TRUE,
+    tT = 0.6,
+    phiU = 0.80,
+    phiFu = 0.7,
+    parE = c(1, 1),
+    parS = c(5, 25),
+    weights = 1,
+    weightsS = 1,
+    sim = 50,
+    nnF = c(10, 20, 30),
+    wiggle = TRUE,
+    decision1 = TRUE
+  ))
+  result1 <- plotOc(
+    decision = res7$Decision,
+    sample_size = res7$SampleSize,
+    all_looks = res7$Looks,
+    wiggle_status = res7$params$wiggle
+  )
+  result2 <- plotOc(
+    decision = res8$Decision,
+    sample_size = res8$SampleSize,
+    all_looks = res8$Looks,
+    wiggle_status = res8$params$wiggle
+  )
+  vdiffr::expect_doppelganger(title = "Plot of simulation result without relativeDelta for posterior predictive probability", fig = result1)
+  vdiffr::expect_doppelganger(title = "Plot of simulation result with relativeDelta for posterior predictive probability", fig = result2)
+})
+
+
