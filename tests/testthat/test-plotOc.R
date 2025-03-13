@@ -290,5 +290,3 @@ test_that("plotOc gives expected results for `ocPredprobDist` with different rel
   vdiffr::expect_doppelganger(title = "Plot of simulation result without relativeDelta for posterior predictive probability", fig = result1)
   vdiffr::expect_doppelganger(title = "Plot of simulation result with relativeDelta for posterior predictive probability", fig = result2)
 })
-
-
