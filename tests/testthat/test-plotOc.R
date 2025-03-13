@@ -255,8 +255,8 @@ test_that("plotOc gives expected results for `ocPredprobDist` with different rel
     weightsS = 1,
     sim = 50,
     wiggle = TRUE,
-    decision1 = TRUE)
-  )
+    decision1 = TRUE
+  ))
   expect_warning(res8 <- ocPredprobDist(
     nnE = c(10, 20, 30),
     truep = 0.40,

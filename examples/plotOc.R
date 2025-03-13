@@ -139,4 +139,3 @@ plotOc(
   all_looks = res12$Looks,
   wiggle_status = res12$params$wiggle
 )
-
