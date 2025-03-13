@@ -21,14 +21,6 @@ look size is an indicated interim, Futility or Efficacy or both.
 }
 }
 \description{
-Data frame input for bar plot for simulated results of :
-\itemize{
-\item \verb{[ocPostprob()]}
-\item \verb{[ocPostprobDist()]}
-\item \verb{[ocPostpred()]}
-\item \verb{[ocPostpredDist()]}
-\item \verb{[ocRctPostprobDist()]}
-\item \verb{[ocRctPredprobDist()]}
-}
+Helper function for simulation result as input for \code{plotOc()}
 }
 \keyword{internal}
