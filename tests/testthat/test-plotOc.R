@@ -236,10 +236,12 @@ test_that("plotOc gives expected results for `ocPostprob` and `ocPredprob`", {
   )
   vdiffr::expect_doppelganger(
     title = "plot of simulation result for single arm posterior probability",
-    fig = result1)
+    fig = result1
+  )
   vdiffr::expect_doppelganger(
     title = "plot of simulation result for single arm posterior predictive probability",
-    fig = result2)
+    fig = result2
+  )
 })
 
 test_that("plotOc gives expected results for `ocPredprobDist` with different relativeDelta status", {
@@ -293,8 +295,10 @@ test_that("plotOc gives expected results for `ocPredprobDist` with different rel
   )
   vdiffr::expect_doppelganger(
     title = "Plot of simulation result without relativeDelta for posterior predictive probability",
-    fig = result1)
+    fig = result1
+  )
   vdiffr::expect_doppelganger(
     title = "Plot of simulation result with relativeDelta for posterior predictive probability",
-    fig = result2)
+    fig = result2
+  )
 })
