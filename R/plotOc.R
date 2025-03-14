@@ -83,13 +83,14 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
     ggplot2::labs(fill = "Decision")
   generic_title <-
     "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
-  wiggle_warning_on_title <- paste(
-    generic_title, "\nNote that sample sizes may differ slightly from the ones labeled"
+  wiggle_warning_footnote <- paste("\nNote that sample sizes may differ slightly from the ones labeled"
   )
 
   if (wiggle_status) {
     barplot +
-      ggplot2::ggtitle(wiggle_warning_on_title)
+      ggplot2::ggtitle(label = generic_title) +
+      ggplot2::labs(caption = wiggle_warning_footnote) +
+      ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 16))
   } else {
     barplot +
       ggplot2::ggtitle(generic_title)
