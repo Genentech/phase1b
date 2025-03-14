@@ -22,9 +22,9 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
     look = all_looks
   )
   # summarise into frequency table
-  df <- df %>%
-    dplyr::group_by(decision, look) %>%
-    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
+  df <- df magrittr::%>%
+    dplyr::group_by(decision, look) magrittr::%>%
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) magrittr::%>%
     dplyr::as_tibble()
   # setting levels of factors
   all_decision <- c(TRUE, FALSE, NA)
