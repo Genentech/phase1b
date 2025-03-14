@@ -42,7 +42,7 @@ Imports:
     tools,
     tidyr,
     dplyr (>= 1.0.0),
-    tidyverse
+    magrittr 
 VignetteBuilder:
     knitr
 Encoding: UTF-8
