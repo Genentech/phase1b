@@ -52,7 +52,7 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
 #'
 #' @example examples/plotOc.R
 #'
-#' @importFrom ggplot2 geom_bar ggtitle
+#' @importFrom ggplot2 geom_bar ggtitle magrittr
 #'
 #' @export
 #' @keywords graphics
