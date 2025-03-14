@@ -89,7 +89,7 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
     barplot +
       ggplot2::ggtitle(label = generic_title) +
       ggplot2::labs(caption = wiggle_warning_footnote) +
-      ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 16))
+      ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 10))
   } else {
     barplot +
       ggplot2::ggtitle(generic_title)
