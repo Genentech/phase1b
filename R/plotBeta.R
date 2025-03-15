@@ -51,7 +51,7 @@ plotBeta <- function(alpha, beta) {
 #'
 #' @example examples/plotBetaDiff.R
 #'
-#' @importFrom graphics par axis polygon mtext
+#' @importFrom ggplot2 geom_line ggtitle geom_area
 #' @importFrom stats integrate
 #'
 #' @export

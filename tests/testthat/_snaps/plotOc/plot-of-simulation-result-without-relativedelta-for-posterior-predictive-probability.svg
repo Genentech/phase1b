@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' data-engine-version='2.0' width='720.00pt' height='576.00pt' viewBox='0 0 720.00 576.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='576.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+<rect x='0.00' y='0.00' width='720.00' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzcuMDN8NjQyLjc0fDU4LjYzfDU0MC40NQ=='>
+    <rect x='37.03' y='58.63' width='605.71' height='481.82' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzcuMDN8NjQyLjc0fDU4LjYzfDU0MC40NQ==)'>
+<rect x='37.03' y='58.63' width='605.71' height='481.82' style='stroke-width: 1.07; stroke: none; fill: #EBEBEB;' />
+<polyline points='37.03,440.33 642.74,440.33 ' style='stroke-width: 0.53; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='37.03,283.90 642.74,283.90 ' style='stroke-width: 0.53; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='37.03,127.46 642.74,127.46 ' style='stroke-width: 0.53; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='37.03,518.55 642.74,518.55 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='37.03,362.12 642.74,362.12 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='37.03,205.68 642.74,205.68 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='202.22,540.45 202.22,58.63 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='477.54,540.45 477.54,58.63 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
+<rect x='78.33' y='80.53' width='123.89' height='438.02' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #009E73;' />
+<rect x='353.65' y='236.97' width='123.89' height='281.59' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #009E73;' />
+<rect x='202.22' y='502.91' width='123.89' height='15.64' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF0046;' />
+<rect x='477.54' y='471.62' width='123.89' height='46.93' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF0046;' />
+</g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+<text x='32.10' y='521.58' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='12.23px' lengthAdjust='spacingAndGlyphs'>0.0</text>
+<text x='32.10' y='365.14' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='12.23px' lengthAdjust='spacingAndGlyphs'>0.2</text>
+<text x='32.10' y='208.71' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='12.23px' lengthAdjust='spacingAndGlyphs'>0.4</text>
+<polyline points='34.29,518.55 37.03,518.55 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='34.29,362.12 37.03,362.12 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='34.29,205.68 37.03,205.68 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='202.22,543.19 202.22,540.45 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='477.54,543.19 477.54,540.45 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='202.22' y='553.64' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>20</text>
+<text x='477.54' y='553.64' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>30</text>
+<text x='339.88' y='567.82' text-anchor='middle' style='font-size: 13.00px; font-family: sans;' textLength='43.35px' lengthAdjust='spacingAndGlyphs'>look (n)</text>
+<text transform='translate(14.43,299.54) rotate(-90)' text-anchor='middle' style='font-size: 13.00px; font-family: sans;' textLength='65.06px' lengthAdjust='spacingAndGlyphs'>percentage</text>
+<rect x='653.70' y='268.22' width='60.82' height='62.64' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<text x='659.18' y='284.00' style='font-size: 13.00px; font-family: sans;' textLength='49.87px' lengthAdjust='spacingAndGlyphs'>Decision</text>
+<rect x='659.18' y='290.82' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #EBEBEB;' />
+<rect x='659.88' y='291.53' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #009E73;' />
+<rect x='659.18' y='308.10' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #EBEBEB;' />
+<rect x='659.88' y='308.81' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF0046;' />
+<text x='681.94' y='302.49' style='font-size: 8.80px; font-family: sans;' textLength='11.74px' lengthAdjust='spacingAndGlyphs'>Go</text>
+<text x='681.94' y='319.77' style='font-size: 8.80px; font-family: sans;' textLength='18.11px' lengthAdjust='spacingAndGlyphs'>Stop</text>
+<text x='37.03' y='16.22' style='font-size: 15.60px; font-family: sans;' textLength='175.14px' lengthAdjust='spacingAndGlyphs'>Results from simulation : </text>
+<text x='37.03' y='33.06' style='font-size: 15.60px; font-family: sans;' textLength='472.62px' lengthAdjust='spacingAndGlyphs'>Proportion of Go/Stop/Grey zone decisions per interim/final analysis </text>
+<text x='37.03' y='49.91' style='font-size: 15.60px; font-family: sans;' textLength='437.07px' lengthAdjust='spacingAndGlyphs'>Note that sample sizes may differ slightly from the ones labeled</text>
+</g>
+</svg>

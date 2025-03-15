@@ -413,19 +413,19 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
 ### Plot case 1:
 ```{r}
 plotOc(
-  decision = res2$Decision,
-  sample_size = res2$SampleSize,
-  all_looks = res2$Looks,
-  wiggle_status = res2$params$wiggle
+  decision = res1$Decision,
+  sample_size = res1$SampleSize,
+  all_looks = res1$Looks,
+  wiggle_status = res1$params$wiggle
 )
 ```
 ### Plot case 2:
 ```{r}
 plotOc(
-  decision = res1$Decision,
-  sample_size = res1$SampleSize,
-  all_looks = res1$Looks,
-  wiggle_status = res1$params$wiggle
+  decision = res2$Decision,
+  sample_size = res2$SampleSize,
+  all_looks = res2$Looks,
+  wiggle_status = res2$params$wiggle
 )
 ```
 ### Plot case 3:
