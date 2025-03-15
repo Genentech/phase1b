@@ -24,8 +24,8 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
   # summarise into frequency table
   df <- df %>%
     dplyr::group_by(decision, look) %>%
-    dplyr::summarise(prop = sum(length(decision)) / nrow(df))
-  df <- dplyr::as_tibble()
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
+    dplyr::as_tibble()
   # setting levels of factors
   all_decision <- c(TRUE, FALSE, NA)
   all_looks <- unique(sort(all_looks))
@@ -34,6 +34,9 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
   df %>%
     tidyr::complete(decision, look, fill = list(prop = 0))
 }
+
+
+
 
 #' Display the operating characteristics results using an `oc` object
 #'
@@ -52,7 +55,7 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
 #'
 #' @example examples/plotOc.R
 #'
-#' @importFrom ggplot2 geom_bar ggtitle magrittr
+#' @importFrom ggplot2 geom_bar ggtitle
 #'
 #' @export
 #' @keywords graphics

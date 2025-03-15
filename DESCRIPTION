@@ -42,7 +42,8 @@ Imports:
     tools,
     tidyr,
     dplyr (>= 1.0.0),
-    magrittr 
+    magrittr,
+    tibble
 VignetteBuilder:
     knitr
 Encoding: UTF-8
