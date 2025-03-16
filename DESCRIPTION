@@ -43,7 +43,8 @@ Imports:
     tidyr,
     dplyr (>= 1.0.0),
     magrittr,
-    tibble
+    tibble,
+    tidyverse
 VignetteBuilder:
     knitr
 Encoding: UTF-8
