@@ -22,16 +22,16 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
     look = all_looks
   )
   # summarise into frequency table
-  df <- df %>%
-    dplyr::group_by(decision, look) %>%
-    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
-    dplyr::as_tibble()
+  df <- df |>
+    dplyr::group_by(decision, look) |>
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) |>
+    tibble::as_tibble()
   # setting levels of factors
   all_decision <- c(TRUE, FALSE, NA)
   all_looks <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = all_decision)
   df$look <- factor(df$look, levels = all_looks)
-  df %>%
+  df |>
     tidyr::complete(decision, look, fill = list(prop = 0))
 }
 
