@@ -3,6 +3,7 @@
 #' @inheritParams h_get_oc
 #' @typed all_looks : numeric
 #' original looks before adjustment by `wiggle = TRUE`, if applied.
+#' Different to `all_sizes` which is after the adjustment, if made.
 #'
 #' @return A data frame or tibble with the following variables :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -12,13 +13,13 @@
 #'
 #' @keywords internal
 #'
-h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
+h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
   assert_logical(decision)
-  assert_numeric(sample_size)
+  assert_numeric(all_sizes)
   assert_numeric(all_looks)
   df <- data.frame(
     decision = decision,
-    sample_size = sample_size,
+    all_sizes = all_sizes,
     look = all_looks
   )
   # summarise into frequency table
@@ -34,8 +35,6 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
   df |>
     tidyr::complete(decision, look, fill = list(prop = 0))
 }
-
-
 
 
 #' Display the operating characteristics results using an `oc` object
@@ -59,14 +58,14 @@ h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
 #'
 #' @export
 #' @keywords graphics
-plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
+plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
   assert_logical(decision)
-  assert_numeric(sample_size)
+  assert_numeric(all_sizes)
   assert_numeric(all_looks)
   assert_flag(wiggle_status)
   df <- h_get_dataframe_oc(
     decision = decision,
-    sample_size = sample_size,
+    all_sizes = all_sizes,
     all_looks = all_looks
   )
   barplot <-

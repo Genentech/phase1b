@@ -4,12 +4,15 @@
 \alias{h_get_dataframe_oc}
 \title{Helper function for simulation result as input for \code{plotOc()}}
 \usage{
-h_get_dataframe_oc(decision, sample_size, all_looks)
+h_get_dataframe_oc(decision, all_sizes, all_looks)
 }
 \arguments{
 \item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zone decisions of all looks simulated \code{length(sim)} times.}
 
-\item{all_looks}{(\code{numeric}):\cr original looks before adjustment by \code{wiggle = TRUE}, if applied.}
+\item{all_sizes}{(\code{numeric}):\cr sample sizes of all looks simulated \code{length(sim)} times if \code{dist} applied.}
+
+\item{all_looks}{(\code{numeric}):\cr original looks before adjustment by \code{wiggle = TRUE}, if applied.
+Different to \code{all_sizes} which is after the adjustment, if made.}
 }
 \value{
 A data frame or tibble with the following variables :

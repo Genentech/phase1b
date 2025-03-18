@@ -5,7 +5,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
     nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
     sim = 100, wiggle = TRUE, nnF = c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result <- h_get_dataframe_oc(res2$Decision, sample_size = res2$SampleSize, res2$Looks)
+  result <- h_get_dataframe_oc(res2$Decision, all_sizes = res2$SampleSize, res2$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
       levels = c("TRUE", "FALSE"),
@@ -37,7 +37,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
     nnF = c(10, 20),
     decision1 = FALSE
   ))
-  result <- h_get_dataframe_oc(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
+  result <- h_get_dataframe_oc(res5$Decision, all_sizes = res5$SampleSize, res5$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
       levels = c("TRUE", "FALSE"),
@@ -71,7 +71,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
     wiggle = TRUE,
     decision1 = TRUE
   ))
-  result <- h_get_dataframe_oc(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
+  result <- h_get_dataframe_oc(res7$Decision, all_sizes = res7$SampleSize, res7$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
       levels = c("TRUE", "FALSE"),
@@ -106,7 +106,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
     wiggle = TRUE,
     decision1 = TRUE
   ))
-  result <- h_get_dataframe_oc(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
+  result <- h_get_dataframe_oc(res8$Decision, all_sizes = res8$SampleSize, res8$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
       levels = c("TRUE", "FALSE"),
@@ -139,7 +139,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     wiggle = TRUE,
     nnF = c(10, 20, 30)
   ))
-  result <- h_get_dataframe_oc(res9$Decision, sample_size = res9$SampleSize, res9$Looks)
+  result <- h_get_dataframe_oc(res9$Decision, all_sizes = res9$SampleSize, res9$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
       levels = c("TRUE", "FALSE"),
@@ -177,7 +177,7 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
     nnF = c(10, 20, 30),
     decision1 = FALSE
   ))
-  result <- h_get_dataframe_oc(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
+  result <- h_get_dataframe_oc(res11$Decision, all_sizes = res11$SampleSize, res11$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
       levels = c("TRUE", "FALSE"),
@@ -224,13 +224,13 @@ test_that("plotOc gives expected results for `ocPostprob` and `ocPredprob`", {
   ))
   result1 <- plotOc(
     decision = res2$Decision,
-    sample_size = res2$SampleSize,
+    all_sizes = res2$SampleSize,
     all_looks = res2$Looks,
     wiggle_status = res2$params$wiggle
   )
   result2 <- plotOc(
     decision = res5$Decision,
-    sample_size = res5$SampleSize,
+    all_sizes = res5$SampleSize,
     all_looks = res5$Looks,
     wiggle_status = res5$params$wiggle
   )
@@ -243,6 +243,9 @@ test_that("plotOc gives expected results for `ocPostprob` and `ocPredprob`", {
     fig = result2
   )
 })
+
+# ggsave("tests/testthat/_snaps/plotOc/plot-of-simulation-result-for-single-arm-posterior-probability.svg", plot = result1)
+# ggsave("tests/testthat/_snaps/plotOc/plot-of-simulation-result-for-single-arm-posterior-predictive-probability.svg", plot = result2 )
 
 test_that("plotOc gives expected results for `ocPredprobDist` with different relativeDelta status", {
   set.seed(2025)
@@ -283,13 +286,13 @@ test_that("plotOc gives expected results for `ocPredprobDist` with different rel
   ))
   result1 <- plotOc(
     decision = res7$Decision,
-    sample_size = res7$SampleSize,
+    all_sizes = res7$SampleSize,
     all_looks = res7$Looks,
     wiggle_status = res7$params$wiggle
   )
   result2 <- plotOc(
     decision = res8$Decision,
-    sample_size = res8$SampleSize,
+    all_sizes = res8$SampleSize,
     all_looks = res8$Looks,
     wiggle_status = res8$params$wiggle
   )
@@ -302,3 +305,6 @@ test_that("plotOc gives expected results for `ocPredprobDist` with different rel
     fig = result2
   )
 })
+
+# ggsave("tests/testthat/_snaps/plotOc/plot-of-simulation-result-without-relativeDelta-for-posterior-probability.svg", plot = result1)
+# ggsave("tests/testthat/_snaps/plotOc/plot-of-simulation-result-without-relativeDelta-for-posterior-predictive-probability.svg",  plot = result2)

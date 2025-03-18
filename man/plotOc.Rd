@@ -4,12 +4,15 @@
 \alias{plotOc}
 \title{Display the operating characteristics results using an \code{oc} object}
 \usage{
-plotOc(decision, sample_size, all_looks, wiggle_status)
+plotOc(decision, all_sizes, all_looks, wiggle_status)
 }
 \arguments{
 \item{decision}{(\code{numeric}):\cr Go, Stop or Gray Zone decisions of all looks simulated \code{length(sim)} times.}
 
-\item{all_looks}{(\code{numeric}):\cr original looks before adjustment by \code{wiggle = TRUE}, if applied.}
+\item{all_sizes}{(\code{numeric}):\cr sample sizes of all looks simulated \code{length(sim)} times if \code{dist} applied.}
+
+\item{all_looks}{(\code{numeric}):\cr original looks before adjustment by \code{wiggle = TRUE}, if applied.
+Different to \code{all_sizes} which is after the adjustment, if made.}
 
 \item{wiggle_status}{(\code{flag}):\cr from \code{wiggle} flag in object.}
 }
@@ -43,7 +46,7 @@ res1 <- ocPostprob(
 )
 plotOc(
   decision = res1$Decision,
-  sample_size = res1$SampleSize,
+  all_sizes = res1$SampleSize,
   all_looks = res1$Looks,
   wiggle_status = res1$params$wiggle
 )
@@ -63,7 +66,7 @@ res4 <- ocPostprob(
 )
 plotOc(
   decision = res4$Decision,
-  sample_size = res4$SampleSize,
+  all_sizes = res4$SampleSize,
   all_looks = res4$Looks,
   wiggle_status = res4$params$wiggle
 )
@@ -88,7 +91,7 @@ res7 <- ocPredprobDist(
 )
 plotOc(
   decision = res7$Decision,
-  sample_size = res7$SampleSize,
+  all_sizes = res7$SampleSize,
   all_looks = res7$Looks,
   wiggle_status = res7$params$wiggle
 )
@@ -112,7 +115,7 @@ res9 <- ocRctPostprobDist(
 )
 plotOc(
   decision = res9$Decision,
-  sample_size = res9$SampleSize,
+  all_sizes = res9$SampleSize,
   all_looks = res9$Looks,
   wiggle_status = res9$params$wiggle
 )
@@ -136,7 +139,7 @@ res10 <- ocRctPostprobDist(
 )
 plotOc(
   decision = res10$Decision,
-  sample_size = res10$SampleSize,
+  all_sizes = res10$SampleSize,
   all_looks = res10$Looks,
   wiggle_status = res10$params$wiggle
 )
@@ -165,7 +168,7 @@ res12 <- ocRctPredprobDist(
 )
 plotOc(
   decision = res12$Decision,
-  sample_size = res12$SampleSize,
+  all_sizes = res12$SampleSize,
   all_looks = res12$Looks,
   wiggle_status = res12$params$wiggle
 )
