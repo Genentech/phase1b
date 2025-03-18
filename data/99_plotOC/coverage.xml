@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.766395199314188" branch-rate="0" lines-covered="1788" lines-valid="2333" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-16 19:36:32.307131">
+<coverage line-rate="0.766395199314188" branch-rate="0" lines-covered="1788" lines-valid="2333" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-18 15:01:39.490123">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
@@ -4091,7 +4091,6 @@
           <methods>
             <method name="h_get_dataframe_oc" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="16" hits="10" branch="false"/>
                 <line number="17" hits="10" branch="false"/>
                 <line number="18" hits="10" branch="false"/>
                 <line number="19" hits="10" branch="false"/>
@@ -4099,20 +4098,22 @@
                 <line number="21" hits="10" branch="false"/>
                 <line number="22" hits="10" branch="false"/>
                 <line number="23" hits="10" branch="false"/>
-                <line number="25" hits="10" branch="false"/>
+                <line number="24" hits="10" branch="false"/>
                 <line number="26" hits="10" branch="false"/>
                 <line number="27" hits="10" branch="false"/>
                 <line number="28" hits="10" branch="false"/>
-                <line number="30" hits="10" branch="false"/>
+                <line number="29" hits="10" branch="false"/>
                 <line number="31" hits="10" branch="false"/>
                 <line number="32" hits="10" branch="false"/>
                 <line number="33" hits="10" branch="false"/>
                 <line number="34" hits="10" branch="false"/>
                 <line number="35" hits="10" branch="false"/>
+                <line number="36" hits="10" branch="false"/>
               </lines>
             </method>
             <method name="plotOc" signature="" line-rate="0.941176470588235" branch-rate="0" complexity="0">
               <lines>
+                <line number="62" hits="4" branch="false"/>
                 <line number="63" hits="4" branch="false"/>
                 <line number="64" hits="4" branch="false"/>
                 <line number="65" hits="4" branch="false"/>
@@ -4139,19 +4140,17 @@
                 <line number="86" hits="4" branch="false"/>
                 <line number="87" hits="4" branch="false"/>
                 <line number="88" hits="4" branch="false"/>
-                <line number="89" hits="4" branch="false"/>
+                <line number="90" hits="4" branch="false"/>
                 <line number="91" hits="4" branch="false"/>
                 <line number="92" hits="4" branch="false"/>
                 <line number="93" hits="4" branch="false"/>
                 <line number="94" hits="4" branch="false"/>
-                <line number="95" hits="4" branch="false"/>
+                <line number="96" hits="0" branch="false"/>
                 <line number="97" hits="0" branch="false"/>
-                <line number="98" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="16" hits="10" branch="false"/>
             <line number="17" hits="10" branch="false"/>
             <line number="18" hits="10" branch="false"/>
             <line number="19" hits="10" branch="false"/>
@@ -4159,16 +4158,18 @@
             <line number="21" hits="10" branch="false"/>
             <line number="22" hits="10" branch="false"/>
             <line number="23" hits="10" branch="false"/>
-            <line number="25" hits="10" branch="false"/>
+            <line number="24" hits="10" branch="false"/>
             <line number="26" hits="10" branch="false"/>
             <line number="27" hits="10" branch="false"/>
             <line number="28" hits="10" branch="false"/>
-            <line number="30" hits="10" branch="false"/>
+            <line number="29" hits="10" branch="false"/>
             <line number="31" hits="10" branch="false"/>
             <line number="32" hits="10" branch="false"/>
             <line number="33" hits="10" branch="false"/>
             <line number="34" hits="10" branch="false"/>
             <line number="35" hits="10" branch="false"/>
+            <line number="36" hits="10" branch="false"/>
+            <line number="62" hits="4" branch="false"/>
             <line number="63" hits="4" branch="false"/>
             <line number="64" hits="4" branch="false"/>
             <line number="65" hits="4" branch="false"/>
@@ -4195,14 +4196,13 @@
             <line number="86" hits="4" branch="false"/>
             <line number="87" hits="4" branch="false"/>
             <line number="88" hits="4" branch="false"/>
-            <line number="89" hits="4" branch="false"/>
+            <line number="90" hits="4" branch="false"/>
             <line number="91" hits="4" branch="false"/>
             <line number="92" hits="4" branch="false"/>
             <line number="93" hits="4" branch="false"/>
             <line number="94" hits="4" branch="false"/>
-            <line number="95" hits="4" branch="false"/>
+            <line number="96" hits="0" branch="false"/>
             <line number="97" hits="0" branch="false"/>
-            <line number="98" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="postprob.R" filename="R/postprob.R" line-rate="0.970588235294118" branch-rate="0" complexity="0">
