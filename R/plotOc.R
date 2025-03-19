@@ -14,28 +14,25 @@
 #' @keywords internal
 #'
 h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
-  assert_logical(decision)
-  assert_numeric(all_sizes)
-  assert_numeric(all_looks)
   df <- data.frame(
     decision = decision,
     all_sizes = all_sizes,
-    look = all_looks
+    all_looks = all_looks # original looks
   )
   # summarise into frequency table
   df <- df |>
-    dplyr::group_by(decision, look) |>
+    dplyr::group_by(decision, all_looks) |>
     dplyr::summarise(prop = sum(length(decision)) / nrow(df)) |>
     tibble::as_tibble()
   # setting levels of factors
-  all_decision <- c(TRUE, FALSE, NA)
-  all_looks <- unique(sort(all_looks))
-  df$decision <- factor(df$decision, levels = all_decision)
-  df$look <- factor(df$look, levels = all_looks)
-  df |>
-    tidyr::complete(decision, look, fill = list(prop = 0))
+  decision_levels <- c(TRUE, FALSE, NA)
+  look_levels <- unique(sort(all_looks))
+  df$decision <- factor(df$decision, levels = decision_levels)
+  df$look <- factor(df$all_looks, levels = look_levels)
+  df <- df %>%
+    complete(decision, all_looks, fill = list(prop = 0))
+  df
 }
-
 
 #' Display the operating characteristics results using an `oc` object
 #'
@@ -58,14 +55,10 @@ h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
 #'
 #' @export
 #' @keywords graphics
-plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
-  assert_logical(decision)
-  assert_numeric(all_sizes)
-  assert_numeric(all_looks)
-  assert_flag(wiggle_status)
-  df <- h_get_dataframe_oc(
+plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
+  df <- h_get_dataframe(
     decision = decision,
-    all_sizes = all_sizes,
+    sample_size = sample_size,
     all_looks = all_looks
   )
   barplot <-
@@ -85,13 +78,13 @@ plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
     ggplot2::labs(fill = "Decision")
   generic_title <-
     "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
-  wiggle_warning_footnote <- paste("\nNote that sample sizes may differ slightly from the ones labeled")
+  wiggle_warning_on_title <- paste(
+    generic_title, "\nNote that sample sizes may differ slightly from the ones labeled"
+  )
 
   if (wiggle_status) {
     barplot +
-      ggplot2::ggtitle(label = generic_title) +
-      ggplot2::labs(caption = wiggle_warning_footnote) +
-      ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 10))
+      ggplot2::ggtitle(wiggle_warning_on_title)
   } else {
     barplot +
       ggplot2::ggtitle(generic_title)
