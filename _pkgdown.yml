@@ -2,7 +2,7 @@ url: https://genentech.github.io/phase1b
 
 template:
   bootstrap: 5
-  bootswatch: cerulean
+  bootswatch: zephyr
   includes:
     in_header: |
        <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -18,3 +18,4 @@ navbar:
   right:
     - icon: fa-github
       href: https://github.com/genentech/phase1b
+

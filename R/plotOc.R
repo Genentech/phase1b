@@ -14,26 +14,24 @@
 #' @keywords internal
 #'
 h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
-  assert_logical(decision)
-  assert_numeric(all_sizes)
-  assert_numeric(all_looks)
   df <- data.frame(
     decision = decision,
     all_sizes = all_sizes,
-    look = all_looks
+    all_looks = all_looks # original looks
   )
   # summarise into frequency table
   df <- df |>
-    dplyr::group_by(decision, look) |>
+    dplyr::group_by(decision, all_looks) |>
     dplyr::summarise(prop = sum(length(decision)) / nrow(df)) |>
     tibble::as_tibble()
   # setting levels of factors
-  all_decision <- c(TRUE, FALSE, NA)
-  all_looks <- unique(sort(all_looks))
-  df$decision <- factor(df$decision, levels = all_decision)
-  df$look <- factor(df$look, levels = all_looks)
-  df |>
-    tidyr::complete(decision, look, fill = list(prop = 0))
+  decision_levels <- c(TRUE, FALSE, NA)
+  look_levels <- unique(sort(all_looks))
+  df$decision <- factor(df$decision, levels = decision_levels)
+  df$look <- factor(df$all_looks, levels = look_levels)
+  df <- df %>%
+    complete(decision, all_looks, fill = list(prop = 0))
+  df
 }
 
 

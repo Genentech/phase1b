@@ -285,102 +285,102 @@ res12 <- ocRctPredprobDist(
 res12
 ```
 
-### Helper `h_get_dataframe`
+### Helper `h_get_dataframe_oc`
 
 ```{r}
-h_get_dataframe <- function(decision, sample_size, all_looks) {
+h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
   df <- data.frame(
     decision = decision,
-    sample_size = sample_size,
-    look = all_looks
+    all_sizes = all_sizes,
+    all_looks = all_looks # original looks
   )
   # summarise into frequency table
-  df <- df %>%
-    group_by(decision, look) %>%
-    summarise(prop = sum(length(decision)) / nrow(df)) %>%
-    as_tibble()
+  df <- df |>
+    dplyr::group_by(decision, all_looks) |>
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) |>
+    tibble::as_tibble()
   # setting levels of factors
-  all_decision <- c(TRUE, FALSE, NA)
-  all_looks <- unique(sort(all_looks))
-  df$decision <- factor(df$decision, levels = all_decision)
-  df$look <- factor(df$look, levels = all_looks)
+  decision_levels <- c(TRUE, FALSE, NA)
+  look_levels <- unique(sort(all_looks))
+  df$decision <- factor(df$decision, levels = decision_levels)
+  df$look <- factor(df$all_looks, levels = look_levels)
   df <- df %>%
-    complete(decision, look, fill = list(prop = 0))
+    complete(decision, all_looks, fill = list(prop = 0))
   df
 }
 ```
 
 # Example for case 1
 ```{r}
-h_get_dataframe(res1$Decision, sample_size = res1$SampleSize, res1$Looks)
+h_get_dataframe_oc(res1$Decision, all_sizes = res1$SampleSize, res1$Looks)
 ```
 
 # Example for case 2
 ```{r}
-h_get_dataframe(res2$Decision, sample_size = res2$SampleSize, res2$Looks)
+h_get_dataframe_oc(res2$Decision, all_sizes = res2$SampleSize, res2$Looks)
 ```
 
 # Example for case 3
 ```{r}
-h_get_dataframe(res3$Decision, sample_size = res3$SampleSize, res3$Looks)
+h_get_dataframe_oc(res3$Decision, all_sizes = res3$SampleSize, res3$Looks)
 ```
 
 # Example for case 4
 ```{r}
-h_get_dataframe(res4$Decision, sample_size = res4$SampleSize, res4$Looks)
+h_get_dataframe_oc(res4$Decision, all_sizes = res4$SampleSize, res4$Looks)
 ```
 
 # Example for case 5  
 ```{r}
-h_get_dataframe(res5$Decision, sample_size = res5$SampleSize, res5$Looks)
+h_get_dataframe_oc(res5$Decision, all_sizes = res5$SampleSize, res5$Looks)
 ```
 
 # Example for case 6 
 ```{r}
-h_get_dataframe(res6$Decision, sample_size = res6$SampleSize, res6$Looks)
+h_get_dataframe_oc(res6$Decision, all_sizes = res6$SampleSize, res6$Looks)
 ```
 
 # Example for case 7 
 ```{r}
-h_get_dataframe(res7$Decision, sample_size = res7$SampleSize, res7$Looks)
+h_get_dataframe_oc(res7$Decision, all_sizes = res7$SampleSize, res7$Looks)
 ```
 
 # Example for case 8 
 ```{r}
-h_get_dataframe(res8$Decision, sample_size = res8$SampleSize, res8$Looks)
+h_get_dataframe_oc(res8$Decision, all_sizes = res8$SampleSize, res8$Looks)
 ```
 
 # Example for case 9 
 ```{r}
-h_get_dataframe(res9$Decision, sample_size = res9$SampleSize, res9$Looks)
+h_get_dataframe_oc(res9$Decision, all_sizes = res9$SampleSize, res9$Looks)
 ```
 
 # Example for case 10 
 ```{r}
-h_get_dataframe(res10$Decision, sample_size = res10$SampleSize, res10$Looks)
+h_get_dataframe_oc(res10$Decision, all_sizes = res10$SampleSize, res10$Looks)
 ```
 
 # Example for case 11 
 ```{r}
-h_get_dataframe(res11$Decision, sample_size = res11$SampleSize, res11$Looks)
+h_get_dataframe_oc(res11$Decision, all_sizes = res11$SampleSize, res11$Looks)
 ```
 
 # Example for case 12 
 ```{r}
-h_get_dataframe(res12$Decision, sample_size = res12$SampleSize, res12$Looks)
+h_get_dataframe_oc(res12$Decision, all_sizes = res12$SampleSize, res12$Looks)
 ```
 
 ## `plotOc`
 
 ```{r}
-plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
-  df <- h_get_dataframe(
+plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
+  df <- h_get_dataframe_oc(
     decision = decision,
-    sample_size = sample_size,
-    all_looks = all_looks
+    all_sizes = all_sizes,
+    all_looks = all_looks # original looks
   )
   barplot <-
-    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = look, y = prop)) +
+    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = all_looks, y = prop)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::ggtitle(
       "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
@@ -414,7 +414,7 @@ plotOc <- function(decision, sample_size, all_looks, wiggle_status) {
 ```{r}
 plotOc(
   decision = res1$Decision,
-  sample_size = res1$SampleSize,
+  all_sizes = res1$SampleSize,
   all_looks = res1$Looks,
   wiggle_status = res1$params$wiggle
 )
@@ -423,7 +423,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res2$Decision,
-  sample_size = res2$SampleSize,
+  all_sizes = res2$SampleSize,
   all_looks = res2$Looks,
   wiggle_status = res2$params$wiggle
 )
@@ -432,7 +432,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res3$Decision,
-  sample_size = res3$SampleSize,
+  all_sizes = res3$SampleSize,
   all_looks = res3$Looks,
   wiggle_status = res3$params$wiggle
 )
@@ -441,7 +441,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res4$Decision,
-  sample_size = res4$SampleSize,
+  all_sizes = res4$SampleSize,
   all_looks = res4$Looks,
   wiggle_status = res4$params$wiggle
 )
@@ -451,7 +451,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res5$Decision,
-  sample_size = res5$SampleSize,
+  all_sizes = res5$SampleSize,
   all_looks = res5$Looks,
   wiggle_status = res5$params$wiggle
 )
@@ -461,7 +461,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res6$Decision,
-  sample_size = res6$SampleSize,
+  all_sizes = res6$SampleSize,
   all_looks = res6$Looks,
   wiggle_status = res6$params$wiggle
 )
@@ -471,7 +471,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res7$Decision,
-  sample_size = res7$SampleSize,
+  all_sizes = res7$SampleSize,
   all_looks = res7$Looks,
   wiggle_status = res7$params$wiggle
 )
@@ -481,7 +481,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res8$Decision,
-  sample_size = res8$SampleSize,
+  all_sizes = res8$SampleSize,
   all_looks = res8$Looks,
   wiggle_status = res8$params$wiggle
 )
@@ -490,7 +490,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res9$Decision,
-  sample_size = res9$SampleSize,
+  all_sizes = res9$SampleSize,
   all_looks = res9$Looks,
   wiggle_status = res9$params$wiggle
 )
@@ -499,7 +499,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res10$Decision,
-  sample_size = res10$SampleSize,
+  all_sizes = res10$SampleSize,
   all_looks = res10$Looks,
   wiggle_status = res10$params$wiggle
 )
@@ -508,7 +508,7 @@ plotOc(
 ```{r}
 plotOc(
   decision = res11$Decision,
-  sample_size = res11$SampleSize,
+  all_sizes = res11$SampleSize,
   all_looks = res11$Looks,
   wiggle_status = res11$params$wiggle
 )
@@ -517,8 +517,9 @@ plotOc(
 ```{r}
 plotOc(
   decision = res12$Decision,
-  sample_size = res12$SampleSize,
+  all_sizes = res12$SampleSize,
   all_looks = res12$Looks,
   wiggle_status = res12$params$wiggle
 )
 ```
+
