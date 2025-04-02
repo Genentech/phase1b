@@ -28,7 +28,7 @@ Authors:
   \item Jiawen Zhu \email{zhu.jiawen@gene.com}
   \item James Lymp
   \item Anastasia Teterina \email{anastasia.teterina@roche.com}
-  \item Audrey Yeo \email{audrey.yeo@roche.com}
+  \item Audrey Yeo \email{audrey.yeo@finc-research.com}
 }
 
 Other contributors:
