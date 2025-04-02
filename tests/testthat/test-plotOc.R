@@ -24,20 +24,24 @@ test_that("h_get_dataframe_oc gives correct results for `ocPostprob` for wiggle 
       class = "factor"
     ),
     prop = structure(c(0.44, 0.22, 0.11, 0.03, 0.00, 0.00, 0.00, 0.00, 0.20),
-    look = c(1L,2L, 3L, 1L, NA, NA, NA, NA, 3L),
-    levels = c("10", "20", "30"),
-    class = "factor")
+      look = c(1L, 2L, 3L, 1L, NA, NA, NA, NA, 3L),
+      levels = c("10", "20", "30"),
+      class = "factor"
+    )
   )
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L, NA, NA, NA),
-                         levels = c("TRUE", "FALSE"),
-                         class = "factor"),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
     all_looks = c(10, 20, 30, 10, 20, 30, 10, 20, 30),
     prop = c(0.44, 0.22, 0.11, 0.03, 0, 0, 0, 0, 0.2),
-    look = structure(c(1L,2L, 3L, 1L, NA, NA, NA, NA, 3L),
-                     levels = c("10", "20", "30"),
-                     class = "factor"))
-expect_identical(result, expected)
+    look = structure(c(1L, 2L, 3L, 1L, NA, NA, NA, NA, 3L),
+      levels = c("10", "20", "30"),
+      class = "factor"
+    )
+  )
+  expect_identical(result, expected)
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decision1 = FALSE", {
@@ -58,15 +62,19 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprob` when decisi
     decision1 = FALSE
   ))
   result <- h_get_dataframe_oc(decision = res5$Decision, all_sizes = res5$SampleSize, all_looks = res5$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 2L, 2L),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            all_looks = c(10, 20, 10, 20),
-                            prop = c(0.94, 0.06, 0, 0),
-                            look = structure(c(1L, 2L, NA, NA),
-                                             levels = c("10", "20"),
-                                             class = "factor"))
-expect_identical(result, expected)
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 2L, 2L),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    all_looks = c(10, 20, 10, 20),
+    prop = c(0.94, 0.06, 0, 0),
+    look = structure(c(1L, 2L, NA, NA),
+      levels = c("10", "20"),
+      class = "factor"
+    )
+  )
+  expect_identical(result, expected)
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when relativeDelta = FALSE", {
@@ -96,8 +104,10 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist` when re
     ),
     all_looks = c(20, 30, 20, 30),
     prop = c(0.56, 0.36, 0.02, 0.06),
-    look = structure(c(1L, 2L, 1L, 2L), levels = c("20", "30"),
-                     class = "factor")
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("20", "30"),
+      class = "factor"
+    )
   )
   expect_identical(result, expected)
 })
@@ -125,14 +135,17 @@ test_that("h_get_dataframe_oc gives correct results for `ocPredprobDist`when rel
   result <- h_get_dataframe_oc(res8$Decision, all_sizes = res8$SampleSize, res8$Looks)
   expected <- dplyr::tibble(
     decision = structure(c(1L, 1L, 2L, 2L),
-    levels = c("TRUE", "FALSE"),
-    class = "factor"),
-  all_looks = c(20, 30, 20, 30),
-  prop = c(0.04, 0.02, 0.80, 0.14),
-  look = structure(c(1L, 2L, 1L, 2L),
-                   levels = c("20","30"),
-                   class = "factor"))
-expect_identical(result, expected)
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    all_looks = c(20, 30, 20, 30),
+    prop = c(0.04, 0.02, 0.80, 0.14),
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("20", "30"),
+      class = "factor"
+    )
+  )
+  expect_identical(result, expected)
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when relativeDelta = FALSE", {
@@ -154,14 +167,18 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPostprobDist` when
     nnF = c(10, 20, 30)
   ))
   result <- h_get_dataframe_oc(decision = res9$Decision, all_sizes = res9$SampleSize, all_looks = res9$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 2L, 2L),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            all_looks = c(20, 30, 20, 30),
-                            prop = c(0.56, 0.36, 0.02, 0.06),
-                            look = structure(c(1L, 2L, 1L, 2L),
-                                             levels = c("20", "30"),
-                                             class = "factor"))
+  expected <- dplyr::tibble(
+    decision = structure(c(1L, 1L, 2L, 2L),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    all_looks = c(20, 30, 20, 30),
+    prop = c(0.56, 0.36, 0.02, 0.06),
+    look = structure(c(1L, 2L, 1L, 2L),
+      levels = c("20", "30"),
+      class = "factor"
+    )
+  )
 })
 
 test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` relativeDelta = TRUE", {
@@ -188,15 +205,22 @@ test_that("h_get_dataframe_oc gives correct results for `ocRctPredprobDist` rela
     decision1 = FALSE
   ))
   result <- h_get_dataframe_oc(res11$Decision, all_sizes = res11$SampleSize, res11$Looks)
-  expected <- dplyr::tibble(decision = structure(c(1L, 1L, 1L, 2L, 2L, 2L,
-                                                   NA, NA, NA),
-                                                 levels = c("TRUE", "FALSE"),
-                                                 class = "factor"),
-                            all_looks = c(10, 20, 30, 10, 20, 30, 10, 20, 30),
-                            prop = c(0.02,  0, 0, 0.22, 0.22, 0.48, 0, 0, 0.06),
-                            look = structure(c(1L, NA, NA, 1L, 2L, 3L, NA, NA, 3L),
-                                             levels = c("10", "20", "30"),
-                                             class = "factor"))
+  expected <- dplyr::tibble(
+    decision = structure(
+      c(
+        1L, 1L, 1L, 2L, 2L, 2L,
+        NA, NA, NA
+      ),
+      levels = c("TRUE", "FALSE"),
+      class = "factor"
+    ),
+    all_looks = c(10, 20, 30, 10, 20, 30, 10, 20, 30),
+    prop = c(0.02, 0, 0, 0.22, 0.22, 0.48, 0, 0, 0.06),
+    look = structure(c(1L, NA, NA, 1L, 2L, 3L, NA, NA, 3L),
+      levels = c("10", "20", "30"),
+      class = "factor"
+    )
+  )
   expect_identical(result, expected)
 })
 
