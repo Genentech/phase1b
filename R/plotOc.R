@@ -29,7 +29,7 @@ h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
   look_levels <- unique(sort(all_looks))
   df$decision <- factor(df$decision, levels = decision_levels)
   df$look <- factor(df$all_looks, levels = look_levels)
-  df <- df %>%
+  df <- df |>
     complete(decision, all_looks, fill = list(prop = 0))
   df
 }
