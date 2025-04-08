@@ -9,7 +9,7 @@ Authors@R: c(
     person("Jiawen", "Zhu", , "zhu.jiawen@gene.com", role = "aut"),
     person("James", "Lymp", role = "aut"),
     person("Anastasia", "Teterina", , "anastasia.teterina@roche.com", role = "aut"),
-    person("Audrey", "Yeo", , "audrey.yeo@roche.com", role = c("aut")),
+    person("Audrey", "Yeo", , "audrey.yeo@finc-research.com", role = c("aut")),
     person("F. Hoffmann-La Roche Ltd", role = c("cph", "fnd"))
   )
 Description: The phase1b R package is intended to be used when conducting
@@ -32,16 +32,24 @@ Suggests:
     shinyjs,
     shinythemes,
     reshape,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    magrittr,
+    tidyverse,
+    devtools,
+    vdiffr
 Imports:
     ggplot2,
     checkmate,
-    devtools,
     lifecycle,
-    vdiffr,
     tools,
     tidyr,
-    dplyr (>= 1.0.0)
+    dplyr (>= 1.0.0),
+    tibble,
+    devtools,
+    magrittr,
+    tidyverse,
+    tools,
+    vdiffr
 VignetteBuilder:
     knitr
 Encoding: UTF-8

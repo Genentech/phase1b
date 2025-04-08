@@ -1,16 +1,9 @@
 #' Helper function for simulation result as input for `plotOc()`
 #'
-#' Data frame input for bar plot for simulated results of :
-#' - `[ocPostprob()]`
-#' - `[ocPostprobDist()]`
-#' - `[ocPostpred()]`
-#' - `[ocPostpredDist()]`
-#' - `[ocRctPostprobDist()]`
-#' - `[ocRctPredprobDist()]`
-#'
 #' @inheritParams h_get_oc
 #' @typed all_looks : numeric
 #' original looks before adjustment by `wiggle = TRUE`, if applied.
+#' Different to `all_sizes` which is after the adjustment, if made.
 #'
 #' @return A data frame or tibble with the following variables :
 #'  - `decision` : decision `flag` with `TRUE` for Go, `FALSE` for Stop, `NA` for Gray zone.
@@ -20,73 +13,85 @@
 #'
 #' @keywords internal
 #'
-h_get_dataframe_oc <- function(decision, sample_size, all_looks) {
-  assert_logical(decision)
-  assert_numeric(sample_size)
-  assert_numeric(all_looks)
+h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
   df <- data.frame(
     decision = decision,
-    sample_size = sample_size,
-    look = all_looks
+    all_sizes = all_sizes,
+    all_looks = all_looks # original looks
   )
   # summarise into frequency table
-  df <- df %>%
-    dplyr::group_by(decision, look) %>%
-    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) %>%
-    dplyr::as_tibble()
+  df <- df |>
+    dplyr::group_by(decision, all_looks) |>
+    dplyr::summarise(prop = sum(length(decision)) / nrow(df)) |>
+    tibble::as_tibble()
   # setting levels of factors
-  all_decision <- c(TRUE, FALSE, NA)
-  all_looks <- unique(sort(all_looks))
-  df$decision <- factor(df$decision, levels = all_decision)
-  df$look <- factor(df$look, levels = all_looks)
-  df %>%
-    tidyr::complete(decision, look, fill = list(prop = 0))
+  decision_levels <- c(TRUE, FALSE, NA)
+  look_levels <- unique(sort(all_looks))
+  df$decision <- factor(df$decision, levels = decision_levels)
+  df$look <- factor(df$all_looks, levels = look_levels)
+  df <- df |>
+    tidyr::complete(decision, all_looks, fill = list(prop = 0))
+  df
 }
 
-#' Display the operating characteristics using an oc object
+
+#' Display the operating characteristics results using an `oc` object
 #'
-#' Reads results from [ocPredprob()]
-#' etc. and displays a bar plot of the operating characteristics
+#' Plots results from simulated results of :
+#' - `[ocPostprob()]`
+#' - `[ocPostprobDist()]`
+#' - `[ocPostpred()]`
+#' - `[ocPostpredDist()]`
+#' - `[ocRctPostprobDist()]`
+#' - `[ocRctPredprobDist()]`
 #'
-#' @typed oc : list
-#' returned oc parameters
-#' @return nothing, only plots as side effect
-#'
-#' @importFrom graphics barplot title
+#' @inheritParams h_get_dataframe_oc
+#' @typed wiggle_status : flag
+#' from `wiggle` flag in object.
+#' @return ggplot object
 #'
 #' @example examples/plotOc.R
+#'
+#' @importFrom ggplot2 geom_bar ggtitle
+#'
 #' @export
 #' @keywords graphics
-vintage_plotOc <- function(oc) {
-  if (wiggle == FALSE) {
-    data <- table(oc$Decision, oc$SampleSize) / oc$params$sim
-  } else {
-
-  }
-  ggplot(oc, aes(x = name, y = value)) +
-    geom_bar(stat = "identity") +
-    ggtitle("Percentage of trials that Go and Stop per look") +
-    ylabs("Percentage %") +
-    xlabs("Looks and sample size")
-
-  ## plot function for oc.predprob or oc.postprob, or the dist versions of them
-  graphics::barplot(table(oc$Decision, oc$SampleSize) / oc$params$sim, beside = TRUE)
-
-  ## get the parameter
-  parDat <- lapply(z$params, deparse)
-
-  ## get parameters, which are saved in parDat
-  allParNames <- c(
-    "p", "p0", "p1",
-    "delta", "deltaE", "deltaF", "relativeDelta",
-    "phiL", "phiU", "tL", "tU", "tT", "parE", "parS"
+plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
+  assert_logical(decision)
+  assert_numeric(all_sizes)
+  assert_numeric(all_looks)
+  assert_flag(wiggle_status)
+  df <- h_get_dataframe_oc(
+    decision = decision,
+    all_sizes = all_sizes,
+    all_looks = all_looks
   )
-  parInds <- which(names(parDat) %in% allParNames)
+  barplot <-
+    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = look, y = prop)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::ggtitle(
+      "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
+    ) +
+    ggplot2::theme(title = ggplot2::element_text(size = 13)) +
+    ggplot2::ylab("percentage") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size = 12)) +
+    ggplot2::xlab("look (n)") +
+    ggplot2::scale_fill_manual(
+      values = c("#009E73", "#FF0046", "lightgrey"),
+      labels = c("Go", "Stop", "Grey zone")
+    ) +
+    ggplot2::labs(fill = "Decision")
+  generic_title <-
+    "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
+  wiggle_warning_footnote <- paste("\nNote that sample sizes may differ slightly from the ones labeled")
 
-  graphics::title(paste(names(parDat[parInds]), parDat[parInds],
-    sep = "=", collapse = ", "
-  ))
-  graphics::title(xlab = paste(dimnames(z$oc)[[2]], signif(z$oc, 3),
-    sep = " = ", collapse = ", "
-  ))
+  if (wiggle_status) {
+    barplot +
+      ggplot2::ggtitle(label = generic_title) +
+      ggplot2::labs(caption = wiggle_warning_footnote) +
+      ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 10))
+  } else {
+    barplot +
+      ggplot2::ggtitle(generic_title)
+  }
 }

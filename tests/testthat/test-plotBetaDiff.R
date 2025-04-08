@@ -18,6 +18,6 @@ test_that("plotBetaDiff works as expected", {
     shade = TRUE,
     note = TRUE
   )
-  vdiffr::expect_doppelganger("Plot of distibution of difference of two arms", result1)
-  vdiffr::expect_doppelganger("Plot of distibution of difference of two arms with beta mixture", result2)
+  vdiffr::expect_doppelganger(title = "Plot of distibution of difference of two arms", fig = result1)
+  vdiffr::expect_doppelganger(title = "Plot of distibution of difference of two arms with beta mixture", fig = result2)
 })
