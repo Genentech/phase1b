@@ -2,27 +2,29 @@
 % Please edit documentation in R/sumbetadiff.R
 \name{sumBetadiff}
 \alias{sumBetadiff}
-\title{Mode and Credible Interval Calculation for The Difference between Two Beta Distributions}
+\title{Mode and Credible Interval Calculation for The Difference between Two Beta Distributions.}
 \usage{
 sumBetadiff(parY, parX, level = 0.9, cutB, cutW)
 }
 \arguments{
-\item{parY}{two parameters of Y's beta distribution (Treatment)}
+\item{parY}{(\code{numeric}):\cr two typedeters of Y's beta distribution (Treatment).}
 
-\item{parX}{two parameters of X's beta distribution (Control)}
+\item{parX}{(\code{numeric}):\cr two parameters of X's beta distribution (Control).}
 
-\item{level}{credible interval}
+\item{level}{(``):\cr coverage for credible interval}
 
-\item{cutB}{a cutoff value for the upper bound}
+\item{cutB}{(``):\cr a cutoff value for the upper bound.}
 
-\item{cutW}{a cutoff value for the lower bound}
+\item{cutW}{(``):\cr a cutoff value for the lower bound.}
 }
 \value{
 sumbetadiff gives the mode, credible interval of the distribution function,
 along with the probabilities of above cutB and below cutW.
 }
 \description{
-A function to summerize the characters of a betadiff distribution \code{\link{dbetadiff}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+A function to summarize the characters of a betadiff distribution \verb{[dbetadiff]}.
 }
 \examples{
 parX <- c(1, 52)

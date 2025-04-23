@@ -1,19 +1,25 @@
-##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
+##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions.
+##'
+##' @description `r lifecycle::badge("experimental")`
+##'
+##' A function to summarize the characters of a betadiff distribution `[dbetadiff]`.
 ##'
 ##'
-##' A function to summerize the characters of a betadiff distribution \code{\link{dbetadiff}}
-##'
-##'
-##' @param parX two parameters of X's beta distribution (Control)
-##' @param parY two parameters of Y's beta distribution (Treatment)
-##' @param level credible interval
-##' @param cutB  a cutoff value for the upper bound
-##' @param cutW  a cutoff value for the lower bound
+##' @typed parX : numeric
+##'   two parameters of X's beta distribution (Control).
+##' @typed parY : numeric
+##'   two typedeters of Y's beta distribution (Treatment).
+##' @typed level :
+##'   coverage for credible interval
+##' @typed cutB :
+##'   a cutoff value for the upper bound.
+##' @typed cutW :
+##'  a cutoff value for the lower bound.
 ##'
 ##' @return sumbetadiff gives the mode, credible interval of the distribution function,
 ##' along with the probabilities of above cutB and below cutW.
 ##'
-##' @importFrom stats optimize integrate rbeta quantile
+##' @importFrom stats optimize integrate rbeta quantile.
 ##'
 ##' @example examples/sumbetadiff.R
 ##' @export
