@@ -6,7 +6,7 @@
 ##'
 ##' @inheritParams dbetadiff
 ##' @inheritParams plotBetaDiff
-##' @typed level :
+##' @typed coverage :
 ##'   coverage for credible interval
 ##'
 ##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
@@ -37,12 +37,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         maximum = TRUE
       )$maximum
 
-      assert_true(mode$maximum > 0)
-      assert_true(lower > 0)
-      assert_true(upper > 0)
-      assert_true(Out.go > 0)
-      assert_true(Out.stop > 0)
-
       lower <- qbetadiff( # to recover x when F(x) is at lower percentile
         p = (1 - coverage) / 2,
         parY = parY,
@@ -55,8 +49,8 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         parX = parX
       )
 
-      ## for Go:
-      Out.go <- stats::integrate(
+      # Prob for Go:
+      auc_go <- stats::integrate(
         f = dbetadiff,
         parY = parY,
         parX = parX,
@@ -66,8 +60,8 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         rel.tol = .Machine$double.eps^0.1
       )$value
 
-      ## for Stop:
-      Out.stop <- stats::integrate(
+      # Prob for Stop:
+      auc_stop <- stats::integrate(
         f = dbetadiff,
         parY = parY,
         parX = parX,
@@ -77,11 +71,18 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         rel.tol = .Machine$double.eps^0.1
       )$value
 
+      assert_true(mode > 0)
+      assert_number(mode, upper = 1, na.ok = FALSE)
+      assert_number(lower, lower = 0, upper = 1, na.ok = FALSE)
+      assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
+      assert_number(auc_go, upper = 1, na.ok = FALSE)
+      assert_number(auc_stop, upper = 1, na.ok = FALSE)
+
       list(
         mode = mode,
         ci = c(lower, upper),
-        go = Out.go,
-        nogo = Out.nogo
+        go = auc_go,
+        nogo = auc_stop
       )
     },
     silent = TRUE
@@ -92,25 +93,30 @@ sumBetadiff <- function(parX, # Treatment group's parameters
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
-    lower <- stats::quantile(samples, prob = (1 - level) / 2)
-    upper <- stats::quantile(samples, prob = (1 + level) / 2)
+    lower <- stats::quantile(samples, prob = (1 - coverage) / 2)
+    upper <- stats::quantile(samples, prob = (1 + coverage) / 2)
 
-    Out.go <- mean(samples > go_cut)
-    Out.nogo <- mean(samples < stop_cut)
+    auc_go <- mean(samples > go_cut)
+    auc_stop <- mean(samples < stop_cut)
 
     samples <- cut(samples, breaks = seq(from = -1, to = 1, length = 801))
     samples <- table(samples)
     mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
 
+    assert_true(mode > 0)
+    assert_number(mode, upper = 1, na.ok = FALSE)
+    assert_number(lower, lower = 0, upper = 1, na.ok = FALSE)
+    assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
+    assert_number(auc_go, upper = 1, na.ok = FALSE)
+    assert_number(auc_stop, upper = 1, na.ok = FALSE)
+
     res <- list(
       mode = mode,
       ci = c(lower, upper),
-      go = Out.go,
-      nogo = Out.nogo
+      go = auc_go,
+      nogo = auc_stop
     )
   }
-  assert_number(res$mode)
-  assert_number(res$ci)
   assert_list(res)
   res
 }
