@@ -59,7 +59,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
       lower = eps,
       # The upper bounds here are between 0 and 1.
       upper = 1 - z[i],
-      zval = z[i],
+      zval = z[i], # integrate over x, represented by z when pos to recover probablity of p(z)
       subdivisions = 1000L,
       rel.tol = rel.tol
     )$value
@@ -72,7 +72,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
       lower = eps,
       # The upper bounds here are between 0 and 1.
       upper = 1 + z[i],
-      zval = z[i],
+      zval = z[i], # integrate over y, represented by z when neg to recover probablity of p(z)
       subdivisions = 1000L,
       rel.tol = rel.tol
     )$value

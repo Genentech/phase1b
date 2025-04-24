@@ -4,22 +4,22 @@
 \alias{sumBetadiff}
 \title{Mode and Credible Interval Calculation for The Difference between Two Beta Distributions.}
 \usage{
-sumBetadiff(parY, parX, level = 0.9, cutB, cutW)
+sumBetadiff(parX, parY, coverage = 0.9, go_cut, stop_cut)
 }
 \arguments{
-\item{parY}{(\code{numeric}):\cr two typedeters of Y's beta distribution (Treatment).}
+\item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{parX}{(\code{numeric}):\cr two parameters of X's beta distribution (Control).}
+\item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
+
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
+
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 
 \item{level}{(``):\cr coverage for credible interval}
-
-\item{cutB}{(``):\cr a cutoff value for the upper bound.}
-
-\item{cutW}{(``):\cr a cutoff value for the lower bound.}
 }
 \value{
-sumbetadiff gives the mode, credible interval of the distribution function,
-along with the probabilities of above cutB and below cutW.
+\code{sumbetadiff} gives the mode, credible interval of the distribution function,
+along with the probabilities of above \code{go_cut} and below \code{stop_cut}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -27,7 +27,13 @@ along with the probabilities of above cutB and below cutW.
 A function to summarize the characters of a betadiff distribution \verb{[dbetadiff]}.
 }
 \examples{
-parX <- c(1, 52)
-parY <- c(5.5, 20.5)
-sumBetadiff(parX, parY, 0.9, cutB = 0.8, cutW = 0.2)
+parX <- c(0, 52) # Control group's parameters
+parY <- c(5.5, 20.5) # Treatment group's parameters
+sumBetadiff(parX = parX, parY = parY, level = 0.9, go_cut = 0.8, stop_cut = 0.2)
+
+#' Density, distribution function and quantile function for
+#' the distribution of the difference of two Beta distributions with parameters `parX` and `parY`.
+#' We denote `X` and `Y` as two random variables representing the response rate of Control and Treatment
+#' group respectively. The assignment of Control and Treatment is practically interchangeable.
+#' We denote `Z` as the difference between two groups such that `Z = Y-X`.
 }
