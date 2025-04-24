@@ -20,7 +20,8 @@ sumBetadiff <- function(parX, # Treatment group's parameters
                         parY,  # Control group's parameters
                         coverage = 0.9,
                         go_cut,
-                        stop_cut) {
+                        stop_cut,
+                        seed = as.numeric(R.Version()$year)) {
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_number(coverage, finite = TRUE)
@@ -90,6 +91,7 @@ sumBetadiff <- function(parX, # Treatment group's parameters
 
   ## if there were any errors, fall back to Monte Carlo estimation
   if (inherits(res, "try-error")) { # try-error is a class
+    set.seed = seed,
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
