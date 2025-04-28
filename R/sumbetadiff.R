@@ -49,13 +49,19 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         parY = parY,
         parX = parX
       )
-
+      # go_auc <- integrate(
+      #   f = dbetadiff,
+      #   parX = parX,
+      #   parY = parY,
+      #   lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
+      #   upper = 1
+      # )
       # Prob for Go:
       auc_go <- stats::integrate(
         f = dbetadiff,
-        parY = parY,
         parX = parX,
-        lower = stop_cut,
+        parY = parY,
+        lower = go_cut,
         upper = 1,
         subdivisions = 1000L,
         rel.tol = .Machine$double.eps^0.1
@@ -64,17 +70,17 @@ sumBetadiff <- function(parX, # Treatment group's parameters
       # Prob for Stop:
       auc_stop <- stats::integrate(
         f = dbetadiff,
-        parY = parY,
         parX = parX,
+        parY = parY,
         lower = -1,
-        upper = go_cut,
+        upper = stop_cut,
         subdivisions = 1000L,
         rel.tol = .Machine$double.eps^0.1
       )$value
 
       assert_true(mode > 0)
       assert_number(mode, upper = 1, na.ok = FALSE)
-      assert_number(lower, lower = 0, upper = 1, na.ok = FALSE)
+      assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
       assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
       assert_number(auc_go, upper = 1, na.ok = FALSE)
       assert_number(auc_stop, upper = 1, na.ok = FALSE)
@@ -91,7 +97,7 @@ sumBetadiff <- function(parX, # Treatment group's parameters
 
   ## if there were any errors, fall back to Monte Carlo estimation
   if (inherits(res, "try-error")) { # try-error is a class
-    set.seed = seed,
+    set.seed = seed
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
@@ -107,7 +113,7 @@ sumBetadiff <- function(parX, # Treatment group's parameters
 
     assert_true(mode > 0)
     assert_number(mode, upper = 1, na.ok = FALSE)
-    assert_number(lower, lower = 0, upper = 1, na.ok = FALSE)
+    assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
     assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
     assert_number(auc_go, upper = 1, na.ok = FALSE)
     assert_number(auc_stop, upper = 1, na.ok = FALSE)

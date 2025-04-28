@@ -4,18 +4,25 @@
 \alias{sumBetadiff}
 \title{Mode and Credible Interval Calculation for The Difference between Two Beta Distributions.}
 \usage{
-sumBetadiff(parX, parY, coverage = 0.9, go_cut, stop_cut)
+sumBetadiff(
+  parX,
+  parY,
+  coverage = 0.9,
+  go_cut,
+  stop_cut,
+  seed = as.numeric(R.Version()$year)
+)
 }
 \arguments{
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
+\item{coverage}{(``):\cr coverage for credible interval}
+
 \item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
 \item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
-
-\item{level}{(``):\cr coverage for credible interval}
 }
 \value{
 \code{sumbetadiff} gives the mode, credible interval of the distribution function,
@@ -27,13 +34,13 @@ along with the probabilities of above \code{go_cut} and below \code{stop_cut}.
 A function to summarize the characters of a betadiff distribution \verb{[dbetadiff]}.
 }
 \examples{
-parX <- c(0, 52) # Control group's parameters
+parX <- c(1, 52) # Control group's parameters
 parY <- c(5.5, 20.5) # Treatment group's parameters
-sumBetadiff(parX = parX, parY = parY, level = 0.9, go_cut = 0.8, stop_cut = 0.2)
-
-#' Density, distribution function and quantile function for
-#' the distribution of the difference of two Beta distributions with parameters `parX` and `parY`.
-#' We denote `X` and `Y` as two random variables representing the response rate of Control and Treatment
-#' group respectively. The assignment of Control and Treatment is practically interchangeable.
-#' We denote `Z` as the difference between two groups such that `Z = Y-X`.
+sumBetadiff(
+  parX = parX,
+  parY = parY,
+  coverage = 0.9,
+  go_cut = 0.6,
+  stop_cut = 0.2
+)
 }
