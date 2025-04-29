@@ -6,8 +6,10 @@
 ##'
 ##' @inheritParams dbetadiff
 ##' @inheritParams plotBetaDiff
-##' @typed coverage :
+##' @typed coverage : numeric
 ##'   coverage for credible interval
+##' @typed seed : numeric
+##'   default set at `as.numeric(R.Version()$year))`
 ##'
 ##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
 ##' along with the probabilities of above `go_cut` and below `stop_cut`.
@@ -28,7 +30,7 @@ sumBetadiff <- function(parX, # Treatment group's parameters
   assert_number(go_cut, finite = TRUE)
   assert_number(stop_cut, finite = TRUE)
 
-  res <- try(
+  result <- try(
     {
       mode <- stats::optimize(
         f = dbetadiff,
@@ -71,7 +73,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         rel.tol = .Machine$double.eps^0.1
       )$value
 
-      assert_true(mode > 0)
       assert_number(mode, upper = 1, na.ok = FALSE)
       assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
       assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
@@ -82,14 +83,13 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         mode = mode,
         ci = c(lower, upper),
         go = auc_go,
-        nogo = auc_stop
+        stop = auc_stop
       )
     },
     silent = TRUE
   )
-
   ## if there were any errors, fall back to Monte Carlo estimation
-  if (inherits(res, "try-error")) { # try-error is a class
+  if (inherits(result, "try-error")) { # try-error is a class
     set.seed = seed
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
@@ -104,20 +104,22 @@ sumBetadiff <- function(parX, # Treatment group's parameters
     samples <- table(samples)
     mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
 
-    assert_true(mode > 0)
     assert_number(mode, upper = 1, na.ok = FALSE)
     assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
     assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
     assert_number(auc_go, upper = 1, na.ok = FALSE)
     assert_number(auc_stop, upper = 1, na.ok = FALSE)
 
-    res <- list(
+    result <- list(
       mode = mode,
       ci = c(lower, upper),
       go = auc_go,
-      nogo = auc_stop
+      stop = auc_stop
     )
   }
-  assert_list(res)
-  res
+  assert_list(result)
+  if (result$mode < 0) {
+    warning("Performance of control group better than treatment group")
+  }
+  result
 }

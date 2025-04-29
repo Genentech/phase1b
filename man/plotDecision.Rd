@@ -27,8 +27,8 @@ summaries <- do.call(
     sumTable,
     TotalSample = 25,
     parX = c(1, 52),
-    cut_B = 0.2,
-    cut_W = 0.05
+    go_cut = 0.6,
+    stop_cut = 0.2
   )
 )
 

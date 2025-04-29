@@ -3,7 +3,7 @@ parY <- c(5.5, 20.5) # Treatment group's parameters
 sumBetadiff(
   parX = parX,
   parY = parY,
-  coverage = 0.9,
+  coverage = 0.9, # 90 % credible interval
   go_cut = 0.6,
   stop_cut = 0.2
 )

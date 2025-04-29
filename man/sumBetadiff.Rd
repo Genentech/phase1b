@@ -18,11 +18,13 @@ sumBetadiff(
 
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
-\item{coverage}{(``):\cr coverage for credible interval}
+\item{coverage}{(\code{numeric}):\cr coverage for credible interval}
 
 \item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
 \item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
+
+\item{seed}{(\code{numeric}):\cr default set at \verb{as.numeric(R.Version()$year))}}
 }
 \value{
 \code{sumbetadiff} gives the mode, credible interval of the distribution function,
@@ -39,7 +41,7 @@ parY <- c(5.5, 20.5) # Treatment group's parameters
 sumBetadiff(
   parX = parX,
   parY = parY,
-  coverage = 0.9,
+  coverage = 0.9, # 90 \% credible interval
   go_cut = 0.6,
   stop_cut = 0.2
 )
