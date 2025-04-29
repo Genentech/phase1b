@@ -49,13 +49,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         parY = parY,
         parX = parX
       )
-      # go_auc <- integrate(
-      #   f = dbetadiff,
-      #   parX = parX,
-      #   parY = parY,
-      #   lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
-      #   upper = 1
-      # )
       # Prob for Go:
       auc_go <- stats::integrate(
         f = dbetadiff,
