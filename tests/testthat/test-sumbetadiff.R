@@ -15,8 +15,9 @@ test_that("sumbetadiff works as expected", {
   expect_equal(result$go, 1.078614e-17, tolerance = 1e-4)
   expect_equal(result$stop, 0.568, tolerance = 1e-3)
   expect_list(result,
-              types = "numeric",
-              any.missing = FALSE)
+    types = "numeric",
+    any.missing = FALSE
+  )
 })
 
 test_that("sumbetadiff gives a error when at least one alpha = 0", {

@@ -124,67 +124,100 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   }
 
 
-sumBetadiff <- function(parX, # Treatment group's parameters
-                        parY,  # Control group's parameters
-                        coverage = 0.9,
-                        go_cut,
-                        stop_cut,
-                        seed = as.numeric(R.Version()$year)) {
-  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_number(coverage, finite = TRUE)
-  assert_number(go_cut, finite = TRUE)
-  assert_number(stop_cut, finite = TRUE)
+  sumBetadiff <- function(parX, # Treatment group's parameters
+                          parY, # Control group's parameters
+                          coverage = 0.9,
+                          go_cut,
+                          stop_cut,
+                          seed = as.numeric(R.Version()$year)) {
+    assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+    assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+    assert_number(coverage, finite = TRUE)
+    assert_number(go_cut, finite = TRUE)
+    assert_number(stop_cut, finite = TRUE)
 
-  res <- try(
-    {
-      mode <- stats::optimize(
-        f = dbetadiff,
-        interval = c(-0.999, 0.999),
-        parY = parY,
-        parX = parX,
-        maximum = TRUE
-      )$maximum
+    res <- try(
+      {
+        mode <- stats::optimize(
+          f = dbetadiff,
+          interval = c(-0.999, 0.999),
+          parY = parY,
+          parX = parX,
+          maximum = TRUE
+        )$maximum
 
-      lower <- qbetadiff( # to recover x when F(x) is at lower percentile
-        p = (1 - coverage) / 2,
-        parY = parY,
-        parX = parX
-      )
+        lower <- qbetadiff( # to recover x when F(x) is at lower percentile
+          p = (1 - coverage) / 2,
+          parY = parY,
+          parX = parX
+        )
 
-      upper <- qbetadiff( # to recover x when F(x) is at upper percentile
-        p = (1 + coverage) / 2,
-        parY = parY,
-        parX = parX
-      )
-      # go_auc <- integrate(
-      #   f = dbetadiff,
-      #   parX = parX,
-      #   parY = parY,
-      #   lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
-      #   upper = 1
-      # )
-      # Prob for Go:
-      auc_go <- stats::integrate(
-        f = dbetadiff,
-        parX = parX,
-        parY = parY,
-        lower = go_cut,
-        upper = 1,
-        subdivisions = 1000L,
-        rel.tol = .Machine$double.eps^0.1
-      )$value
+        upper <- qbetadiff( # to recover x when F(x) is at upper percentile
+          p = (1 + coverage) / 2,
+          parY = parY,
+          parX = parX
+        )
+        # go_auc <- integrate(
+        #   f = dbetadiff,
+        #   parX = parX,
+        #   parY = parY,
+        #   lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
+        #   upper = 1
+        # )
+        # Prob for Go:
+        auc_go <- stats::integrate(
+          f = dbetadiff,
+          parX = parX,
+          parY = parY,
+          lower = go_cut,
+          upper = 1,
+          subdivisions = 1000L,
+          rel.tol = .Machine$double.eps^0.1
+        )$value
 
-      # Prob for Stop:
-      auc_stop <- stats::integrate(
-        f = dbetadiff,
-        parX = parX,
-        parY = parY,
-        lower = -1,
-        upper = stop_cut,
-        subdivisions = 1000L,
-        rel.tol = .Machine$double.eps^0.1
-      )$value
+        # Prob for Stop:
+        auc_stop <- stats::integrate(
+          f = dbetadiff,
+          parX = parX,
+          parY = parY,
+          lower = -1,
+          upper = stop_cut,
+          subdivisions = 1000L,
+          rel.tol = .Machine$double.eps^0.1
+        )$value
+
+        assert_true(mode > 0)
+        assert_number(mode, upper = 1, na.ok = FALSE)
+        assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
+        assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
+        assert_number(auc_go, upper = 1, na.ok = FALSE)
+        assert_number(auc_stop, upper = 1, na.ok = FALSE)
+
+        list(
+          mode = mode,
+          ci = c(lower, upper),
+          go = auc_go,
+          nogo = auc_stop
+        )
+      },
+      silent = TRUE
+    )
+
+    ## if there were any errors, fall back to Monte Carlo estimation
+    if (inherits(res, "try-error")) { # try-error is a class
+      set.seed <- seed
+      samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
+        rbeta(n = 2e6, parX[1], parX[2])
+
+      lower <- stats::quantile(samples, prob = (1 - coverage) / 2)
+      upper <- stats::quantile(samples, prob = (1 + coverage) / 2)
+
+      auc_go <- mean(samples > go_cut)
+      auc_stop <- mean(samples < stop_cut)
+
+      samples <- cut(samples, breaks = seq(from = -1, to = 1, length = 801))
+      samples <- table(samples)
+      mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
 
       assert_true(mode > 0)
       assert_number(mode, upper = 1, na.ok = FALSE)
@@ -193,54 +226,21 @@ sumBetadiff <- function(parX, # Treatment group's parameters
       assert_number(auc_go, upper = 1, na.ok = FALSE)
       assert_number(auc_stop, upper = 1, na.ok = FALSE)
 
-      list(
+      res <- list(
         mode = mode,
         ci = c(lower, upper),
         go = auc_go,
         nogo = auc_stop
       )
-    },
-    silent = TRUE
-  )
-
-  ## if there were any errors, fall back to Monte Carlo estimation
-  if (inherits(res, "try-error")) { # try-error is a class
-    set.seed = seed
-    samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
-      rbeta(n = 2e6, parX[1], parX[2])
-
-    lower <- stats::quantile(samples, prob = (1 - coverage) / 2)
-    upper <- stats::quantile(samples, prob = (1 + coverage) / 2)
-
-    auc_go <- mean(samples > go_cut)
-    auc_stop <- mean(samples < stop_cut)
-
-    samples <- cut(samples, breaks = seq(from = -1, to = 1, length = 801))
-    samples <- table(samples)
-    mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
-
-    assert_true(mode > 0)
-    assert_number(mode, upper = 1, na.ok = FALSE)
-    assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
-    assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
-    assert_number(auc_go, upper = 1, na.ok = FALSE)
-    assert_number(auc_stop, upper = 1, na.ok = FALSE)
-
-    res <- list(
-      mode = mode,
-      ci = c(lower, upper),
-      go = auc_go,
-      nogo = auc_stop
-    )
+    }
+    assert_list(res)
+    res
   }
-  assert_list(res)
-  res
-}
 
 
-  results <- list(plot = plotbeta_plot,
-                  table = summary_betadiff)
+  results <- list(
+    plot = plotbeta_plot,
+    table = summary_betadiff
+  )
   results
 }
-
-

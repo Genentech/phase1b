@@ -19,7 +19,7 @@
 ##' @example examples/sumbetadiff.R
 ##' @export
 sumBetadiff <- function(parX, # Treatment group's parameters
-                        parY,  # Control group's parameters
+                        parY, # Control group's parameters
                         coverage = 0.9,
                         go_cut,
                         stop_cut,
@@ -90,7 +90,7 @@ sumBetadiff <- function(parX, # Treatment group's parameters
   )
   ## if there were any errors, fall back to Monte Carlo estimation
   if (inherits(result, "try-error")) { # try-error is a class
-    set.seed = seed
+    set.seed <- seed
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
