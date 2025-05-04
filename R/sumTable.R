@@ -37,7 +37,7 @@ sumTable <- function(thisResp, # number of responses;
     thisResp,
     thisResp / TotalSample * 100,
     tmp$mode * 100,
-    tmp$ci* 100,
+    tmp$ci * 100,
     tmp$go * 100,
     tmp$stop * 100
   ), Round)
