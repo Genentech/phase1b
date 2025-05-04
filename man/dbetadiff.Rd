@@ -70,10 +70,6 @@ integrate(
   lower = -1,
   upper = 0.5
 )
-# Explanation: given density of the difference between two beta distributions
-# is P( difference < 0.5 | dbetadiff ), and
-# if the rule is STOP when difference < 0.5, then
-# P( STOP | dbetadiff ) is high, or approximately 99 \%
-# therefore if the difference was at most 50\%, then
-# we will stop most of the time.
+# Explanation: given density of the difference Y - X between two beta distributions X (from control response rate) and Y (from experimental response rate), then we can calculate
+# P(Y - X < 0.5), and when this probability is high then we could stop.
 }
