@@ -31,4 +31,3 @@ test_that("sumbetadiff gives a error when at least one alpha = 0", {
     stop_cut = 0.2
   ))
 })
-
