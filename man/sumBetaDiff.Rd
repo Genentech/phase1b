@@ -30,10 +30,10 @@ May require use of random sample generator to calculate, use \code{\link[=set.se
 \examples{
 parX <- c(1, 52) # Control group's parameters
 parY <- c(5.5, 20.5) # Treatment group's parameters
-sumBetadiff(
+sumBetaDiff(
   parX = parX,
   parY = parY,
-  coverage = 0.9,
+  ci_level = 0.9,
   go_cut = 0.6,
   stop_cut = 0.2
 )
