@@ -1,4 +1,4 @@
-##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions.
+##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
 ##'
 ##' @description `r lifecycle::badge("experimental")`
 ##'
