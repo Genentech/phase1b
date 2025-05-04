@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.786512027491409" branch-rate="0" lines-covered="1831" lines-valid="2328" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-05-04 15:34:27.650221">
+<coverage line-rate="0.78516295025729" branch-rate="0" lines-covered="1831" lines-valid="2332" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-05-04 20:03:35.157616">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.786512027491409" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.78516295025729" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -4981,12 +4981,16 @@
                 <line number="37" hits="0" branch="false"/>
                 <line number="38" hits="0" branch="false"/>
                 <line number="39" hits="0" branch="false"/>
+                <line number="40" hits="0" branch="false"/>
                 <line number="41" hits="0" branch="false"/>
+                <line number="42" hits="0" branch="false"/>
                 <line number="43" hits="0" branch="false"/>
-                <line number="44" hits="0" branch="false"/>
                 <line number="45" hits="0" branch="false"/>
-                <line number="46" hits="0" branch="false"/>
+                <line number="47" hits="0" branch="false"/>
                 <line number="48" hits="0" branch="false"/>
+                <line number="49" hits="0" branch="false"/>
+                <line number="50" hits="0" branch="false"/>
+                <line number="52" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -5005,12 +5009,16 @@
             <line number="37" hits="0" branch="false"/>
             <line number="38" hits="0" branch="false"/>
             <line number="39" hits="0" branch="false"/>
+            <line number="40" hits="0" branch="false"/>
             <line number="41" hits="0" branch="false"/>
+            <line number="42" hits="0" branch="false"/>
             <line number="43" hits="0" branch="false"/>
-            <line number="44" hits="0" branch="false"/>
             <line number="45" hits="0" branch="false"/>
-            <line number="46" hits="0" branch="false"/>
+            <line number="47" hits="0" branch="false"/>
             <line number="48" hits="0" branch="false"/>
+            <line number="49" hits="0" branch="false"/>
+            <line number="50" hits="0" branch="false"/>
+            <line number="52" hits="0" branch="false"/>
           </lines>
         </class>
       </classes>
