@@ -80,7 +80,7 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
     },
     silent = TRUE
   )
-  ## if there were any errors, fall back to Monte Carlo estimation
+  # if there were any errors, fall back to Monte Carlo estimation
   if (inherits(result, "try-error")) { # try-error is a class
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])

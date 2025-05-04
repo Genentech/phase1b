@@ -21,13 +21,14 @@ test_that("sumbetadiff works as expected", {
 })
 
 test_that("sumbetadiff gives a error when at least one alpha = 0", {
-  parX <- c(0, 10) # Control group's parameters
-  parY <- c(5.5, 20.5) # Treatment group's parameters
+  parX <- c(0, 10)
+  parY <- c(5.5, 20.5)
   expect_error(sumBetaDiff(
     parX = parX,
     parY = parY,
-    ci_level = 0.8, # 80 % credible interval
+    ci_level = 0.8,
     go_cut = 0.9,
     stop_cut = 0.2
   ))
 })
+

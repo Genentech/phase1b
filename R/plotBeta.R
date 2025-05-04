@@ -81,7 +81,7 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
     parX = parX,
     parY = parY,
     go_cut = go_cut,
-    stop_cut = go_cut
+    stop_cut = stop_cut
   )
 
   go_label <- paste("P(Go) is", round(temp$go * 100, digits = 2), "%")

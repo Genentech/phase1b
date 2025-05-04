@@ -74,5 +74,4 @@ integrate(
   lower = -1,
   upper = 0.5
 )
-
 }
