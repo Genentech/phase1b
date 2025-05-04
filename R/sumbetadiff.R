@@ -2,28 +2,26 @@
 ##'
 ##' @description `r lifecycle::badge("experimental")`
 ##'
-##' A function to summarize the characters of a betadiff distribution `[dbetadiff]`.
+##' A function to summarize the characters of a betadiff distribution [dbetadiff()].
+##' May require use of random sample generator to calculate, use [set.seed()] to reproduce results.
 ##'
 ##' @inheritParams dbetadiff
 ##' @inheritParams plotBetaDiff
-##' @typed coverage : numeric
+##' @typed conf_level : numeric
 ##'   coverage for credible interval
-##' @typed seed : numeric
-##'   default set at `as.numeric(R.Version()$year))`
 ##'
 ##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
 ##' along with the probabilities of above `go_cut` and below `stop_cut`.
 ##'
-##' @importFrom stats optimize integrate rbeta quantile.
+##' @importFrom stats optimize integrate
 ##'
 ##' @example examples/sumbetadiff.R
 ##' @export
-sumBetadiff <- function(parX, # Treatment group's parameters
+sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
                         coverage = 0.9,
                         go_cut,
-                        stop_cut,
-                        seed = as.numeric(R.Version()$year)) {
+                        stop_cut) {
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_number(coverage, finite = TRUE)
@@ -73,12 +71,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
         rel.tol = .Machine$double.eps^0.1
       )$value
 
-      assert_number(mode, upper = 1, na.ok = FALSE)
-      assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
-      assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
-      assert_number(auc_go, upper = 1, na.ok = FALSE)
-      assert_number(auc_stop, upper = 1, na.ok = FALSE)
-
       list(
         mode = mode,
         ci = c(lower, upper),
@@ -90,7 +82,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
   )
   ## if there were any errors, fall back to Monte Carlo estimation
   if (inherits(result, "try-error")) { # try-error is a class
-    set.seed <- seed
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
@@ -116,10 +107,6 @@ sumBetadiff <- function(parX, # Treatment group's parameters
       go = auc_go,
       stop = auc_stop
     )
-  }
-  assert_list(result)
-  if (result$mode < 0) {
-    warning("Performance of control group better than treatment group")
   }
   result
 }

@@ -157,7 +157,7 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
           parY = parY,
           parX = parX
         )
-        # go_auc <- integrate(
+        # go_auc <- integrate( # from plotBeta
         #   f = dbetadiff,
         #   parX = parX,
         #   parY = parY,
@@ -165,7 +165,7 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
         #   upper = 1
         # )
         # Prob for Go:
-        auc_go <- stats::integrate(
+        auc_go <- stats::integrate( # from sumbetadiff
           f = dbetadiff,
           parX = parX,
           parY = parY,

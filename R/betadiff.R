@@ -58,8 +58,8 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
       # We transform the bounds to follow the support of integrandPos here.
       lower = eps,
       # The upper bounds here are between 0 and 1.
-      upper = 1 - z[i],
-      zval = z[i], # integrate over x, represented by z when pos to recover probablity of p(z)
+      upper = 1 - z[i], # integrate over x, when z us positive
+      zval = z[i],
       subdivisions = 1000L,
       rel.tol = rel.tol
     )$value
@@ -71,8 +71,8 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
       # We transform the bounds to follow the support of integrandNeg.
       lower = eps,
       # The upper bounds here are between 0 and 1.
-      upper = 1 + z[i],
-      zval = z[i], # integrate over y, represented by z when neg to recover probablity of p(z)
+      upper = 1 + z[i], # integrate over y, when z is negative
+      zval = z[i],
       subdivisions = 1000L,
       rel.tol = rel.tol
     )$value
