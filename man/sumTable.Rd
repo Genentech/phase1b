@@ -7,8 +7,8 @@
 sumTable(
   thisResp,
   TotalSample,
-  cut_B,
-  cut_W,
+  go_cut,
+  stop_cut,
   parX,
   YPri = c(0.5, 0.5),
   Round = 2
@@ -19,15 +19,15 @@ sumTable(
 
 \item{TotalSample}{sample size}
 
-\item{cut_B}{a meaningful improvement threshold: at least cut_B (e.g. 15\%) improvement}
-
-\item{cut_W}{a poor improvement threshold: at most cut_W (e.g. 5\%) improvement}
-
 \item{parX}{non-negative parameters of the beta distribution of the control (posterior)}
 
 \item{YPri}{non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
 
 \item{Round}{Rounding of the output statistics}
+
+\item{cut_B}{a meaningful improvement threshold: at least cut_B (e.g. 15\%) improvement}
+
+\item{cut_W}{a poor improvement threshold: at most cut_W (e.g. 5\%) improvement}
 }
 \value{
 A vector with the results.

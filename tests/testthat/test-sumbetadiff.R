@@ -5,7 +5,7 @@ test_that("sumbetadiff works as expected", {
   result <- sumBetaDiff(
     parX = parX,
     parY = parY,
-    ci_level = 0.8, # 80 % credible interval
+    ci_level = 0.8,
     go_cut = 0.9,
     stop_cut = 0.2
   )

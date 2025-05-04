@@ -58,7 +58,7 @@ dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machi
       # We transform the bounds to follow the support of integrandPos here.
       lower = eps,
       # The upper bounds here are between 0 and 1.
-      upper = 1 - z[i], # integrate over x, when z us positive
+      upper = 1 - z[i], # integrate over x, when z is positive
       zval = z[i],
       subdivisions = 1000L,
       rel.tol = rel.tol

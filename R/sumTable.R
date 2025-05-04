@@ -17,25 +17,29 @@
 ##' @export
 sumTable <- function(thisResp, # number of responses;
                      TotalSample, # Sample size;
-                     cut_B, # meaningful improvement: at least cut_B (say 15\%) improvement;
-                     cut_W, # poor improvement: at most cut_W (say 5\%) improvement;
+                     go_cut, # meaningful improvement: at least cut_B (say 15\%) improvement;
+                     stop_cut, # poor improvement: at most cut_W (say 5\%) improvement;
                      parX, # Two parameters of the beta distribution of the control (posterior);
                      YPri = c(0.5, 0.5), # Prior of phase Ib trial, default Beta(0.5,0.5)
                      Round = 2) {
-  tmp <- sumBetadiff(
+  tmp <- sumBetaDiff(
     parX = parX,
     parY =
       c(
         thisResp + YPri[1],
         TotalSample - thisResp + YPri[2]
       ),
-    cutB = cut_B,
-    cutW = cut_W
+    go_cut = go_cut,
+    stop_cut = stop_cut
   )
 
   summaries <- round(c(
-    thisResp, thisResp / TotalSample * 100,
-    tmp$mode * 100, tmp$ci * 100, tmp$go * 100, tmp$nogo * 100
+    thisResp,
+    thisResp / TotalSample * 100,
+    tmp$mode * 100,
+    tmp$ci* 100,
+    tmp$go * 100,
+    tmp$stop * 100
   ), Round)
 
   summaries <- as.data.frame(summaries)
