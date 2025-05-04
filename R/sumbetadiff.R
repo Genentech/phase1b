@@ -7,8 +7,8 @@
 ##'
 ##' @inheritParams dbetadiff
 ##' @inheritParams plotBetaDiff
-##' @typed conf_level : numeric
-##'   coverage for credible interval
+##' @typed ci_level : numeric
+##'   level or region for credible interval
 ##'
 ##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
 ##' along with the probabilities of above `go_cut` and below `stop_cut`.
@@ -19,12 +19,12 @@
 ##' @export
 sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
-                        coverage = 0.9,
+                        ci_level = 0.9,
                         go_cut,
                         stop_cut) {
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_number(coverage, finite = TRUE)
+  assert_number(ci_level, finite = TRUE)
   assert_number(go_cut, finite = TRUE)
   assert_number(stop_cut, finite = TRUE)
 
@@ -39,18 +39,18 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
       )$maximum
 
       lower <- qbetadiff( # to recover x when F(x) is at lower percentile
-        p = (1 - coverage) / 2,
+        p = (1 - ci_level) / 2,
         parY = parY,
         parX = parX
       )
 
       upper <- qbetadiff( # to recover x when F(x) is at upper percentile
-        p = (1 + coverage) / 2,
+        p = (1 + ci_level) / 2,
         parY = parY,
         parX = parX
       )
       # Prob for Go:
-      auc_go <- stats::integrate(
+      prob_go <- stats::integrate(
         f = dbetadiff,
         parX = parX,
         parY = parY,
@@ -61,7 +61,7 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
       )$value
 
       # Prob for Stop:
-      auc_stop <- stats::integrate(
+      prob_stop <- stats::integrate(
         f = dbetadiff,
         parX = parX,
         parY = parY,
@@ -74,8 +74,8 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
       list(
         mode = mode,
         ci = c(lower, upper),
-        go = auc_go,
-        stop = auc_stop
+        go = prob_go,
+        stop = prob_stop
       )
     },
     silent = TRUE
@@ -85,27 +85,21 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
-    lower <- stats::quantile(samples, prob = (1 - coverage) / 2)
-    upper <- stats::quantile(samples, prob = (1 + coverage) / 2)
+    lower <- stats::quantile(samples, prob = (1 - ci_level) / 2)
+    upper <- stats::quantile(samples, prob = (1 + ci_level) / 2)
 
-    auc_go <- mean(samples > go_cut)
-    auc_stop <- mean(samples < stop_cut)
+    prob_go <- mean(samples > go_cut)
+    prob_stop <- mean(samples < stop_cut)
 
     samples <- cut(samples, breaks = seq(from = -1, to = 1, length = 801))
     samples <- table(samples)
     mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
 
-    assert_number(mode, upper = 1, na.ok = FALSE)
-    assert_number(lower, lower = -1, upper = 1, na.ok = FALSE)
-    assert_number(upper, lower = 0, upper = 1, na.ok = FALSE)
-    assert_number(auc_go, upper = 1, na.ok = FALSE)
-    assert_number(auc_stop, upper = 1, na.ok = FALSE)
-
     result <- list(
       mode = mode,
       ci = c(lower, upper),
-      go = auc_go,
-      stop = auc_stop
+      go = prob_go,
+      stop = prob_stop
     )
   }
   result

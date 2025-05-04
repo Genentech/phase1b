@@ -4,18 +4,18 @@
 \alias{sumBetaDiff}
 \title{Mode and Credible Interval Calculation for The Difference between Two Beta Distributions}
 \usage{
-sumBetaDiff(parX, parY, coverage = 0.9, go_cut, stop_cut)
+sumBetaDiff(parX, parY, ci_level = 0.9, go_cut, stop_cut)
 }
 \arguments{
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
+\item{ci_level}{(\code{numeric}):\cr level or region for credible interval}
+
 \item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
 \item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
-
-\item{conf_level}{(\code{numeric}):\cr coverage for credible interval}
 }
 \value{
 \code{sumbetadiff} gives the mode, credible interval of the distribution function,

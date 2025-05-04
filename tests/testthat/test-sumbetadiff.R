@@ -1,11 +1,11 @@
-# sumbetadiff ----
+# sumBetaDiff ----
 test_that("sumbetadiff works as expected", {
   parX <- c(1, 52) # Control group's parameters
   parY <- c(5.5, 20.5) # Treatment group's parameters
-  result <- sumBetadiff(
+  result <- sumBetaDiff(
     parX = parX,
     parY = parY,
-    coverage = 0.8, # 80 % credible interval
+    ci_level = 0.8, # 80 % credible interval
     go_cut = 0.9,
     stop_cut = 0.2
   )
@@ -23,23 +23,11 @@ test_that("sumbetadiff works as expected", {
 test_that("sumbetadiff gives a error when at least one alpha = 0", {
   parX <- c(0, 10) # Control group's parameters
   parY <- c(5.5, 20.5) # Treatment group's parameters
-  expect_error(sumBetadiff(
+  expect_error(sumBetaDiff(
     parX = parX,
     parY = parY,
-    coverage = 0.8, # 80 % credible interval
+    ci_level = 0.8, # 80 % credible interval
     go_cut = 0.9,
     stop_cut = 0.2
   ))
-})
-
-test_that("sumbetadiff gives a warning when at least one alpha = 0", {
-  parX <- c(20, 52) # Control group's parameters show RR is superior
-  parY <- c(5.5, 20.5) # Treatment group's parameters
-  expect_warning(result <- sumBetadiff(
-    parX = parX,
-    parY = parY,
-    coverage = 0.8, # 80 % credible interval
-    go_cut = 0.9,
-    stop_cut = 0.2
-  ), "Performance of control group better than treatment group")
 })

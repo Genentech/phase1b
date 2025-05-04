@@ -52,6 +52,8 @@ plot(z, dbetadiff(z, parY = parY, parX = parX),
 )
 
 # Calculate probability of Go, if difference was at least 15\%.
+# Explanation: given density of the difference Y - X between two beta distributions X (from control response rate) and Y (from experimental response rate), then we can calculate
+# P(Y - X > 0.15), and when this probability is high then we could go.
 test <- integrate(
   f = dbetadiff,
   parY = parY,
@@ -63,6 +65,8 @@ str(test)
 test$value
 
 # Calculate probability of Stop, if difference was at most 50\%.
+# Explanation: given density of the difference Y - X between two beta distributions X (from control response rate) and Y (from experimental response rate), then we can calculate
+# P(Y - X < 0.5), and when this probability is high then we could stop.
 integrate(
   f = dbetadiff,
   parY = parY,
@@ -70,6 +74,5 @@ integrate(
   lower = -1,
   upper = 0.5
 )
-# Explanation: given density of the difference Y - X between two beta distributions X (from control response rate) and Y (from experimental response rate), then we can calculate
-# P(Y - X < 0.5), and when this probability is high then we could stop.
+
 }

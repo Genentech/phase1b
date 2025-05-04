@@ -20,19 +20,3 @@ plotBetaDiff(
   shade = TRUE,
   note = TRUE
 )
-# first example
-sumBetadiff(
-  parX = parX,
-  parY = parY,
-  coverage = 0.9,
-  go_cut = 0.3,
-  stop_cut = 0.1
-)
-# second example
-sumBetadiff(
-  parX = c(1, 1),
-  parY = c(1, 1),
-  coverage = 0.9,
-  go_cut = 0.3,
-  stop_cut = 0.1
-)
