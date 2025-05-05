@@ -8,7 +8,7 @@
 ##' @inheritParams dbetadiff
 ##' @inheritParams plotBetaDiff
 ##' @typed ci_level : numeric
-##'   level or region for credible interval
+##'   level for credible interval
 ##'
 ##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
 ##' along with the probabilities of above `go_cut` and below `stop_cut`.
