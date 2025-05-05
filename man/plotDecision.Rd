@@ -22,11 +22,13 @@ and a curve of the prob of a poor improvement over estunated diff
 }
 \examples{
 # sumTable ----
-sumTable(thisResp = 10,
-         TotalSample = 20,
-         parX = c(1,1),
-         go_cut = 0.8,
-         stop_cut = 0.4 )
+sumTable(
+  thisResp = 10,
+  TotalSample = 20,
+  parX = c(1, 1),
+  go_cut = 0.8,
+  stop_cut = 0.4
+)
 
 # plotting more results
 summaries <- do.call(
@@ -41,8 +43,5 @@ summaries <- do.call(
 )
 
 plotDecision(summaries, Pos_cut = 60, Neg_cut = 60)
-
-
-
 }
 \keyword{graphics}

@@ -11,15 +11,15 @@ sumBetaDiff(parX, parY, ci_level = 0.9, go_cut, stop_cut)
 
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
-\item{ci_level}{(\code{numeric}):\cr level or region for credible interval}
+\item{ci_level}{(\code{numeric}):\cr level for credible interval}
 
 \item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
 \item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 }
 \value{
-\code{sumbetadiff} gives the mode, credible interval of the distribution function,
-along with the probabilities of above \code{go_cut} and below \code{stop_cut}.
+List with the mode, credible interval for the difference,
+along with the \code{go} and \code{stop} probabilities.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
