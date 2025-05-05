@@ -46,12 +46,12 @@ plotBetaDiff(
   note = TRUE
 )
 
-# a larger Go_cut with uniform prior
+# a larger go_cut with uniform prior
 plotBetaDiff(
   parX = c(1, 1), # Control group's parameters
   parY = c(1, 1), # Treatment group's parameters
-  go_cut = 0.3,
-  stop_cut = 0.1, # below a difference of 10\%, is an unsuccessful trial
+  go_cut = 0.6,
+  stop_cut = 0.1,
   shade = TRUE,
   note = TRUE
 )
