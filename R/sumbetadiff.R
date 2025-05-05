@@ -10,8 +10,8 @@
 ##' @typed ci_level : numeric
 ##'   level for credible interval
 ##'
-##' @return `sumbetadiff` gives the mode, credible interval of the distribution function,
-##' along with the probabilities of above `go_cut` and below `stop_cut`.
+##' @return List with the mode, credible interval for the difference,
+##' along with the `go` and `stop` probabilities.
 ##'
 ##' @importFrom stats optimize integrate
 ##'
