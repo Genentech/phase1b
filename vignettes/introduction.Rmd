@@ -1117,7 +1117,7 @@ Mysim <- sapply(p_par, function(x) {
     wiggle = TRUE,
     decision1 = TRUE
   )
-  return(res$oc)
+  res$oc
 })
 
 peffbp <- Mysim[5, ]

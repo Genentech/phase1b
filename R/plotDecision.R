@@ -15,13 +15,11 @@
 plotDecision <- function(data, Pos_cut, Neg_cut) {
   xticks <- seq(from = -50, to = 100, by = 10)
 
-  # x <- as.numeric(data[1, ]) # number of response;
-  x <- data[1, ]
+  x <- as.numeric(data[1, ]) # number of response;
 
   x.mode <- as.numeric(data[3, ]) # the response diff mode
 
   y <- as.numeric(data[6, ]) # The Prob of a meaningful improvement
-  y <- data[6, ]
 
   z <- as.numeric(data[7, ]) # The Prob of a not meaningful improvement
 
