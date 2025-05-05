@@ -37,7 +37,7 @@ This function will calculate the summary statistics for a specific response
 outcome scenario.
 }
 \examples{
-sumTable(2, 25, parX = c(1, 52), go_cut = 0.2, go_stop = 0.05, YPri = c(1, 1))
+sumTable(2, 25, parX = c(1, 52), go_cut = 0.2, stop_cut = 0.05, YPri = c(1, 1))
 
 # for multiple response scenarios (e.g. 0 to 8 responses out of 25)
 summaries <- do.call(
