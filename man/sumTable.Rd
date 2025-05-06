@@ -4,30 +4,24 @@
 \alias{sumTable}
 \title{Return summary statistics under one response scenario}
 \usage{
-sumTable(
-  thisResp,
-  TotalSample,
-  go_cut,
-  stop_cut,
-  parX,
-  YPri = c(0.5, 0.5),
-  Round = 2
-)
+sumTable(x, n, go_cut, stop_cut, parX, parY = c(0.5, 0.5), Round = 2)
 }
 \arguments{
-\item{thisResp}{number of responses}
+\item{x}{(\code{number}):\cr number of responses}
 
-\item{TotalSample}{sample size}
+\item{n}{(\code{number}):\cr sample size}
 
-\item{parX}{non-negative parameters of the beta distribution of the control (posterior)}
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
-\item{YPri}{non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 
-\item{Round}{Rounding of the output statistics}
+\item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{cut_B}{a meaningful improvement threshold: at least cut_B (e.g. 15\%) improvement}
+\item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
-\item{cut_W}{a poor improvement threshold: at most cut_W (e.g. 5\%) improvement}
+\item{Round}{(\code{number}):\cr Digit rounding of the output statistics}
+
+\item{treat_par}{(\code{numeric}):\cr non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
 }
 \value{
 A vector with the results.
@@ -37,7 +31,12 @@ This function will calculate the summary statistics for a specific response
 outcome scenario.
 }
 \examples{
-sumTable(2, 25, parX = c(1, 52), cut_B = 0.2, cut_W = 0.05, YPri = c(1, 1))
+sumTable(x = 2,
+         n = 25,
+         parX = c(1, 52),
+         parY = c(1, 1),
+         go_cut = 0.2,
+         stop_cut = 0.05)
 
 # for multiple response scenarios (e.g. 0 to 8 responses out of 25)
 summaries <- do.call(
@@ -46,9 +45,21 @@ summaries <- do.call(
     sumTable,
     TotalSample = 25,
     parX = c(1, 52),
-    cut_B = 0.2,
-    cut_W = 0.05
+    go_cut = 0.2,
+    stop_cut = 0.05
   )
 )
 summaries
+
+
+#
+# > sumTable(2, 25, parX = c(1, 52), go_cut = 0.2, stop_cut = 0.05, YPri = c(1, 1))
+# summaries
+# # resp             2.00
+# obs ORR [\%]        8.00
+# mode [\%]           6.48
+# CI lower [\%]       0.71
+# CI upper [\%]      20.68
+# prob.go [\%]        5.87
+# prob.nogo [\%]     26.59
 }
