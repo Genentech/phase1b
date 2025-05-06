@@ -4,12 +4,12 @@
 \alias{sumTable}
 \title{Return summary statistics under one response scenario}
 \usage{
-sumTable(x, n, go_cut, stop_cut, parX, parY = c(0.5, 0.5), Round = 2)
+sumTable(x, n, go_cut, stop_cut, parX, parY = c(0.5, 0.5), round = 2)
 }
 \arguments{
-\item{x}{(\code{number}):\cr number of responses}
+\item{x}{(\code{numeric}):\cr number of successes.}
 
-\item{n}{(\code{number}):\cr sample size}
+\item{n}{(\code{number}):\cr number of patients.}
 
 \item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
@@ -19,9 +19,7 @@ sumTable(x, n, go_cut, stop_cut, parX, parY = c(0.5, 0.5), Round = 2)
 
 \item{parY}{(\code{numeric}):\cr two parameters of \code{Y}'s Beta distribution (Treatment)}
 
-\item{Round}{(\code{number}):\cr Digit rounding of the output statistics}
-
-\item{treat_par}{(\code{numeric}):\cr non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
+\item{round}{(\code{number}):\cr Digit rounding of the output statistics}
 }
 \value{
 A vector with the results.
@@ -43,7 +41,7 @@ summaries <- do.call(
   cbind,
   lapply(c(0:8),
     sumTable,
-    TotalSample = 25,
+    n = 25,
     parX = c(1, 52),
     go_cut = 0.2,
     stop_cut = 0.05

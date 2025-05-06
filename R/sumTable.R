@@ -5,13 +5,7 @@
 #'
 #' @inheritParams postprob
 #' @inheritParams sumBetaDiff
-#' @typed x : number
-#'  number of responses
-#' @typed n : number
-#'  sample size
-#' @typed treat_par : numeric
-#'  non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)
-#' @typed Round : number
+#' @typed round : number
 #' Digit rounding of the output statistics
 #'
 #' @return A vector with the results.
@@ -21,10 +15,18 @@
 sumTable <- function(x,
                      n,
                      go_cut,
-                     stop_cut, # poor improvement: at most cut_W (say 5\%) improvement;
-                     parX, # Two parameters of the beta distribution of the control (posterior);
-                     parY = c(0.5, 0.5), # Prior of phase Ib trial
-                     Round = 2) {
+                     stop_cut,
+                     parX,
+                     parY = c(0.5, 0.5),
+                     round = 2) {
+  assert_numeric(x, lower = 0, upper = n, finite = TRUE)
+  assert_number(n, lower = 0, finite = TRUE)
+  assert_number(go_cut, finite = TRUE)
+  assert_number(stop_cut, finite = TRUE)
+  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_integer(Round, min = 1, finite = TRUE)
+
   tmp <- sumBetaDiff(
     parX = parX,
     parY =
@@ -35,6 +37,7 @@ sumTable <- function(x,
     go_cut = go_cut,
     stop_cut = stop_cut
   )
+<<<<<<< HEAD
   summaries <- data.frame(
     responders = round(x, digits = 1),
     orr = round(x / n * 100, digits = Round),
@@ -54,8 +57,21 @@ sumTable <- function(x,
 
   # summaries <- as.data.frame(summaries)
   summaries <- t(summaries)
+=======
+
+  summaries <- round(c(x,
+                       x / n * 100,
+                       tmp$mode * 100,
+                       tmp$ci * 100,
+                       tmp$go * 100,
+                       tmp$stop * 100
+  ), round)
+
+  summaries <- as.data.frame(summaries)
+
+>>>>>>> 6a03dc7 (asserts added)
   rownames(summaries) <- c(
-    "responders",
+    "responder",
     "obs ORR [%]",
     "mode [%]",
     "CI lower [%]",
@@ -63,6 +79,5 @@ sumTable <- function(x,
     "prob.go [%]",
     "prob.nogo [%]"
   )
-
   summaries
 }

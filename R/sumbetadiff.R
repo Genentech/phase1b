@@ -1,22 +1,22 @@
-##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
-##'
-##' @description `r lifecycle::badge("experimental")`
-##'
-##' A function to summarize the characters of a betadiff distribution [dbetadiff()].
-##' May require use of random sample generator to calculate, use [set.seed()] to reproduce results.
-##'
-##' @inheritParams dbetadiff
-##' @inheritParams plotBetaDiff
-##' @typed ci_level : numeric
-##'   level for credible interval
-##'
-##' @return List with the mode, credible interval for the difference,
-##' along with the `go` and `stop` probabilities.
-##'
-##' @importFrom stats optimize integrate
-##'
-##' @example examples/sumbetadiff.R
-##' @export
+#' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' A function to summarize the characters of a betadiff distribution [dbetadiff()].
+#' May require use of random sample generator to calculate, use [set.seed()] to reproduce results.
+#'
+#' @inheritParams dbetadiff
+#' @inheritParams plotBetaDiff
+#' @typed ci_level : numeric
+#'   level for credible interval
+#'
+#' @return List with the mode, credible interval for the difference,
+#' along with the `go` and `stop` probabilities.
+#'
+#' @importFrom stats optimize integrate
+#'
+#' @example examples/sumbetadiff.R
+#' @export
 sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
                         ci_level = 0.9,
