@@ -1,27 +1,34 @@
 ##' Mode and Credible Interval Calculation for The Difference between Two Beta Distributions
 ##'
+##' @description `r lifecycle::badge("experimental")`
 ##'
-##' A function to summerize the characters of a betadiff distribution \code{\link{dbetadiff}}
+##' A function to summarize the characters of a betadiff distribution [dbetadiff()].
+##' May require use of random sample generator to calculate, use [set.seed()] to reproduce results.
 ##'
+##' @inheritParams dbetadiff
+##' @inheritParams plotBetaDiff
+##' @typed ci_level : numeric
+##'   level for credible interval
 ##'
-##' @param parX two parameters of X's beta distribution (Control)
-##' @param parY two parameters of Y's beta distribution (Treatment)
-##' @param level credible interval
-##' @param cutB  a cutoff value for the upper bound
-##' @param cutW  a cutoff value for the lower bound
+##' @return List with the mode, credible interval for the difference,
+##' along with the `go` and `stop` probabilities.
 ##'
-##' @return sumbetadiff gives the mode, credible interval of the distribution function,
-##' along with the probabilities of above cutB and below cutW.
-##'
-##' @importFrom stats optimize integrate rbeta quantile
+##' @importFrom stats optimize integrate
 ##'
 ##' @example examples/sumbetadiff.R
 ##' @export
-sumBetadiff <- function(parY, parX,
-                        level = 0.9, ## CI level
-                        cutB,
-                        cutW) {
-  res <- try(
+sumBetaDiff <- function(parX, # Treatment group's parameters
+                        parY, # Control group's parameters
+                        ci_level = 0.9,
+                        go_cut,
+                        stop_cut) {
+  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_number(ci_level, finite = TRUE)
+  assert_number(go_cut, finite = TRUE)
+  assert_number(stop_cut, finite = TRUE)
+
+  result <- try(
     {
       mode <- stats::optimize(
         f = dbetadiff,
@@ -31,36 +38,35 @@ sumBetadiff <- function(parY, parX,
         maximum = TRUE
       )$maximum
 
-      lower <- qbetadiff(
-        p = (1 - level) / 2,
+      lower <- qbetadiff( # to recover x when F(x) is at lower percentile
+        p = (1 - ci_level) / 2,
         parY = parY,
         parX = parX
       )
 
-      upper <- qbetadiff(
-        p = (1 + level) / 2,
+      upper <- qbetadiff( # to recover x when F(x) is at upper percentile
+        p = (1 + ci_level) / 2,
         parY = parY,
         parX = parX
       )
-
-      ## for Go:
-      Out.go <- stats::integrate(
+      # Prob for Go:
+      prob_go <- stats::integrate(
         f = dbetadiff,
-        parY = parY,
         parX = parX,
-        lower = cutB,
+        parY = parY,
+        lower = go_cut,
         upper = 1,
         subdivisions = 1000L,
         rel.tol = .Machine$double.eps^0.1
       )$value
 
-      ## for Stop:
-      Out.nogo <- stats::integrate(
+      # Prob for Stop:
+      prob_stop <- stats::integrate(
         f = dbetadiff,
-        parY = parY,
         parX = parX,
+        parY = parY,
         lower = -1,
-        upper = cutW,
+        upper = stop_cut,
         subdivisions = 1000L,
         rel.tol = .Machine$double.eps^0.1
       )$value
@@ -68,35 +74,33 @@ sumBetadiff <- function(parY, parX,
       list(
         mode = mode,
         ci = c(lower, upper),
-        go = Out.go,
-        nogo = Out.nogo
+        go = prob_go,
+        stop = prob_stop
       )
     },
     silent = TRUE
   )
-
-  ## if there were any errors, fall back to Monte Carlo estimation
-  if (inherits(res, "try-error")) {
+  # if there were any errors, fall back to Monte Carlo estimation
+  if (inherits(result, "try-error")) { # try-error is a class
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
       rbeta(n = 2e6, parX[1], parX[2])
 
-    lower <- stats::quantile(samples, prob = (1 - level) / 2)
-    upper <- stats::quantile(samples, prob = (1 + level) / 2)
+    lower <- stats::quantile(samples, prob = (1 - ci_level) / 2)
+    upper <- stats::quantile(samples, prob = (1 + ci_level) / 2)
 
-    Out.go <- mean(samples > cutB)
-    Out.nogo <- mean(samples < cutW)
+    prob_go <- mean(samples > go_cut)
+    prob_stop <- mean(samples < stop_cut)
 
     samples <- cut(samples, breaks = seq(from = -1, to = 1, length = 801))
     samples <- table(samples)
     mode <- seq(from = -1, to = 1, by = 0.0025)[which.max(samples)]
 
-    res <- list(
+    result <- list(
       mode = mode,
       ci = c(lower, upper),
-      go = Out.go,
-      nogo = Out.nogo
+      go = prob_go,
+      stop = prob_stop
     )
   }
-
-  return(res)
+  result
 }

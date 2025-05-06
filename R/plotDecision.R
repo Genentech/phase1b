@@ -133,5 +133,5 @@ plotDecision <- function(data, Pos_cut, Neg_cut) {
 
   graphics::axis(1, at = LablePoint2, labels = paste(LablePoint2, "%", sep = ""), las = 1, lwd = 2, cex.axis = 1)
 
-  return(data)
+  data
 }

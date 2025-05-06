@@ -7,27 +7,27 @@
 sumTable(
   thisResp,
   TotalSample,
-  cut_B,
-  cut_W,
+  go_cut,
+  stop_cut,
   parX,
   YPri = c(0.5, 0.5),
   Round = 2
 )
 }
 \arguments{
-\item{thisResp}{number of responses}
+\item{thisResp}{(\code{number}):\cr number of responses}
 
-\item{TotalSample}{sample size}
+\item{TotalSample}{(\code{number}):\cr sample size}
 
-\item{cut_B}{a meaningful improvement threshold: at least cut_B (e.g. 15\%) improvement}
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
-\item{cut_W}{a poor improvement threshold: at most cut_W (e.g. 5\%) improvement}
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 
-\item{parX}{non-negative parameters of the beta distribution of the control (posterior)}
+\item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{YPri}{non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
+\item{YPri}{(\code{numeric}):\cr non-negative parameters of the beta prior of the treatment, default Beta(0.5,0.5)}
 
-\item{Round}{Rounding of the output statistics}
+\item{Round}{(\code{number}):\cr Rounding of the output statistics}
 }
 \value{
 A vector with the results.
@@ -37,7 +37,7 @@ This function will calculate the summary statistics for a specific response
 outcome scenario.
 }
 \examples{
-sumTable(2, 25, parX = c(1, 52), cut_B = 0.2, cut_W = 0.05, YPri = c(1, 1))
+sumTable(2, 25, parX = c(1, 52), go_cut = 0.2, stop_cut = 0.05, YPri = c(1, 1))
 
 # for multiple response scenarios (e.g. 0 to 8 responses out of 25)
 summaries <- do.call(
@@ -46,8 +46,8 @@ summaries <- do.call(
     sumTable,
     TotalSample = 25,
     parX = c(1, 52),
-    cut_B = 0.2,
-    cut_W = 0.05
+    go_cut = 0.2,
+    stop_cut = 0.05
   )
 )
 summaries

@@ -77,25 +77,16 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
   data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
 
-  go_auc <- integrate(
-    f = dbetadiff,
+  temp <- sumBetaDiff(
     parX = parX,
     parY = parY,
-    lower = go_cut, # Calculate probability of go, if difference was at least `go_cut`.
-    upper = 1
-  )
-  stop_auc <- integrate(
-    f = dbetadiff,
-    parX = parX,
-    parY = parY,
-    lower = -1,
-    upper = stop_cut # Calculate probability of stop, if difference was at most `stop_cut`.
+    go_cut = go_cut,
+    stop_cut = stop_cut
   )
 
-  go_label <- paste("P(Go) is", round(go_auc$value * 100, digits = 2), "%")
-  stop_label <- paste("P(Stop) is", round(stop_auc$value * 100, digits = 2), "%")
+  go_label <- paste("P(Go) is", round(temp$go * 100, digits = 2), "%")
+  stop_label <- paste("P(Stop) is", round(temp$stop * 100, digits = 2), "%")
   plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
-
 
   pbetadiff_plot <- if (shade) {
     ggplot2::ggplot(data = data, mapping = ggplot2::aes(x = grid, y = density)) +

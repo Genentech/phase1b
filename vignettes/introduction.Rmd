@@ -4,7 +4,7 @@ package: phase1b
 bibliography: '`r system.file("REFERENCES.bib", package = "phase1b")`'
 author:
   - name: Audrey Yeo
-    email: audrey.yeo@roche.com
+    email: audrey@finc-research.com
   - name: Tony Pourmohamad
     email: pourmoht@gene.com
   - name: Jiawen Zhu
@@ -1117,7 +1117,7 @@ Mysim <- sapply(p_par, function(x) {
     wiggle = TRUE,
     decision1 = TRUE
   )
-  return(res$oc)
+  res$oc
 })
 
 peffbp <- Mysim[5, ]
