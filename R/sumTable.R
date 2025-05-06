@@ -25,7 +25,7 @@ sumTable <- function(x,
   assert_number(stop_cut, finite = TRUE)
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_integer(Round, min = 1, finite = TRUE)
+  assert_true(round %% 1 == 0, na.ok = FALSE)
 
   tmp <- sumBetaDiff(
     parX = parX,
@@ -37,28 +37,6 @@ sumTable <- function(x,
     go_cut = go_cut,
     stop_cut = stop_cut
   )
-<<<<<<< HEAD
-  summaries <- data.frame(
-    responders = round(x, digits = 1),
-    orr = round(x / n * 100, digits = Round),
-    mode = round(tmp$mode * 100, digits = Round),
-    ci_upper = round(tmp$ci[1] * 100, digits = Round),
-    ci_lower = round(tmp$ci[2]),
-    prob_go = 3,
-    prob_stop = 5
-  )
-  #   c(x,
-  #                x / n * 100,
-  #                tmp$mode * 100,
-  #                tmp$ci * 100,
-  #                tmp$go * 100,
-  #                tmp$stop * 100
-  # )
-
-  # summaries <- as.data.frame(summaries)
-  summaries <- t(summaries)
-=======
-
   summaries <- round(c(x,
                        x / n * 100,
                        tmp$mode * 100,
@@ -69,9 +47,8 @@ sumTable <- function(x,
 
   summaries <- as.data.frame(summaries)
 
->>>>>>> 6a03dc7 (asserts added)
   rownames(summaries) <- c(
-    "responder",
+    "responders",
     "obs ORR [%]",
     "mode [%]",
     "CI lower [%]",

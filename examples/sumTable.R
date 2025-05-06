@@ -19,15 +19,3 @@ summaries <- do.call(
   )
 )
 summaries
-
-
-#
-# > sumTable(2, 25, parX = c(1, 52), go_cut = 0.2, stop_cut = 0.05, YPri = c(1, 1))
-# summaries
-# # resp             2.00
-# obs ORR [%]        8.00
-# mode [%]           6.48
-# CI lower [%]       0.71
-# CI upper [%]      20.68
-# prob.go [%]        5.87
-# prob.nogo [%]     26.59
