@@ -37,12 +37,13 @@ sumTable <- function(x,
     go_cut = go_cut,
     stop_cut = stop_cut
   )
-  summaries <- round(c(x,
-                       x / n * 100,
-                       tmp$mode * 100,
-                       tmp$ci * 100,
-                       tmp$go * 100,
-                       tmp$stop * 100
+  summaries <- round(c(
+    x,
+    x / n * 100,
+    tmp$mode * 100,
+    tmp$ci * 100,
+    tmp$go * 100,
+    tmp$stop * 100
   ), round)
 
   summaries <- as.data.frame(summaries)

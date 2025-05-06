@@ -60,7 +60,8 @@ test_that("sumTable works as expected when x = 0", {
       summaries = c(0, 0, -8.03, -34.32, -0.44, 0, 99.53)
     ),
     row.names =
-      c("responders",
+      c(
+        "responders",
         "obs ORR [%]",
         "mode [%]",
         "CI lower [%]",
