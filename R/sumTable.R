@@ -37,12 +37,13 @@ sumTable <- function(x,
   )
   summaries <- data.frame(
     responders = round(x, digits = 1),
-    orr = round(x/n * 100, digits = Round),
+    orr = round(x / n * 100, digits = Round),
     mode = round(tmp$mode * 100, digits = Round),
     ci_upper = round(tmp$ci[1] * 100, digits = Round),
     ci_lower = round(tmp$ci[2]),
     prob_go = 3,
-    prob_stop = 5)
+    prob_stop = 5
+  )
   #   c(x,
   #                x / n * 100,
   #                tmp$mode * 100,
@@ -52,7 +53,7 @@ sumTable <- function(x,
   # )
 
   # summaries <- as.data.frame(summaries)
-summaries <- t(summaries)
+  summaries <- t(summaries)
   rownames(summaries) <- c(
     "responders",
     "obs ORR [%]",
