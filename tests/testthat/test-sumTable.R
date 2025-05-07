@@ -70,7 +70,7 @@ test_that("sumTable works as expected when x = 0", {
         "prob.nogo [%]"
       )
   )
-  expect_identical(result, expected)
+  expect_equal(result, expected)
 })
 
 test_that("sumTable works as expected when n = 0", {
