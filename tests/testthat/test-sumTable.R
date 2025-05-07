@@ -73,7 +73,7 @@ test_that("sumTable works as expected when x = 0", {
   expect_equal(result, expected)
 })
 
-test_that("sumTable works as expected when n = 0", {
+test_that("sumTable gives an error as expected when n = 0", {
   expect_error(
     sumTable(
       x = 5,
