@@ -43,7 +43,7 @@ test_that("sumTable gives a error when at least one beta prior parameter is 0", 
       go_cut = 0.2,
       stop_cut = 0.05
     ),
-    label = "Assertion on parX failed Element 1 is not >= 2.22507e-308"
+    label = "Assertion on parX failed Element 1 is not >="
   )
 })
 
