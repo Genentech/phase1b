@@ -25,7 +25,7 @@ sumTable <- function(x,
   assert_number(stop_cut, finite = TRUE)
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_true(round %% 1 == 0, na.ok = FALSE)
+  assert_count(round)
 
   tmp <- sumBetaDiff(
     parX = parX,
