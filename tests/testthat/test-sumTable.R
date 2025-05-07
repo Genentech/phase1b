@@ -33,7 +33,7 @@ test_that("sumTable works as expected", {
   expect_identical(result, expected)
 })
 
-test_that("sumTable gives a error when at least one alpha = 0", {
+test_that("sumTable gives a error when at least one beta prior parameter is 0", {
   expect_error(
     sumTable(
       x = 2,
