@@ -42,7 +42,7 @@ test_that("sumTable gives a error when at least one alpha = 0", {
       parY = c(1, 1), # Treatment group's parameters
       go_cut = 0.2,
       stop_cut = 0.05
-    )
+    ), label = "Assertion on parX failed Element 1 is not >= 2.22507e-308"
   )
 })
 
@@ -82,6 +82,6 @@ test_that("sumTable gives an error as expected when n = 0", {
       parY = c(1, 1), # Treatment group's parameters
       go_cut = 0.2,
       stop_cut = 0.05
-    )
+    ), label = "Assertion on x failed Element 1 is not <= 0"
   )
 })
