@@ -157,7 +157,7 @@ result <- ocPredprobDist(
   parS = c(5, 25),
   weights = 1,
   weightsS = 1,
-  sim = 50,
+  sim = 15,
   wiggle = FALSE,
   decision1 = TRUE
 )
@@ -191,7 +191,7 @@ result <- ocPredprobDist(
   parS = c(5, 25),
   weights = 1,
   weightsS = 1,
-  sim = 50,
+  sim = 15,
   nnF = c(20, 30),
   wiggle = TRUE,
   decision1 = TRUE
@@ -225,7 +225,7 @@ result <- ocPredprobDist(
   parS = c(5, 25),
   weights = 1,
   weightsS = 1,
-  sim = 50,
+  sim = 15,
   nnF = c(10, 20, 30),
   wiggle = TRUE,
   decision1 = FALSE
@@ -258,7 +258,7 @@ result <- ocPredprobDist(
   parS = c(5, 25),
   weights = 1,
   weightsS = 1,
-  sim = 50,
+  sim = 15,
   nnF = c(10, 20, 30),
   wiggle = TRUE,
   decision1 = FALSE
