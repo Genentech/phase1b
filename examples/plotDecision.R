@@ -1,7 +1,7 @@
 # sumTable ----
 sumTable(
-  thisResp = 10,
-  TotalSample = 20,
+  x = 10,
+  n = 20,
   parX = c(1, 1),
   go_cut = 0.8,
   stop_cut = 0.4
@@ -12,7 +12,7 @@ summaries <- do.call(
   cbind,
   lapply(c(0:8),
     sumTable,
-    TotalSample = 25,
+    n = 25,
     parX = c(1, 52),
     go_cut = 0.6,
     stop_cut = 0.2
