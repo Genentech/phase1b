@@ -4,14 +4,14 @@
 \alias{plotDecision}
 \title{Plot a summary plot corresponding to the sumTable output}
 \usage{
-plotDecision(data, Pos_cut, Neg_cut)
+plotDecision(data, go_cut, stop_cut)
 }
 \arguments{
-\item{data}{the output object of \code{\link{sumTable}}}
+\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \link{(sumTable)}}
 
-\item{Pos_cut}{a cut off for the prob of a meaningful improvement}
+\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
 
-\item{Neg_cut}{a cut off for the prob of a poor improvement}
+\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 }
 \value{
 the \code{data} item which was imputed to the function
@@ -37,11 +37,11 @@ summaries <- do.call(
     sumTable,
     TotalSample = 25,
     parX = c(1, 52),
-    go_cut = 0.6,
+    go_cut = 0.5,
     stop_cut = 0.2
   )
 )
 
-# plotDecision(summaries, Pos_cut = 60, Neg_cut = 60)
+plotDecision(summaries, go_cut = 10, stop_cut = 2)
 }
 \keyword{graphics}

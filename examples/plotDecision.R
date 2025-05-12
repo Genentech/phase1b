@@ -7,6 +7,19 @@ sumTable(
   stop_cut = 0.4
 )
 
+summaries <- do.call(
+  cbind,
+  lapply(c(0:8),
+         sumTable,
+         TotalSample = 25,
+         parX = c(1, 52),
+         go_cut = 0.2,
+         stop_cut = 0.05
+  )
+)
+
+plotDecision(summaries, go_cut = 60, stop_cut = 60)
+
 # plotting more results
 summaries <- do.call(
   cbind,
@@ -14,9 +27,9 @@ summaries <- do.call(
     sumTable,
     TotalSample = 25,
     parX = c(1, 52),
-    go_cut = 0.6,
+    go_cut = 0.5,
     stop_cut = 0.2
   )
 )
 
-# plotDecision(summaries, Pos_cut = 60, Neg_cut = 60)
+plotDecision(summaries, go_cut = 10, stop_cut = 2)
