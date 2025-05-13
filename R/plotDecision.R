@@ -22,23 +22,25 @@ plotDecision <- function(data, go_cut, stop_cut) {
 
   data <- tibble::remove_rownames(data)
 
-  colnames(data) <- c("responders",
-                      "obs",
-                      "mode",
-                      "ci_lower",
-                      "ci_upper",
-                      "prob_go",
-                      "prob_stop")
+  colnames(data) <- c(
+    "responders",
+    "obs",
+    "mode",
+    "ci_lower",
+    "ci_upper",
+    "prob_go",
+    "prob_stop"
+  )
 
-  go_shade <- data[data$prob_go > go_cut,]
+  go_shade <- data[data$prob_go > go_cut, ]
 
-  stop_shade <- data[data$prob_stop > stop_cut,]
+  stop_shade <- data[data$prob_stop > stop_cut, ]
 
   ggplot2::ggplot(go_shade) +
     geom_area(ggplot2::aes(x = mode, y = prob_go))
 
-  annotation_go <- paste0("Probability of Go is ", go_cut ," when difference is ", min(data$mode[data$prob_go > go_cut]), "%")
-  annotation_stop <- paste0("Probability of Stop is ", stop_cut ," when difference is ", max(data$mode[data$prob_stop > stop_cut]), "%")
+  annotation_go <- paste0("Probability of Go is ", go_cut, " when difference is ", min(data$mode[data$prob_go > go_cut]), "%")
+  annotation_stop <- paste0("Probability of Stop is ", stop_cut, " when difference is ", max(data$mode[data$prob_stop > stop_cut]), "%")
 
   ggplot2::ggplot(data) +
     ggplot2::geom_line(ggplot2::aes(x = mode, y = prob_go), linewidth = 1.5, colour = "#009E73") +
@@ -50,6 +52,6 @@ plotDecision <- function(data, go_cut, stop_cut) {
     ggplot2::ggtitle("Probability of Difference and respective Go and Stop probabilities") +
     ggplot2::xlab("Estimated difference in Response Rate (%)") +
     ggplot2::ylab("Probability (%)") +
-    ggplot2::annotate("text", x = mean(data$mode), y = 70, label = annotation_go ) +
-    ggplot2::annotate("text", x = mean(data$mode), y = 65, label = annotation_stop )
+    ggplot2::annotate("text", x = mean(data$mode), y = 70, label = annotation_go) +
+    ggplot2::annotate("text", x = mean(data$mode), y = 65, label = annotation_stop)
 }
