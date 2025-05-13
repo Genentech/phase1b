@@ -3,11 +3,11 @@ testthat::test_that("plotDecision gives a correct result", {
   summaries <- do.call(
     cbind,
     lapply(c(0:8),
-           sumTable,
-           n = 25,
-           parX = c(1, 52),
-           go_cut = 0.2,
-           stop_cut = 0.05
+      sumTable,
+      n = 25,
+      parX = c(1, 52),
+      go_cut = 0.2,
+      stop_cut = 0.05
     )
   )
   result <- plotDecision(summaries, efficacious_prob = 60, futile_prob = 60)
@@ -21,5 +21,3 @@ testthat::test_that("plotDecision gives a correct result", {
   testthat::expect_identical(result$labels$title, "Probability of Difference and respective Go and Stop probabilities.")
   vdiffr::expect_doppelganger("plot of Probability of Difference and respective Go and Stop probabilities", result)
 })
-
-
