@@ -17,12 +17,7 @@ plotDecision <- function(data, go_cut, stop_cut) {
   assert_data_frame(data, any.missing = FALSE)
   assert_number(go_cut, finite = TRUE)
   assert_number(stop_cut, finite = TRUE)
-  #
-  #   diff <- seq(from = -1, to = 1, length = 1000)
-  #   data <- data.frame(
-  #     grid = diff,
-  #     density = dbetadiff(z = diff, parY = parY, parX = parX)
-  #   )
+
 
   xticks <- seq(from = -50, to = 100, by = 10)
 
@@ -48,17 +43,17 @@ plotDecision <- function(data, go_cut, stop_cut) {
 
 
   graphics::plot(x.mode,
-    y,
-    type = "n",
-    xlim = range(x.mode),
-    bty = "n",
-    ylab = "Probability (%)",
-    xaxt = "n",
-    xaxs = "i",
-    yaxs = "i",
-    xlab = expression(paste("Estimated diff.", sep = "")),
-    ylim = c(0, 100),
-    panel.first = grid()
+                 y,
+                 type = "n",
+                 xlim = range(x.mode),
+                 bty = "n",
+                 ylab = "Probability (%)",
+                 xaxt = "n",
+                 xaxs = "i",
+                 yaxs = "i",
+                 xlab = expression(paste("Estimated diff.", sep = "")),
+                 ylim = c(0, 100),
+                 panel.first = grid()
   )
 
 
