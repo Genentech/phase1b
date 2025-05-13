@@ -46,9 +46,9 @@ summaries <- do.call(
     n = 25,
     parX = c(1, 52),
     parY = c(0.5, 0.5), # default
-# density when P( diff > 20\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    # density when P( diff > 20\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
     go_cut = 0.2,
-# density when P( diff < 5\% |  B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    # density when P( diff < 5\% |  B(1, 52) for control and B(0.5, 0.5) for treatment) :
     stop_cut = 0.05
   )
 )
