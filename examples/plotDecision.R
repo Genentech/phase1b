@@ -1,12 +1,3 @@
-# sumTable ----
-sumTable(
-  x = 10,
-  n = 20,
-  parX = c(1, 1),
-  go_cut = 0.8,
-  stop_cut = 0.4
-)
-
 summaries <- do.call(
   cbind,
   lapply(c(0:8),
@@ -20,7 +11,7 @@ summaries <- do.call(
 
 plotDecision(summaries, go_cut = 60, stop_cut = 60)
 
-# plotting more results
+# plotting different criteria
 summaries <- do.call(
   cbind,
   lapply(c(0:8),

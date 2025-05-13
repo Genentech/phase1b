@@ -1,14 +1,14 @@
 #' Plot a summary plot corresponding to the sumTable output
 #'
-#' This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
-#' and a curve of the prob of a poor improvement over estunated diff
+#' This function will return a plot showing a curve of the prob of a meaningful improvement over estimated diff
+#' and a curve of the prob of a poor improvement over estimated diff
 #'
 #' @inheritParams plotBetaDiff
 #' @typed data : data.frame
 #'  sourced [`data.frame`] from [(sumTable)]
-#' @return the \code{data} item which was imputed to the function
+#' @return the [`data`] item which was imputed to the function
 #'
-#' @importFrom graphics lines abline polygon plot par grid mtext box axis
+#' @importFrom tibble ggplot2
 #'
 #' @example examples/plotDecision.R
 #' @export

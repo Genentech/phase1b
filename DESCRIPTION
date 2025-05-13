@@ -89,4 +89,5 @@ Collate:
     'runShinyPhase1b.R'
     'sumTable.R'
     'sumbetadiff.R'
+    'test-plotDecision.R'
 Config/testthat/edition: 3

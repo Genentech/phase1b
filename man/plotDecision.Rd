@@ -14,22 +14,13 @@ plotDecision(data, go_cut, stop_cut)
 \item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
 }
 \value{
-the \code{data} item which was imputed to the function
+the \code{\link{data}} item which was imputed to the function
 }
 \description{
-This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
-and a curve of the prob of a poor improvement over estunated diff
+This function will return a plot showing a curve of the prob of a meaningful improvement over estimated diff
+and a curve of the prob of a poor improvement over estimated diff
 }
 \examples{
-# sumTable ----
-sumTable(
-  x = 10,
-  n = 20,
-  parX = c(1, 1),
-  go_cut = 0.8,
-  stop_cut = 0.4
-)
-
 summaries <- do.call(
   cbind,
   lapply(c(0:8),
@@ -43,7 +34,7 @@ summaries <- do.call(
 
 plotDecision(summaries, go_cut = 60, stop_cut = 60)
 
-# plotting more results
+# plotting different criteria
 summaries <- do.call(
   cbind,
   lapply(c(0:8),
