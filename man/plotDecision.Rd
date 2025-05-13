@@ -4,14 +4,14 @@
 \alias{plotDecision}
 \title{Plot a summary plot corresponding to the sumTable output}
 \usage{
-plotDecision(data, go_cut, stop_cut)
+plotDecision(data, efficacious_prob, futile_prob)
 }
 \arguments{
 \item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \link{(sumTable)}}
 
-\item{go_cut}{(\code{number}):\cr a meaningful improvement threshold, the lower boundary of a meaningfully improvement in response rate}
+\item{efficacious_prob}{(\code{number}):\cr a cut off for the probability of a meaningful improvement}
 
-\item{stop_cut}{(\code{number}):\cr a poor improvement threshold, the upper boundary of a meaningfully poor improvement in response rate}
+\item{futile_prob}{(\code{number}):\cr a cut off for the probability of a poor improvement}
 }
 \value{
 the \code{\link{data}} item which was imputed to the function
@@ -32,7 +32,7 @@ summaries <- do.call(
   )
 )
 
-plotDecision(summaries, go_cut = 60, stop_cut = 60)
+plotDecision(summaries, efficacious_prob = 60, futile_prob = 60)
 
 # plotting different criteria
 summaries <- do.call(
@@ -41,11 +41,13 @@ summaries <- do.call(
     sumTable,
     n = 25,
     parX = c(1, 52),
-    go_cut = 0.5,
-    stop_cut = 0.2
+# density when P( diff > 20\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    go_cut = 0.2,
+# density when P( diff < 10\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    stop_cut = 0.1
   )
 )
 
-plotDecision(summaries, go_cut = 10, stop_cut = 2)
+plotDecision(summaries, efficacious_prob = 60, futile_prob = 80)
 }
 \keyword{graphics}
