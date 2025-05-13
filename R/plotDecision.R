@@ -36,11 +36,8 @@ plotDecision <- function(data, go_cut, stop_cut) {
 
   stop_shade <- data[data$prob_stop > stop_cut, ]
 
-  ggplot2::ggplot(go_shade) +
-    geom_area(ggplot2::aes(x = mode, y = prob_go))
-
-  annotation_go <- paste0("Probability of Go is ", go_cut, " when difference is ", min(data$mode[data$prob_go > go_cut]), "%")
-  annotation_stop <- paste0("Probability of Stop is ", stop_cut, " when difference is ", max(data$mode[data$prob_stop > stop_cut]), "%")
+  annotation_go <- paste0("Probability of Go is ", go_cut, "% when difference is ", min(data$mode[data$prob_go > go_cut]), "%")
+  annotation_stop <- paste0("Probability of Stop is ", stop_cut, "% when difference is ", max(data$mode[data$prob_stop > stop_cut]), "%")
 
   ggplot2::ggplot(data) +
     ggplot2::geom_line(ggplot2::aes(x = mode, y = prob_go), linewidth = 1.5, colour = "#009E73") +
