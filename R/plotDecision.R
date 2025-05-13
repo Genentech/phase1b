@@ -37,14 +37,19 @@ plotDecision <- function(data, go_cut, stop_cut) {
   ggplot2::ggplot(go_shade) +
     geom_area(ggplot2::aes(x = mode, y = prob_go))
 
+  annotation_go <- paste0("Probability of Go is ", go_cut ," when difference is ", min(data$mode[data$prob_go > go_cut]), "%")
+  annotation_stop <- paste0("Probability of Stop is ", stop_cut ," when difference is ", max(data$mode[data$prob_stop > stop_cut]), "%")
+
   ggplot2::ggplot(data) +
     ggplot2::geom_line(ggplot2::aes(x = mode, y = prob_go), linewidth = 1.5, colour = "#009E73") +
     ggplot2::theme_light() +
+    ggplot2::scale_x_continuous(breaks = seq(from = 0, to = round(max(data$mode), digits = 1), by = 5)) +
     ggplot2::geom_area(data = go_shade, mapping = ggplot2::aes(x = mode, y = prob_go), fill = "#009E73") +
     ggplot2::geom_line(data = data, ggplot2::aes(x = mode, y = prob_stop), linewidth = 1.5, colour = "#FF0046") +
     ggplot2::geom_area(data = stop_shade, mapping = ggplot2::aes(x = mode, y = prob_stop), fill = "#FF0046") +
-    ggplot2::ggtitle("Prob") +
-    ggplot2::xlab("") +
-    ggplot2::ylab("")
-
+    ggplot2::ggtitle("Probability of Difference and respective Go and Stop probabilities") +
+    ggplot2::xlab("Estimated difference in Response Rate (%)") +
+    ggplot2::ylab("Probability (%)") +
+    ggplot2::annotate("text", x = mean(data$mode), y = 70, label = annotation_go ) +
+    ggplot2::annotate("text", x = mean(data$mode), y = 65, label = annotation_stop )
 }
