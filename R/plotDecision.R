@@ -40,10 +40,14 @@ plotDecision <- function(data, efficacious_prob, futile_prob) {
 
   stop_shade <- data[data$prob_stop > futile_prob, ]
 
-  annotation_go <- paste0("Probability of Go is ", efficacious_prob, "% when difference is at least ",
-                          max(data$mode[data$prob_go > efficacious_prob]), "%")
-  annotation_stop <- paste0("Probability of Stop is ", futile_prob, "% when difference is at most ",
-                            max(data$mode[data$prob_stop > futile_prob]), "%")
+  annotation_go <- paste0(
+    "Probability of Go is ", efficacious_prob, "% when difference is at least ",
+    max(data$mode[data$prob_go > efficacious_prob]), "%"
+  )
+  annotation_stop <- paste0(
+    "Probability of Stop is ", futile_prob, "% when difference is at most ",
+    max(data$mode[data$prob_stop > futile_prob]), "%"
+  )
 
   ggplot2::ggplot(data) +
     ggplot2::geom_line(ggplot2::aes(x = mode, y = prob_go), linewidth = 1.5, colour = "#009E73") +
