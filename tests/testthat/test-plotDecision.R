@@ -1,5 +1,5 @@
 # plotDecision ----
-testthat::test_that("plotDecision gives a correct result", {
+test_that("plotDecision gives a correct result", {
   summaries <- do.call(
     cbind,
     lapply(c(0:8),
@@ -18,6 +18,6 @@ testthat::test_that("plotDecision gives a correct result", {
   expect_numeric(result$data$ci_upper)
   expect_numeric(result$data$prob_go)
   expect_numeric(result$data$prob_stop)
-  testthat::expect_identical(result$labels$title, "Probability of Difference and respective Go and Stop probabilities.")
+  expect_identical(result$labels$title, "Probability of Difference and respective Go and Stop probabilities.")
   vdiffr::expect_doppelganger("plot of Probability of Difference and respective Go and Stop probabilities", result)
 })
