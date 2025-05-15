@@ -20,8 +20,8 @@
 sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
                         ci_level = 0.9,
-                        go_cut, # a meaningful improvement threshold
-                        stop_cut) { # a poor improvement threshold
+                        go_cut,
+                        stop_cut) {
   assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
   assert_number(ci_level, finite = TRUE)
