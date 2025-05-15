@@ -87,7 +87,7 @@ Collate:
     'predprob.R'
     'predprobDist.R'
     'runShinyPhase1b.R'
-    'sumBetaDiff.R'
     'sumTable.R'
+    'sumbetadiff.R'
     'test-plotDecision.R'
 Config/testthat/edition: 3
