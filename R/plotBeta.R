@@ -80,8 +80,8 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   temp <- sumBetaDiff(
     parX = parX,
     parY = parY,
-    go_cut = go_cut,
-    stop_cut = stop_cut
+    go_cut = go_cut, # in response rate
+    stop_cut = stop_cut # in response rate
   )
 
   go_label <- paste("P(Go) is", round(temp$go * 100, digits = 2), "%")

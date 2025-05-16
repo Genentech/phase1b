@@ -15,7 +15,7 @@
 #'
 #' @importFrom stats optimize integrate
 #'
-#' @example examples/sumbetadiff.R
+#' @example examples/sumBetaDiff.R
 #' @export
 sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
@@ -49,6 +49,7 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
         parY = parY,
         parX = parX
       )
+
       # Prob for Go:
       prob_go <- stats::integrate(
         f = dbetadiff,
