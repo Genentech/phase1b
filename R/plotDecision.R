@@ -55,9 +55,11 @@ plotDecision <- function(data, efficacious_prob, futile_prob) {
     ggplot2::scale_x_continuous(breaks = seq(from = 0, to = round(max(data$mode), digits = 1), by = 5)) +
     ggplot2::geom_area(data = go_shade, mapping = ggplot2::aes(x = mode, y = prob_go), fill = "#009E73") +
     ggplot2::geom_line(data = data, mapping = ggplot2::aes(x = mode, y = prob_stop), linewidth = 1.5, colour = "#FF0046") +
-    ggplot2::geom_area(data = stop_shade,
-                       mapping = ggplot2::aes(x = mode, y = prob_stop),
-                       fill = "#FF0046") +
+    ggplot2::geom_area(
+      data = stop_shade,
+      mapping = ggplot2::aes(x = mode, y = prob_stop),
+      fill = "#FF0046"
+    ) +
     ggplot2::ggtitle("Probability of Difference and respective Go and Stop probabilities.") +
     ggplot2::xlab("Difference between treatment in Response Rate (%)") +
     ggplot2::ylab("Probability (%)") +
