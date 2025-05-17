@@ -67,7 +67,7 @@ plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
     all_looks = all_looks
   )
   barplot <-
-    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = look, y = prop)) +
+    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = all_looks, y = prop)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::ggtitle(
       "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
