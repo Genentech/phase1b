@@ -48,7 +48,7 @@ h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
 #' @inheritParams h_get_dataframe_oc
 #' @typed wiggle_status : flag
 #' from `wiggle` flag in object.
-#' @return ggplot object
+#' @return [`ggplot`] object
 #'
 #' @example examples/plotOc.R
 #'

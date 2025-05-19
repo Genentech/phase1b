@@ -14,7 +14,7 @@ plotDecision(data, efficacious_prob, futile_prob)
 \item{futile_prob}{(\code{number}):\cr a cut off for the probability of a poor improvement}
 }
 \value{
-the \code{\link{ggplot}} item which was imputed to the function
+\code{\link{ggplot}} object
 }
 \description{
 This function will return a plot showing a curve of the prob of a meaningful improvement over estimated diff
