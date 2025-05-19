@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.827331887201735" branch-rate="0" lines-covered="1907" lines-valid="2305" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-05-16 10:12:13.973933">
+<coverage line-rate="0.828151986183074" branch-rate="0" lines-covered="1918" lines-valid="2316" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-05-19 16:55:35.98054">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
   <packages>
-    <package name="phase1b" line-rate="0.827331887201735" branch-rate="0" complexity="0">
+    <package name="phase1b" line-rate="0.828151986183074" branch-rate="0" complexity="0">
       <classes>
         <class name="betadiff.R" filename="R/betadiff.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -3947,6 +3947,17 @@
                 <line number="65" hits="1" branch="false"/>
                 <line number="66" hits="1" branch="false"/>
                 <line number="67" hits="1" branch="false"/>
+                <line number="68" hits="1" branch="false"/>
+                <line number="69" hits="1" branch="false"/>
+                <line number="70" hits="1" branch="false"/>
+                <line number="71" hits="1" branch="false"/>
+                <line number="72" hits="1" branch="false"/>
+                <line number="73" hits="1" branch="false"/>
+                <line number="74" hits="1" branch="false"/>
+                <line number="75" hits="1" branch="false"/>
+                <line number="76" hits="1" branch="false"/>
+                <line number="77" hits="1" branch="false"/>
+                <line number="78" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -3991,6 +4002,17 @@
             <line number="65" hits="1" branch="false"/>
             <line number="66" hits="1" branch="false"/>
             <line number="67" hits="1" branch="false"/>
+            <line number="68" hits="1" branch="false"/>
+            <line number="69" hits="1" branch="false"/>
+            <line number="70" hits="1" branch="false"/>
+            <line number="71" hits="1" branch="false"/>
+            <line number="72" hits="1" branch="false"/>
+            <line number="73" hits="1" branch="false"/>
+            <line number="74" hits="1" branch="false"/>
+            <line number="75" hits="1" branch="false"/>
+            <line number="76" hits="1" branch="false"/>
+            <line number="77" hits="1" branch="false"/>
+            <line number="78" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="plotOc.R" filename="R/plotOc.R" line-rate="0.96" branch-rate="0" complexity="0">
