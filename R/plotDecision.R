@@ -4,14 +4,14 @@
 #' and a curve of the prob of a poor improvement over estimated diff
 #'
 #' @typed data : data.frame
-#'  sourced [`data.frame`] from [(sumTable)]
+#'  sourced [`data.frame`] from [(sumTable())]
 #' @typed efficacious_prob : number
 #'  a cut off for the probability of a meaningful improvement
 #' @typed futile_prob : number
 #'  a cut off for the probability of a poor improvement
 #' @return [`ggplot`] object
 #'
-#' @importFrom ggplot2 geom_line geom_area ggtitle  theme_light annotate xlab ylab
+#' @importFrom ggplot2 geom_line geom_area ggtitle theme_light annotate xlab ylab
 #' @importFrom tibble remove_rownames
 #'
 #' @example examples/plotDecision.R

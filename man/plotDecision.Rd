@@ -7,7 +7,7 @@
 plotDecision(data, efficacious_prob, futile_prob)
 }
 \arguments{
-\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \link{(sumTable)}}
+\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \link{(sumTable())}}
 
 \item{efficacious_prob}{(\code{number}):\cr a cut off for the probability of a meaningful improvement}
 
