@@ -15,7 +15,7 @@
 #'
 #' @importFrom stats optimize integrate
 #'
-#' @example examples/sumBetaDiff.R
+#' @example examples/sumbetadiff.R
 #' @export
 sumBetaDiff <- function(parX, # Treatment group's parameters
                         parY, # Control group's parameters
