@@ -18,12 +18,11 @@
 #' @example examples/sumBetaDiff.R
 #' @export
 sumBetaDiff <- function(
-  parX, # Treatment group's parameters
-  parY, # Control group's parameters
-  ci_level = 0.9,
-  go_cut,
-  stop_cut
-) {
+    parX, # Treatment group's parameters
+    parY, # Control group's parameters
+    ci_level = 0.9,
+    go_cut,
+    stop_cut) {
   assert_numeric(
     parY,
     len = 2,
