@@ -144,7 +144,7 @@ and install it, however, subsequent use will only require calling of the R-packa
 ```{r install-phase1b, eval=FALSE}
 library(devtools)
 devtools::install_github("https://github.com/Genentech/phase1b")
-# install.packages("phase1b")
+install.packages("phase1b")
 install.packages("ggplot2")
 ```
 
@@ -157,7 +157,7 @@ following command:
 ```{r load}
 library(devtools)
 devtools::install_github("https://github.com/Genentech/phase1b")
-# library(phase1b)
+library(phase1b)
 library(ggplot2)
 ```
 Once loaded, you will have access to all of the functions in the `phase1b`
