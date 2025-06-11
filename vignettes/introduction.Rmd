@@ -142,7 +142,9 @@ function.
 The first time you use `phase1b` on your own computer you will need to download
 and install it, however, subsequent use will only require calling of the R-package.
 ```{r install-phase1b, eval=FALSE}
-install.packages("phase1b")
+library(devtools)
+devtools::install_github("https://github.com/Genentech/phase1b")
+# install.packages("phase1b")
 install.packages("ggplot2")
 ```
 
@@ -153,7 +155,9 @@ will have to load the R-package (assuming the R-package has been installed
 following the instructions in the [Installation section](#installation) with the
 following command:
 ```{r load}
-library(phase1b)
+library(devtools)
+devtools::install_github("https://github.com/Genentech/phase1b")
+# library(phase1b)
 library(ggplot2)
 ```
 Once loaded, you will have access to all of the functions in the `phase1b`
