@@ -66,6 +66,3 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
     with:
       auto-update: true
-    - name: Install R dependencies
-    run: |
-    Rscript -e 'install.packages(c("devtools", "ggplot2"))'
