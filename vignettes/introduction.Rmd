@@ -144,7 +144,6 @@ and install it, however, subsequent use will only require calling of the R-packa
 ```{r install-phase1b, eval=FALSE}
 library(devtools)
 devtools::install_github("https://github.com/Genentech/phase1b")
-install.packages("phase1b")
 install.packages("ggplot2")
 ```
 
