@@ -1,5 +1,5 @@
 # sumBetaDiff ----
-test_that("sumbetadiff works as expected", {
+test_that("sumBetaDiff works as expected", {
   parX <- c(1, 52) # Control group's parameters
   parY <- c(5.5, 20.5) # Treatment group's parameters
   result <- sumBetaDiff(
@@ -20,7 +20,7 @@ test_that("sumbetadiff works as expected", {
   )
 })
 
-test_that("sumbetadiff gives a error when at least one alpha = 0", {
+test_that("sumBetaDiff gives a error when at least one alpha = 0", {
   parX <- c(0, 10)
   parY <- c(5.5, 20.5)
   expect_error(sumBetaDiff(

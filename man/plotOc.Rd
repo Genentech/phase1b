@@ -17,7 +17,7 @@ Different to \code{all_sizes} which is after the adjustment, if made.}
 \item{wiggle_status}{(\code{flag}):\cr from \code{wiggle} flag in object.}
 }
 \value{
-ggplot object
+\code{\link{ggplot}} object
 }
 \description{
 Plots results from simulated results of :
