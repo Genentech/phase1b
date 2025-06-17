@@ -10,6 +10,8 @@
 #'
 #' @return A vector with the results.
 #'
+#' @importFrom phase1b sumBetaDiff
+#'
 #' @example examples/sumTable.R
 #' @export
 sumTable <- function(x,
