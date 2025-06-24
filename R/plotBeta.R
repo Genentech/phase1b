@@ -97,7 +97,7 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
       ) +
       ggplot2::geom_area(
         data = data[data$grid > go_cut, ], fill = "#009E73",
-        mapping = ggplot2::aes(x = ifelse(grid > 0.3, grid, 0))
+        mapping = ggplot2::aes(x = ifelse(grid > 0, grid, 0))
       ) +
       ggplot2::xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
