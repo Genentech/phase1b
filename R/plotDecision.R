@@ -56,7 +56,8 @@ plotDecision <- function(data, efficacious_prob, futile_prob) {
     ) +
     ggplot2::theme_light() +
     ggplot2::scale_x_continuous(
-      breaks = seq(from = 0, to = round(max(data$mode), digits = 1), by = 5)) +
+      breaks = seq(from = 0, to = round(max(data$mode), digits = 1), by = 5)
+    ) +
     ggplot2::geom_area(
       data = go_shade,
       mapping = ggplot2::aes(x = mode, y = prob_go),
