@@ -153,9 +153,12 @@ Before being able to run any of the commands in the `phase1b` R-package, you
 will have to load the R-package (assuming the R-package has been installed
 following the instructions in the [Installation section](#installation) with the
 following command:
-```{r load}
+```{r install-phase1b-from-github, eval=FALSE}
 library(devtools)
 devtools::install_github("https://github.com/Genentech/phase1b")
+```
+
+```{r init}
 library(phase1b)
 library(ggplot2)
 ```
