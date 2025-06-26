@@ -13,7 +13,7 @@ pbetadiff(q, parY, parX, rel.tol = .Machine$double.eps^0.1)
 
 \item{parX}{(\code{numeric}):\cr two parameters of \code{X}'s Beta distribution (Control)}
 
-\item{rel.tol}{(\code{number}):\cr used in \code{\link[stats:integrate]{stats::integrate()}}}
+\item{rel.tol}{(\code{number}):\cr used in \verb{[stats::integrate()]}}
 }
 \value{
 The probability distribution value

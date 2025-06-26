@@ -7,14 +7,14 @@
 plotDecision(data, efficacious_prob, futile_prob)
 }
 \arguments{
-\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \link{(sumTable())}}
+\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \verb{[sumTable()]}}
 
 \item{efficacious_prob}{(\code{number}):\cr a cut off for the probability of a meaningful improvement}
 
 \item{futile_prob}{(\code{number}):\cr a cut off for the probability of a poor improvement}
 }
 \value{
-\code{\link{ggplot}} object
+\verb{[ggplot()]} object
 }
 \description{
 This function will return a plot showing a curve of the prob of a meaningful improvement over estimated diff

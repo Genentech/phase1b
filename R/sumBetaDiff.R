@@ -100,7 +100,7 @@ sumBetaDiff <- function(
   if (inherits(result, "try-error")) {
     # try-error is a class
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
-      rbeta(n = 2e6, parX[1], parX[2])
+      stats::rbeta(n = 2e6, parX[1], parX[2])
 
     lower <- stats::quantile(samples, prob = (1 - ci_level) / 2)
     upper <- stats::quantile(samples, prob = (1 + ci_level) / 2)
