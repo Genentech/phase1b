@@ -142,7 +142,8 @@ function.
 The first time you use `phase1b` on your own computer you will need to download
 and install it, however, subsequent use will only require calling of the R-package.
 ```{r install-phase1b, eval=FALSE}
-install.packages("phase1b")
+library(devtools)
+devtools::install_github("https://github.com/Genentech/phase1b")
 install.packages("ggplot2")
 ```
 
@@ -152,7 +153,12 @@ Before being able to run any of the commands in the `phase1b` R-package, you
 will have to load the R-package (assuming the R-package has been installed
 following the instructions in the [Installation section](#installation) with the
 following command:
-```{r load}
+```{r install-phase1b-from-github, eval=FALSE}
+library(devtools)
+devtools::install_github("https://github.com/Genentech/phase1b")
+```
+
+```{r init}
 library(phase1b)
 library(ggplot2)
 ```
@@ -610,7 +616,7 @@ ex1_prior_caption <- paste(
 )
 ```
 
-```{r ex1-prior, echo=TRUE, fig.cap = ex1_prior_caption}
+```{r fig:ex1-prior, echo=TRUE, fig.cap = ex1_prior_caption}
 xx <- seq(0, 1, .001)
 dens.control <- dbeta(xx, 75, 75) # Posterior of the control
 dens.prior <- dbeta(xx, 5.75, 4.25) # Prior of the Phase 1b trial
@@ -827,7 +833,7 @@ ex1_betadiff_1_cap <- paste(
 )
 ```
 
-```{r ex1:betadiff1, echo=TRUE, out.width="4in"}
+```{r fig:ex1:betadiff1, echo=TRUE, out.width="4in"}
 parX <- c(75, 75)
 parY <- c(5.75 + 55, 4.25 + 80 - 55)
 xx <- seq(-0.5, 0.75, 0.001)

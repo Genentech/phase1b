@@ -4,44 +4,50 @@
 \alias{plotDecision}
 \title{Plot a summary plot corresponding to the sumTable output}
 \usage{
-plotDecision(data, Pos_cut, Neg_cut)
+plotDecision(data, efficacious_prob, futile_prob)
 }
 \arguments{
-\item{data}{the output object of \code{\link{sumTable}}}
+\item{data}{(\code{data.frame}):\cr sourced \code{\link{data.frame}} from \verb{[sumTable()]}}
 
-\item{Pos_cut}{a cut off for the prob of a meaningful improvement}
+\item{efficacious_prob}{(\code{number}):\cr a cut off for the probability of a meaningful improvement}
 
-\item{Neg_cut}{a cut off for the prob of a poor improvement}
+\item{futile_prob}{(\code{number}):\cr a cut off for the probability of a poor improvement}
 }
 \value{
-the \code{data} item which was imputed to the function
+\verb{[ggplot()]} object
 }
 \description{
-This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
-and a curve of the prob of a poor improvement over estunated diff
+This function will return a plot showing a curve of the prob of a meaningful improvement over estimated diff
+and a curve of the prob of a poor improvement over estimated diff
 }
 \examples{
-# sumTable ----
-sumTable(
-  x = 10,
-  n = 20,
-  parX = c(1, 1),
-  go_cut = 0.8,
-  stop_cut = 0.4
-)
-
-# plotting more results
 summaries <- do.call(
   cbind,
   lapply(c(0:8),
     sumTable,
     n = 25,
     parX = c(1, 52),
-    go_cut = 0.6,
-    stop_cut = 0.2
+    go_cut = 0.2,
+    stop_cut = 0.05
   )
 )
 
-# plotDecision(summaries, Pos_cut = 60, Neg_cut = 60)
+plotDecision(summaries, efficacious_prob = 60, futile_prob = 60)
+
+# plotting different criteria
+summaries <- do.call(
+  cbind,
+  lapply(c(0:8),
+    sumTable,
+    n = 25,
+    parX = c(1, 52),
+    # density when P( diff > 20\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    go_cut = 0.2,
+    # density when P( diff < 10\% | B(1, 52) for control and B(0.5, 0.5) for treatment) :
+    stop_cut = 0.1
+  )
+)
+
+plotDecision(summaries, efficacious_prob = 60, futile_prob = 80)
 }
 \keyword{graphics}
