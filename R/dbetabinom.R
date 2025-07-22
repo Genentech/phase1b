@@ -95,7 +95,8 @@ h_getBetamixPost <- function(x, n, par, weights) {
     lbeta(a = postPar[, 1], b = postPar[, 2]) - lbeta(a = par[, 1], b = par[, 2])
   )
   # We compute the updated weights of the posterior
-  postWeights <- weights * tmp / sum(weights * tmp)
+  # postWeights <- weights * tmp / sum(weights * tmp)
+  postWeights <- exp(log(weights) + log(tmp)) - sum(weights * tmp)
   assert_numeric(postWeights)
   list(
     par = postPar,
