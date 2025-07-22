@@ -95,8 +95,8 @@ h_getBetamixPost <- function(x, n, par, weights) {
     lbeta(a = postPar[, 1], b = postPar[, 2]) - lbeta(a = par[, 1], b = par[, 2])
   )
   # We compute the updated weights of the posterior
-  # postWeights <- weights * tmp / sum(weights * tmp)
-  postWeights <- exp(log(weights) + log(tmp)) - sum(weights * tmp)
+  postWeights <- weights * tmp / sum(weights * tmp)
+  # postWeights <- exp(log(weights) + log(tmp)) - sum(weights * tmp)
   assert_numeric(postWeights)
   list(
     par = postPar,
@@ -210,6 +210,11 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
 
   grid <- seq(0, 1, len = 31)
   f_grid <- .pbetaMix(grid, par, weights, lower.tail = lower.tail)
+
+  # diff <- f_grid - p
+  # pos <- diff > 0
+  # grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
+
 
   sapply(p, function(p) {
     # special cases
