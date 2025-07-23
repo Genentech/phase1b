@@ -166,3 +166,4 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
+

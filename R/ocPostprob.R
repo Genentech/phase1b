@@ -102,7 +102,7 @@ h_get_looks <- function(dist, nnE, nnF) {
 h_get_decision <- function(nnr,
                            truep,
                            p0, p1,
-                           parE = c(1, 1),
+                           parE,
                            nnE,
                            nnF,
                            tL,

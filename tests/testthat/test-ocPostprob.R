@@ -66,6 +66,7 @@ test_that("h_get_decision will give GO decision in favourable conditions", {
     p1 = 0.5,
     tL = 0.2,
     tU = 0.3,
+    parE = c(1,1),
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30),
     orig_nnr = orig_nnr
@@ -161,3 +162,93 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
   p.stop <- pbinom(q = 13, size = 40, prob = 0.5)
   expect_true(abs(p.stop - result$oc$PrFutility) < 1e-2)
 })
+
+test_that("hard coded parameters fail and give incorrect results in old_ocPostprob", {
+  set.seed(1989)
+  old_ocPostprob <- function(nnE, truep, p0, p1, tL, tU, parE = c(1, 1),
+                             sim = 50000, wiggle = FALSE, nnF = nnE) {
+    nn <- sort(unique(c(nnF, nnE)))
+    Nmax <- max(nn)
+    assert_number(sim, lower = 1, finite = TRUE)
+    assert_flag(wiggle)
+    if (sim < 50000) {
+      warning("Advise to use sim >= 50000 to achieve convergence")
+    }
+    decision <- vector(length = sim)
+    all_sizes <- vector(length = sim)
+    all_looks <- vector(length = sim)
+    for (k in seq_len(sim)) {
+      if (length(nn) != 1 && wiggle) {
+        dist <- h_get_distance(nn = nn)
+        nnr <- h_get_looks(dist = dist, nnE = nnE, nnF = nnF)
+        nnrE <- nnr$nnrE
+        nnrF <- nnr$nnrF
+        orig_nnE <- nnE
+        orig_nnF <- nnF
+      } else {
+        dist <- 0
+        nnrE <- nnE
+        nnrF <- nnF
+        orig_nnE <- nnrE
+        orig_nnF <- nnrF
+      }
+      nnr <- unique(c(nnrE, nnrF))
+      orig_nnr <- unique(c(orig_nnE, orig_nnF))
+      tmp <- h_get_decision(
+        nnr = nnr,
+        truep = truep,
+        p0 = p0,
+        p1 = p1,
+        parE = c(1,1),
+        nnE = nnrE,
+        nnF = nnrF,
+        tL = tL,
+        tU = tU,
+        orig_nnr = orig_nnr
+      )
+      decision[k] <- tmp$decision
+      all_sizes[k] <- tmp$all_sizes
+      all_looks[k] <- tmp$all_looks
+    }
+    oc <- h_get_oc(all_sizes = all_sizes, Nmax = Nmax, decision = decision)
+    list(
+      oc = oc,
+      Decision = decision,
+      Looks = all_looks,
+      SampleSize = all_sizes,
+      union_nn = nnr,
+      wiggled_nnrE = nnrE,
+      wiggled_nnrF = nnrF,
+      dist = dist,
+      params = as.list(match.call(expand.dots = FALSE))
+    )
+  }
+  expect_warning(result_old <- old_ocPostprob(
+    nnE = 30,
+    truep = 0.4,
+    p0 = 0.2,
+    p1 = 0.5,
+    tL = 0.7,
+    tU = 0.3,
+    parE = c(4, 24),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = 10), "Advise to use sim >= 50000 to achieve convergence")
+  # result_old$oc
+  expect_warning(result_new <- ocPostprob(
+    nnE = 30,
+    truep = 0.4,
+    p0 = 0.2,
+    p1 = 0.5,
+    tL = 0.7,
+    tU = 0.3,
+    parE = c(4, 24),
+    sim = 100,
+    wiggle = TRUE,
+    nnF = 10), "Advise to use sim >= 50000 to achieve convergence")
+  # result_new$oc
+  expect_true(result_new$oc["PrStopEarly"] != result_old$oc["PrStopEarly"])
+  expect_true(result_old$oc["PrFutility"] < result_new$oc["PrFutility"])
+  expect_true(result_old$oc["PrGrayZone"] < result_new$oc["PrGrayZone"])
+}
+)
