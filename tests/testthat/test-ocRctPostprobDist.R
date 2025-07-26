@@ -280,5 +280,4 @@ test_that("two function calls that differ in parE does not give the same result.
   result_no_hard_code$oc
   expect_true(result_no_hard_code$oc["PrEfficacy"] < result_uniform_hard_coded$oc["PrEfficacy"])
   expect_true(result_no_hard_code$oc["PrGrayZone"] > result_uniform_hard_coded$oc["PrGrayZone"])
-}
-)
+})
