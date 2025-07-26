@@ -15,15 +15,28 @@
 #'
 #' @importFrom stats optimize integrate
 #'
-#' @example examples/sumbetadiff.R
+#' @example examples/sumBetaDiff.R
 #' @export
-sumBetaDiff <- function(parX, # Treatment group's parameters
-                        parY, # Control group's parameters
-                        ci_level = 0.9,
-                        go_cut,
-                        stop_cut) {
-  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+sumBetaDiff <- function(
+    parX, # Treatment group's parameters
+    parY, # Control group's parameters
+    ci_level = 0.9,
+    go_cut,
+    stop_cut) {
+  assert_numeric(
+    parY,
+    len = 2,
+    lower = .Machine$double.xmin,
+    any.missing = FALSE,
+    finite = TRUE
+  )
+  assert_numeric(
+    parX,
+    len = 2,
+    lower = .Machine$double.xmin,
+    any.missing = FALSE,
+    finite = TRUE
+  )
   assert_number(ci_level, finite = TRUE)
   assert_number(go_cut, finite = TRUE)
   assert_number(stop_cut, finite = TRUE)
@@ -38,17 +51,20 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
         maximum = TRUE
       )$maximum
 
-      lower <- qbetadiff( # to recover x when F(x) is at lower percentile
+      lower <- qbetadiff(
+        # to recover x when F(x) is at lower percentile
         p = (1 - ci_level) / 2,
         parY = parY,
         parX = parX
       )
 
-      upper <- qbetadiff( # to recover x when F(x) is at upper percentile
+      upper <- qbetadiff(
+        # to recover x when F(x) is at upper percentile
         p = (1 + ci_level) / 2,
         parY = parY,
         parX = parX
       )
+
       # Prob for Go:
       prob_go <- stats::integrate(
         f = dbetadiff,
@@ -81,9 +97,10 @@ sumBetaDiff <- function(parX, # Treatment group's parameters
     silent = TRUE
   )
   # if there were any errors, fall back to Monte Carlo estimation
-  if (inherits(result, "try-error")) { # try-error is a class
+  if (inherits(result, "try-error")) {
+    # try-error is a class
     samples <- stats::rbeta(n = 2e6, parY[1], parY[2]) -
-      rbeta(n = 2e6, parX[1], parX[2])
+      stats::rbeta(n = 2e6, parX[1], parX[2])
 
     lower <- stats::quantile(samples, prob = (1 - ci_level) / 2)
     upper <- stats::quantile(samples, prob = (1 + ci_level) / 2)

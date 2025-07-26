@@ -72,16 +72,16 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
-    density = dbetadiff(z = diff, parY = parY, parX = parX)
+    density = phase1b::dbetadiff(z = diff, parY = parY, parX = parX)
   )
   data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
   data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
 
-  temp <- sumBetaDiff(
+  temp <- phase1b::sumBetaDiff(
     parX = parX,
     parY = parY,
-    go_cut = go_cut,
-    stop_cut = stop_cut
+    go_cut = go_cut, # in response rate
+    stop_cut = stop_cut # in response rate
   )
 
   go_label <- paste("P(Go) is", round(temp$go * 100, digits = 2), "%")
@@ -97,14 +97,14 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
       ) +
       ggplot2::geom_area(
         data = data[data$grid > go_cut, ], fill = "#009E73",
-        mapping = ggplot2::aes(x = ifelse(grid > 0.3, grid, 0))
+        mapping = ggplot2::aes(x = ifelse(grid > 0, grid, 0))
       ) +
       ggplot2::xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
   } else {
     pbetadiff_plot <- ggplot2::ggplot(data = data) +
-      ggplot2::geom_line(aes(x = grid, y = density, colour = "#888888")) +
+      ggplot2::geom_line(ggplot2::aes(x = grid, y = density, colour = "#888888")) +
       xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
