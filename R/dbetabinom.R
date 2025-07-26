@@ -210,10 +210,6 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   grid <- seq(0, 1, len = 31)
   f_grid <- .pbetaMix(grid, par, weights, lower.tail = lower.tail)
 
-  diff <- f_grid - p
-  pos <- diff > 0
-  grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
-
   sapply(p, function(p) {
     # special cases
     if (p == 0) {
@@ -229,7 +225,7 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
 
     uniroot(
       f = function(q) .pbetaMix(q, par, weights, lower.tail = lower.tail) - p,
-      interval = grid_interval,
+      interval = grid_interval, # more precise x-axis for root finding
       f.lower = -p,
       f.upper = 1 - p,
       tol = sqrt(.Machine$double.eps)

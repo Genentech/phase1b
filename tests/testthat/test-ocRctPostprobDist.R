@@ -226,3 +226,59 @@ test_that("ocRctPostprobDist gives higher PrEfficacy with increased pE", {
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(res_high_truep$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
+
+test_that("two function calls that differ in parE does not give the same result.", {
+  set.seed(1989)
+  input <- list(
+    nnE = 30,
+    pE = 0.4,
+    pS = 0.2,
+    deltaE = 0.1,
+    deltaF = 0.1,
+    relativeDelta = FALSE,
+    tL = 0.8,
+    tU = 0.8,
+    parE = c(a = 4, b = 10),
+    parS = c(a = 1, b = 1),
+    nnF = 30,
+    sim = 5,
+    Nmax = 15
+  )
+  expect_warning(result_uniform_hard_coded <- ocRctPostprobDist(
+    nnE = input$nnE,
+    pE = input$pE,
+    pS = input$pS,
+    deltaE = input$deltaE,
+    deltaF = input$deltaF,
+    relativeDelta = TRUE,
+    tL = input$tL,
+    tU = input$tU,
+    parE = c(1, 1),
+    parS = input$parS,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = 10
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  result_uniform_hard_coded$oc
+  expect_warning(result_no_hard_code <- ocRctPostprobDist(
+    nnE = input$nnE,
+    pE = input$pE,
+    pS = input$pS,
+    deltaE = input$deltaE,
+    deltaF = input$deltaF,
+    relativeDelta = TRUE,
+    tL = input$tL,
+    tU = input$tU,
+    parE = input$parE, # stronger prior, higher difference needed to pass Go
+    parS = input$parS,
+    randRatio = 1,
+    sim = 50,
+    wiggle = FALSE,
+    nnF = 10
+  ), "Advise to use sim >= 50000 to achieve convergence")
+  result_no_hard_code$oc
+  expect_true(result_no_hard_code$oc["PrEfficacy"] < result_uniform_hard_coded$oc["PrEfficacy"])
+  expect_true(result_no_hard_code$oc["PrGrayZone"] > result_uniform_hard_coded$oc["PrGrayZone"])
+}
+)
