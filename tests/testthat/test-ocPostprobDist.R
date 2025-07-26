@@ -167,7 +167,6 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
-<<<<<<< HEAD
 test_that("two function calls that differ in parE does not give the same result.", {
   set.seed(1989)
   expect_warning(result_uniform_hard_coded <- ocPostprobDist(
@@ -183,7 +182,6 @@ test_that("two function calls that differ in parE does not give the same result.
     wiggle = FALSE,
     nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_uniform_hard_coded$oc
   expect_warning(result_no_hard_code <- ocPostprobDist(
     nnE = 30,
     truep = 0.15,
@@ -197,11 +195,8 @@ test_that("two function calls that differ in parE does not give the same result.
     wiggle = FALSE,
     nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_no_hard_code$oc
   expect_true(result_no_hard_code$oc["PrFutility"] > result_uniform_hard_coded$oc["PrFutility"])
   expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
 }
 )
 
-=======
->>>>>>> 8eed1be (test for old and fixed version)

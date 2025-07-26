@@ -260,7 +260,6 @@ test_that("two function calls that differ in parE does not give the same result.
     wiggle = FALSE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_uniform_hard_coded$oc
   expect_warning(result_no_hard_code <- ocRctPostprobDist(
     nnE = input$nnE,
     pE = input$pE,
@@ -277,7 +276,6 @@ test_that("two function calls that differ in parE does not give the same result.
     wiggle = FALSE,
     nnF = 10
   ), "Advise to use sim >= 50000 to achieve convergence")
-  result_no_hard_code$oc
   expect_true(result_no_hard_code$oc["PrEfficacy"] < result_uniform_hard_coded$oc["PrEfficacy"])
   expect_true(result_no_hard_code$oc["PrGrayZone"] > result_uniform_hard_coded$oc["PrGrayZone"])
 })

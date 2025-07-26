@@ -210,13 +210,6 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
   grid <- seq(0, 1, len = 31)
   f_grid <- .pbetaMix(grid, par, weights, lower.tail = lower.tail)
 
-<<<<<<< HEAD
-=======
-  diff <- f_grid - p
-  pos <- diff > 0
-  grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
-
->>>>>>> 8eed1be (test for old and fixed version)
   sapply(p, function(p) {
     # special cases
     if (p == 0) {
