@@ -167,6 +167,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
+<<<<<<< HEAD
 test_that("two function calls that differ in parE does not give the same result.", {
   set.seed(1989)
   expect_warning(result_uniform_hard_coded <- ocPostprobDist(
@@ -202,3 +203,5 @@ test_that("two function calls that differ in parE does not give the same result.
 }
 )
 
+=======
+>>>>>>> 8eed1be (test for old and fixed version)
