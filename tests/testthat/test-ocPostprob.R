@@ -66,7 +66,7 @@ test_that("h_get_decision will give GO decision in favourable conditions", {
     p1 = 0.5,
     tL = 0.2,
     tU = 0.3,
-    parE = c(1,1),
+    parE = c(1, 1),
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30),
     orig_nnr = orig_nnr
@@ -175,7 +175,8 @@ test_that("two function calls that differ in parE does not give the same result.
     parE = c(1, 1), # weak prior gives more PrGrayZone
     sim = 100,
     wiggle = TRUE,
-    nnF = 30), "Advise to use sim >= 50000 to achieve convergence")
+    nnF = 30
+  ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprob(
     nnE = 30,
     truep = 0.4,
@@ -186,9 +187,9 @@ test_that("two function calls that differ in parE does not give the same result.
     parE = c(4, 10), # stronger prior gives higher PrEfficacy
     sim = 100,
     wiggle = TRUE,
-    nnF = 30), "Advise to use sim >= 50000 to achieve convergence")
+    nnF = 30
+  ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(result_no_hard_code$oc["PrEfficacy"] > result_uniform_hard_coded$oc["PrEfficacy"])
   expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
-  }
-)
+})
 x

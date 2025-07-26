@@ -197,6 +197,4 @@ test_that("two function calls that differ in parE does not give the same result.
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(result_no_hard_code$oc["PrFutility"] > result_uniform_hard_coded$oc["PrFutility"])
   expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
-}
-)
-
+})
