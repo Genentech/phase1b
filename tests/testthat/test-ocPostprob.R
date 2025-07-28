@@ -175,7 +175,7 @@ test_that("two function calls that differ in parE does not give the same result.
     parE = c(1, 1), # weak prior gives more PrGrayZone
     sim = 100,
     wiggle = TRUE,
-    nnF =  c(10, 20, 30)
+    nnF = c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprob(
     nnE = c(10, 20, 30),
@@ -187,10 +187,11 @@ test_that("two function calls that differ in parE does not give the same result.
     parE = c(4, 7), # stronger prior gives higher PrEfficacy
     sim = 100,
     wiggle = TRUE,
-    nnF = c(10, 20, 30)), "Advise to use sim >= 50000 to achieve convergence")
+    nnF = c(10, 20, 30)
+  ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(
     sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-      sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
+      sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"])
+  )
   expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
-}
-)
+})
