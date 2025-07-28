@@ -166,30 +166,31 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
 test_that("two function calls that differ in parE does not give the same result.", {
   set.seed(1989)
   expect_warning(result_uniform_hard_coded <- ocPostprob(
-    nnE = 30,
-    truep = 0.4,
+    nnE = c(10, 20, 30),
+    truep = 0.3,
     p0 = 0.1,
-    p1 = 0.3,
+    p1 = 0.2,
     tL = 0.8,
-    tU = 0.3,
+    tU = 0.8,
     parE = c(1, 1), # weak prior gives more PrGrayZone
     sim = 100,
     wiggle = TRUE,
-    nnF = 30
+    nnF =  c(10, 20, 30)
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprob(
-    nnE = 30,
-    truep = 0.4,
+    nnE = c(10, 20, 30),
+    truep = 0.3,
     p0 = 0.1,
-    p1 = 0.3,
+    p1 = 0.2,
     tL = 0.8,
-    tU = 0.3,
-    parE = c(4, 10), # stronger prior gives higher PrEfficacy
+    tU = 0.8,
+    parE = c(4, 7), # stronger prior gives higher PrEfficacy
     sim = 100,
     wiggle = TRUE,
-    nnF = 30
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_true(result_no_hard_code$oc["PrEfficacy"] > result_uniform_hard_coded$oc["PrEfficacy"])
+    nnF = c(10, 20, 30)), "Advise to use sim >= 50000 to achieve convergence")
+  expect_true(
+    sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
+      sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
   expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
-})
-x
+}
+)

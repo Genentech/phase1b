@@ -170,10 +170,10 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
 test_that("two function calls that differ in parE does not give the same result.", {
   set.seed(1989)
   expect_warning(result_uniform_hard_coded <- ocPostprobDist(
-    nnE = 30,
+    nnE = c(10, 20, 30),
     truep = 0.15,
     deltaE = 0.1,
-    deltaF = -0.1,
+    deltaF = 0.1,
     tL = 0.45,
     tU = 0.4,
     parE = c(1, 1), # PrGrayZone higher due to same, weak priors
@@ -183,7 +183,7 @@ test_that("two function calls that differ in parE does not give the same result.
     nnF = 30
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprobDist(
-    nnE = 30,
+    nnE = c(10, 20, 30),
     truep = 0.15,
     deltaE = 0.1,
     deltaF = -0.1,
