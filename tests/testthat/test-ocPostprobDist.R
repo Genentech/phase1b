@@ -168,33 +168,48 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
 })
 
 test_that("two function calls that differ in parE does not give the same result.", {
-  set.seed(1989)
+  set.seed(198)
+  input <- list(
+    nnE = c(10, 20, 30),
+    truep = 0.7,
+    deltaE = 0.1,
+    deltaF = 0.2,
+    tL = 0.6,
+    tU = 0.6,
+    parE = c(10, 4), # will fail in old code that was hard coded in uniform prior
+    parS = c(1, 1),
+    sim = 500,
+    wiggle = FALSE,
+    nnF = c(10, 20, 30)
+  )
   expect_warning(result_uniform_hard_coded <- ocPostprobDist(
-    nnE = c(10, 20, 30),
-    truep = 0.15,
-    deltaE = 0.1,
-    deltaF = 0.1,
-    tL = 0.45,
-    tU = 0.4,
-    parE = c(1, 1), # PrGrayZone higher due to same, weak priors
-    parS = c(1, 1),
-    sim = 100,
-    wiggle = FALSE,
-    nnF = 30
-  ), "Advise to use sim >= 50000 to achieve convergence")
+    nnE = input$nnE,
+    truep = input$truep,
+    deltaE = input$deltaE,
+    deltaF = input$deltaF,
+    tL = input$tL,
+    tU = input$tU,
+    parE = c(1, 1),
+    parS = input$parS,
+    sim = input$sim,
+    wiggle = input$wiggle,
+    nnF = input$nnF),  "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprobDist(
-    nnE = c(10, 20, 30),
-    truep = 0.15,
-    deltaE = 0.1,
-    deltaF = -0.1,
-    tL = 0.45,
-    tU = 0.4,
-    parE = c(5, 10), # PrFutility lower due to stronger prior
-    parS = c(1, 1),
-    sim = 100,
-    wiggle = FALSE,
-    nnF = 30
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_true(result_no_hard_code$oc["PrFutility"] > result_uniform_hard_coded$oc["PrFutility"])
-  expect_true(result_no_hard_code$oc["PrGrayZone"] < result_uniform_hard_coded$oc["PrGrayZone"])
+    nnE = input$nnE,
+    truep = input$truep,
+    deltaE = input$deltaE,
+    deltaF = input$deltaF,
+    tL = input$tL,
+    tU = input$tU,
+    parE = input$parE,
+    parS = input$parS,
+    sim = input$sim,
+    wiggle = input$wiggle,
+    nnF = input$nnF),  "Advise to use sim >= 50000 to achieve convergence")
+  result_uniform_hard_coded$oc
+  result_no_hard_code$oc
+  expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
+                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"])
+              )
 })
+
