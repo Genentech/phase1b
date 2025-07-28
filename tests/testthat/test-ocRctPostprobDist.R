@@ -256,7 +256,7 @@ test_that("two function calls that differ in parE does not give the same result.
     relativeDelta = input$relativeDelta,
     tL = input$tL,
     tU = input$tU,
-    parE = c(1, 1),  # will fail in old code that was hard coded in uniform prior
+    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
     parS = input$parS,
     randRatio = input$randRatio,
     sim = input$sim,

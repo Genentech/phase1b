@@ -189,11 +189,12 @@ test_that("two function calls that differ in parE does not give the same result.
     deltaF = input$deltaF,
     tL = input$tL,
     tU = input$tU,
-    parE = c(1, 1),  # will fail in old code that was hard coded in uniform prior
+    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
     parS = input$parS,
     sim = input$sim,
     wiggle = input$wiggle,
-    nnF = input$nnF),  "Advise to use sim >= 50000 to achieve convergence")
+    nnF = input$nnF
+  ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprobDist(
     nnE = input$nnE,
     truep = input$truep,
@@ -205,11 +206,10 @@ test_that("two function calls that differ in parE does not give the same result.
     parS = input$parS,
     sim = input$sim,
     wiggle = input$wiggle,
-    nnF = input$nnF),  "Advise to use sim >= 50000 to achieve convergence")
+    nnF = input$nnF
+  ), "Advise to use sim >= 50000 to achieve convergence")
   result_uniform_hard_coded$oc
   result_no_hard_code$oc
   expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"])
-              )
+    sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
 })
-
