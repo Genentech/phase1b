@@ -172,7 +172,7 @@ test_that("two function calls that differ in parE does not give the same result.
     p1 = 0.2,
     tL = 0.8,
     tU = 0.8,
-    parE = c(1, 1), # weak prior gives more PrGrayZone
+    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
     sim = 100,
     wiggle = TRUE,
     nnF = c(10, 20, 30)

@@ -176,7 +176,7 @@ test_that("two function calls that differ in parE does not give the same result.
     deltaF = 0.2,
     tL = 0.6,
     tU = 0.6,
-    parE = c(10, 4), # will fail in old code that was hard coded in uniform prior
+    parE = c(10, 4),
     parS = c(1, 1),
     sim = 500,
     wiggle = FALSE,
@@ -189,7 +189,7 @@ test_that("two function calls that differ in parE does not give the same result.
     deltaF = input$deltaF,
     tL = input$tL,
     tU = input$tU,
-    parE = c(1, 1),
+    parE = c(1, 1),  # will fail in old code that was hard coded in uniform prior
     parS = input$parS,
     sim = input$sim,
     wiggle = input$wiggle,
@@ -201,7 +201,7 @@ test_that("two function calls that differ in parE does not give the same result.
     deltaF = input$deltaF,
     tL = input$tL,
     tU = input$tU,
-    parE = input$parE,
+    parE = input$parE, # stronger prior gives higher PrEfficacy
     parS = input$parS,
     sim = input$sim,
     wiggle = input$wiggle,
