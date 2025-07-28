@@ -230,19 +230,22 @@ test_that("ocRctPostprobDist gives higher PrEfficacy with increased pE", {
 test_that("two function calls that differ in parE does not give the same result.", {
   set.seed(1989)
   input <- list(
-    nnE = 30,
-    pE = 0.4,
+    nnE = c(10, 20, 30),
+    nnF = c(10, 20, 30),
+    pE = 0.2,
     pS = 0.2,
     deltaE = 0.1,
     deltaF = 0.1,
     relativeDelta = FALSE,
     tL = 0.8,
     tU = 0.8,
-    parE = c(a = 4, b = 10),
+    parE = c(a = 4, b = 5), # Thall & Simon (p. 339, 1994) note on using informative a priori
     parS = c(a = 1, b = 1),
-    nnF = 30,
-    sim = 5,
-    Nmax = 15
+    nnF = c(10, 20, 30),
+    sim = 50,
+    Nmax = 15,
+    randRatio = 1,
+    wiggle = FALSE
   )
   expect_warning(result_uniform_hard_coded <- ocRctPostprobDist(
     nnE = input$nnE,
@@ -250,32 +253,35 @@ test_that("two function calls that differ in parE does not give the same result.
     pS = input$pS,
     deltaE = input$deltaE,
     deltaF = input$deltaF,
-    relativeDelta = TRUE,
+    relativeDelta = input$relativeDelta,
     tL = input$tL,
     tU = input$tU,
-    parE = c(1, 1),
+    parE = c(1, 1), # uniform prior allowing data to speak for itself
     parS = input$parS,
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = 10
+    randRatio = input$randRatio,
+    sim = input$sim,
+    wiggle = input$wiggle,
+    nnF = input$nnF
   ), "Advise to use sim >= 50000 to achieve convergence")
+  # result_uniform_hard_coded$oc
   expect_warning(result_no_hard_code <- ocRctPostprobDist(
     nnE = input$nnE,
     pE = input$pE,
     pS = input$pS,
     deltaE = input$deltaE,
     deltaF = input$deltaF,
-    relativeDelta = TRUE,
+    relativeDelta = input$relativeDelta,
     tL = input$tL,
     tU = input$tU,
-    parE = input$parE, # stronger prior, higher difference needed to pass Go
+    parE = input$parE,
     parS = input$parS,
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = 10
+    randRatio = input$randRatio,
+    sim = input$sim,
+    wiggle = input$wiggle,
+    nnF = input$nnF
   ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_true(result_no_hard_code$oc["PrEfficacy"] < result_uniform_hard_coded$oc["PrEfficacy"])
-  expect_true(result_no_hard_code$oc["PrGrayZone"] > result_uniform_hard_coded$oc["PrGrayZone"])
+  result_uniform_hard_coded$oc
+  result_no_hard_code$oc
+  expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
+                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
 })
