@@ -176,7 +176,7 @@ test_that("two ocPostprobDist calls that differ in parE does not give the same r
     deltaF = 0.2,
     tL = 0.6,
     tU = 0.6,
-    parE = c(10, 4), # # Thall & Simon (p. 339, 1994) note on using informative a priori
+    parE = c(10, 4), # Thall & Simon (p. 339, 1994) note on using informative a priori
     parS = c(1, 1),
     sim = 500,
     wiggle = FALSE,
@@ -211,5 +211,5 @@ test_that("two ocPostprobDist calls that differ in parE does not give the same r
   result_uniform_hard_coded$oc
   result_no_hard_code$oc
   expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-    sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
+                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
 })

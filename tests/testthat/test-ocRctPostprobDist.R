@@ -280,5 +280,5 @@ test_that("Two ocRctPostprobDist calls that differ in parE does not give the sam
     nnF = input$nnF
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-    sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
+                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
 })
