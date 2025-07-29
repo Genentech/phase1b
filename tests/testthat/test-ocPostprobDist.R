@@ -211,5 +211,5 @@ test_that("two ocPostprobDist calls that differ in parE does not give the same r
   result_uniform_hard_coded$oc
   result_no_hard_code$oc
   expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-                sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
+    sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
 })
