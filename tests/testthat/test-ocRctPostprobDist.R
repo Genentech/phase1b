@@ -3,7 +3,11 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   set.seed(1989)
   nn <- c(10, 20, 30)
   example_dist <- h_get_distance(nn = nn)
-  looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+  looks <- h_get_looks(
+    dist = example_dist,
+    nnE = c(10, 20, 30),
+    nnF = c(10, 20, 30)
+  )
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
   orig_nnE <- c(10, 20, 30)
@@ -37,7 +41,11 @@ test_that("h_get_decisionDist_rct gives correct result and list when relativeDel
   set.seed(1989)
   nn <- c(10, 20, 30)
   example_dist <- h_get_distance(nn = nn)
-  looks <- h_get_looks(dist = example_dist, nnE = c(10, 20, 30), nnF = c(10, 20, 30))
+  looks <- h_get_looks(
+    dist = example_dist,
+    nnE = c(10, 20, 30),
+    nnF = c(10, 20, 30)
+  )
   looks_nnrE <- looks$nnrE
   looks_nnrF <- looks$nnrF
   orig_nnE <- c(10, 20, 30)
@@ -103,22 +111,25 @@ test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
     sim = 5,
     Nmax = 15
   )
-  expect_warning(results <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = TRUE,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE,
-    parS = c(a = 1, b = 1),
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = input$nnF
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    results <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = TRUE,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE,
+      parS = c(a = 1, b = 1),
+      randRatio = 1,
+      sim = 50,
+      wiggle = FALSE,
+      nnF = input$nnF
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   results <- sum(results$oc[5:7])
   expect_equal(results, 1)
 })
@@ -140,38 +151,44 @@ test_that("ocRctPostprobDist gives higher PrFutility with decreased pE", {
     sim = 5,
     Nmax = 15
   )
-  expect_warning(res_low_truep <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE - 0.1,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = TRUE,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE,
-    parS = c(a = 1, b = 1),
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = c(10, 20, 30)
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_warning(res <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = TRUE,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE,
-    parS = c(a = 1, b = 1),
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = c(10, 20, 30)
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    res_low_truep <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE - 0.1,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = TRUE,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE,
+      parS = c(a = 1, b = 1),
+      randRatio = 1,
+      sim = 50,
+      wiggle = FALSE,
+      nnF = c(10, 20, 30)
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  expect_warning(
+    res <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = TRUE,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE,
+      parS = c(a = 1, b = 1),
+      randRatio = 1,
+      sim = 50,
+      wiggle = FALSE,
+      nnF = c(10, 20, 30)
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   expect_true(res$oc$PrFutility < res_low_truep$oc$PrFutility)
 })
 
@@ -192,43 +209,48 @@ test_that("ocRctPostprobDist gives higher PrEfficacy with increased pE", {
     sim = 5,
     Nmax = 15
   )
-  expect_warning(res_eff <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = TRUE,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE,
-    parS = c(a = 1, b = 1),
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = 10
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_warning(res_high_truep <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = 0.7,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = TRUE,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE,
-    parS = c(a = 1, b = 1),
-    randRatio = 1,
-    sim = 50,
-    wiggle = FALSE,
-    nnF = 10
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    res_eff <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = TRUE,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE,
+      parS = c(a = 1, b = 1),
+      randRatio = 1,
+      sim = 50,
+      wiggle = FALSE,
+      nnF = 10
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  expect_warning(
+    res_high_truep <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = 0.7,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = TRUE,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE,
+      parS = c(a = 1, b = 1),
+      randRatio = 1,
+      sim = 50,
+      wiggle = FALSE,
+      nnF = 10
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   expect_true(res_high_truep$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
-test_that("Two ocRctPostprobDist calls that differ in parE does not give the same result.", {
-  set.seed(1989)
+test_that("two ocRctPostprobDist calls that differ in parE does not give the same result.", {
   input <- list(
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30),
@@ -247,38 +269,54 @@ test_that("Two ocRctPostprobDist calls that differ in parE does not give the sam
     randRatio = 1,
     wiggle = FALSE
   )
-  expect_warning(result_uniform_hard_coded <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = input$relativeDelta,
-    tL = input$tL,
-    tU = input$tU,
-    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
-    parS = input$parS,
-    randRatio = input$randRatio,
-    sim = input$sim,
-    wiggle = input$wiggle,
-    nnF = input$nnF
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_warning(result_no_hard_code <- ocRctPostprobDist(
-    nnE = input$nnE,
-    pE = input$pE,
-    pS = input$pS,
-    deltaE = input$deltaE,
-    deltaF = input$deltaF,
-    relativeDelta = input$relativeDelta,
-    tL = input$tL,
-    tU = input$tU,
-    parE = input$parE, # stronger prior gives higher PrEfficacy
-    parS = input$parS,
-    randRatio = input$randRatio,
-    sim = input$sim,
-    wiggle = input$wiggle,
-    nnF = input$nnF
-  ), "Advise to use sim >= 50000 to achieve convergence")
-  expect_true(sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
-    sum(result_uniform_hard_coded$oc["PrEarlyEff"], result_uniform_hard_coded$oc["PrEfficacy"]))
+  set.seed(1989)
+  expect_warning(
+    result_uniform_hard_coded <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = input$relativeDelta,
+      tL = input$tL,
+      tU = input$tU,
+      parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
+      parS = input$parS,
+      randRatio = input$randRatio,
+      sim = input$sim,
+      wiggle = input$wiggle,
+      nnF = input$nnF
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  set.seed(1989)
+  expect_warning(
+    result_no_hard_code <- ocRctPostprobDist(
+      nnE = input$nnE,
+      pE = input$pE,
+      pS = input$pS,
+      deltaE = input$deltaE,
+      deltaF = input$deltaF,
+      relativeDelta = input$relativeDelta,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE, # stronger prior gives higher PrEfficacy
+      parS = input$parS,
+      randRatio = input$randRatio,
+      sim = input$sim,
+      wiggle = input$wiggle,
+      nnF = input$nnF
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  expect_true(
+    sum(
+      result_no_hard_code$oc["PrEarlyEff"],
+      result_no_hard_code$oc["PrEfficacy"]
+    ) >
+      sum(
+        result_uniform_hard_coded$oc["PrEarlyEff"],
+        result_uniform_hard_coded$oc["PrEfficacy"]
+      )
+  )
 })
