@@ -29,12 +29,11 @@
 #' @example examples/dbetadiff.R
 #' @export
 dbetadiff <- function(
-  z,
-  parY,
-  parX,
-  eps = .Machine$double.eps,
-  rel.tol = .Machine$double.eps^0.1
-) {
+    z,
+    parY,
+    parX,
+    eps = .Machine$double.eps,
+    rel.tol = .Machine$double.eps^0.1) {
   assert_numeric(
     z,
     min.len = 1,

@@ -19,22 +19,21 @@
 #'  - `nControl` : mean of look size for Control arm.
 #' @keywords internal
 h_get_decisionDist_rct <- function(
-  nnr,
-  nnrE,
-  nnrF,
-  pE,
-  pS,
-  parE = c(1, 1),
-  parS = c(1, 1),
-  tL,
-  tU,
-  deltaE,
-  deltaF,
-  relativeDelta,
-  randRatio = 1,
-  Nmax,
-  orig_nnr
-) {
+    nnr,
+    nnrE,
+    nnrF,
+    pE,
+    pS,
+    parE = c(1, 1),
+    parS = c(1, 1),
+    tL,
+    tU,
+    deltaE,
+    deltaF,
+    relativeDelta,
+    randRatio = 1,
+    Nmax,
+    orig_nnr) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -197,21 +196,20 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
 #' @example examples/ocRctPostprobDist.R
 #' @export
 ocRctPostprobDist <- function(
-  nnE,
-  pE,
-  pS,
-  deltaE,
-  deltaF,
-  relativeDelta = FALSE,
-  tL,
-  tU,
-  parE,
-  parS,
-  randRatio = 1,
-  sim,
-  wiggle = FALSE,
-  nnF = nnE
-) {
+    nnE,
+    pE,
+    pS,
+    deltaE,
+    deltaF,
+    relativeDelta = FALSE,
+    tL,
+    tU,
+    parE,
+    parS,
+    randRatio = 1,
+    sim,
+    wiggle = FALSE,
+    nnF = nnE) {
   assert_numeric(
     nnE,
     min.len = 1,
