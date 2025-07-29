@@ -63,12 +63,13 @@ plotBeta <- function(alpha, beta) {
 #' @export
 #' @keywords graphics
 plotBetaDiff <- function(
-    parX, # parameters of control or SOC
-    parY, # parameters of experimental arm
-    go_cut = 0.20, # a meaningful improvement threshold
-    stop_cut = 0.1, # a poor improvement threshold
-    shade = TRUE, # paint the two areas under the curve
-    note = TRUE) {
+  parX, # parameters of control or SOC
+  parY, # parameters of experimental arm
+  go_cut = 0.20, # a meaningful improvement threshold
+  stop_cut = 0.1, # a poor improvement threshold
+  shade = TRUE, # paint the two areas under the curve
+  note = TRUE
+) {
   # show values of the colored area
   assert_numeric(parX, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parY, lower = 0, finite = TRUE, any.missing = FALSE)
@@ -80,12 +81,12 @@ plotBetaDiff <- function(
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
-    density = phase1b::dbetadiff(z = diff, parY = parY, parX = parX)
+    density = dbetadiff(z = diff, parY = parY, parX = parX)
   )
   data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
   data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
 
-  temp <- phase1b::sumBetaDiff(
+  temp <- sumBetaDiff(
     parX = parX,
     parY = parY,
     go_cut = go_cut, # in response rate
