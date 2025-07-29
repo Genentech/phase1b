@@ -63,13 +63,12 @@ plotBeta <- function(alpha, beta) {
 #' @export
 #' @keywords graphics
 plotBetaDiff <- function(
-  parX, # parameters of control or SOC
-  parY, # parameters of experimental arm
-  go_cut = 0.20, # a meaningful improvement threshold
-  stop_cut = 0.1, # a poor improvement threshold
-  shade = TRUE, # paint the two areas under the curve
-  note = TRUE
-) {
+    parX, # parameters of control or SOC
+    parY, # parameters of experimental arm
+    go_cut = 0.20, # a meaningful improvement threshold
+    stop_cut = 0.1, # a poor improvement threshold
+    shade = TRUE, # paint the two areas under the curve
+    note = TRUE) {
   # show values of the colored area
   assert_numeric(parX, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parY, lower = 0, finite = TRUE, any.missing = FALSE)
