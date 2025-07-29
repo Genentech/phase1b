@@ -227,7 +227,7 @@ test_that("ocRctPostprobDist gives higher PrEfficacy with increased pE", {
   expect_true(res_high_truep$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
-test_that("two function calls that differ in parE does not give the same result.", {
+test_that("Two ocRctPostprobDist calls that differ in parE does not give the same result.", {
   set.seed(1989)
   input <- list(
     nnE = c(10, 20, 30),

@@ -167,7 +167,7 @@ test_that("the PrEfficacy increases with increase Efficacy looks", {
   expect_true(res_more_eff$oc$PrEfficacy > res_eff$oc$PrEfficacy)
 })
 
-test_that("two function calls that differ in parE does not give the same result.", {
+test_that("two ocPostprobDist calls that differ in parE does not give the same result.", {
   set.seed(198)
   input <- list(
     nnE = c(10, 20, 30),
@@ -176,7 +176,7 @@ test_that("two function calls that differ in parE does not give the same result.
     deltaF = 0.2,
     tL = 0.6,
     tU = 0.6,
-    parE = c(10, 4),
+    parE = c(10, 4), # # Thall & Simon (p. 339, 1994) note on using informative a priori
     parS = c(1, 1),
     sim = 500,
     wiggle = FALSE,

@@ -163,31 +163,43 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
   expect_true(abs(p.stop - result$oc$PrFutility) < 1e-2)
 })
 
-test_that("two function calls that differ in parE does not give the same result.", {
+test_that("two ocPostprob calls that differ in parE does not give the same result.", {
   set.seed(1989)
-  expect_warning(result_uniform_hard_coded <- ocPostprob(
+  input <- list(
     nnE = c(10, 20, 30),
     truep = 0.3,
     p0 = 0.1,
     p1 = 0.2,
     tL = 0.8,
     tU = 0.8,
-    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
+    parE = c(4, 7), # Thall & Simon (p. 339, 1994) note on using informative a priori
     sim = 100,
     wiggle = TRUE,
     nnF = c(10, 20, 30)
+  )
+  expect_warning(result_uniform_hard_coded <- ocPostprob(
+    nnE = input$nnE,
+    truep = input$truep,
+    p0 = input$p0,
+    p1 = input$p1,
+    tL = input$tL,
+    tU = input$tU,
+    parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
+    sim = input$sim,
+    wiggle = TRUE,
+    nnF = input$nnF
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_warning(result_no_hard_code <- ocPostprob(
-    nnE = c(10, 20, 30),
-    truep = 0.3,
-    p0 = 0.1,
-    p1 = 0.2,
-    tL = 0.8,
-    tU = 0.8,
-    parE = c(4, 7), # stronger prior gives higher PrEfficacy
-    sim = 100,
+    nnE = input$nnE,
+    truep = input$truep,
+    p0 = input$p0,
+    p1 = input$p1,
+    tL = input$tL,
+    tU = input$tU,
+    parE = input$parE, # will fail in old code that was hard coded in uniform prior
+    sim = input$sim,
     wiggle = TRUE,
-    nnF = c(10, 20, 30)
+    nnF = input$nnF
   ), "Advise to use sim >= 50000 to achieve convergence")
   expect_true(
     sum(result_no_hard_code$oc["PrEarlyEff"], result_no_hard_code$oc["PrEfficacy"]) >
