@@ -18,21 +18,23 @@
 #'  - `nActive` : mean of look size for Active arm.
 #'  - `nControl` : mean of look size for Control arm.
 #' @keywords internal
-h_get_decisionDist_rct <- function(nnr,
-                                   nnrE,
-                                   nnrF,
-                                   pE,
-                                   pS,
-                                   parE = c(1, 1),
-                                   parS = c(1, 1),
-                                   tL,
-                                   tU,
-                                   deltaE,
-                                   deltaF,
-                                   relativeDelta,
-                                   randRatio = 1,
-                                   Nmax,
-                                   orig_nnr) {
+h_get_decisionDist_rct <- function(
+  nnr,
+  nnrE,
+  nnrF,
+  pE,
+  pS,
+  parE = c(1, 1),
+  parS = c(1, 1),
+  tL,
+  tU,
+  deltaE,
+  deltaF,
+  relativeDelta,
+  randRatio = 1,
+  Nmax,
+  orig_nnr
+) {
   assert_numeric(nnr, finite = TRUE, any.missing = FALSE)
   assert_numeric(nnrE, max.len = length(nnr), any.missing = FALSE)
   assert_numeric(nnrF, max.len = length(nnr), any.missing = FALSE)
@@ -70,10 +72,10 @@ h_get_decisionDist_rct <- function(nnr,
 
     if (size_look %in% nnrF) {
       qL <- postprobDist(
-        xS = sum(xControl),
-        nS = length(xControl),
-        x = sum(xActive),
-        n = length(xActive),
+        x = sum(xControl),
+        n = length(xControl),
+        xS = sum(xActive),
+        nS = length(xActive),
         delta = deltaF,
         relativeDelta = relativeDelta,
         parE = parS,
@@ -194,21 +196,29 @@ h_get_oc_rct <- function(all_sizes, Nmax, nActive, nControl, decision) {
 #'  Response rate in Control group.
 #' @example examples/ocRctPostprobDist.R
 #' @export
-ocRctPostprobDist <- function(nnE,
-                              pE,
-                              pS,
-                              deltaE,
-                              deltaF,
-                              relativeDelta = FALSE,
-                              tL,
-                              tU,
-                              parE,
-                              parS,
-                              randRatio = 1,
-                              sim,
-                              wiggle = FALSE,
-                              nnF = nnE) {
-  assert_numeric(nnE, min.len = 1, lower = 1, upper = max(nnE), any.missing = FALSE)
+ocRctPostprobDist <- function(
+  nnE,
+  pE,
+  pS,
+  deltaE,
+  deltaF,
+  relativeDelta = FALSE,
+  tL,
+  tU,
+  parE,
+  parS,
+  randRatio = 1,
+  sim,
+  wiggle = FALSE,
+  nnF = nnE
+) {
+  assert_numeric(
+    nnE,
+    min.len = 1,
+    lower = 1,
+    upper = max(nnE),
+    any.missing = FALSE
+  )
   assert_number(pE, lower = 0, upper = 1)
   assert_number(pS, lower = 0, upper = 1)
   assert_number(deltaE, upper = 1, finite = TRUE)
@@ -225,7 +235,9 @@ ocRctPostprobDist <- function(nnE,
   if (sim < 50000) {
     warning("Advise to use sim >= 50000 to achieve convergence")
   }
-  decision <- all_sizes <- all_looks <- nActive <- nControl <- vector(length = sim)
+  decision <- all_sizes <- all_looks <- nActive <- nControl <- vector(
+    length = sim
+  )
   nnE <- sort(nnE)
   nnF <- sort(nnF)
   nn <- sort(unique(c(nnF, nnE)))

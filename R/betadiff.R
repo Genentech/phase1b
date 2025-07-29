@@ -19,7 +19,7 @@
 #' @typed eps : number
 #'  lowest floating point number as lower bound of integration
 #' @typed rel.tol : number
-#'  used in `[stats::integrate()]`
+#'  used in [stats::integrate()]
 #' @return The density values
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
@@ -28,14 +28,38 @@
 #' @rdname dbetadiff
 #' @example examples/dbetadiff.R
 #' @export
-dbetadiff <- function(z, parY, parX, eps = .Machine$double.eps, rel.tol = .Machine$double.eps^0.1) {
-  assert_numeric(z, min.len = 1, finite = TRUE, any.missing = TRUE, null.ok = FALSE)
+dbetadiff <- function(
+  z,
+  parY,
+  parX,
+  eps = .Machine$double.eps,
+  rel.tol = .Machine$double.eps^0.1
+) {
+  assert_numeric(
+    z,
+    min.len = 1,
+    finite = TRUE,
+    any.missing = TRUE,
+    null.ok = FALSE
+  )
   ret <- z
   is_z_pos <- z >= 0
   is_z_neg <- z < 0
 
-  assert_numeric(parY, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
-  assert_numeric(parX, len = 2, lower = .Machine$double.xmin, any.missing = FALSE, finite = TRUE)
+  assert_numeric(
+    parY,
+    len = 2,
+    lower = .Machine$double.xmin,
+    any.missing = FALSE,
+    finite = TRUE
+  )
+  assert_numeric(
+    parX,
+    len = 2,
+    lower = .Machine$double.xmin,
+    any.missing = FALSE,
+    finite = TRUE
+  )
   assert_number(eps, finite = TRUE)
 
   integrandPos <- function(x, zval) {
@@ -131,7 +155,8 @@ qbetadiff <- function(p, parY, parX, eps = .Machine$double.eps) {
       q = q,
       parY = parY,
       parX = parX
-    ) - p
+    ) -
+      p
   }
   eps <- 1e-10
   stats::uniroot(
