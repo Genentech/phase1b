@@ -328,11 +328,11 @@ test_that("plotOc gives expected results for `ocPostprob` and `ocPredprob`", {
     all_looks = res5$Looks,
     wiggle_status = res5$params$wiggle
   )
-  vdiffr::expect_doppelganger(
+  vdiffr::expect_doppelganger( ##
     title = "plot of simulation result for single arm posterior probability",
     fig = result1
   )
-  vdiffr::expect_doppelganger(
+  vdiffr::expect_doppelganger( ##
     title = "plot of simulation result for single arm posterior predictive probability",
     fig = result2
   )

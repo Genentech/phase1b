@@ -81,12 +81,12 @@ plotBetaDiff <- function(
   diff <- seq(from = -1, to = 1, length = 1000)
   data <- data.frame(
     grid = diff,
-    density = dbetadiff(z = diff, parY = parY, parX = parX)
+    density = phase1b::dbetadiff(z = diff, parY = parY, parX = parX)
   )
   data$stop <- ifelse(diff > -1 & diff < stop_cut, TRUE, FALSE)
   data$go <- ifelse(diff > go_cut & diff < 1, TRUE, FALSE)
 
-  temp <- sumBetaDiff(
+  temp <- phase1b::sumBetaDiff(
     parX = parX,
     parY = parY,
     go_cut = go_cut, # in response rate
@@ -102,7 +102,7 @@ plotBetaDiff <- function(
     stop_label
   )
 
-  pbetadiff_plot <- if (shade) {
+   pbetadiff_plot <- if (shade) {
     ggplot2::ggplot(
       data = data,
       mapping = ggplot2::aes(x = grid, y = density)
