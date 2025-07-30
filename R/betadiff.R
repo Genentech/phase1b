@@ -19,7 +19,7 @@
 #' @typed eps : number
 #'  lowest floating point number as lower bound of integration
 #' @typed rel.tol : number
-#'  used in `[stats::integrate()]`
+#'  used in [stats::integrate()]
 #' @return The density values
 #'
 #' @note `X` and `Y` can be either Control or Treatment and `Z = X-Y`, subject to assumptions.
@@ -29,11 +29,12 @@
 #' @example examples/dbetadiff.R
 #' @export
 dbetadiff <- function(
-    z,
-    parY,
-    parX,
-    eps = .Machine$double.eps,
-    rel.tol = .Machine$double.eps^0.1) {
+  z,
+  parY,
+  parX,
+  eps = .Machine$double.eps,
+  rel.tol = .Machine$double.eps^0.1
+) {
   assert_numeric(
     z,
     min.len = 1,
