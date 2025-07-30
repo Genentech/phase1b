@@ -4,7 +4,7 @@
 #' and a curve of the probability of a poor improvement over estimated diff
 #'
 #' @typed data : data.frame
-#'  sourced [`data.frame`] from [sumTable()]
+#'  from [sumTable()]
 #' @typed efficacious_prob : number
 #'  a cut off for the probability of a meaningful improvement
 #' @typed futile_prob : number
