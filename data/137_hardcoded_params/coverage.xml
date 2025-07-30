@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.833609271523179" branch-rate="0" lines-covered="2014" lines-valid="2416" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-07-29 18:50:15.049599">
+<coverage line-rate="0.833609271523179" branch-rate="0" lines-covered="2014" lines-valid="2416" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-07-30 16:00:21.933714">
   <sources>
     <source>/__w/phase1b/phase1b/phase1b</source>
   </sources>
@@ -3732,25 +3732,26 @@
             </method>
             <method name="plotBetaDiff" signature="" line-rate="0.881578947368421" branch-rate="0" complexity="0">
               <lines>
+                <line number="73" hits="2" branch="false"/>
                 <line number="74" hits="2" branch="false"/>
                 <line number="75" hits="2" branch="false"/>
                 <line number="76" hits="2" branch="false"/>
                 <line number="77" hits="2" branch="false"/>
                 <line number="78" hits="2" branch="false"/>
-                <line number="79" hits="2" branch="false"/>
+                <line number="80" hits="2" branch="false"/>
                 <line number="81" hits="2" branch="false"/>
                 <line number="82" hits="2" branch="false"/>
                 <line number="83" hits="2" branch="false"/>
                 <line number="84" hits="2" branch="false"/>
                 <line number="85" hits="2" branch="false"/>
                 <line number="86" hits="2" branch="false"/>
-                <line number="87" hits="2" branch="false"/>
+                <line number="88" hits="2" branch="false"/>
                 <line number="89" hits="2" branch="false"/>
                 <line number="90" hits="2" branch="false"/>
                 <line number="91" hits="2" branch="false"/>
                 <line number="92" hits="2" branch="false"/>
                 <line number="93" hits="2" branch="false"/>
-                <line number="94" hits="2" branch="false"/>
+                <line number="95" hits="2" branch="false"/>
                 <line number="96" hits="2" branch="false"/>
                 <line number="97" hits="2" branch="false"/>
                 <line number="98" hits="2" branch="false"/>
@@ -3758,7 +3759,7 @@
                 <line number="100" hits="2" branch="false"/>
                 <line number="101" hits="2" branch="false"/>
                 <line number="102" hits="2" branch="false"/>
-                <line number="103" hits="2" branch="false"/>
+                <line number="104" hits="2" branch="false"/>
                 <line number="105" hits="2" branch="false"/>
                 <line number="106" hits="2" branch="false"/>
                 <line number="107" hits="2" branch="false"/>
@@ -3778,7 +3779,7 @@
                 <line number="121" hits="2" branch="false"/>
                 <line number="122" hits="2" branch="false"/>
                 <line number="123" hits="2" branch="false"/>
-                <line number="124" hits="2" branch="false"/>
+                <line number="124" hits="0" branch="false"/>
                 <line number="125" hits="0" branch="false"/>
                 <line number="126" hits="0" branch="false"/>
                 <line number="127" hits="0" branch="false"/>
@@ -3787,7 +3788,7 @@
                 <line number="130" hits="0" branch="false"/>
                 <line number="131" hits="0" branch="false"/>
                 <line number="132" hits="0" branch="false"/>
-                <line number="133" hits="0" branch="false"/>
+                <line number="133" hits="2" branch="false"/>
                 <line number="134" hits="2" branch="false"/>
                 <line number="135" hits="2" branch="false"/>
                 <line number="136" hits="2" branch="false"/>
@@ -3806,8 +3807,7 @@
                 <line number="149" hits="2" branch="false"/>
                 <line number="150" hits="2" branch="false"/>
                 <line number="151" hits="2" branch="false"/>
-                <line number="152" hits="2" branch="false"/>
-                <line number="154" hits="2" branch="false"/>
+                <line number="153" hits="2" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -3833,25 +3833,26 @@
             <line number="35" hits="1" branch="false"/>
             <line number="36" hits="1" branch="false"/>
             <line number="37" hits="1" branch="false"/>
+            <line number="73" hits="2" branch="false"/>
             <line number="74" hits="2" branch="false"/>
             <line number="75" hits="2" branch="false"/>
             <line number="76" hits="2" branch="false"/>
             <line number="77" hits="2" branch="false"/>
             <line number="78" hits="2" branch="false"/>
-            <line number="79" hits="2" branch="false"/>
+            <line number="80" hits="2" branch="false"/>
             <line number="81" hits="2" branch="false"/>
             <line number="82" hits="2" branch="false"/>
             <line number="83" hits="2" branch="false"/>
             <line number="84" hits="2" branch="false"/>
             <line number="85" hits="2" branch="false"/>
             <line number="86" hits="2" branch="false"/>
-            <line number="87" hits="2" branch="false"/>
+            <line number="88" hits="2" branch="false"/>
             <line number="89" hits="2" branch="false"/>
             <line number="90" hits="2" branch="false"/>
             <line number="91" hits="2" branch="false"/>
             <line number="92" hits="2" branch="false"/>
             <line number="93" hits="2" branch="false"/>
-            <line number="94" hits="2" branch="false"/>
+            <line number="95" hits="2" branch="false"/>
             <line number="96" hits="2" branch="false"/>
             <line number="97" hits="2" branch="false"/>
             <line number="98" hits="2" branch="false"/>
@@ -3859,7 +3860,7 @@
             <line number="100" hits="2" branch="false"/>
             <line number="101" hits="2" branch="false"/>
             <line number="102" hits="2" branch="false"/>
-            <line number="103" hits="2" branch="false"/>
+            <line number="104" hits="2" branch="false"/>
             <line number="105" hits="2" branch="false"/>
             <line number="106" hits="2" branch="false"/>
             <line number="107" hits="2" branch="false"/>
@@ -3879,7 +3880,7 @@
             <line number="121" hits="2" branch="false"/>
             <line number="122" hits="2" branch="false"/>
             <line number="123" hits="2" branch="false"/>
-            <line number="124" hits="2" branch="false"/>
+            <line number="124" hits="0" branch="false"/>
             <line number="125" hits="0" branch="false"/>
             <line number="126" hits="0" branch="false"/>
             <line number="127" hits="0" branch="false"/>
@@ -3888,7 +3889,7 @@
             <line number="130" hits="0" branch="false"/>
             <line number="131" hits="0" branch="false"/>
             <line number="132" hits="0" branch="false"/>
-            <line number="133" hits="0" branch="false"/>
+            <line number="133" hits="2" branch="false"/>
             <line number="134" hits="2" branch="false"/>
             <line number="135" hits="2" branch="false"/>
             <line number="136" hits="2" branch="false"/>
@@ -3907,8 +3908,7 @@
             <line number="149" hits="2" branch="false"/>
             <line number="150" hits="2" branch="false"/>
             <line number="151" hits="2" branch="false"/>
-            <line number="152" hits="2" branch="false"/>
-            <line number="154" hits="2" branch="false"/>
+            <line number="153" hits="2" branch="false"/>
           </lines>
         </class>
         <class name="plotBounds.R" filename="R/plotBounds.R" line-rate="0" branch-rate="0" complexity="0">
