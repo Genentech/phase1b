@@ -1,7 +1,7 @@
 #' Plot a summary plot corresponding to the sumTable output
 #'
 #' This function will return a plot showing a curve of the probability of a meaningful improvement over estimated diff
-#' and a curve of the prob of a poor improvement over estimated diff
+#' and a curve of the probability of a poor improvement over estimated diff
 #'
 #' @typed data : data.frame
 #'  sourced [`data.frame`] from [sumTable()]
