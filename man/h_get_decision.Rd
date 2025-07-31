@@ -4,7 +4,7 @@
 \alias{h_get_decision}
 \title{Generating random decision and sample size looks}
 \usage{
-h_get_decision(nnr, truep, p0, p1, parE = c(1, 1), nnE, nnF, tL, tU, orig_nnr)
+h_get_decision(nnr, truep, p0, p1, parE, nnE, nnF, tL, tU, orig_nnr)
 }
 \arguments{
 \item{nnr}{(\code{numeric}):\cr union of \code{nnE}and \code{nnF}.}

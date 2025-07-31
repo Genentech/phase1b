@@ -48,7 +48,7 @@ h_get_dataframe_oc <- function(decision, all_sizes, all_looks) {
 #' @inheritParams h_get_dataframe_oc
 #' @typed wiggle_status : flag
 #' from `wiggle` flag in object.
-#' @return `[ggplot()]` object
+#' @return [ggplot()] object
 #'
 #' @example examples/plotOc.R
 #'
@@ -67,7 +67,10 @@ plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
     all_looks = all_looks
   )
   barplot <-
-    ggplot2::ggplot(df, ggplot2::aes(fill = decision, x = all_looks, y = prop)) +
+    ggplot2::ggplot(
+      df,
+      ggplot2::aes(fill = decision, x = all_looks, y = prop)
+    ) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::ggtitle(
       "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
@@ -83,7 +86,9 @@ plotOc <- function(decision, all_sizes, all_looks, wiggle_status) {
     ggplot2::labs(fill = "Decision")
   generic_title <-
     "Results from simulation : \nProportion of Go/Stop/Grey zone decisions per interim/final analysis"
-  wiggle_warning_footnote <- paste("\nNote that sample sizes may differ slightly from the ones labeled")
+  wiggle_warning_footnote <- paste(
+    "\nNote that sample sizes may differ slightly from the ones labeled"
+  )
 
   if (wiggle_status) {
     barplot +

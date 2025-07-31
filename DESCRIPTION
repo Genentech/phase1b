@@ -32,11 +32,7 @@ Suggests:
     shinyjs,
     shinythemes,
     reshape,
-    testthat (>= 3.0.0),
-    magrittr,
-    tidyverse,
-    devtools,
-    vdiffr
+    testthat (>= 3.0.0)
 Imports:
     ggplot2,
     checkmate,
