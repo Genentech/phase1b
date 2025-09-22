@@ -24,7 +24,13 @@ plotBeta <- function(alpha, beta) {
   )
   ggplot2::ggplot(data) +
     ggplot2::geom_line(ggplot2::aes(x = grid, y = density)) +
-    ggplot2::ggtitle(paste("Beta density with alpha =", alpha, "and beta =", beta, "parameters.")) +
+    ggplot2::ggtitle(paste(
+      "Beta density with alpha =",
+      alpha,
+      "and beta =",
+      beta,
+      "parameters."
+    )) +
     ggplot2::xlab("response rate") +
     ggplot2::ylab(quote(f(x))) +
     ggplot2::theme(axis.ticks.x = ggplot2::element_line(linewidth = 0.5)) +
@@ -56,12 +62,14 @@ plotBeta <- function(alpha, beta) {
 #'
 #' @export
 #' @keywords graphics
-plotBetaDiff <- function(parX, # parameters of control or SOC
-                         parY, # parameters of experimental arm
-                         go_cut = 0.20, # a meaningful improvement threshold
-                         stop_cut = 0.1, # a poor improvement threshold
-                         shade = TRUE, # paint the two areas under the curve
-                         note = TRUE) { # show values of the colored area
+plotBetaDiff <- function(
+    parX, # parameters of control or SOC
+    parY, # parameters of experimental arm
+    go_cut = 0.20, # a meaningful improvement threshold
+    stop_cut = 0.1, # a poor improvement threshold
+    shade = TRUE, # paint the two areas under the curve
+    note = TRUE) {
+  # show values of the colored area
   assert_numeric(parX, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_numeric(parY, lower = 0, finite = TRUE, any.missing = FALSE)
   assert_number(go_cut, finite = TRUE)
@@ -80,39 +88,67 @@ plotBetaDiff <- function(parX, # parameters of control or SOC
   temp <- sumBetaDiff(
     parX = parX,
     parY = parY,
-    go_cut = go_cut,
-    stop_cut = stop_cut
+    go_cut = go_cut, # in response rate
+    stop_cut = stop_cut # in response rate
   )
 
   go_label <- paste("P(Go) is", round(temp$go * 100, digits = 2), "%")
   stop_label <- paste("P(Stop) is", round(temp$stop * 100, digits = 2), "%")
-  plot_title <- paste("According to Beta difference density", go_label, "and", stop_label)
+  plot_title <- paste(
+    "According to Beta difference density",
+    go_label,
+    "and",
+    stop_label
+  )
 
   pbetadiff_plot <- if (shade) {
-    ggplot2::ggplot(data = data, mapping = ggplot2::aes(x = grid, y = density)) +
+    ggplot2::ggplot(
+      data = data,
+      mapping = ggplot2::aes(x = grid, y = density)
+    ) +
       ggplot2::geom_line(colour = "#888888") +
       ggplot2::geom_area(
-        data = data[data$grid < stop_cut, ], fill = "#FF0046",
+        data = data[data$grid < stop_cut, ],
+        fill = "#FF0046",
         mapping = ggplot2::aes(x = ifelse(grid < 0.2 & grid < 0.5, grid, 0))
       ) +
       ggplot2::geom_area(
-        data = data[data$grid > go_cut, ], fill = "#009E73",
-        mapping = ggplot2::aes(x = ifelse(grid > 0.3, grid, 0))
+        data = data[data$grid > go_cut, ],
+        fill = "#009E73",
+        mapping = ggplot2::aes(x = ifelse(grid > 0, grid, 0))
       ) +
       ggplot2::xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
   } else {
     pbetadiff_plot <- ggplot2::ggplot(data = data) +
-      ggplot2::geom_line(aes(x = grid, y = density, colour = "#888888")) +
+      ggplot2::geom_line(ggplot2::aes(
+        x = grid,
+        y = density,
+        colour = "#888888"
+      )) +
       xlab("Difference between treatment") +
       ggplot2::ylab(quote(f(x))) +
       ggplot2::ggtitle(plot_title)
   }
   if (note) {
     pbetadiff_plot <- pbetadiff_plot +
-      ggplot2::annotate("text", x = -0.5, y = 3.75, size = 5, label = stop_label, colour = "#FF0046") +
-      ggplot2::annotate("text", x = -0.5, y = 3.25, size = 5, label = go_label, colour = "#009E73")
+      ggplot2::annotate(
+        "text",
+        x = -0.5,
+        y = 3.75,
+        size = 5,
+        label = stop_label,
+        colour = "#FF0046"
+      ) +
+      ggplot2::annotate(
+        "text",
+        x = -0.5,
+        y = 3.25,
+        size = 5,
+        label = go_label,
+        colour = "#009E73"
+      )
   }
   pbetadiff_plot
 }

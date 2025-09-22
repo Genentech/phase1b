@@ -1,137 +1,101 @@
 #' Plot a summary plot corresponding to the sumTable output
 #'
-#' This function will return a plot showing a curve of the prob of a meaningful improvement over estunated diff
-#' and a curve of the prob of a poor improvement over estunated diff
-#' @param data the output object of \code{\link{sumTable}}
-#' @param Pos_cut a cut off for the prob of a meaningful improvement
-#' @param Neg_cut a cut off for the prob of a poor improvement
-#' @return the \code{data} item which was imputed to the function
+#' This function will return a plot showing a curve of the probability of a meaningful improvement over estimated diff
+#' and a curve of the probability of a poor improvement over estimated diff
 #'
-#' @importFrom graphics lines abline polygon plot par grid mtext box axis
+#' @typed data : data.frame
+#'  from [sumTable()]
+#' @typed efficacious_prob : number
+#'  a cut off for the probability of a meaningful improvement
+#' @typed futile_prob : number
+#'  a cut off for the probability of a poor improvement
+#' @return [ggplot()] object
+#'
+#' @importFrom ggplot2 geom_line geom_area ggtitle theme_light annotate xlab ylab
+#' @importFrom tibble remove_rownames
 #'
 #' @example examples/plotDecision.R
 #' @export
 #' @keywords graphics
-plotDecision <- function(data, Pos_cut, Neg_cut) {
-  xticks <- seq(from = -50, to = 100, by = 10)
+plotDecision <- function(data, efficacious_prob, futile_prob) {
+  assert_data_frame(data, any.missing = FALSE)
+  assert_number(efficacious_prob, finite = TRUE)
+  assert_number(futile_prob, finite = TRUE)
 
-  x <- as.numeric(data[1, ]) # number of response;
+  data <- data.frame(t(data))
 
-  x.mode <- as.numeric(data[3, ]) # the response diff mode
+  data <- tibble::remove_rownames(data)
 
-  y <- as.numeric(data[6, ]) # The Prob of a meaningful improvement
-
-  z <- as.numeric(data[7, ]) # The Prob of a not meaningful improvement
-
-  # Look up decision area;
-  ShadeData <- t(data)
-
-  colnames(ShadeData)
-
-  # Green area;
-  G_area <- ShadeData[ShadeData[, "prob.go [%]"] > Pos_cut, ]
-  # Red ares;
-  R_area <- ShadeData[ShadeData[, "prob.nogo [%]"] > Neg_cut, ]
-
-  graphics::par(mar = c(5, 4, 4, 1) + .1)
-
-
-  graphics::plot(x.mode, y,
-    type = "n", xlim = range(x.mode), bty = "n", ylab = "Probability (%)", xaxt = "n", xaxs = "i", yaxs = "i",
-    xlab = expression(paste("Estimated diff.", sep = "")), ylim = c(0, 100), panel.first = grid()
+  colnames(data) <- c(
+    "responders",
+    "obs",
+    "mode",
+    "ci_lower",
+    "ci_upper",
+    "prob_go",
+    "prob_stop"
   )
 
+  go_shade <- data[data$prob_go > efficacious_prob, ]
 
+  stop_shade <- data[data$prob_stop > futile_prob, ]
 
-  # find the interaction;
-
-
-  # Green area;
-  aboveG <- ShadeData[, "prob.go [%]"] > Pos_cut
-  # Red ares;
-  aboveR <- ShadeData[, "prob.nogo [%]"] > Neg_cut
-
-  # Points always intersect when above=TRUE, then FALSE or reverse
-  intersect.pointsG <- which(diff(aboveG) != 0)
-  intersect.pointsR <- which(diff(aboveR) != 0)
-  # Find the slopes for each line segment.
-  x1.slopesG <- (ShadeData[intersect.pointsG + 1, "prob.go [%]"] - ShadeData[intersect.pointsG, "prob.go [%]"]) /
-    (ShadeData[intersect.pointsG + 1, "mode [%]"] - ShadeData[intersect.pointsG, "mode [%]"])
-  x1.slopesR <- (ShadeData[intersect.pointsR + 1, "prob.nogo [%]"] - ShadeData[intersect.pointsR, "prob.nogo [%]"]) /
-    (ShadeData[intersect.pointsR + 1, "mode [%]"] - ShadeData[intersect.pointsR, "mode [%]"])
-
-  x2.slopes <- 0
-  # Find the intersection for each segment.
-  x.pointsG <- ShadeData[intersect.pointsG, "mode [%]"] +
-    ((Pos_cut - ShadeData[intersect.pointsG, "prob.go [%]"]) / (x1.slopesG))
-  y.pointsG <- Pos_cut
-
-  x.pointsR <- ShadeData[intersect.pointsR, "mode [%]"] +
-    ((Neg_cut - ShadeData[intersect.pointsR, "prob.nogo [%]"]) / (x1.slopesR))
-  y.pointsR <- Neg_cut
-
-
-  graphics::polygon(c(R_area[, "mode [%]"], x.pointsR, x.pointsR, rev(R_area[, "mode [%]"])),
-    c(rep(0, dim(R_area)[1] + 1), y.pointsR, rev(R_area[, "prob.nogo [%]"])),
-    col = "red"
+  annotation_go <- paste0(
+    "Probability of Go is ",
+    efficacious_prob,
+    "% when difference is at least ",
+    min(data$mode[data$prob_go > efficacious_prob]),
+    "%"
+  )
+  annotation_stop <- paste0(
+    "Probability of Stop is ",
+    futile_prob,
+    "% when difference is at most ",
+    max(data$mode[data$prob_stop > futile_prob]),
+    "%"
   )
 
-  graphics::mtext(
-    paste(
-      "Est. Diff=",
-      round(x.pointsR),
-      "%, Prob.nogo=",
-      round(y.pointsR),
-      "%",
-      sep = ""
-    ),
-    side = 3,
-    line = 2
-  )
-
-  graphics::polygon(
-    c(
-      x.pointsG, G_area[, "mode [%]"],
-      rev(G_area[, "mode [%]"]), x.pointsG
-    ),
-    c(
-      rep(0, dim(G_area)[1] + 1),
-      rev(G_area[, "prob.go [%]"]), y.pointsG
-    ),
-    col = "green"
-  ) # meaningful part;
-
-  graphics::mtext(
-    paste(
-      "Est. Diff=",
-      round(x.pointsG),
-      "%,Prob. go=",
-      round(y.pointsG),
-      "%",
-      sep = ""
-    ),
-    side = 3,
-    line = 1
-  )
-
-  graphics::lines(x.mode, y, col = "green", lwd = 3, type = "l") # Plot PDF of beta(R,NR);
-
-  graphics::lines(x.mode, z, col = "red", lwd = 3, type = "l")
-
-
-
-  if (Pos_cut == Neg_cut) {
-    graphics::abline(h = Pos_cut, col = "black", lwd = 2)
-  }
-
-  graphics::box()
-
-  LablePoint2 <- unique(sort(c(
-    ceiling(min(x.mode) * 10) / 10,
-    xticks, floor(max(x.mode) * 10) / 10
-  ))) ## Can be modified
-
-  graphics::axis(1, at = LablePoint2, labels = paste(LablePoint2, "%", sep = ""), las = 1, lwd = 2, cex.axis = 1)
-
-  data
+  ggplot2::ggplot(data) +
+    ggplot2::geom_line(
+      ggplot2::aes(x = mode, y = prob_go),
+      linewidth = 1.5,
+      colour = "#009E73"
+    ) +
+    ggplot2::theme_light() +
+    ggplot2::scale_x_continuous(
+      breaks = seq(from = 0, to = round(max(data$mode), digits = 1), by = 5)
+    ) +
+    ggplot2::geom_area(
+      data = go_shade,
+      mapping = ggplot2::aes(x = mode, y = prob_go),
+      fill = "#009E73"
+    ) +
+    ggplot2::geom_line(
+      data = data,
+      mapping = ggplot2::aes(x = mode, y = prob_stop),
+      linewidth = 1.5,
+      colour = "#FF0046"
+    ) +
+    ggplot2::geom_area(
+      data = stop_shade,
+      mapping = ggplot2::aes(x = mode, y = prob_stop),
+      fill = "#FF0046"
+    ) +
+    ggplot2::ggtitle(
+      "Probability of Difference and respective Go and Stop probabilities."
+    ) +
+    ggplot2::xlab("Difference between treatment in Response Rate (%)") +
+    ggplot2::ylab("Probability (%)") +
+    ggplot2::annotate(
+      "text",
+      x = mean(data$mode),
+      y = 90,
+      label = annotation_go
+    ) +
+    ggplot2::annotate(
+      "text",
+      x = mean(data$mode),
+      y = 85,
+      label = annotation_stop
+    )
 }

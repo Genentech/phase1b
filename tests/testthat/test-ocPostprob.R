@@ -66,6 +66,7 @@ test_that("h_get_decision will give GO decision in favourable conditions", {
     p1 = 0.5,
     tL = 0.2,
     tU = 0.3,
+    parE = c(1, 1),
     nnE = c(10, 20, 30),
     nnF = c(10, 20, 30),
     orig_nnr = orig_nnr
@@ -102,42 +103,95 @@ test_that("the ExpectedN is within range based on vector of looks", {
 # ocPostprob ----
 test_that("the sum of Eff, Fut, Gray zone probabiliy is 1", {
   set.seed(1989)
-  expect_warning(result <- ocPostprob(
-    nnE = 40, truep = 0.5, p0 = 0.45, p1 = 0.45, tL = 0.9, tU = 0.7,
-    parE = c(1, 1), sim = 10000
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    result <- ocPostprob(
+      nnE = 40,
+      truep = 0.5,
+      p0 = 0.45,
+      p1 = 0.45,
+      tL = 0.9,
+      tU = 0.7,
+      parE = c(1, 1),
+      sim = 10000
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   result_sum <- sum(result$oc[5:7])
   expect_equal(result_sum, 1)
 })
 
 test_that("the PrFutility increases with increase futility looks", {
   set.seed(1989)
-  expect_warning(result_fut <- ocPostprob(
-    nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, nnF = c(10, 20, 30)
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    result_fut <- ocPostprob(
+      nnE = c(10, 20, 30),
+      truep = 0.40,
+      p0 = 0.20,
+      p1 = 0.30,
+      tL = 0.60,
+      tU = 0.80,
+      parE = c(1, 1),
+      sim = 10000,
+      wiggle = FALSE,
+      nnF = c(10, 20, 30)
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
 
   result_fut$oc$PrFutility
-  expect_warning(result_one_fut <- ocPostprob(
-    nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, nnF = 10
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    result_one_fut <- ocPostprob(
+      nnE = c(10, 20, 30),
+      truep = 0.40,
+      p0 = 0.20,
+      p1 = 0.30,
+      tL = 0.60,
+      tU = 0.80,
+      parE = c(1, 1),
+      sim = 10000,
+      wiggle = FALSE,
+      nnF = 10
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   result_one_fut$oc$PrFutility
   expect_true(result_fut$oc$PrFutility > result_one_fut$oc$PrFutility)
 })
 
 test_that("the PrEfficacy increases with increase Efficacy looks", {
   set.seed(1989)
-  expect_warning(result_eff <- ocPostprob(
-    nnE = 30, truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, nnF = 30
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    result_eff <- ocPostprob(
+      nnE = 30,
+      truep = 0.40,
+      p0 = 0.20,
+      p1 = 0.30,
+      tL = 0.60,
+      tU = 0.80,
+      parE = c(1, 1),
+      sim = 10000,
+      wiggle = FALSE,
+      nnF = 30
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
 
   result_eff$oc$PrEfficacy
-  expect_warning(result_more_eff <- ocPostprob(
-    nnE = c(10, 20, 30), truep = 0.40, p0 = 0.20, p1 = 0.30, tL = 0.60, tU = 0.80, parE = c(1, 1),
-    sim = 10000, wiggle = FALSE, nnF = c(10, 20, 30)
-  ), "Advise to use sim >= 50000 to achieve convergence")
+  expect_warning(
+    result_more_eff <- ocPostprob(
+      nnE = c(10, 20, 30),
+      truep = 0.40,
+      p0 = 0.20,
+      p1 = 0.30,
+      tL = 0.60,
+      tU = 0.80,
+      parE = c(1, 1),
+      sim = 10000,
+      wiggle = FALSE,
+      nnF = c(10, 20, 30)
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
   result_more_eff$oc$PrEfficacy
   expect_true(result_more_eff$oc$PrEfficacy > result_eff$oc$PrEfficacy)
 })
@@ -148,8 +202,14 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
   # Go criteria is P_E(truep >= 0.45) > 0.70
   # Stop criteria is P_E(truep <= 0.45) > 0.90
   result <- ocPostprob(
-    nnE = 40, truep = 0.5, p0 = 0.45, p1 = 0.45, tL = 0.9, tU = 0.7,
-    parE = c(1, 1), sim = 50000
+    nnE = 40,
+    truep = 0.5,
+    p0 = 0.45,
+    p1 = 0.45,
+    tL = 0.9,
+    tU = 0.7,
+    parE = c(1, 1),
+    sim = 50000
   )
   # Pre-calculation indicate that :
   # Go criteria: 20 out of 40, means >= 50% response rate
@@ -160,4 +220,65 @@ test_that("ocPostprob gives results that are within range to stats::pbinom", {
   expect_equal(result$oc$PrFutility, 0.01998)
   p.stop <- pbinom(q = 13, size = 40, prob = 0.5)
   expect_true(abs(p.stop - result$oc$PrFutility) < 1e-2)
+})
+
+test_that("two ocPostprob calls that differ in parE does not give the same result.", {
+  input <- list(
+    nnE = c(10, 20, 30),
+    truep = 0.3,
+    p0 = 0.1,
+    p1 = 0.2,
+    tL = 0.8,
+    tU = 0.8,
+    parE = c(4, 7), # Thall & Simon (p. 339, 1994) note on using informative a priori
+    sim = 100,
+    wiggle = TRUE,
+    nnF = c(10, 20, 30)
+  )
+  set.seed(1989)
+  expect_warning(
+    result_uniform_hard_coded <- ocPostprob(
+      nnE = input$nnE,
+      truep = input$truep,
+      p0 = input$p0,
+      p1 = input$p1,
+      tL = input$tL,
+      tU = input$tU,
+      parE = c(1, 1), # will fail in old code that was hard coded in uniform prior
+      sim = input$sim,
+      wiggle = TRUE,
+      nnF = input$nnF
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  set.seed(1989)
+  expect_warning(
+    result_no_hard_code <- ocPostprob(
+      nnE = input$nnE,
+      truep = input$truep,
+      p0 = input$p0,
+      p1 = input$p1,
+      tL = input$tL,
+      tU = input$tU,
+      parE = input$parE, # will fail in old code that was hard coded in uniform prior
+      sim = input$sim,
+      wiggle = TRUE,
+      nnF = input$nnF
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  expect_true(
+    sum(
+      result_no_hard_code$oc["PrEarlyEff"],
+      result_no_hard_code$oc["PrEfficacy"]
+    ) >
+      sum(
+        result_uniform_hard_coded$oc["PrEarlyEff"],
+        result_uniform_hard_coded$oc["PrEfficacy"]
+      )
+  )
+  expect_true(
+    result_no_hard_code$oc["PrGrayZone"] <
+      result_uniform_hard_coded$oc["PrGrayZone"]
+  )
 })

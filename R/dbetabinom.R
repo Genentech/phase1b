@@ -226,7 +226,7 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
 
     uniroot(
       f = function(q) .pbetaMix(q, par, weights, lower.tail = lower.tail) - p,
-      interval = grid_interval,
+      interval = grid_interval, # more precise x-axis for root finding
       f.lower = -p,
       f.upper = 1 - p,
       tol = sqrt(.Machine$double.eps)

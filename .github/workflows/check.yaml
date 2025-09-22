@@ -25,6 +25,8 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
     with:
       additional-r-cmd-check-params: --as-cran
+      additional-env-vars: |
+        NOT_CRAN=true
     secrets:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   coverage:
