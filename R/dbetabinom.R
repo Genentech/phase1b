@@ -92,10 +92,10 @@ h_getBetamixPost <- function(x, n, par, weights) {
   postPar[, 2] <- postPar[, 2] + n - x
   # We compute updated mixture probabilities.
   tmp <- exp(
-    lbeta(a = postPar[, 1], b = postPar[, 2]) - lbeta(a = par[, 1], b = par[, 2])
+    lbeta(a = postPar[, 1], b = postPar[, 2]) -
+      lbeta(a = par[, 1], b = par[, 2])
   )
   # We compute the updated weights of the posterior
-  # postWeights <- weights * tmp / sum(weights * tmp)
   postWeights <- exp(log(weights) + log(tmp)) - sum(weights * tmp)
   assert_numeric(postWeights)
   list(
@@ -122,7 +122,13 @@ h_getBetamixPost <- function(x, n, par, weights) {
 #' @example examples/dbetaMix.R
 #' @export
 dbetaMix <- function(x, par, weights, log = FALSE) {
-  assert_numeric(weights, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE)
+  assert_numeric(
+    weights,
+    lower = 0,
+    upper = 1,
+    finite = TRUE,
+    any.missing = FALSE
+  )
   assert_true(all.equal(sum(weights), 1))
   assert_true(identical(length(weights), nrow(par)))
   degree <- length(weights)
@@ -222,7 +228,10 @@ qbetaMix <- function(p, par, weights, lower.tail = TRUE) {
 
     diff <- f_grid - p
     pos <- diff > 0
-    grid_interval <- c(grid[!pos][which.max(diff[!pos])], grid[pos][which.min(diff[pos])])
+    grid_interval <- c(
+      grid[!pos][which.max(diff[!pos])],
+      grid[pos][which.min(diff[pos])]
+    )
 
     uniroot(
       f = function(q) .pbetaMix(q, par, weights, lower.tail = lower.tail) - p,
