@@ -1,3 +1,4 @@
+\donttest{
 # Here we illustrate an example for Decision 1 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30.
 # True response rate or truep of the treatment group = 40%
@@ -8,7 +9,6 @@
 # - Interim look for Efficacy: Pr( success at final ) > 80%
 # - Interim look for Futility: Pr( failure at final ) < 20%
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
-
 set.seed(20)
 result <- ocPredprobDist(
   nnE = c(10, 20, 30),
@@ -43,7 +43,8 @@ result$oc
 # - Interim look for Futility: Pr( failure at final ) < 20%
 # We assume a prior of treatment arm parE = Beta(1,1), unless otherwise indicated.
 #
-set.seed(20)
+\donttest{
+  set.seed(20)
 result <- ocPredprobDist(
   nnE = c(10, 20, 30),
   truep = 0.40,
@@ -63,6 +64,7 @@ result <- ocPredprobDist(
   decision1 = TRUE
 )
 result$oc
+
 
 # Here we illustrate an example for Decision 2 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30
@@ -130,3 +132,4 @@ result <- ocPredprobDist(
   decision1 = FALSE
 )
 result$oc
+}
