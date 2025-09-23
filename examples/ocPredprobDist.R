@@ -1,4 +1,3 @@
-\donttest{
 # Here we illustrate an example for Decision 1 with the following assumptions :
 # Efficacy Looks and Futility looks are identical at sample size of 10, 20 and 30.
 # True response rate or truep of the treatment group = 40%
