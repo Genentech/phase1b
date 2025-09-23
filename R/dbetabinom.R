@@ -91,10 +91,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
   postPar[, 1] <- postPar[, 1] + x
   postPar[, 2] <- postPar[, 2] + n - x
   # We compute updated mixture probabilities.
-  tmp <- exp(
-    lbeta(a = postPar[, 1], b = postPar[, 2]) -
-      lbeta(a = par[, 1], b = par[, 2])
-  )
+  tmp <- postWeights <- weights * tmp / sum(weights * tmp)
   # We compute the updated weights of the posterior
   postWeights <- weights * tmp / sum(weights * tmp)
   assert_numeric(postWeights)
