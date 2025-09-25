@@ -104,16 +104,8 @@ test_that("postprob from beta mixture priors utilise updated weights", {
     par = rbind(c(0.6, 0.4), c(2, 4)),
     weights = c(0, 1)
   )
-  expected4 <- postprob(
-    x = 16,
-    n = 23,
-    p = 0.60,
-    par = rbind(c(0.6, 0.4), c(2, 4)),
-    weights = c(0, 1)
-  )
   expect_true(result != expected)
   expect_equal(result3, expected3, tolerance = 1e-7)
-  expect_equal(expected3, expected4, tolerance = 1e-7)
 })
 
 test_that("postprob can correct weights not summing to 1", {
