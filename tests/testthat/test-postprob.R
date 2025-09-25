@@ -86,25 +86,25 @@ test_that("postprob works with vector x", {
 })
 
 test_that("postprob from beta mixture priors utilise updated weights", {
-  result1 = postprob(x = 16, n = 23, p = 0.60, parE = c(0.6, 0.4), weights = 1)
-  result2 = postprob(x = 16, n = 23, p = 0.60, parE = c(2, 4), weights = 1)
-  result = 0.5 %*% (result1 + result2)
-  expected = postprob(
+  result1 <- postprob(x = 16, n = 23, p = 0.60, parE = c(0.6, 0.4), weights = 1)
+  result2 <- postprob(x = 16, n = 23, p = 0.60, parE = c(2, 4), weights = 1)
+  result <- 0.5 %*% (result1 + result2)
+  expected <- postprob(
     x = 16,
     n = 23,
     p = 0.60,
     par = rbind(c(0.6, 0.4), c(2, 4)),
     weights = c(0.5, 0.5)
   )
-  result3 = postprob(x = 16, n = 23, p = 0.60, parE = c(2, 4), weights = 1)
-  expected3 = postprob(
+  result3 <- postprob(x = 16, n = 23, p = 0.60, parE = c(2, 4), weights = 1)
+  expected3 <- postprob(
     x = 16,
     n = 23,
     p = 0.60,
     par = rbind(c(0.6, 0.4), c(2, 4)),
     weights = c(0, 1)
   )
-  expected4 = postprob(
+  expected4 <- postprob(
     x = 16,
     n = 23,
     p = 0.60,

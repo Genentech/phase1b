@@ -69,14 +69,13 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #' @example examples/postprob.R
 #' @export
 postprob <- function(
-  x,
-  n,
-  p,
-  parE = c(1, 1),
-  weights,
-  betamixPost,
-  log.p = FALSE
-) {
+    x,
+    n,
+    p,
+    parE = c(1, 1),
+    weights,
+    betamixPost,
+    log.p = FALSE) {
   if (missing(betamixPost)) {
     assert_flag(log.p)
     if (is.vector(parE)) {
@@ -91,8 +90,8 @@ postprob <- function(
     }
     if (sum(weights) != 1) {
       warning("Weights have been corrected. Advise to review allocated weights")
-      weight_len = length(weights)
-      corrected_weights = vector(length = weight_len)
+      weight_len <- length(weights)
+      corrected_weights <- vector(length = weight_len)
       for (i in seq_len(weight_len)) {
         corrected_weights[i] <- weights[i] / sum(weights)
       }
