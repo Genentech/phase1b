@@ -170,7 +170,11 @@ test_that("dbetaMix gives the correct result with a 1 mixture component", {
 })
 
 test_that("dbetaMix gives the correct result with increased parameters", {
-  result <- dbetaMix(x = 0.3, par = rbind(c(0.2, 0.4), c(1, 2)), weights = c(0.1, 0.9))
+  result <- dbetaMix(
+    x = 0.3,
+    par = rbind(c(0.2, 0.4), c(1, 2)),
+    weights = c(0.1, 0.9)
+  )
   expect_equal(result, 1.307458, tolerance = 1e-4)
 })
 
@@ -180,48 +184,57 @@ test_that("dbetaMix gives error when weights do not sum to 1", {
       x = 0.3,
       par = rbind(c(0.2, 0.4), c(1, 1)),
       weights = c(1, 1)
-    ), "failed"
+    ),
+    "failed"
   )
 })
 
 test_that("dbetaMix gives the correct result as dbeta", {
   result <- dbetaMix(
-    x = 0.3, par = rbind(c(0.2, 0.4), c(1, 1)),
+    x = 0.3,
+    par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
-  result2 <- 0.6 * dbeta(
-    x = 0.3,
-    shape1 = 0.2,
-    shape2 = 0.4
-  ) + 0.4 * dbeta(
-    x = 0.3,
-    shape1 = 1,
-    shape2 = 1,
-  )
+  result2 <- 0.6 *
+    dbeta(
+      x = 0.3,
+      shape1 = 0.2,
+      shape2 = 0.4
+    ) +
+    0.4 *
+      dbeta(
+        x = 0.3,
+        shape1 = 1,
+        shape2 = 1,
+      )
   expect_equal(result, result2, tolerance = 1e-4)
 })
 
 test_that("dbetaMix handles edge cases", {
   result_inf <- dbetaMix(
-    x = c(0, 1), par = rbind(c(0.2, 0.4), c(1, 1)),
+    x = c(0, 1),
+    par = rbind(c(0.2, 0.4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
   expect_equal(result_inf, c(Inf, Inf))
 
   result_finite <- dbetaMix(
-    x = c(0, 1), par = rbind(c(2, 4), c(1, 1)),
+    x = c(0, 1),
+    par = rbind(c(2, 4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
   expect_equal(result_finite, c(0.4, 0.4))
 
   result_right <- dbetaMix(
-    x = c(0, 1), par = rbind(c(0, 4), c(1, 1)),
+    x = c(0, 1),
+    par = rbind(c(0, 4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
   expect_equal(result_right, c(Inf, 0.4))
 
   result_right <- dbetaMix(
-    x = c(NA, 1), par = rbind(c(0, 4), c(1, 1)),
+    x = c(NA, 1),
+    par = rbind(c(0, 4), c(1, 1)),
     weights = c(0.6, 0.4)
   )
   expect_equal(result_right, c(NA, 0.4))
@@ -275,7 +288,11 @@ test_that("h_getBetamixPost gives the correct weights when sum of weights is not
     par = rbind(c(1, 2), c(3, 4), c(10, 10)),
     weights = c(0.6, 0.4, 0.5)
   )
-  expect_equal(result$weights, c(.2776991, 0.2683337, 0.4539671), tolerance = 1e-4)
+  expect_equal(
+    result$weights,
+    c(.2776991, 0.2683337, 0.4539671),
+    tolerance = 1e-4
+  )
   expect_identical(result$par, rbind(c(17, 9), c(19, 11), c(26, 17)))
 })
 
@@ -286,6 +303,7 @@ test_that("h_getBetamixPost gives error when K rows of weights exceed length of 
       n = 23,
       par = rbind(c(1, 2)),
       weights = c(0.6, 0.4)
-    ), "Must have length 1, but has length 2."
+    ),
+    "Must have length 1, but has length 2."
   )
 })

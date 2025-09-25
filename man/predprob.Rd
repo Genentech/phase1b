@@ -55,27 +55,43 @@ A table with the following contents will be included in the return output :
 # Nmax = 40, x = 16, n = 23, beta(0.6,0.4) prior distribution,
 # thetaT = 0.9. The control response rate is 60\%:
 predprob(
-  x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9,
+  x = 16,
+  n = 23,
+  Nmax = 40,
+  p = 0.6,
+  thetaT = 0.9,
   parE = c(0.6, 0.4)
 )
 
 # Lowering/Increasing the probability threshold thetaT of course increases
 # /decreases the predictive probability of success, respectively:
 predprob(
-  x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.8,
+  x = 16,
+  n = 23,
+  Nmax = 40,
+  p = 0.6,
+  thetaT = 0.8,
   parE = c(0.6, 0.4)
 )
 
 predprob(
-  x = 16, n = 23, Nmax = 40, p = 0.6, thetaT = 0.95,
+  x = 16,
+  n = 23,
+  Nmax = 40,
+  p = 0.6,
+  thetaT = 0.95,
   parE = c(0.6, 0.4)
 )
 
 # Mixed beta prior
 predprob(
-  x = 20, n = 23, Nmax = 40, p = 0.6, thetaT = 0.9,
+  x = 20,
+  n = 23,
+  Nmax = 40,
+  p = 0.6,
+  thetaT = 0.9,
   parE = rbind(c(1, 1), c(25, 15)),
-  weights = c(3, 1)
+  weights = c(0.5, 0.5)
 )
 }
 \references{
