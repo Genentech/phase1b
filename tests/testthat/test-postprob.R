@@ -110,7 +110,7 @@ test_that("postprob from beta mixture priors utilise updated weights", {
 
 test_that("postprob can correct weights not summing to 1", {
   expect_warning(
-    postprob(
+    result <- postprob(
       x = 16,
       n = 23,
       p = 0.60,
@@ -119,4 +119,5 @@ test_that("postprob can correct weights not summing to 1", {
     ),
     "Weights have been corrected. Advise to review allocated weights"
   )
+  expect_equal(result, 0.717136981664477, tolerance = 10 - 4)
 })

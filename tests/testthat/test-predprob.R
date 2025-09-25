@@ -234,7 +234,7 @@ test_that("predprob gives correct list", {
 
 test_that("predprob can correct weights not summing to 1", {
   expect_warning(
-    predprob(
+    result <- predprob(
       x = 20,
       n = 23,
       Nmax = 40,
@@ -245,4 +245,91 @@ test_that("predprob can correct weights not summing to 1", {
     ),
     "Weights have been corrected. Advise to review allocated weights"
   )
+  expected <- list(
+    result = 0.987443066689065,
+    table = data.frame(
+      counts = 0:17,
+      cumul_counts = c(
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ),
+      density = c(
+        0,
+        0,
+        0,
+        0,
+        1e-04,
+        3e-04,
+        0.0011,
+        0.0031,
+        0.008,
+        0.0177,
+        0.0348,
+        0.0613,
+        0.0973,
+        0.1394,
+        0.1783,
+        0.1964,
+        0.1708,
+        0.0913
+      ),
+      posterior = c(
+        0.156006056652524,
+        0.235230997583343,
+        0.330336640189169,
+        0.435914001904251,
+        0.544920579033297,
+        0.649980438592741,
+        0.744656800535717,
+        0.824410113956191,
+        0.887063998293474,
+        0.932746206414079,
+        0.963409604100531,
+        0.982121940873262,
+        0.99231929942023,
+        0.997167516868118,
+        0.999125473187882,
+        0.999779433326495,
+        0.999955728330695,
+        0.999993169502512
+      ),
+      success = c(
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        FALSE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE,
+        TRUE
+      )
+    )
+  )
+  expect_equal(result, expected)
 })

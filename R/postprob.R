@@ -69,13 +69,14 @@ postprobBeta <- function(x, n, p, a = 1, b = 1) {
 #' @example examples/postprob.R
 #' @export
 postprob <- function(
-    x,
-    n,
-    p,
-    parE = c(1, 1),
-    weights,
-    betamixPost,
-    log.p = FALSE) {
+  x,
+  n,
+  p,
+  parE = c(1, 1),
+  weights,
+  betamixPost,
+  log.p = FALSE
+) {
   if (missing(betamixPost)) {
     assert_flag(log.p)
     if (is.vector(parE)) {

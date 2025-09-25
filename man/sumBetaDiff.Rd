@@ -27,3 +27,14 @@ along with the \code{go} and \code{stop} probabilities.
 A function to summarize the characters of a betadiff distribution \code{\link[=dbetadiff]{dbetadiff()}}.
 May require use of random sample generator to calculate, use \code{\link[=set.seed]{set.seed()}} to reproduce results.
 }
+\examples{
+parX <- c(1, 52) # Control group's parameters
+parY <- c(5.5, 20.5) # Treatment group's parameters
+sumBetaDiff(
+  parX = parX,
+  parY = parY,
+  ci_level = 0.9,
+  go_cut = 0.6,
+  stop_cut = 0.2
+)
+}
