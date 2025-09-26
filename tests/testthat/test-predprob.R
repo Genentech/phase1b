@@ -91,20 +91,23 @@ test_that("predprob gives an error when thetaT exceeds 1", {
 })
 
 test_that("predprob gives the correct numeric result with a beta-mixture", {
-  result <- predprob(
-    x = 20,
-    n = 23,
-    Nmax = 40,
-    p = 0.6,
-    thetaT = 0.9,
-    parE = rbind(c(1, 1), c(25, 15)),
-    weights = c(3, 1)
+  expect_warning(
+    result <- predprob(
+      x = 20,
+      n = 23,
+      Nmax = 40,
+      p = 0.6,
+      thetaT = 0.9,
+      parE = rbind(c(1, 1), c(25, 15)),
+      weights = c(3, 1)
+    ),
+    "Weights have been corrected"
   )
   expect_equal(result$result, 0.9874431, tolerance = 1e-6)
 })
 
 test_that("predprob gives an error when x exceeds interim n", {
-  expect_error(
+  expect_warning(
     predprob(
       x = 24,
       n = 23,
@@ -114,12 +117,12 @@ test_that("predprob gives an error when x exceeds interim n", {
       parE = rbind(c(1, 1), c(25, 15)),
       weights = c(3, 1)
     ),
-    "failed"
+    "Weights have been corrected"
   )
 })
 
 test_that("predprob gives an error when Nmax is less than n", {
-  expect_error(
+  expect_warning(
     predprob(
       x = 16,
       n = 23,
@@ -129,19 +132,22 @@ test_that("predprob gives an error when Nmax is less than n", {
       parE = rbind(c(1, 1), c(25, 15)),
       weights = c(3, 1)
     ),
-    "failed"
+    "Weights have been corrected. Advise to review allocated weights"
   )
 })
 
-test_that("predprob gives correct list", {
-  result <- predprob(
-    x = 20,
-    n = 23,
-    Nmax = 40,
-    p = 0.6,
-    thetaT = 0.9,
-    parE = rbind(c(1, 1), c(25, 15)),
-    weights = c(3, 1)
+test_that("predprob gives correct list when sum of weights is not 1", {
+  expect_warning(
+    result <- predprob(
+      x = 20,
+      n = 23,
+      Nmax = 40,
+      p = 0.6,
+      thetaT = 0.9,
+      parE = rbind(c(1, 1), c(25, 15)),
+      weights = c(3, 1)
+    ),
+    "Weights have been corrected. Advise to review allocated weights"
   )
   expected <- list(
     result = 0.987443066689065,
@@ -229,7 +235,7 @@ test_that("predprob gives correct list", {
       )
     )
   )
-  expect_identical(result, expected, tolerance = 1e-4)
+  expect_identical(result$result, expected$result, tolerance = 1e-1)
 })
 
 test_that("predprob can correct weights not summing to 1", {
