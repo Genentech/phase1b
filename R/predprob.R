@@ -56,15 +56,6 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1), weights) {
   if (missing(weights)) {
     weights <- rep(1, nrow(parE))
   }
-  if (sum(weights) != 1) {
-    warning("Weights have been corrected. Advise to review allocated weights")
-    weight_len <- length(weights)
-    corrected_weights <- vector(length = weight_len)
-    for (i in seq_len(weight_len)) {
-      corrected_weights[i] <- weights[i] / sum(weights)
-    }
-    weights <- corrected_weights
-  }
   betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
 
   density <- with(

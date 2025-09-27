@@ -84,6 +84,16 @@ h_getBetamixPost <- function(x, n, par, weights) {
   assert_number(n, lower = 0, finite = TRUE)
   assert_matrix(par, min.rows = 1, max.cols = 2, mode = "numeric")
   assert_numeric(weights, min.len = 0, len = nrow(par), finite = TRUE)
+  # Correcting weights that do not sum to 1
+  if (sum(weights) != 1) {
+    warning("Weights have been corrected. Advise to review allocated weights")
+    weight_len <- length(weights)
+    corrected_weights <- vector(length = weight_len)
+    for (i in seq_len(weight_len)) {
+      corrected_weights[i] <- weights[i] / sum(weights)
+    }
+    weights <- corrected_weights
+  }
   # We renormalize weights.
   weights <- weights / sum(weights)
   # We now compute updated parameters.
