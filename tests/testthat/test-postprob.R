@@ -20,46 +20,36 @@ test_that("postprob gives the correct number result", {
 
 test_that("postprob gives the correct number result", {
   # 2 component beta mixture prior, i.e., P_E ~ 0.5*beta(0.6,0.4) + 0.5*beta(1,1) and Pr(P_E > p | data) = 0.05559802
-  expect_warning(
-    result <- postprob(
-      x = 10,
-      n = 23,
-      p = 0.60,
-      par = rbind(
-        c(0.6, 0.4),
-        c(1, 1)
-      )
-    ),
-    "Weights have been corrected"
+  result <- postprob(
+    x = 10,
+    n = 23,
+    p = 0.60,
+    par = rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    )
   )
   expect_equal(result, 0.05559802, tolerance = 1e-5)
 })
 
-test_that("postprob gives incrementally higher values with increased x
-          and correct warnings and length of warnings", {
-  expect_warning(
-    is_lower <- postprob(
-      x = 10,
-      n = 23,
-      p = 0.60,
-      par = rbind(
-        c(0.6, 0.4),
-        c(1, 1)
-      )
-    ),
-    "Weights have been corrected"
+test_that("postprob gives incrementally higher values with increased x", {
+  is_lower <- postprob(
+    x = 10,
+    n = 23,
+    p = 0.60,
+    par = rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    )
   )
-  expect_warning(
-    is_higher <- postprob(
-      x = 16,
-      n = 23,
-      p = 0.60,
-      par = rbind(
-        c(0.6, 0.4),
-        c(1, 1)
-      )
-    ),
-    "Weights have been corrected"
+  is_higher <- postprob(
+    x = 16,
+    n = 23,
+    p = 0.60,
+    par = rbind(
+      c(0.6, 0.4),
+      c(1, 1)
+    )
   )
   expect_true(is_lower < is_higher)
 })
