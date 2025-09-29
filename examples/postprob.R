@@ -10,21 +10,23 @@ postprob(x = 16, n = 23, p = 0.60, par = c(0.6, 0.4))
 # 2 component beta mixture prior :
 # i.e., P_E ~ 0.6*beta(0.6,0.4) + 0.4*beta(1,1) and Pr(P_E > p | data) = 0.823
 postprob(
-  x = 16, n = 23, p = 0.60,
-  par =
-    rbind(
-      c(0.6, 0.4),
-      c(1, 1)
-    ),
+  x = 16,
+  n = 23,
+  p = 0.60,
+  par = rbind(
+    c(0.6, 0.4),
+    c(1, 1)
+  ),
   weights = c(0.6, 0.4)
 )
 
 postprob(
-  x = 0:23, n = 23, p = 0.60,
-  par =
-    rbind(
-      c(0.6, 0.4),
-      c(1, 1)
-    ),
+  x = 0:23,
+  n = 23,
+  p = 0.60,
+  par = rbind(
+    c(0.6, 0.4),
+    c(1, 1)
+  ),
   weights = c(0.6, 0.4)
 )

@@ -86,7 +86,7 @@ postprob <- function(
     }
     assert_matrix(parE)
     if (missing(weights)) {
-      weights <- rep(1, nrow(parE))
+      weights <- rep(1 / nrow(parE), nrow(parE))
     }
     betamixPost <- lapply(
       x,

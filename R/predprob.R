@@ -54,7 +54,7 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1), weights) {
     parE <- t(parE)
   }
   if (missing(weights)) {
-    weights <- rep(1, nrow(parE))
+    weights <- rep(1 / nrow(parE), nrow(parE))
   }
   betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
   density <- with(
