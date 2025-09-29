@@ -87,12 +87,6 @@ h_getBetamixPost <- function(x, n, par, weights) {
   # Correcting weights that do not sum to 1
   if (sum(weights) != 1) {
     warning("Weights have been corrected. Advise to review allocated weights")
-    weight_len <- length(weights)
-    corrected_weights <- vector(length = weight_len)
-    for (i in seq_len(weight_len)) {
-      corrected_weights[i] <- weights[i] / sum(weights)
-    }
-    weights <- corrected_weights
   }
   # We renormalize weights.
   weights <- weights / sum(weights)

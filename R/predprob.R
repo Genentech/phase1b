@@ -57,7 +57,6 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1), weights) {
     weights <- rep(1, nrow(parE))
   }
   betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
-
   density <- with(
     betamixPost,
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
