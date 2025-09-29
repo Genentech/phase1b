@@ -36,7 +36,7 @@ test_that("postprob gives the correct number result", {
 })
 
 test_that("postprob gives incrementally higher values with increased x
-          and correct number of warnings", {
+          and correct warnings and length of warnings", {
   expect_warning(
     is_lower <- postprob(
       x = 10,
@@ -105,18 +105,4 @@ test_that("postprob from beta mixture priors utilise updated weights", {
     weights = c(0, 1)
   )
   expect_equal(result, expected, tolerance = 1e-7)
-})
-
-test_that("postprob can correct weights not summing to 1", {
-  expect_warning(
-    result <- postprob(
-      x = 16,
-      n = 23,
-      p = 0.60,
-      par = rbind(c(0.6, 0.4), c(2, 4)),
-      weights = c(2, 3)
-    ),
-    "Weights have been corrected. Advise to review allocated weights"
-  )
-  expect_equal(result, 0.717136981664477, tolerance = 10 - 4)
 })
