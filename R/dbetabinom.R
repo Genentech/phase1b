@@ -89,7 +89,7 @@ h_getBetamixPost <- function(x, n, par, weights) {
     len = nrow(par),
     finite = TRUE
   )
-  assert_true(weights >= 0)
+  assert_true(all(weights >= 0))
   # Correcting weights that do not sum to 1
   if (sum(weights) != 1) {
     warning("Weights have been corrected. Advise to review allocated weights")
