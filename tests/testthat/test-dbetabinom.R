@@ -257,11 +257,14 @@ test_that("h_getBetamixPost gives the correct beta-mixture parameters", {
 })
 
 test_that("h_getBetamixPost gives weight of 1 for a single beta distribution", {
-  results <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2)),
-    weights = 0.1
+  expect_warning(
+    results <- h_getBetamixPost(
+      x = 16,
+      n = 23,
+      par = rbind(c(1, 2)),
+      weights = 0.1
+    ),
+    "Weights have been corrected"
   )
   expected <- list(
     par = rbind(c(17, 9)),
@@ -282,11 +285,14 @@ test_that("h_getBetamixPost gives correct weights with 2 beta-mixture component"
 })
 
 test_that("h_getBetamixPost gives the correct weights when sum of weights is not 1 in beta-mixture", {
-  result <- h_getBetamixPost(
-    x = 16,
-    n = 23,
-    par = rbind(c(1, 2), c(3, 4), c(10, 10)),
-    weights = c(0.6, 0.4, 0.5)
+  expect_warning(
+    result <- h_getBetamixPost(
+      x = 16,
+      n = 23,
+      par = rbind(c(1, 2), c(3, 4), c(10, 10)),
+      weights = c(0.6, 0.4, 0.5)
+    ),
+    "Weights have been corrected"
   )
   expect_equal(
     result$weights,
