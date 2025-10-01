@@ -45,8 +45,7 @@
 #'
 #' @example examples/predprob.R
 #' @export
-predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
-                     weights) {
+predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1), weights) {
   # m = Nmax - n future observations
   m <- Nmax - n
   if (is.vector(parE)) {
@@ -55,18 +54,29 @@ predprob <- function(x, n, Nmax, p, thetaT, parE = c(1, 1),
     parE <- t(parE)
   }
   if (missing(weights)) {
-    weights <- rep(1, nrow(parE))
+    weights <- rep(1 / nrow(parE), nrow(parE))
   }
   betamixPost <- h_getBetamixPost(x = x, n = n, par = parE, weights = weights)
-
   density <- with(
     betamixPost,
     dbetabinomMix(x = 0:m, m = m, par = par, weights = weights)
   )
-  assert_numeric(density, lower = 0, upper = 1 + .Machine$double.eps, finite = TRUE, any.missing = FALSE)
+  assert_numeric(
+    density,
+    lower = 0,
+    upper = 1 + .Machine$double.eps,
+    finite = TRUE,
+    any.missing = FALSE
+  )
   assert_number(thetaT, lower = 0, upper = 1, finite = TRUE)
   # posterior probabilities to be above threshold p
-  posterior <- postprob(x = x + c(0:m), n = Nmax, p = p, parE = parE, weights = weights)
+  posterior <- postprob(
+    x = x + c(0:m),
+    n = Nmax,
+    p = p,
+    parE = parE,
+    weights = weights
+  )
   list(
     result = sum(density * (posterior > thetaT)),
     table = data.frame(
