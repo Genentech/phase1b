@@ -10,7 +10,7 @@ plotBounds(
   grid = TRUE,
   yt = "x",
   add = FALSE,
-  cols = c("green", "red", "darkgreen", "orange"),
+  cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
   lwds = c(3, 3),
   ltype = "l",
   lpch = 16,
@@ -29,24 +29,40 @@ nothing, only produces the plot as side effect
 \description{
 This function will plot the response rate on the futility and efficacy
 boundaries, and is used together with \code{\link[=boundsPredprob]{boundsPredprob()}}
-and \code{\link[=boundsPostprob]{boundsPostprob()}} for Decision 1. See \code{boundsPredprob()} for rules.
+and \code{\link[=boundsPostprob]{boundsPostprob()}} for Decision 1. See \code{boundsPredprob()} for.
 }
 \examples{
 # examples
 plotBounds(
   boundsPostprob(
-    looks = c(10, 20, 30, 40), p0 = 0.20,
-    tL = 0.10, tU = 0.90, parE = c(1, 1)
+    looks = c(10, 20, 30, 40),
+    p0 = 0.20,
+    tL = 0.10,
+    tU = 0.90,
+    parE = c(1, 1)
   ),
-  yt = "p", add = TRUE
+  yt = "p",
+  add = TRUE
 )
-plotBounds(boundsPredprob(
-  looks = c(10, 20, 30, 40), p0 = 0.20, tT = 0.80,
-  phiL = 0.10, phiU = 0.90,
-), yt = "x")
-plotBounds(boundsPredprob(
-  looks = c(10, 20, 30, 40), p0 = 0.20, tT = 0.80,
-  phiL = 0.10, phiU = 0.90,
-), yt = "p")
+plotBounds(
+  boundsPredprob(
+    looks = c(10, 20, 30, 40),
+    p0 = 0.20,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+  ),
+  yt = "x"
+)
+plotBounds(
+  boundsPredprob(
+    looks = c(10, 20, 30, 40),
+    p0 = 0.20,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+  ),
+  yt = "p"
+)
 }
 \keyword{graphics}
