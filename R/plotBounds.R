@@ -28,18 +28,17 @@
 #' @export
 #' @keywords graphics
 plotBounds <- function(
-  z,
-  area = TRUE,
-  grid = TRUE,
-  yt = "x",
-  add = FALSE,
-  cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
-  lwds = c(3, 3),
-  ltype = "l",
-  lpch = 16,
-  lcex = 1,
-  gy = 20
-) {
+    z,
+    area = TRUE,
+    grid = TRUE,
+    yt = "x",
+    add = FALSE,
+    cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
+    lwds = c(3, 3),
+    ltype = "l",
+    lpch = 16,
+    lcex = 1,
+    gy = 20) {
   n <- nrow(z)
   nmin <- min(z$looks)
   nmax <- max(z$looks)
