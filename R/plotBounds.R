@@ -1,24 +1,24 @@
 #' Plot the boundary decision cutpoints
 #'
 #' This function will plot the response rate on the futility and efficacy
-#' boundaries, and is used together with \code{\link{boundsPredprob}}
-#' and \code{\link{boundsPostprob}}
+#' boundaries, and is used together with [boundsPredprob()]
+#' and [boundsPostprob()] for Decision 1. See `boundsPredprob()` for rules.
 #'
-#' @param z an output of \code{\link{boundsPredprob}} and
-#' \code{\link{boundsPostprob}}
-#' @param area color the futility/efficacy stop area
-#' @param grid show the grid of y-axis or not
-#' @param yt  indicate the y axis: response rate is "p", number of responses
+#' @typed z an output of [boundsPredprob()] and
+#' [boundsPostprob()]
+#' @typed area color the futility/efficacy stop area
+#' @typed grid show the grid of y-axis or not
+#' @typed yt  indicate the y axis: response rate is "p", number of responses
 #' is "x"
-#' @param add  add the boundary lines or not
-#' @param cols specific the color of `[1]` efficacy area `[2]` futility area
+#' @typed add  add the boundary lines or not
+#' @typed cols specific the color of `[1]` efficacy area `[2]` futility area
 #' `[3]` efficacy boundary `[4]` futility boundary
-#' @param lwds line width (a two dimensional vector)
-#' @param ltype line type
-#' @param lpch  a value of plotting characters or symbols
-#' @param lcex a value giving the amount by which plotting characters and
+#' @typed lwds line width (a two dimensional vector)
+#' @typed ltype line type
+#' @typed lpch  a value of plotting characters or symbols
+#' @typed lcex a value giving the amount by which plotting characters and
 #' symbols should be scaled relative to the default.
-#' @param gy a value to adjust the gray level of the plot (default 20),
+#' @typed gy a value to adjust the gray level of the plot (default 20),
 #' applies when \code{grid==TRUE}
 #' @return nothing, only produces the plot as side effect
 #'
@@ -27,9 +27,19 @@
 #' @example examples/plotBounds.R
 #' @export
 #' @keywords graphics
-plotBounds <- function(z, area = TRUE, grid = TRUE, yt = "x", add = FALSE,
-                       cols = c("green", "red", "darkgreen", "orange"),
-                       lwds = c(3, 3), ltype = "l", lpch = 16, lcex = 1, gy = 20) {
+plotBounds <- function(
+  z,
+  area = TRUE,
+  grid = TRUE,
+  yt = "x",
+  add = FALSE,
+  cols = c("green", "red", "darkgreen", "orange"),
+  lwds = c(3, 3),
+  ltype = "l",
+  lpch = 16,
+  lcex = 1,
+  gy = 20
+) {
   n <- nrow(z)
   nmin <- min(z$looks)
   nmax <- max(z$looks)
@@ -51,40 +61,71 @@ plotBounds <- function(z, area = TRUE, grid = TRUE, yt = "x", add = FALSE,
     stop("yt can only be x or p")
   }
   if (add) {
-    graphics::lines(z$looks, z2,
-      lwd = lwds[1], col = cols[3], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z2,
+      lwd = lwds[1],
+      col = cols[3],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
-    graphics::lines(z$looks, z1,
-      lwd = lwds[2], col = cols[4], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z1,
+      lwd = lwds[2],
+      col = cols[4],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
     return(invisible())
   }
-  graphics::plot(z$looks, rep(0, n),
-    xlim = c(0, max(z$looks)), ylim = c(0, yU), type = "n",
-    xlab = "n", ylab = ylabel
+  graphics::plot(
+    z$looks,
+    rep(0, n),
+    xlim = c(0, max(z$looks)),
+    ylim = c(0, yU),
+    type = "n",
+    xlab = "n",
+    ylab = ylabel
   )
   if (grid) {
     graphics::abline(h = gridy, col = "gray")
   }
   if (area) {
-    graphics::polygon(c(z$looks, nmax, nmin), c(z2, yU, yU2),
+    graphics::polygon(
+      c(z$looks, nmax, nmin),
+      c(z2, yU, yU2),
       lwd = lwds[1],
-      col = cols[1], border = cols[1]
+      col = cols[1],
+      border = cols[1]
     )
-    graphics::polygon(c(z$looks, nmax, nmin), c(z1, 0, 0),
+    graphics::polygon(
+      c(z$looks, nmax, nmin),
+      c(z1, 0, 0),
       lwd = lwds[2],
-      col = cols[2], border = cols[2]
+      col = cols[2],
+      border = cols[2]
     )
   } else {
-    graphics::lines(z$looks, z2,
-      lwd = lwds[1], col = cols[1], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z2,
+      lwd = lwds[1],
+      col = cols[1],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
-    graphics::lines(z$looks, z1,
-      lwd = lwds[2], col = cols[2], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z1,
+      lwd = lwds[2],
+      col = cols[2],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
   }
   return(invisible())

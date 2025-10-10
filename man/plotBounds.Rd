@@ -19,40 +19,17 @@ plotBounds(
 )
 }
 \arguments{
-\item{z}{an output of \code{\link{boundsPredprob}} and
-\code{\link{boundsPostprob}}}
+\item{yt  indicate the y axis}{(\verb{response rate is "p", number of responses}):\cr is "x"}
 
-\item{area}{color the futility/efficacy stop area}
-
-\item{grid}{show the grid of y-axis or not}
-
-\item{yt}{indicate the y axis: response rate is "p", number of responses
-is "x"}
-
-\item{add}{add the boundary lines or not}
-
-\item{cols}{specific the color of \verb{[1]} efficacy area \verb{[2]} futility area
-\verb{[3]} efficacy boundary \verb{[4]} futility boundary}
-
-\item{lwds}{line width (a two dimensional vector)}
-
-\item{ltype}{line type}
-
-\item{lpch}{a value of plotting characters or symbols}
-
-\item{lcex}{a value giving the amount by which plotting characters and
-symbols should be scaled relative to the default.}
-
-\item{gy}{a value to adjust the gray level of the plot (default 20),
-applies when \code{grid==TRUE}}
+\item{<parse error>}{(\if{html}{\out{<parse error>}}):\cr \if{html}{\out{<parse error>}}}
 }
 \value{
 nothing, only produces the plot as side effect
 }
 \description{
 This function will plot the response rate on the futility and efficacy
-boundaries, and is used together with \code{\link{boundsPredprob}}
-and \code{\link{boundsPostprob}}
+boundaries, and is used together with \code{\link[=boundsPredprob]{boundsPredprob()}}
+and \code{\link[=boundsPostprob]{boundsPostprob()}} for Decision 1. See \code{boundsPredprob()} for rules.
 }
 \examples{
 # examples
