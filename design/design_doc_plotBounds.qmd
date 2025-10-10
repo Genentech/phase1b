@@ -145,6 +145,7 @@ vintage_plotBounds <- function(
 ```
 
 # vintage example that should work with new function
+
 ```{r}
 plotBounds(
   boundsPostprob(
@@ -160,27 +161,7 @@ plotBounds(
 
 ```
 
-# creating polygons with new function
-
-The following output show that important coordinates needed as input to create these polygons. 
-
-As a premise, we establish the criteria:
-Interim
-Go : P(success) > 90 %
-Stop : P(success) > 10 %
-Final
-Go : P(RR > 0.20 | data) > 80 %
-Stop : P(RR > 0.20 | data) < 10 %
-
-The criteria for interim analyses are from predictive probability calculation.
-
-The criteria for final analyses are from posterior probability calculation. 
-
-which translates to boundaries :
-When n = 10, 4 responders and above is a Go, 0 responders and below is a stop.
-When n = 20, 7 responders and above is a Go, 2 responders and below is a stop
-When n = 30, 9 responders and above is a Go, 5 responders and below is a stop
-When n = 40, 10 responders and above is a Go, 9 responders and below is a stop
+# vintage function
 
 ```{r}
 vintage_plotBounds(
@@ -195,15 +176,6 @@ vintage_plotBounds(
 )
 ```
 
-```{r}
-coords <- boundsPredprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tT = 0.80,
-    phiL = 0.10,
-    phiU = 0.90,
-  )
-```
 
 ```{r}
 new_plotBounds <- function(coords, 
@@ -257,17 +229,47 @@ new_plotBounds <- function(coords,
     ggplot2::ylab("Number of Responders") +
     ggplot2::theme_minimal() 
   
-  if (postprob) {
-    plot +  ggplot2::ggtitle(
-      "Boundaries of responder numbers per sample size"
-    )
-  } else {
     plot + ggplot2::ggtitle(
-      "Boundaries of responder rates per sample size"
-    ) 
-  }
+      "Boundaries of Go and Stop Responders per sample size")
 }
 ```
+
+# creating polygons with new function with `boundsPredprob()`
+
+The following output show that important coordinates needed as input to create these polygons. 
+
+As a premise, we establish the criteria:
+
+Interim
+Go : P(success) > 90 %
+Stop : P(success) > 10 %
+
+Final
+Go : P(RR > 0.20 | data) > 80 %
+Stop : P(RR > 0.20 | data) < 10 %
+
+The criteria for interim analyses are from predictive probability calculation.
+
+The criteria for final analyses are from posterior probability calculation. 
+
+which translates to boundaries :
+When n = 10, 4 responders and above is a Go, 0 responders and below is a stop.
+When n = 20, 7 responders and above is a Go, 2 responders and below is a stop
+When n = 30, 9 responders and above is a Go, 5 responders and below is a stop
+When n = 40, 10 responders and above is a Go, 9 responders and below is a stop
+
+```{r}
+coords <- boundsPredprob(
+    looks = c(10, 20, 30, 40),
+    p0 = 0.20,
+    tT = 0.80,
+    phiL = 0.10,
+    phiU = 0.90,
+  )
+print(coords)
+```
+
+
 ```{r}
 coords <- boundsPredprob(
     looks = c(10, 20, 30, 40),
@@ -279,9 +281,7 @@ coords <- boundsPredprob(
 new_plotBounds(coords)
 ```
 
-
-
-# creating polygons with new function
+# creating polygons with new function with `boundsPostprob()`
 
 The following output show that important coordinates needed as input to create these polygons. 
 
@@ -306,11 +306,6 @@ coords1 <- boundsPostprob(
 new_plotBounds(coords1)
 ```
 
-We extract these coordinates but carefully assign which are Go, Stop and GreyZones.
-
-```{r}
-
-```
 
 
 
