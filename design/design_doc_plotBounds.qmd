@@ -190,7 +190,7 @@ new_plotBounds <- function(coords,
   )
   stop_data <- data.frame(
     n = coords$looks,
-    ymin_stop = c(0, 0, 0, 0),     
+    ymin_stop = c(rep(0, length(coords$looks))),     
     ymax_stop = coords$xL      
   )
   plot <- ggplot2::ggplot() +
