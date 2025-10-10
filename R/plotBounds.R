@@ -2,7 +2,7 @@
 #'
 #' This function will plot the response rate on the futility and efficacy
 #' boundaries, and is used together with [boundsPredprob()]
-#' and [boundsPostprob()] for Decision 1. See `boundsPredprob()` for rules.
+#' and [boundsPostprob()] for Decision 1. See `boundsPredprob()` for.
 #'
 #' @typed z an output of [boundsPredprob()] and
 #' [boundsPostprob()]
@@ -33,7 +33,7 @@ plotBounds <- function(
   grid = TRUE,
   yt = "x",
   add = FALSE,
-  cols = c("green", "red", "darkgreen", "orange"),
+  cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
   lwds = c(3, 3),
   ltype = "l",
   lpch = 16,
