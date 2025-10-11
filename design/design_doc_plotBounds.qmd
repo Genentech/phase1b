@@ -270,7 +270,7 @@ new_plotBounds(coords = coords,
 
 # creating plots with new function with output from `boundsPostprob()`
 
-The following output show that important coordinates needed as input to create these polygons. 
+The following output show that important coordinates needed as input to create these plots. Coordinates are the points where the polygon should be drawn and reflect the possible values for a go and stop decision respectively.
 
 As a premise, we establish the criteria:
 Go : P(RR > 0.20 | data) > 90 %
