@@ -1,24 +1,24 @@
 #' Plot the boundary decision cutpoints
 #'
 #' This function will plot the response rate on the futility and efficacy
-#' boundaries, and is used together with [boundsPredprob()]
-#' and [boundsPostprob()] for Decision 1. See `boundsPredprob()` for.
+#' boundaries, and is used together with \code{\link{boundsPredprob}}
+#' and \code{\link{boundsPostprob}}
 #'
-#' @typed z an output of [boundsPredprob()] and
-#' [boundsPostprob()]
-#' @typed area color the futility/efficacy stop area
-#' @typed grid show the grid of y-axis or not
-#' @typed yt  indicate the y axis: response rate is "p", number of responses
+#' @param z an output of \code{\link{boundsPredprob}} and
+#' \code{\link{boundsPostprob}}
+#' @param area color the futility/efficacy stop area
+#' @param grid show the grid of y-axis or not
+#' @param yt  indicate the y axis: response rate is "p", number of responses
 #' is "x"
-#' @typed add  add the boundary lines or not
-#' @typed cols specific the color of `[1]` efficacy area `[2]` futility area
+#' @param add  add the boundary lines or not
+#' @param cols specific the color of `[1]` efficacy area `[2]` futility area
 #' `[3]` efficacy boundary `[4]` futility boundary
-#' @typed lwds line width (a two dimensional vector)
-#' @typed ltype line type
-#' @typed lpch  a value of plotting characters or symbols
-#' @typed lcex a value giving the amount by which plotting characters and
+#' @param lwds line width (a two dimensional vector)
+#' @param ltype line type
+#' @param lpch  a value of plotting characters or symbols
+#' @param lcex a value giving the amount by which plotting characters and
 #' symbols should be scaled relative to the default.
-#' @typed gy a value to adjust the gray level of the plot (default 20),
+#' @param gy a value to adjust the gray level of the plot (default 20),
 #' applies when \code{grid==TRUE}
 #' @return nothing, only produces the plot as side effect
 #'
@@ -33,7 +33,7 @@ plotBounds <- function(
   grid = TRUE,
   yt = "x",
   add = FALSE,
-  cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
+  cols = c("green", "red", "darkgreen", "orange"),
   lwds = c(3, 3),
   ltype = "l",
   lpch = 16,

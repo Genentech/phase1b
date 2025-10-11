@@ -4,35 +4,13 @@ format: revealjs
 editor: visual
 ---
 
-Statisticians can display boundaries of Go, Stop and GreyZone decisions graphically in terms of response rates required by desired samples sizes or looks. This is such purpose of `plotBounds`. Note that for the predictive probability case, decision 1 rules are chosen. See `ocPredprob` for rules. 
+Statisticians can display boundaries of Go, Stop and GreyZone decisions graphically in terms of response rates required by desired samples sizes or looks. This is such purpose of `plotBounds`. Note that for the predictive probability case, decision 1 rules are chosen. See `ocPredprob` for rules. Design document aims to translate previous call function to use of more common packages such as `ggplot2` and reduce number of lines. 
 
 # packages that aid
 
 ```{r}
 library(flextable)
 library(ggplot2)
-```
-
-# input
-
-```{r}
-boundsPostprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tL = 0.10,
-    tU = 0.90,
-    parE = c(1, 1)
-  )
-```
-
-```{r}
-boundsPredprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tT = 0.80,
-    phiL = 0.10,
-    phiU = 0.90,
-  )
 ```
 
 # vintage function
@@ -161,7 +139,7 @@ plotBounds(
 
 ```
 
-# vintage function
+# vintage function output
 
 ```{r}
 vintage_plotBounds(
@@ -176,6 +154,7 @@ vintage_plotBounds(
 )
 ```
 
+# new call function
 
 ```{r}
 new_plotBounds <- function(coords, 
@@ -183,6 +162,12 @@ new_plotBounds <- function(coords,
                            go_colour = "#1B9E77",
                            stop_colour = "#E41A1C",
                            alpha = 1) {
+  assert_data_frame(coords, any.missing = FALSE, types = "numeric")
+  assert_flag(postprob)
+  assert_character(go_colour)
+  assert_character(stop_colour)
+  assert_number(alpha, lower = 0, upper = 1)
+  
   go_data <- data.frame(
     n = coords$looks,
     ymin_go = coords$xU,  
@@ -234,9 +219,9 @@ new_plotBounds <- function(coords,
 }
 ```
 
-# creating polygons with new function with `boundsPredprob()`
+# creating plot using new function with output from `boundsPredprob()`
 
-The following output show that important coordinates needed as input to create these polygons. 
+The following output show that important coordinates needed as input to create these plots. 
 
 As a premise, we establish the criteria:
 
@@ -278,10 +263,12 @@ coords <- boundsPredprob(
     phiL = 0.10,
     phiU = 0.90,
   )
-new_plotBounds(coords)
+new_plotBounds(coords = coords,
+               go_colour = "blue",
+               alpha = 1)
 ```
 
-# creating polygons with new function with `boundsPostprob()`
+# creating plots with new function with output from `boundsPostprob()`
 
 The following output show that important coordinates needed as input to create these polygons. 
 
