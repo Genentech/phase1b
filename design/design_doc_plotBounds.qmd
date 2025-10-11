@@ -17,18 +17,17 @@ library(ggplot2)
 
 ```{r}
 vintage_plotBounds <- function(
-  z,
-  area = TRUE,
-  grid = TRUE,
-  yt = "x",
-  add = FALSE,
-  cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
-  lwds = c(3, 3),
-  ltype = "l",
-  lpch = 16,
-  lcex = 1,
-  gy = 20
-) {
+    z,
+    area = TRUE,
+    grid = TRUE,
+    yt = "x",
+    add = FALSE,
+    cols = c("#009E73", "#FF0046", "#7F55B1", "#F0A04B"),
+    lwds = c(3, 3),
+    ltype = "l",
+    lpch = 16,
+    lcex = 1,
+    gy = 20) {
   n <- nrow(z)
   nmin <- min(z$looks)
   nmax <- max(z$looks)
@@ -119,7 +118,6 @@ vintage_plotBounds <- function(
   }
   return(invisible())
 }
-
 ```
 
 # vintage example that should work with new function
@@ -136,7 +134,6 @@ plotBounds(
   yt = "p",
   add = TRUE
 )
-
 ```
 
 # vintage function output
@@ -157,8 +154,8 @@ vintage_plotBounds(
 # new call function
 
 ```{r}
-new_plotBounds <- function(coords, 
-                           postprob = TRUE, 
+new_plotBounds <- function(coords,
+                           postprob = TRUE,
                            go_colour = "#1B9E77",
                            stop_colour = "#E41A1C",
                            alpha = 1) {
@@ -167,16 +164,16 @@ new_plotBounds <- function(coords,
   assert_character(go_colour)
   assert_character(stop_colour)
   assert_number(alpha, lower = 0, upper = 1)
-  
+
   go_data <- data.frame(
     n = coords$looks,
-    ymin_go = coords$xU,  
-    ymax_go = coords$looks 
+    ymin_go = coords$xU,
+    ymax_go = coords$looks
   )
   stop_data <- data.frame(
     n = coords$looks,
-    ymin_stop = c(rep(0, length(coords$looks))),     
-    ymax_stop = coords$xL      
+    ymin_stop = c(rep(0, length(coords$looks))),
+    ymax_stop = coords$xL
   )
   plot <- ggplot2::ggplot() +
     ggplot2::geom_ribbon(
@@ -187,7 +184,7 @@ new_plotBounds <- function(coords,
     ggplot2::geom_ribbon(
       data = go_data,
       ggplot2::aes(x = n, ymin = ymin_go, ymax = ymax_go),
-      fill = go_colour , alpha = alpha
+      fill = go_colour, alpha = alpha
     ) +
     ggplot2::scale_x_continuous(
       name = "n",
@@ -196,26 +193,27 @@ new_plotBounds <- function(coords,
     ggplot2::scale_y_continuous(
       breaks = seq(from = 0, to = max(go_data$n), by = 2)
     ) +
-     ggplot2::geom_point(
-    data = go_data,
-     ggplot2::aes(x = n, y = ymin_go),
-    size = 3,       
-    shape = 16,
-    colour = "#16C47F", 
-  ) +
-     ggplot2::geom_point(
-    data = stop_data,
-     ggplot2::aes(x = n, y = ymax_stop),
-    size = 3,       
-    shape = 16,
-    colour = "#FF748B", #"#DC3C22",FF748B 
-  ) +
+    ggplot2::geom_point(
+      data = go_data,
+      ggplot2::aes(x = n, y = ymin_go),
+      size = 3,
+      shape = 16,
+      colour = "#16C47F",
+    ) +
+    ggplot2::geom_point(
+      data = stop_data,
+      ggplot2::aes(x = n, y = ymax_stop),
+      size = 3,
+      shape = 16,
+      colour = "#FF748B", # "#DC3C22",FF748B
+    ) +
     ggplot2::xlab("Sample Size (n)") +
     ggplot2::ylab("Number of Responders") +
-    ggplot2::theme_minimal() 
-  
-    plot + ggplot2::ggtitle(
-      "Boundaries of Go and Stop Responders per sample size")
+    ggplot2::theme_minimal()
+
+  plot + ggplot2::ggtitle(
+    "Boundaries of Go and Stop Responders per sample size"
+  )
 }
 ```
 
@@ -245,27 +243,29 @@ When n = 40, 10 responders and above is a Go, 9 responders and below is a stop
 
 ```{r}
 coords <- boundsPredprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tT = 0.80,
-    phiL = 0.10,
-    phiU = 0.90,
-  )
+  looks = c(10, 20, 30, 40),
+  p0 = 0.20,
+  tT = 0.80,
+  phiL = 0.10,
+  phiU = 0.90,
+)
 print(coords)
 ```
 
 
 ```{r}
 coords <- boundsPredprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tT = 0.80,
-    phiL = 0.10,
-    phiU = 0.90,
-  )
-new_plotBounds(coords = coords,
-               go_colour = "blue",
-               alpha = 1)
+  looks = c(10, 20, 30, 40),
+  p0 = 0.20,
+  tT = 0.80,
+  phiL = 0.10,
+  phiU = 0.90,
+)
+new_plotBounds(
+  coords = coords,
+  go_colour = "blue",
+  alpha = 1
+)
 ```
 
 # creating plots with new function with output from `boundsPostprob()`
@@ -284,12 +284,12 @@ When n = 40, 12 responders and above is a Go, 11 responders and below is a stop
 
 ```{r}
 coords1 <- boundsPostprob(
-    looks = c(10, 20, 30, 40),
-    p0 = 0.20,
-    tL = 0.10,
-    tU = 0.90,
-    parE = c(1, 1)
-  )
+  looks = c(10, 20, 30, 40),
+  p0 = 0.20,
+  tL = 0.10,
+  tU = 0.90,
+  parE = c(1, 1)
+)
 new_plotBounds(coords1)
 ```
 
