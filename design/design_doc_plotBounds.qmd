@@ -155,12 +155,10 @@ vintage_plotBounds(
 
 ```{r}
 new_plotBounds <- function(coords,
-                           postprob = TRUE,
                            go_colour = "#1B9E77",
                            stop_colour = "#E41A1C",
                            alpha = 1) {
   assert_data_frame(coords, any.missing = FALSE, types = "numeric")
-  assert_flag(postprob)
   assert_character(go_colour)
   assert_character(stop_colour)
   assert_number(alpha, lower = 0, upper = 1)
