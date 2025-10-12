@@ -8,14 +8,14 @@ Statisticians can display boundaries of Go, Stop and GreyZone decisions graphica
 
  Note that for the predictive probability case, decision 1 rules are chosen. See `ocPredprob` for rules. This design document aims to refactor the previous function, in particular to use `ggplot2` and reduce the length of the function. 
 
-# packages that aid
+# Packages that aid
 
 ```{r}
 library(flextable)
 library(ggplot2)
 ```
 
-# vintage function
+# Vintage function
 
 ```{r}
 vintage_plotBounds <- function(
@@ -122,7 +122,7 @@ vintage_plotBounds <- function(
 }
 ```
 
-# vintage example that should work with new function
+# Vintage example that should work with new function
 
 ```{r}
 plotBounds(
@@ -138,7 +138,7 @@ plotBounds(
 )
 ```
 
-# vintage function output
+# Vintage function output
 
 ```{r}
 vintage_plotBounds(
@@ -153,7 +153,9 @@ vintage_plotBounds(
 )
 ```
 
-# new call function
+# New call function
+
+There are two good options to graph polygons to reflect the purpose of this function. The use of base r's `polygon()` is slightly more laborious; once minimum and maximum coordinates are established, approximation of these points are then required to draw the borders of this polygon. This step can be removed using the `geom_ribbon` call from the package `ggplot2`. Furthermore, the base r approach require the initial plot area to be created, and axes, axes labels, and points to be overlayed. There are additional steps that are also taken in the `ggplot2` approach, however done within a code chunk rather than separated calls. While it can be argued that these additional calls from the base r approach would anyway be encapsulated in one function, that is `plotbound`, the number of code lines is substantially reduced using the `ggplot` approach. 
 
 ```{r}
 new_plotBounds <- function(coords,
@@ -295,7 +297,8 @@ coords1 <- boundsPostprob(
 new_plotBounds(coords1)
 ```
 
-
++ggplot2 vs base R
++https://r-graphics.org/CHAPTER-GGPLOT2.html
 
 
 
