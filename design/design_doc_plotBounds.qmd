@@ -277,10 +277,11 @@ As a premise, we establish the criteria:
 Go : P(RR > 0.20 | data) > 90 %
 Stop : P(RR > 0.20 | data) > 10 %
 which translates to boundaries :
-When n = 10, 4 responders and above is a Go, 3 responders and below is a stop.
-When n = 20, 7 responders and above is a Go, 6 responders and below is a stop
-When n = 30, 9 responders and above is a Go, 8 responders and below is a stop
-When n = 40, 12 responders and above is a Go, 11 responders and below is a stop
+
+- When n = 10, 4 responders and above is a Go, 3 responders and below is a stop.
+- When n = 20, 7 responders and above is a Go, 6 responders and below is a stop
+- When n = 30, 9 responders and above is a Go, 8 responders and below is a stop
+- When n = 40, 12 responders and above is a Go, 11 responders and below is a stop
 
 
 ```{r}
