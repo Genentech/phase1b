@@ -236,10 +236,11 @@ The criteria for interim analyses are from predictive probability calculation.
 The criteria for final analyses are from posterior probability calculation. 
 
 which translates to boundaries :
-When n = 10, 4 responders and above is a Go, 0 responders and below is a stop.
-When n = 20, 7 responders and above is a Go, 2 responders and below is a stop
-When n = 30, 9 responders and above is a Go, 5 responders and below is a stop
-When n = 40, 10 responders and above is a Go, 9 responders and below is a stop
+
+- When n = 10, 4 responders and above is a Go, 0 responders and below is a stop.
+- When n = 20, 7 responders and above is a Go, 2 responders and below is a stop
+- When n = 30, 9 responders and above is a Go, 5 responders and below is a stop
+- When n = 40, 10 responders and above is a Go, 9 responders and below is a stop
 
 ```{r}
 coords <- boundsPredprob(
