@@ -27,9 +27,18 @@
 #' @example examples/plotBounds.R
 #' @export
 #' @keywords graphics
-plotBounds <- function(z, area = TRUE, grid = TRUE, yt = "x", add = FALSE,
-                       cols = c("green", "red", "darkgreen", "orange"),
-                       lwds = c(3, 3), ltype = "l", lpch = 16, lcex = 1, gy = 20) {
+plotBounds <- function(
+    z,
+    area = TRUE,
+    grid = TRUE,
+    yt = "x",
+    add = FALSE,
+    cols = c("green", "red", "darkgreen", "orange"),
+    lwds = c(3, 3),
+    ltype = "l",
+    lpch = 16,
+    lcex = 1,
+    gy = 20) {
   n <- nrow(z)
   nmin <- min(z$looks)
   nmax <- max(z$looks)
@@ -51,40 +60,71 @@ plotBounds <- function(z, area = TRUE, grid = TRUE, yt = "x", add = FALSE,
     stop("yt can only be x or p")
   }
   if (add) {
-    graphics::lines(z$looks, z2,
-      lwd = lwds[1], col = cols[3], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z2,
+      lwd = lwds[1],
+      col = cols[3],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
-    graphics::lines(z$looks, z1,
-      lwd = lwds[2], col = cols[4], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z1,
+      lwd = lwds[2],
+      col = cols[4],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
     return(invisible())
   }
-  graphics::plot(z$looks, rep(0, n),
-    xlim = c(0, max(z$looks)), ylim = c(0, yU), type = "n",
-    xlab = "n", ylab = ylabel
+  graphics::plot(
+    z$looks,
+    rep(0, n),
+    xlim = c(0, max(z$looks)),
+    ylim = c(0, yU),
+    type = "n",
+    xlab = "n",
+    ylab = ylabel
   )
   if (grid) {
     graphics::abline(h = gridy, col = "gray")
   }
   if (area) {
-    graphics::polygon(c(z$looks, nmax, nmin), c(z2, yU, yU2),
+    graphics::polygon(
+      c(z$looks, nmax, nmin),
+      c(z2, yU, yU2),
       lwd = lwds[1],
-      col = cols[1], border = cols[1]
+      col = cols[1],
+      border = cols[1]
     )
-    graphics::polygon(c(z$looks, nmax, nmin), c(z1, 0, 0),
+    graphics::polygon(
+      c(z$looks, nmax, nmin),
+      c(z1, 0, 0),
       lwd = lwds[2],
-      col = cols[2], border = cols[2]
+      col = cols[2],
+      border = cols[2]
     )
   } else {
-    graphics::lines(z$looks, z2,
-      lwd = lwds[1], col = cols[1], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z2,
+      lwd = lwds[1],
+      col = cols[1],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
-    graphics::lines(z$looks, z1,
-      lwd = lwds[2], col = cols[2], type = ltype,
-      pch = lpch, cex = lcex
+    graphics::lines(
+      z$looks,
+      z1,
+      lwd = lwds[2],
+      col = cols[2],
+      type = ltype,
+      pch = lpch,
+      cex = lcex
     )
   }
   return(invisible())
