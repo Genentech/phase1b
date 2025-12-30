@@ -21,6 +21,34 @@ test_that("h_get_decision_one_predprob gives correct result and list", {
   expect_list(result)
 })
 
+test_that("Go decision for all interims when criteria met for decision 1", {
+  set.seed(40)
+  expect_warning(
+    res <- ocPredprob(
+      decision1 = TRUE,
+      nnE = c(20, 30, 40),
+      nnF = c(20, 30, 40),
+      truep = 0.90,
+      phiU = 0.75,
+      phiL = 0.20,
+      tT = 0.70,
+      p0 = 0.20,
+      parE = c(0.2, 0.8),
+      sim = 100
+    ),
+    "Advise to use sim >= 50000 to achieve convergence"
+  )
+  random_number <- sample(x = length(res$Decision), size = 1)
+  expect_true(all(res$Decision) == TRUE)
+  expect_true(all(res$SampleSize == 20))
+  expect_true(res$params$decision1 == TRUE)
+  expect_equal(res$oc$ExpectedN, res$SampleSize[random_number])
+  expect_identical(res$oc$PrEfficacy, 1)
+  expect_identical(res$oc$PrEarlyEff, 1)
+  expect_identical(res$oc$PrEarlyFut, 0)
+  expect_identical(res$oc$PrFutility, 0)
+})
+
 # h_get_decision_two_predprob ----
 test_that("h_get_decision_two_predprob gives correct result and list", {
   set.seed(1989)

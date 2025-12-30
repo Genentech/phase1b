@@ -15,7 +15,7 @@ test_that("h_predprobdist_single_arm gives correct results", {
   )
   expect_equal(result$result, 0.7081907, tolerance = 1e-4)
   expect_equal(sum(result$table$density), 1, tolerance = 1e-4)
-  expect_true(all(result$posterior) <= 1)
+  expect_true(all(result$table$posterior <= 1))
 })
 
 test_that("h_predprobdist_single_arm gives higher predictive probability when thetaT is lower", {
@@ -99,7 +99,7 @@ test_that("h_predprobdist_single_arm gives correct list", {
 
 # h_predprobdist ----
 test_that("h_predprobdist gives correct list", {
-  result <- h_predprobdist(
+  warnings <- capture_warnings(result <- h_predprobdist(
     NmaxControl = 20,
     Nmax = 40,
     n = 23,
@@ -113,7 +113,11 @@ test_that("h_predprobdist gives correct list", {
     delta = 0.1,
     relativeDelta = FALSE,
     thetaT = 0.5
-  )
+  ))
+  number_of_arms <- 2
+  number_of_warnings <- sum(length(result$posterior) * number_of_arms, number_of_arms)
+  expect_true(all(grepl("Weights have been corrected", warnings)))
+  expect_length(warnings, number_of_warnings)
   expect_equal(result$result, 0.9322923, tolerance = 1e-4)
   expect_identical(result$table, data.frame(counts = 0:17, cumul_counts = as.numeric(16:33)))
 
@@ -228,34 +232,47 @@ test_that("predprobDist gives the correct results in a two-arm study", {
 })
 
 test_that("predprobDist gives higher predictive probability when thetaT is lower in a single-arm trial", {
-  is_lower <- predprobDist(
-    x = 16,
-    n = 23,
-    xS = 5,
-    nS = 10,
-    Nmax = 40,
-    NmaxControl = 20,
-    delta = 0.1,
-    thetaT = 0.9,
-    parE = rbind(c(1, 1), c(50, 10)),
-    weights = c(2, 1),
-    parS = rbind(c(1, 1), c(20, 40)),
-    weightsS = c(2, 1)
+  expect_warnings(
+    is_lower <- predprobDist(
+      x = 16,
+      n = 23,
+      xS = 5,
+      nS = 10,
+      Nmax = 40,
+      NmaxControl = 20,
+      delta = 0.1,
+      thetaT = 0.9,
+      parE = rbind(c(1, 1), c(50, 10)),
+      weights = c(2, 1),
+      parS = rbind(c(1, 1), c(20, 40)),
+      weightsS = c(2, 1)
+    ),
+    "Weights have been corrected"
   )
-  is_higher <- predprobDist(
-    x = 16,
-    n = 23,
-    xS = 5,
-    nS = 10,
-    Nmax = 40,
-    NmaxControl = 20,
-    delta = 0.1,
-    thetaT = 0.5,
-    parE = rbind(c(1, 1), c(50, 10)),
-    weights = c(2, 1),
-    parS = rbind(c(1, 1), c(20, 40)),
-    weightsS = c(2, 1)
+
+  expect_warning(
+    is_higher <- predprobDist(
+      x = 16,
+      n = 23,
+      xS = 5,
+      nS = 10,
+      Nmax = 40,
+      NmaxControl = 20,
+      delta = 0.1,
+      thetaT = 0.5,
+      parE = rbind(c(1, 1), c(50, 10)),
+      weights = c(2, 1),
+      parS = rbind(c(1, 1), c(20, 40)),
+      weightsS = c(2, 1)
+    ),
+    "Weights have been corrected"
   )
+  expect_equal(
+    length(warnings_list),
+    50,
+    label = "Check total number of warnings"
+  )
+
   expect_true(is_higher$result > is_lower$result)
 })
 

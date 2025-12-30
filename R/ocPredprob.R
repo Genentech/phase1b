@@ -58,7 +58,7 @@ h_get_decision_one_predprob <- function(nnr, truep, p0, parE = c(1, 1), nnE, nnF
         thetaT = tT,
         parE = parE
       )$result
-      decision <- ifelse(interim_qU > phiU, FALSE, decision)
+      decision <- ifelse(interim_qU > phiU, TRUE, decision)
       all_looks <- orig_nnr[index_look]
     }
     if (size_look %in% nnF) {
