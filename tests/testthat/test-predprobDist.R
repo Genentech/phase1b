@@ -116,6 +116,7 @@ test_that("h_predprobdist gives correct list", {
   ))
   number_of_arms <- 2
   number_of_warnings <- sum(length(result$posterior) * number_of_arms, number_of_arms)
+  expect_true(all(grepl("Weights have been corrected", warnings)))
   expect_length(warnings, number_of_warnings)
   expect_equal(result$result, 0.9322923, tolerance = 1e-4)
   expect_identical(result$table, data.frame(counts = 0:17, cumul_counts = as.numeric(16:33)))
