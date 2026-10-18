@@ -90,13 +90,6 @@ h_getBetamixPost <- function(x, n, par, weights) {
     finite = TRUE
   )
   assert_true(all(weights >= 0))
-  # Correcting weights that do not sum to 1
-  if (sum(weights) != 1) {
-    warning("Weights have been corrected. Advise to review allocated weights")
-    # We renormalize weights.
-    weights <- weights / sum(weights)
-  }
-
   # We now compute updated parameters.
   postPar <- par
   postPar[, 1] <- postPar[, 1] + x

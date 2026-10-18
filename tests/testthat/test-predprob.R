@@ -118,34 +118,6 @@ test_that("predprob gives an error when x exceeds interim n", {
   )
 })
 
-test_that("Warning length equal to length of x", {
-  captured_warnings <- capture_warnings({
-    result <- predprob(
-      x = 16,
-      n = 20,
-      Nmax = 22,
-      p = 0.6,
-      thetaT = 0.9,
-      parE = rbind(c(1, 1), c(25, 15)),
-      weights = c(3, 1)
-    )
-  })
-  expected <- data.frame(
-    counts = 0:2,
-    cumul_counts = c(20, 21, 22),
-    density = c(0.0738, 0.3651, 0.5611),
-    posterior = c(0.862329474749815, 0.928990451842824, 0.969938389163636),
-    success = c(FALSE, TRUE, TRUE)
-  )
-  expect_equal(
-    length(captured_warnings),
-    4,
-    info = "Should have generated one warning for each element in 'x' in the loop."
-  )
-  expect_equal(result$result, 0.9262315, tolerance = 1e-4)
-  expect_equal(result$table, expected, tolerance = 1e-4)
-})
-
 test_that("predprob gives an error when Nmax is less than n", {
   expect_error(
     predprob(
