@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Daniel Sabanes Bove \email{daniel@rconis.com}
   \item Markus Elze \email{markus.elze@roche.com}
   \item Tony Pourmohamad \email{pourmoht@gene.com}
   \item Jiawen Zhu \email{zhu.jiawen@gene.com}
